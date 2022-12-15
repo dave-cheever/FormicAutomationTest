@@ -1,3 +1,4 @@
+import Objects.CheckboxObject;
 import Pages.*;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.ITestContext;
@@ -13,50 +14,50 @@ public class FormContentTest extends BaseUiTest {
 
     @Test
     public void checkboxValidationEnableDisableFieldsCheckbox() throws Exception{
-        homePage.selectProject("DMC Test Checkbox");
+        homePage.selectProject("Medications with anti-libidinal properties");
         checkBoxPage.validateEnableDisableFieldsCheckbox();
     }
 
     @Test
     public void checkboxMandatory() throws Exception{
-        homePage.selectProject("DMC Test Checkbox");
+        homePage.selectProject("Medications with anti-libidinal properties");
         checkBoxPage.validateCheckboxMandatory();
     }
 
     @Test
     public void checkboxValidationMinimumWhenSubmitButtonClicked() throws Exception{
-        homePage.selectProject("DMC Test Checkbox");
+        homePage.selectProject("Medications with anti-libidinal properties");
         checkBoxPage.validateCheckboxMinimumValidationUponSubmit();
     }
 
     @Test
     public void checkboxValidationBeyondMaximumInputs() throws Exception{
-        homePage.selectProject("DMC Test Checkbox");
+        homePage.selectProject("Medications with anti-libidinal properties");
         checkBoxPage.validateCheckboxBeyondMaximumInputsUponSubmit();
     }
 
     @Test
     public void checkboxValidationWithinMaximumInputs() throws Exception{
-        homePage.selectProject("DMC Test Checkbox");
+        homePage.selectProject("Medications with anti-libidinal properties");
         checkBoxPage.validateCheckboxMaximumInputsWithinLimitUponSubmit();
     }
 
     @Test
     public void checkboxValidationWithinMinimumInputs() throws Exception{
-        homePage.selectProject("DMC Test Checkbox");
+        homePage.selectProject("Medications with anti-libidinal properties");
         checkBoxPage.validateCheckboxWithinMinimumInputsUponSubmit();
     }
 
     @Test
     public void checkboxValidationLessThanMinimumInputs() throws Exception{
-        homePage.selectProject("DMC Test Checkbox");
+        homePage.selectProject("Medications with anti-libidinal properties");
         checkBoxPage.validateCheckboxLessThanMinimumInputsUponSubmit();
         //applied testing for checkbox matrix
     }
 
     @Test
     public void validateSubmittedInputsCheckbox() throws Exception {
-        homePage.selectProject("DMC Test Checkbox");
+        homePage.selectProject("Medications with anti-libidinal properties");
         checkBoxPage.validateSubmittedInputsCheckbox();
     }
 
@@ -67,5 +68,7 @@ public class FormContentTest extends BaseUiTest {
         loginPage = PageFactory.initElements(getDriver(), LoginPage.class);
         homePage = PageFactory.initElements(getDriver(), HomePage.class);
         checkBoxPage = PageFactory.initElements(getDriver(), CheckBoxPage.class);
+        CheckboxObject.fieldId.clear();
+        CheckboxObject.checkboxObjectDefaultValue();
     }
 }

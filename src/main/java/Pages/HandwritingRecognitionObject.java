@@ -62,16 +62,20 @@ public class HandwritingRecognitionObject extends BasePage{
     }
 
     public  String hroDataType(){
-        String[]  str = check.strFormatRegex.split("]");
-        if(str[0].contains("^[a-zA-Z0-9")){
-            return "ALPHA_NUMERIC";
-        } else if (str[0].contains("^[0-9")) {
-            return "NUMERIC";
-        }
-        else if (str[0].contains("^[a-zA-Z")) {
-            return "ALPHA";
-        }else {
-            return null;
+        if(check.strFormatRegex!=null){
+            String[]  str = check.strFormatRegex.split("]");
+            if(str[0].contains("^[a-zA-Z0-9")){
+                return "ALPHA_NUMERIC";
+            } else if (str[0].contains("^[0-9")) {
+                return "NUMERIC";
+            }
+            else if (str[0].contains("^[a-zA-Z")) {
+                return "ALPHA";
+            }else {
+                return null;
+            }
+        }else{
+            return check.strDataTypeNew;
         }
     }
 

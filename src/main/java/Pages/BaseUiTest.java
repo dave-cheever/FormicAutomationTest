@@ -8,6 +8,7 @@ import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
 import org.testng.annotations.*;
 import java.io.File;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -52,8 +53,10 @@ public class BaseUiTest {
     }
 
     @AfterMethod
-    public void driverTearDown() {
+    public void driverTearDown() throws IOException {
         // If run via docker, close driver
+        Process process = Runtime. getRuntime(). exec("taskkill /F /IM chromedriver.exe /T");
+        process.destroy();
         getDriver().quit();
     }
 
