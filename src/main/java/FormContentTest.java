@@ -11,54 +11,79 @@ public class FormContentTest extends BaseUiTest {
     LoginPage loginPage;
     HomePage homePage;
     CheckBoxPage checkBoxPage;
+    String projectName = "DMC Test Checkbox";
+//    String projectName = "Medications with anti-libidinal properties";
+
+
 
     @Test
     public void checkboxValidationEnableDisableFieldsCheckbox() throws Exception{
-        homePage.selectProject("Medications with anti-libidinal properties");
+        homePage.selectProject(projectName);
         checkBoxPage.validateEnableDisableFieldsCheckbox();
     }
 
     @Test
     public void checkboxMandatory() throws Exception{
-        homePage.selectProject("Medications with anti-libidinal properties");
+        homePage.selectProject(projectName);
         checkBoxPage.validateCheckboxMandatory();
     }
 
     @Test
     public void checkboxValidationMinimumWhenSubmitButtonClicked() throws Exception{
-        homePage.selectProject("Medications with anti-libidinal properties");
+        homePage.selectProject(projectName);
         checkBoxPage.validateCheckboxMinimumValidationUponSubmit();
     }
 
     @Test
     public void checkboxValidationBeyondMaximumInputs() throws Exception{
-        homePage.selectProject("Medications with anti-libidinal properties");
+        homePage.selectProject(projectName);
         checkBoxPage.validateCheckboxBeyondMaximumInputsUponSubmit();
     }
 
     @Test
     public void checkboxValidationWithinMaximumInputs() throws Exception{
-        homePage.selectProject("Medications with anti-libidinal properties");
+        homePage.selectProject(projectName);
         checkBoxPage.validateCheckboxMaximumInputsWithinLimitUponSubmit();
     }
 
     @Test
     public void checkboxValidationWithinMinimumInputs() throws Exception{
-        homePage.selectProject("Medications with anti-libidinal properties");
+        homePage.selectProject(projectName);
         checkBoxPage.validateCheckboxWithinMinimumInputsUponSubmit();
     }
 
     @Test
     public void checkboxValidationLessThanMinimumInputs() throws Exception{
-        homePage.selectProject("Medications with anti-libidinal properties");
+        homePage.selectProject(projectName);
         checkBoxPage.validateCheckboxLessThanMinimumInputsUponSubmit();
         //applied testing for checkbox matrix
     }
 
     @Test
     public void validateSubmittedInputsCheckbox() throws Exception {
-        homePage.selectProject("Medications with anti-libidinal properties");
+        homePage.selectProject(projectName);
         checkBoxPage.validateSubmittedInputsCheckbox();
+    }
+
+    @Test
+    public void hroFormatValidation() throws Exception{
+        //hro validation message
+        homePage.selectProject(projectName);
+        checkBoxPage.hroFormatValidation();
+    }
+
+    @Test
+    public void hroMaximumInputsValidation() throws Exception{
+        //hro validation message
+        homePage.selectProject(projectName);
+        checkBoxPage.hroMaximumInputsValidation();
+    }
+
+    @Test
+    public void miaMandatoryValidation() throws Exception{
+        //hro validation message
+        homePage.selectProject(projectName);
+        checkBoxPage.miaMandatoryValidation();
     }
 
 

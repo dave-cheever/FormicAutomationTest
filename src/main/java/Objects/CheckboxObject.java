@@ -56,12 +56,13 @@ public class CheckboxObject {
     public static ArrayList<String> checkboxInputs = new ArrayList<>();
     public static ArrayList<String> hasValueList = new ArrayList<>();
     public static boolean isMandatoryFieldTest;
-    public  String strFormatMask;
-    public  String strFormatRegex;
-    public  String strDataTypeNew;
-    public boolean isEnableDisabledFields;
-    public boolean isCheckbox;
-    public boolean isHro;
+    public  static String strFormatMask;
+    public  static String strFormatRegex;
+    public  static String strDataTypeNew;
+    public static boolean isEnableDisabledFields;
+    public static boolean isCheckbox;
+    public static boolean isHro;
+    public static boolean isMia;
 
     public static void checkboxObjectDefaultValue(){
         hasValueList.clear();
