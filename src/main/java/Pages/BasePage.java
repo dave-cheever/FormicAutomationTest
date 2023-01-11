@@ -1,17 +1,25 @@
 package Pages;
+import Helpers.ScreenshotListener;
+import Pojo.FormContentPojo;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.*;
 import org.testng.Assert;
-import java.util.ArrayList;
+import org.testng.Reporter;
 
+import java.util.ArrayList;
+import java.util.Base64;
 
 
 public class BasePage {
 
     protected WebDriver driver;
     protected WebDriverWait driverWait;
+
+    String nextPageButton = "//li//button//div[contains(text(),'Next Page')]";
+    String previousPageButton = "//li//button//div[contains(text(),'Previous Page')]";
+    String page = "//div[@data-testid='page-progress']";
 
 
     public BasePage(WebDriver driver){
@@ -48,6 +56,85 @@ public class BasePage {
     public void enterText(WebElement element, String textToEnter){
         driverWait.until(ExpectedConditions.visibilityOf(element));
         element.sendKeys(textToEnter);
+    }
+
+    public static <T> ArrayList<T> removeDuplicates(ArrayList<T> list) {
+        ArrayList<T> newList = new ArrayList<T>();
+        for (T element : list) {
+            if (!newList.contains(element)) {
+                newList.add(element);
+            }
+        }
+        return newList;
+    }
+
+    public Integer getCurrentPage(){
+        //code to get the current page
+        WebElement element = stringToWebElement(page);
+        String currentPage = element.getText();
+        String [] str = currentPage.split(" ");
+        return Integer.parseInt(str[1]);
+    }
+    public void lookForTheField(FormContentPojo contentPojo, String guidId) {
+        Integer currentPage = getCurrentPage();
+        int pageCounter = 0;
+        //loop through the pages
+        outerLoop:
+        for (var page: contentPojo.data.project.getPages()
+        ) {
+            //loop through the objects of the page
+            ++pageCounter;
+            for (var objects: page.getObjects()
+            ) {
+                if(objects.getSubQuestionFields()!=null){
+                    for (var item: objects.getSubQuestionFields()
+                    ) {
+                        String test = item.getGuidId();
+                        if(test.equalsIgnoreCase(guidId)){
+                            break outerLoop;
+                        }
+                    }
+                }else if(objects.getFieldId()!=null){
+                    String test = objects.getFieldId();
+                    if(test.equalsIgnoreCase(guidId)){
+                        break outerLoop;
+                    }
+                }
+            }
+        }
+        if(currentPage < pageCounter){
+            int nextPageCounter = pageCounter - currentPage;
+            for(int x = 1; x<=nextPageCounter; ++x){
+                clickNextPage();
+            }
+        }else if(currentPage > pageCounter){
+            int previousPageCounter = currentPage - pageCounter;
+            for(int x = 1; x<=previousPageCounter; ++x){
+                clickPreviousPage();
+            }
+        }
+    }
+
+    public void clickNextPage(){
+        WebElement element = stringToWebElement(nextPageButton);
+        click(element);
+    }
+    public void clickPreviousPage(){
+        WebElement element = stringToWebElement(previousPageButton);
+        click(element);
+    }
+
+    public String getFieldName(FormContentPojo pojo, String strFieldId){
+        String fieldName = "";
+        for (var fields:pojo.data.getProject().getFields()
+        ) {
+            if(fields.getGuidId()!=null){
+                if(fields.getGuidId().equalsIgnoreCase(strFieldId)){
+                    fieldName = fields.getName();
+                }
+            }
+        }
+        return fieldName;
     }
 
     public void enterTextWithDelay(WebElement element, String textToEnter, int milliseconds){
@@ -140,6 +227,32 @@ public class BasePage {
         scrollElementIntoView(driver,elem);
         driverWait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(element)));
         return driver.findElements(By.xpath(element)).size();
+    }
+
+    public static String getElementIdFromWhenFieldId(FormContentPojo pojo, String strWhenFieldId){
+        String elementId = null;
+        outerLoop:
+        for (var pages: pojo.data.project.getPages()
+        ) {
+            for (var obj: pages.getObjects()
+            ) {
+                if(obj.getSubQuestionFields()!=null){
+                    for (var sub: obj.getSubQuestionFields()
+                    ) {
+                        if(sub.getGuidId().equalsIgnoreCase(strWhenFieldId)){
+                            elementId = obj.getGuidId();
+                            break  outerLoop;
+                        }
+                    }
+                } else if(obj.getFieldId()!=null){
+                    if(obj.getFieldId().equalsIgnoreCase(strWhenFieldId)){
+                        elementId = obj.getGuidId();
+                        break  outerLoop;
+                    }
+                }
+            }
+        }
+        return elementId;
     }
 
 
@@ -326,6 +439,12 @@ public class BasePage {
             elem = driver.findElement(By.xpath(element));
         }
         return elem;
+    }
+
+    public void recordScreenshot(){
+        ScreenshotListener.screenshots.add(((TakesScreenshot)driver).getScreenshotAs(OutputType.BYTES));
+        Reporter.log("<img src='data:image/png;base64," + Base64.getEncoder().encodeToString(ScreenshotListener.screenshots.get(0)) + "'/>");
+        ScreenshotListener.screenshots.clear();
     }
 
     public void validateIsFileDownloaded(WebDriver driver, String fileName, int millisecondsToStopWaiting) throws InterruptedException {

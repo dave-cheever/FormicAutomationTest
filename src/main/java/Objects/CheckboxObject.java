@@ -63,6 +63,7 @@ public class CheckboxObject {
     public static boolean isCheckbox;
     public static boolean isHro;
     public static boolean isMia;
+    public static byte[] screenshot;
 
     public static void checkboxObjectDefaultValue(){
         hasValueList.clear();
