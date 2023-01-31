@@ -64,8 +64,10 @@ public class CheckboxObject {
     public static boolean isHro;
     public static boolean isMia;
     public static byte[] screenshot;
+    public static String singleFieldId;
 
     public static void checkboxObjectDefaultValue(){
+        singleFieldId="";
         hasValueList.clear();
         maximum=0;
         minimum=0;

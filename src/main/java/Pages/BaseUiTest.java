@@ -1,16 +1,20 @@
 package Pages;
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import Helpers.ScreenshotListener;
+import Objects.CheckboxObject;
+import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.testng.Assert;
+import org.testng.ITestResult;
+import org.testng.Reporter;
 import org.testng.annotations.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,6 +39,7 @@ public class BaseUiTest {
 
     }
 
+
     @BeforeMethod
     public void setDriver() throws MalformedURLException {
         // Start driver
@@ -53,12 +58,14 @@ public class BaseUiTest {
     }
 
     @AfterMethod
-    public void driverTearDown() throws IOException {
-        // If run via docker, close driver
+    public void driverTearDown(ITestResult result) throws IOException {
+    // close the browser
+    // If run via docker, close driver
         Process process = Runtime. getRuntime(). exec("taskkill /F /IM chromedriver.exe /T");
         process.destroy();
         getDriver().quit();
     }
+
 
     public WebDriver getDriver() {
         return driver.get();

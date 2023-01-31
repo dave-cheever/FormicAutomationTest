@@ -63,12 +63,6 @@ public class FormContentTest extends BaseUiTest {
     }
 
     @Test
-    public void validateSubmittedInputsCheckbox() throws Exception {
-        homePage.selectProject(projectName);
-        checkBoxPage.validateSubmittedInputsCheckbox();
-    }
-
-    @Test
     public void hroFormatValidation() throws Exception{
         //hro validation message
         homePage.selectProject(projectName);
@@ -88,6 +82,11 @@ public class FormContentTest extends BaseUiTest {
         checkBoxPage.miaMandatoryValidation();
     }
 
+    @Test
+    public void validateSubmittedInputsCheckbox() throws Exception {
+        homePage.selectProject(projectName);
+        checkBoxPage.validateSubmittedInputsCheckbox();
+    }
 
     @BeforeMethod
     public void initialisePageElements(ITestContext iTestContext) {
@@ -96,6 +95,7 @@ public class FormContentTest extends BaseUiTest {
         homePage = PageFactory.initElements(getDriver(), HomePage.class);
         checkBoxPage = PageFactory.initElements(getDriver(), CheckBoxPage.class);
         CheckboxObject.fieldId.clear();
+        CheckboxObject.checkboxInputs.clear();
         CheckboxObject.checkboxObjectDefaultValue();
     }
 }

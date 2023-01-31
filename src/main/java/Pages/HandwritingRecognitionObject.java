@@ -8,11 +8,12 @@ import org.testng.Assert;
 import org.testng.Reporter;
 import org.testng.annotations.Listeners;
 
-import javax.swing.plaf.synth.SynthTextAreaUI;
-import java.util.Base64;
-import java.util.LinkedHashSet;
-import java.util.Random;
-import java.util.Set;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 @Listeners(ScreenshotListener.class)
 public class HandwritingRecognitionObject extends BasePage{
@@ -28,7 +29,7 @@ public class HandwritingRecognitionObject extends BasePage{
     String hroValidationMessageMandatoryLocator = "//div[@data-object-id='$TEXT']/div/div/div[1]";
 
     public void setTextToHro(FormContentPojo pojo, String strFieldId, String strText){
-        String elementId = CheckBoxPage.getElementIdFromWhenFieldId(pojo,strFieldId);
+        String elementId = CheckBoxPage.getElementIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(hroInputLocator,elementId);
         WebElement element = stringToWebElement(elem);
         System.out.println("Enter text for HRO: "+CheckboxObject.checkboxName+" Input: "+ strText);
@@ -50,7 +51,7 @@ public class HandwritingRecognitionObject extends BasePage{
     }
 
     public void assertHroValidationMessageNumeric(FormContentPojo pojo, String strFieldId){
-        String elementId = CheckBoxPage.getElementIdFromWhenFieldId(pojo,strFieldId);
+        String elementId = CheckBoxPage.getElementIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(hroValidationMessageLocator,elementId);
         WebElement element = stringToWebElement(elem);
         Reporter.log("<b>Confirm correct validation message should be:</b> This field must be a number.");
@@ -59,7 +60,7 @@ public class HandwritingRecognitionObject extends BasePage{
     }
 
     public void assertHro(FormContentPojo pojo, String strFieldId){
-        String elementId = CheckBoxPage.getElementIdFromWhenFieldId(pojo,strFieldId);
+        String elementId = CheckBoxPage.getElementIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(hroValidationMessageLocator,elementId);
         String elemMandatory = stringReplace(hroValidationMessageMandatoryLocator,elementId);
         String fieldName = getFieldName(pojo,strFieldId);
@@ -75,7 +76,7 @@ public class HandwritingRecognitionObject extends BasePage{
     }
 
     public void assertHroValidationMessageAlphaNumeric(FormContentPojo pojo, String strFieldId){
-        String elementId = CheckBoxPage.getElementIdFromWhenFieldId(pojo,strFieldId);
+        String elementId = CheckBoxPage.getElementIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(hroValidationMessageLocator,elementId);
         WebElement element = stringToWebElement(elem);
         Reporter.log("<b>Confirm correct validation message should be:</b> This field must match the following format: (?"+getNumberOfUnderscore()+").");
@@ -85,7 +86,7 @@ public class HandwritingRecognitionObject extends BasePage{
     }
 
     public void assertHroValidationMessageAlphabet(FormContentPojo pojo, String strFieldId){
-        String elementId = CheckBoxPage.getElementIdFromWhenFieldId(pojo,strFieldId);
+        String elementId = CheckBoxPage.getElementIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(hroValidationMessageLocator,elementId);
         WebElement element = stringToWebElement(elem);
         Reporter.log("<b>Confirm correct validation message should be:</b> This field must match the following format: (A"+getNumberOfUnderscore()+").");
@@ -122,6 +123,8 @@ public class HandwritingRecognitionObject extends BasePage{
         }
         return false;
     }
+
+
 
     public  String hroDataType(){
         if(CheckboxObject.strFormatRegex!=null){
@@ -185,9 +188,12 @@ public class HandwritingRecognitionObject extends BasePage{
     }
 
     public int identifyMaximumInputsByFieldId(){
-        String[]  str = CheckboxObject.strFormatRegex.split("]");
-        String num = str[1].substring(str[1].indexOf(",")+1, str[1].lastIndexOf("}"));
-        return Integer.parseInt(num);
+        if(CheckboxObject.strFormatRegex!=null){
+            String[]  str = CheckboxObject.strFormatRegex.split("]");
+            String num = str[1].substring(str[1].indexOf(",")+1, str[1].lastIndexOf("}"));
+            return Integer.parseInt(num);
+        }
+        return 0;
     }
 
     public void numericInputs(FormContentPojo pojo, String strFieldId, int hroMaximumInputAllowed){
@@ -213,11 +219,21 @@ public class HandwritingRecognitionObject extends BasePage{
         setTextToHro(pojo,strFieldId,output);
     }
 
-    public void specialCharacterInputs(FormContentPojo pojo, String strFieldId, int hroMaximumInputAllowed){
+    public void emailAddressInputs(FormContentPojo pojo, String strFieldId){
+        Random rand = new Random();
+        String[] emailProviders = {"gmail.com", "yahoo.com", "hotmail.com", "aol.com", "outlook.com"};
+        String[] names = {"john", "jane", "doe", "smith", "miller"};
+        int randomNameIndex = rand.nextInt(names.length);
+        int randomProviderIndex = rand.nextInt(emailProviders.length);
+        String randomEmail = names[randomNameIndex] + "@" + emailProviders[randomProviderIndex];
+        setTextToHro(pojo,strFieldId,randomEmail);
+    }
+
+    public void specialCharacterInputs(FormContentPojo pojo, String strFieldId){
         Random rnd = new Random();
         String chars []= {"!","@","#","$","%","^","&","*","(",")","_","+","=","<",">","/"};
         String output ="";
-        for (int x = 0; x<hroMaximumInputAllowed;x++){
+        for (int x = 0; x<10;x++){
             output = output + chars[rnd.nextInt(16)];
         }
         Reporter.log("<b>input text: </b>"+ output);
@@ -234,6 +250,14 @@ public class HandwritingRecognitionObject extends BasePage{
         }
         Reporter.log("<b>input text: </b>"+ output);
         setTextToHro(pojo,strFieldId,output);
+    }
+
+    public void dateTimeInputs(FormContentPojo pojo, String strFieldId) throws ParseException {
+        SimpleDateFormat dateFormat;
+        dateFormat = new SimpleDateFormat(CheckboxObject.strFormatMask.replace("-","/").replace("mm","MM").replace("m","M").replace("DD","dd").replace("hh","HH"));
+        Date randomDate = new Date((long)(Math.random() * (System.currentTimeMillis() + 1)));
+        String randomDateTime = dateFormat.format(randomDate);
+        setTextToHro(pojo,strFieldId,randomDateTime);
     }
 
     public void alphaInputsBeyondTheMaximumAllowed(FormContentPojo pojo, String strFieldId, int hroMaximumInputAllowed){

@@ -7,6 +7,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.*;
 import org.testng.Assert;
 import org.testng.Reporter;
+import ru.sbtqa.tag.pagefactory.exceptions.ElementNotFoundException;
 
 import java.util.ArrayList;
 import java.util.Base64;
@@ -44,12 +45,15 @@ public class BasePage {
     }
 
     public void click(WebElement element){
-        driverWait.until(ExpectedConditions.elementToBeClickable(element));
         try{
+            driverWait.until(ExpectedConditions.elementToBeClickable(element));
             element.click();
-        }catch (org.openqa.selenium.ElementClickInterceptedException e){
-            e.printStackTrace();
-            javascriptClick(element);
+        }catch (ElementNotVisibleException e){
+            recordScreenshot();
+//            e.printStackTrace();
+//            javascriptClick(element);
+            Reporter.log("Element not visible. ");
+
         }
     }
 
@@ -75,7 +79,7 @@ public class BasePage {
         String [] str = currentPage.split(" ");
         return Integer.parseInt(str[1]);
     }
-    public void lookForTheField(FormContentPojo contentPojo, String guidId) {
+    public void lookForTheField(FormContentPojo contentPojo, String strFieldId) {
         Integer currentPage = getCurrentPage();
         int pageCounter = 0;
         //loop through the pages
@@ -90,13 +94,13 @@ public class BasePage {
                     for (var item: objects.getSubQuestionFields()
                     ) {
                         String test = item.getGuidId();
-                        if(test.equalsIgnoreCase(guidId)){
+                        if(test.equalsIgnoreCase(strFieldId)){
                             break outerLoop;
                         }
                     }
                 }else if(objects.getFieldId()!=null){
                     String test = objects.getFieldId();
-                    if(test.equalsIgnoreCase(guidId)){
+                    if(test.equalsIgnoreCase(strFieldId)){
                         break outerLoop;
                     }
                 }
@@ -113,6 +117,19 @@ public class BasePage {
                 clickPreviousPage();
             }
         }
+    }
+
+    public boolean isElementClickable(WebElement element){
+        boolean result = false;
+        try {
+            driverWait.until(ExpectedConditions.elementToBeClickable(element));
+            result = true;
+        }catch (TimeoutException e){
+            recordScreenshot();
+            Reporter.log("Element wasn't clickable");
+            result =false;
+        }
+        return result;
     }
 
     public void clickNextPage(){
@@ -222,14 +239,36 @@ public class BasePage {
         return element;
     }
 
+    public boolean elementClickable(WebElement element){
+        try {
+            if(element.isEnabled()){
+                return true;
+            }
+            return false;
+        }catch (TimeoutException e){
+            recordScreenshot();
+            Reporter.log("Element wasn't clickable");
+            return false;
+        }
+    }
+
+    public void elementVisible(WebElement element){
+        try {
+            driverWait.until(ExpectedConditions.visibilityOf(element));
+        }catch (TimeoutException e){
+            recordScreenshot();
+            Reporter.log("Element wasn't visible.");
+        }
+    }
+
     public int numberOfElementsVisible(String element){
         WebElement elem = stringToWebElement(element);
         scrollElementIntoView(driver,elem);
-        driverWait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(element)));
+        elementVisible(elem);
         return driver.findElements(By.xpath(element)).size();
     }
 
-    public static String getElementIdFromWhenFieldId(FormContentPojo pojo, String strWhenFieldId){
+    public static String getElementIdFromFieldId(FormContentPojo pojo, String strWhenFieldId){
         String elementId = null;
         outerLoop:
         for (var pages: pojo.data.project.getPages()
@@ -308,7 +347,7 @@ public class BasePage {
 
     protected boolean isElementPresent(WebElement element) {
         try{
-            driverWait.until(ExpectedConditions.visibilityOf(element));
+            elementVisible(element);
             return driver.findElements(By.xpath(getXpathOfWebElement(element))).size() > 0;
         }catch (Exception e){
             return false;
@@ -394,7 +433,7 @@ public class BasePage {
 
     public WebElement getWebElement(String baseXpath, String stringToReplace, String stringToReplaceBy) {
         WebElement element = driverWait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(baseXpath.replace(stringToReplace,stringToReplaceBy))));
-        driverWait.until(ExpectedConditions.visibilityOf(element));
+        elementVisible(element);
         return element;
     }
 
@@ -434,6 +473,7 @@ public class BasePage {
         try{
             driverWait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(element)));
             elem = driver.findElement(By.xpath(element));
+            elementVisible(elem);
         }catch (Exception e){
             scrollElementIntoView(driver,driver.findElement(By.xpath(element)));
             elem = driver.findElement(By.xpath(element));
