@@ -1,5 +1,6 @@
 package Objects;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,10 +64,19 @@ public class CheckboxObject {
     public static boolean isCheckbox;
     public static boolean isHro;
     public static boolean isMia;
-    public static byte[] screenshot;
     public static String singleFieldId;
+    public static int testCaseId;
+    public static byte[] encodeBytes;
+    public static File screenShot;
+    public static String scenarioName;
+    public static String errorMessage;
 
     public static void checkboxObjectDefaultValue(){
+        errorMessage="";
+        scenarioName ="";
+        screenShot = null;
+        encodeBytes =null;
+        testCaseId = 0;
         singleFieldId="";
         hasValueList.clear();
         maximum=0;

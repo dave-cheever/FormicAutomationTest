@@ -1,20 +1,18 @@
 package Pages;
-import Helpers.ScreenshotListener;
+import Helpers.APIException;
+import Helpers.ScreenshotHelper;
+import Helpers.TestRailManger;
 import Objects.CheckboxObject;
-import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.remote.RemoteWebDriver;
+import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 import org.testng.ITestResult;
-import org.testng.Reporter;
 import org.testng.annotations.*;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,6 +22,7 @@ public class BaseUiTest {
     //    public WebDriver driver;
 
     protected static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
+    ScreenshotHelper screenshotHelper;
 
 //    public BaseUiTest(WebDriver driver) {
 //        super(driver);
@@ -55,12 +54,18 @@ public class BaseUiTest {
         driver.set(new ChromeDriver(options));
         //setDriver(new ChromeDriver(options));
         getDriver().manage().window().maximize();
+        screenshotHelper = PageFactory.initElements(getDriver(),ScreenshotHelper.class);
     }
 
     @AfterMethod
-    public void driverTearDown(ITestResult result) throws IOException {
-    // close the browser
-    // If run via docker, close driver
+    public void driverTearDown(ITestResult result) throws IOException, InterruptedException, APIException {
+        if(result.getStatus()==ITestResult.SUCCESS&&CheckboxObject.testCaseId!=0){
+            screenshotHelper.takeScreenshot(CheckboxObject.scenarioName);
+            TestRailManger.updateResult(CheckboxObject.testCaseId,TestRailManger.TEST_CASE_PASSED_STATUS,23);
+        } else if (result.getStatus()==ITestResult.FAILURE&&CheckboxObject.testCaseId!=0) {
+            screenshotHelper.takeScreenshot(CheckboxObject.scenarioName);
+            TestRailManger.updateResult(CheckboxObject.testCaseId,TestRailManger.TEST_CASE_FAILED_STATUS,23);
+        }
         Process process = Runtime. getRuntime(). exec("taskkill /F /IM chromedriver.exe /T");
         process.destroy();
         getDriver().quit();
@@ -106,5 +111,7 @@ public class BaseUiTest {
             throw new java.lang.AssertionError("\"" + element.getText() + "\" does not contain" + "\"" + textToContain + "\"");
         }
     }
+
+
 
 }

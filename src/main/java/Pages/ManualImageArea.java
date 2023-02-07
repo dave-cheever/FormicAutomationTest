@@ -111,7 +111,7 @@ public class ManualImageArea extends BasePage{
             Assert.assertTrue(driver.findElements(By.xpath(elementForValidation)).size()==0,"No validation message should be displayed for "+ fieldName +".");
         }
         //Screenshot
-        recordScreenshot();
+//        recordScreenshot();
         CheckboxObject.checkboxObjectDefaultValue();
     }
 

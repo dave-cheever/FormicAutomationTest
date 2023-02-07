@@ -1,5 +1,4 @@
 package Pages;
-import Helpers.ScreenshotListener;
 import Objects.CheckboxObject;
 import Pojo.FormContentPojo;
 import Pojo.RulesGraphql;
@@ -10,11 +9,10 @@ import org.testng.Reporter;
 
 import java.text.ParseException;
 import java.util.*;
-import org.testng.annotations.Listeners;
 
-@Listeners(ScreenshotListener.class)
+
 public class CheckBoxPage extends BasePage{
-    int projectId = 136;
+    int projectId = 137;
     String validationMessageUponSubmitSideBar = "//h1[contains(text(),'Completion Errors')]//following-sibling::ul/li/button/div/div[contains(text(),'$TEXT')]//following::div[1]";
     String mandatoryFieldMessageLocator = "//div[@data-object-id='$TEXT']/div/div/div";
     String validationMessageLocator = "//div[@data-object-id='$TEXT']/div/div/div[2]";
@@ -478,19 +476,19 @@ public class CheckBoxPage extends BasePage{
                     scrollElementIntoView(driver,element);
                     Reporter.log("Checkbox "+getFieldNameByElementId(pojo,strCheckBoxId)+" tickbox number: "+ value+" should be selected.");
                     Reporter.log(elem);
-                    recordScreenshot();
+//                    recordScreenshot();
                     Assert.assertTrue(element.isSelected(),"Checkbox "+getFieldNameByElementId(pojo,strCheckBoxId)+ " failed because tickbox number: "+ value+" is not selected.");
                 } else if (CheckboxObject.isHro) {
                     String text = hro.getHroTextFromElementId(strHroId);
                     System.out.println(text);
                     Reporter.log("Expected text: "+ value+" Actual text: "+text);
-                    recordScreenshot();
+//                    recordScreenshot();
                     Assert.assertTrue(text.equalsIgnoreCase(value),"Expected text: "+ value+" Actual text: "+text);
                 } else if (CheckboxObject.isMia) {
                     String text = mia.getMiaTextFromElementId(strMiaId);
                     System.out.println(text);
                     Reporter.log("Expected text: "+ value+" Actual text: "+text);
-                    recordScreenshot();
+//                    recordScreenshot();
                     Assert.assertTrue(text.equalsIgnoreCase(value),"Expected text: "+ value+" Actual text: "+text);
                 }
             }
@@ -602,7 +600,7 @@ public class CheckBoxPage extends BasePage{
             return strReceipt[15];
         }catch (NoSuchElementException e){
             Reporter.log("Receipt not visible. "+e);
-            recordScreenshot();
+//            recordScreenshot();
             return "";
         }
     }
@@ -613,7 +611,7 @@ public class CheckBoxPage extends BasePage{
             WebElement element = stringToWebElement(continueBtn);
             click(element);
         }catch(Exception e){
-            recordScreenshot();
+//            recordScreenshot();
             Reporter.log("Continue button missing. "+e);
         }
     }
@@ -642,7 +640,7 @@ public class CheckBoxPage extends BasePage{
             click(element);
         }catch (NoSuchElementException e){
             Reporter.log("Go button not visible. " + e);
-            recordScreenshot();
+//            recordScreenshot();
         }
     }
 
@@ -681,7 +679,7 @@ public class CheckBoxPage extends BasePage{
             }else if (Objects.requireNonNull(hro.hroDataType()).equalsIgnoreCase("ALPHA")) {
                 hro.alphaInputs(pojo,strFieldId, hro.identifyMaximumInputsByFieldId());
             }
-            recordScreenshot();
+//            recordScreenshot();
         }else if(isFieldIdCheckBox(pojo,strFieldId)){
             int numberOfItems = countCheckboxItems(elementId);
             clickWithinMinimumMaximumInput(pojo,CheckboxObject.minimum,CheckboxObject.maximum,elementId,numberOfItems);
@@ -854,7 +852,7 @@ public class CheckBoxPage extends BasePage{
         Assert.assertFalse(isElementVisible(driver,elemValidationMessage),"The expected for : "+strName + " There shouldn't be any validation message displayed below the object.");
         Assert.assertFalse(isElementVisible(driver,elemCompilationErrors),"The expected for: "+strName + "Completion Errors isn't displayed. The actual is Completion errors is displayed.");
         Reporter.log("There shouldn't be any validation message displayed below the field: "+ strName);
-        recordScreenshot();
+//        recordScreenshot();
         CheckboxObject.checkboxObjectDefaultValue();
     }
 
@@ -877,7 +875,7 @@ public class CheckBoxPage extends BasePage{
         js.executeScript("window.scrollBy(0,350)", "");
         Assert.assertEquals(ValidationMessageSideMenu.getText(),"Required field.","The expected value is : Required field. "+ValidationMessageSideMenu.getText());
         Assert.assertEquals(validationMessageUnderCheckbox.getText(),"Required field.","The expected value is : Required field. "+validationMessageUnderCheckbox.getText());
-        recordScreenshot();
+//        recordScreenshot();
         CheckboxObject.checkboxObjectDefaultValue();
     }
 
@@ -942,7 +940,7 @@ public class CheckBoxPage extends BasePage{
         String fieldName = getFieldName(pojo,strFieldId);
         Assert.assertEquals(validationMessageLocator.getText(),"This field is mandatory.", fieldName+"The expected validation message for "+fieldName+" was: This field is mandatory. but the actual message was: "+validationMessageLocator.getText());
         Reporter.log("<b>Checkbox Name: <b/>"+fieldName+" <b>is mandatory. <b/>",true);
-        recordScreenshot();
+//        recordScreenshot();
         CheckboxObject.checkboxObjectDefaultValue();
     }
 
@@ -1987,14 +1985,14 @@ public class CheckBoxPage extends BasePage{
         if(action.equalsIgnoreCase("DISABLE")){
             System.out.println("Element: "+objectId+" is expected to be DISABLED");
             Reporter.log("Field Name: "+name+" is expected to be DISABLED");
-            recordScreenshot();
+//            recordScreenshot();
             Assert.assertFalse(element.isEnabled(), "field is not disabled " + name + " " + objectId);
             Reporter.log("Passed Routing");
             System.out.println("Passed Routing");
         }else if(action.equalsIgnoreCase("ENABLE")){
             System.out.println("Element: "+objectId+" is expected to be ENABLED" );
             Reporter.log("Field Name: "+name+" is expected to be ENABLED");
-            recordScreenshot();
+//            recordScreenshot();
             Assert.assertTrue(element.isEnabled(),"field is not Enabled "+name+" "+ objectId);
             Reporter.log("Passed Routing");
             System.out.println("Passed Routing");
@@ -2009,14 +2007,14 @@ public class CheckBoxPage extends BasePage{
         if(action.equalsIgnoreCase("DISABLE")){
             System.out.println("Element: "+objectId+" is expected to be DISABLED MIA" );
             Reporter.log("Field Name: "+name+" is expected to be DISABLED MIA");
-            recordScreenshot();
+//            recordScreenshot();
             Assert.assertFalse(element.isEnabled(), "field is not disabled for " + name + " " + objectId);
             Reporter.log("Passed Routing");
             System.out.println("Passed Routing");
         }else if(action.equalsIgnoreCase("ENABLE")){
             System.out.println("Element: "+objectId+" is expected to be ENABLED MIA" );
             Reporter.log("Field Name: "+name+" is expected to be ENABLED MIA");
-            recordScreenshot();
+//            recordScreenshot();
             Assert.assertTrue(element.isEnabled(),"field is not Enabled "+name+" "+ objectId);
             Reporter.log("Passed Routing");
             System.out.println("Passed Routing");
@@ -2032,7 +2030,7 @@ public class CheckBoxPage extends BasePage{
             scrollElementIntoView(driver,element);
             System.out.println("Element: "+objectId+" is expected to be DISABLED MIA" );
             Reporter.log("Field Name: "+name+" is expected to be DISABLED MIA");
-            recordScreenshot();
+//            recordScreenshot();
             Assert.assertFalse(element.isEnabled(), "field is not disabled for " + name + " " + objectId);
             Reporter.log("Passed Routing");
             System.out.println("Passed Routing");
@@ -2041,7 +2039,7 @@ public class CheckBoxPage extends BasePage{
             scrollElementIntoView(driver,element);
             System.out.println("Element: "+objectId+" is expected to be ENABLED MIA" );
             Reporter.log("Field Name: "+name+" is expected to be ENABLED MIA");
-            recordScreenshot();
+//            recordScreenshot();
             Assert.assertTrue(element.isEnabled(),"field is not Enabled "+name+" "+ objectId);
             Reporter.log("Passed Routing");
             System.out.println("Passed Routing");
@@ -2062,7 +2060,7 @@ public class CheckBoxPage extends BasePage{
             return fieldNames;
         }catch (Exception e){
             Reporter.log("No more items in Completion errors.");
-            recordScreenshot();
+//            recordScreenshot();
             return null;
         }
     }

@@ -1,21 +1,16 @@
 package Pages;
 
-import Helpers.ScreenshotListener;
 import Objects.CheckboxObject;
 import Pojo.FormContentPojo;
 import org.openqa.selenium.*;
 import org.testng.Assert;
 import org.testng.Reporter;
-import org.testng.annotations.Listeners;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
-import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-@Listeners(ScreenshotListener.class)
+
 public class HandwritingRecognitionObject extends BasePage{
     public HandwritingRecognitionObject(WebDriver driver) {
         super(driver);
@@ -56,7 +51,7 @@ public class HandwritingRecognitionObject extends BasePage{
         WebElement element = stringToWebElement(elem);
         Reporter.log("<b>Confirm correct validation message should be:</b> This field must be a number.");
         Assert.assertEquals(element.getText(),"This field must be a number.","The HRO "+ CheckboxObject.checkboxName+" has a validation message of "+element.getText()+" instead of - This field must be a number.");
-        recordScreenshot();
+//        recordScreenshot();
     }
 
     public void assertHro(FormContentPojo pojo, String strFieldId){
@@ -71,7 +66,7 @@ public class HandwritingRecognitionObject extends BasePage{
         }else {
             Assert.assertTrue(driver.findElements(By.xpath(elem)).size()==0,"No validation message should be displayed for "+ fieldName +".");
         }
-        recordScreenshot();
+//        recordScreenshot();
 
     }
 
@@ -82,7 +77,7 @@ public class HandwritingRecognitionObject extends BasePage{
         Reporter.log("<b>Confirm correct validation message should be:</b> This field must match the following format: (?"+getNumberOfUnderscore()+").");
         Assert.assertEquals(element.getText(),"This field must match the following format: (?"+getNumberOfUnderscore()+").",
                 "The HRO "+ CheckboxObject.checkboxName+" has a validation message of "+element.getText()+" instead of - This field must match the following format: (?"+getNumberOfUnderscore()+").");
-        recordScreenshot();
+//        recordScreenshot();
     }
 
     public void assertHroValidationMessageAlphabet(FormContentPojo pojo, String strFieldId){
@@ -92,7 +87,7 @@ public class HandwritingRecognitionObject extends BasePage{
         Reporter.log("<b>Confirm correct validation message should be:</b> This field must match the following format: (A"+getNumberOfUnderscore()+").");
         Assert.assertEquals(element.getText(),"This field must match the following format: (A"+getNumberOfUnderscore()+").",
                 "The HRO "+ CheckboxObject.checkboxName+" has a validation message of "+element.getText()+" instead of - This field must match the following format: (A"+getNumberOfUnderscore()+").");
-        recordScreenshot();
+//        recordScreenshot();
     }
 
     public String getNumberOfUnderscore(){

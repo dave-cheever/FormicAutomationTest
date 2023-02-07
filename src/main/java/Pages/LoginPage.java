@@ -2,6 +2,8 @@ package Pages;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.testng.Assert;
 
 
 public class LoginPage extends BasePage{
@@ -63,10 +65,68 @@ public class LoginPage extends BasePage{
 
     }
 
+    public void clickRegisterButton(){
+        click(registerButtonLocator);
+    }
+
+    public boolean userNameLabelVisible(){
+        return isElementVisible(driver,driverWait.until(ExpectedConditions.visibilityOf(usernameLabelLocator)));
+    }
+
+    public boolean userNameTextBoxVisible(){
+        return isElementVisible(driver,driverWait.until(ExpectedConditions.visibilityOf(usernameInputLocator)));
+    }
+
+    public boolean passwordLabelVisible(){
+        return isElementVisible(driver,driverWait.until(ExpectedConditions.visibilityOf(passwordLabelLocator)));
+    }
+
+    public boolean passwordTextBoxVisible(){
+        return isElementVisible(driver,driverWait.until(ExpectedConditions.visibilityOf(passwordInputLocator)));
+    }
+
+    public boolean rememberMeCheckBoxVisible(){
+        return isElementVisible(driver,driverWait.until(ExpectedConditions.visibilityOf(rememberMeCheckBoxLocator)));
+    }
+
+    public boolean loginButtonVisible(){
+        return isElementVisible(driver,driverWait.until(ExpectedConditions.visibilityOf(loginButtonLocator)));
+    }
+
+    public boolean cancelButtonVisible(){
+        return isElementVisible(driver,driverWait.until(ExpectedConditions.visibilityOf(cancelButtonLocator)));
+    }
+
+    public boolean registerButtonVisible(){
+        return isElementVisible(driver,driverWait.until(ExpectedConditions.visibilityOf(registerButtonLocator)));
+    }
+
     public void loginUser(String username, String password){
         setUsername(username);
         setPassword(password);
         clickSubmitButton();
+    }
+
+    public void loginUserWithRememberMe(String username, String password){
+        setUsername(username);
+        setPassword(password);
+        click(rememberMeCheckBoxLocator);
+        clickSubmitButton();
+    }
+
+    public boolean isUserNameTextBoxValue(String strUserName){
+        String userName = usernameInputLocator.getText();
+        return userName.equalsIgnoreCase(strUserName) ? true : false;
+    }
+
+    public boolean isPasswordTextBoxValue(String strPassword){
+        String password = passwordInputLocator.getText();
+        return password.equalsIgnoreCase(strPassword) ? true : false;
+    }
+
+    public boolean isRememberMeChecked(){
+        String checked = rememberMeCheckBoxLocator.getCssValue("value");
+        return checked.equalsIgnoreCase("true") ? true : false;
     }
 
     public String userNameRequiredTextIsVisible() throws Exception {

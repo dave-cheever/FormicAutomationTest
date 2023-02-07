@@ -1,5 +1,4 @@
 package Pages;
-import Helpers.ScreenshotListener;
 import Pojo.FormContentPojo;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.*;
@@ -7,10 +6,8 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.*;
 import org.testng.Assert;
 import org.testng.Reporter;
-import ru.sbtqa.tag.pagefactory.exceptions.ElementNotFoundException;
 
 import java.util.ArrayList;
-import java.util.Base64;
 
 
 public class BasePage {
@@ -49,7 +46,7 @@ public class BasePage {
             driverWait.until(ExpectedConditions.elementToBeClickable(element));
             element.click();
         }catch (ElementNotVisibleException e){
-            recordScreenshot();
+//            recordScreenshot();
 //            e.printStackTrace();
 //            javascriptClick(element);
             Reporter.log("Element not visible. ");
@@ -125,7 +122,7 @@ public class BasePage {
             driverWait.until(ExpectedConditions.elementToBeClickable(element));
             result = true;
         }catch (TimeoutException e){
-            recordScreenshot();
+//            recordScreenshot();
             Reporter.log("Element wasn't clickable");
             result =false;
         }
@@ -246,7 +243,7 @@ public class BasePage {
             }
             return false;
         }catch (TimeoutException e){
-            recordScreenshot();
+//            recordScreenshot();
             Reporter.log("Element wasn't clickable");
             return false;
         }
@@ -256,7 +253,7 @@ public class BasePage {
         try {
             driverWait.until(ExpectedConditions.visibilityOf(element));
         }catch (TimeoutException e){
-            recordScreenshot();
+//            recordScreenshot();
             Reporter.log("Element wasn't visible.");
         }
     }
@@ -348,8 +345,10 @@ public class BasePage {
     protected boolean isElementPresent(WebElement element) {
         try{
             elementVisible(element);
+//            recordScreenshot();
             return driver.findElements(By.xpath(getXpathOfWebElement(element))).size() > 0;
         }catch (Exception e){
+//            recordScreenshot();
             return false;
         }
     }
@@ -481,11 +480,6 @@ public class BasePage {
         return elem;
     }
 
-    public void recordScreenshot(){
-        ScreenshotListener.screenshots.add(((TakesScreenshot)driver).getScreenshotAs(OutputType.BYTES));
-        Reporter.log("<img src='data:image/png;base64," + Base64.getEncoder().encodeToString(ScreenshotListener.screenshots.get(0)) + "'/>");
-        ScreenshotListener.screenshots.clear();
-    }
 
     public void validateIsFileDownloaded(WebDriver driver, String fileName, int millisecondsToStopWaiting) throws InterruptedException {
         Assert.assertEquals(getNameOfFileDownloaded(driver,fileName,millisecondsToStopWaiting),fileName);

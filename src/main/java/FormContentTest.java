@@ -1,21 +1,19 @@
-import Helpers.ScreenshotListener;
 import Objects.CheckboxObject;
 import Pages.*;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.ITestContext;
 import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
-@Listeners(ScreenshotListener.class)
+
 public class FormContentTest extends BaseUiTest {
 
     HeaderNavigationBar headerNavigationBar;
     LoginPage loginPage;
     HomePage homePage;
     CheckBoxPage checkBoxPage;
-//    String projectName = "DMC Test Checkbox";
-    String projectName = "Medications with anti-libidinal properties";
+    String projectName = "DMC Test Checkbox";
+//    String projectName = "Medications with anti-libidinal properties";
 
 
 

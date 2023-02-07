@@ -2,6 +2,8 @@ package Pages;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.testng.Assert;
 
 public class RegisterPage extends BasePage{
 
@@ -25,6 +27,9 @@ public class RegisterPage extends BasePage{
 
     @FindBy(xpath = "//button[@value='cancel']")
     private WebElement cancelButtonLocator;
+
+    @FindBy(xpath = "//h1[text()='Register']")
+    private WebElement registerText;
 
     @FindBy(id = "Username")
     private WebElement usernameTextBoxLocator;
@@ -69,6 +74,10 @@ public class RegisterPage extends BasePage{
         clickRegisterButton();
     }
 
+    public boolean isRegisterTextVisible(){
+        return isElementVisible(driver,driverWait.until(ExpectedConditions.visibilityOf(registerText)));
+    }
+
     private void setUsername(String username){
         enterText(usernameTextBoxLocator,username);
     }
@@ -88,6 +97,8 @@ public class RegisterPage extends BasePage{
     private void setConfirmPassword(String confirmPassword){
         enterText(confirmPasswordTextBoxLocator,confirmPassword);
     }
+
+
 
     private void clickRegisterButton(){
         click(registerButtonLocator);
