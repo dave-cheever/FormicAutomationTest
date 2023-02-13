@@ -22,7 +22,7 @@ public class ManualImageArea extends BasePage{
     }
 
     public void setTextToMia(FormContentPojo pojo, String strFieldId, String strText){
-        String elementId = CheckBoxPage.getElementIdFromFieldId(pojo,strFieldId);
+        String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(miaInputLocator,elementId);
         WebElement element = stringToWebElement(elem);
         System.out.println("Enter text for MIA: "+CheckboxObject.checkboxName+" Inputs: "+ strText);
@@ -60,7 +60,7 @@ public class ManualImageArea extends BasePage{
     public boolean isMiaTextAreaEmpty(FormContentPojo pojo, String strFieldId){
         boolean result=false;
         lookForTheField(pojo, strFieldId);
-        String elementId = getElementIdFromFieldId(pojo,strFieldId);
+        String elementId = getObjectIdFromFieldId(pojo,strFieldId);
         String element = stringReplace(miaInputLocator,elementId);
         WebElement elem = stringToWebElement(element);
         scrollElementIntoView(driver,elem);
@@ -73,7 +73,7 @@ public class ManualImageArea extends BasePage{
 
     public void assertMiaField(FormContentPojo pojo, String strFieldId){
         JavascriptExecutor js = (JavascriptExecutor) driver;
-        String elementId = getElementIdFromFieldId(pojo,strFieldId);
+        String elementId = getObjectIdFromFieldId(pojo,strFieldId);
         String fieldName = getFieldName(pojo,strFieldId);
         lookForTheField(pojo,strFieldId);
         if(CheckboxObject.mandatory){
@@ -115,9 +115,10 @@ public class ManualImageArea extends BasePage{
         CheckboxObject.checkboxObjectDefaultValue();
     }
 
-    public static void recordInputsFromMia(String strElementId, String strHroInputs){
+    public static void recordInputsFromMia(String strElementId, String strMiaInputs){
+        //1778ec4ee88f4757ae0fed28d47799d7
         CheckboxObject.checkboxInputs.add(strElementId);
-        CheckboxObject.checkboxInputs.add(strHroInputs);
+        CheckboxObject.checkboxInputs.add(strMiaInputs);
     }
 
 //    public void assertRequiredField(String strObjectElementId, String name){

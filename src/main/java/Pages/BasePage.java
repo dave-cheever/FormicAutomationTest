@@ -1,4 +1,5 @@
 package Pages;
+import Objects.CheckboxObject;
 import Pojo.FormContentPojo;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.*;
@@ -12,12 +13,12 @@ import java.util.ArrayList;
 
 public class BasePage {
 
-    protected WebDriver driver;
-    protected WebDriverWait driverWait;
+    protected static WebDriver driver;
+    protected static WebDriverWait driverWait;
 
-    String nextPageButton = "//li//button//div[contains(text(),'Next Page')]";
-    String previousPageButton = "//li//button//div[contains(text(),'Previous Page')]";
-    String page = "//div[@data-testid='page-progress']";
+    static String nextPageButton = "//li//button//div[contains(text(),'Next Page')]";
+    static String previousPageButton = "//li//button//div[contains(text(),'Previous Page')]";
+    static String page = "//div[@data-testid='page-progress']";
 
 
     public BasePage(WebDriver driver){
@@ -41,7 +42,7 @@ public class BasePage {
         executeJavascript(element,"arguments[0].click();");
     }
 
-    public void click(WebElement element){
+    public static void click(WebElement element){
         try{
             driverWait.until(ExpectedConditions.elementToBeClickable(element));
             element.click();
@@ -69,14 +70,14 @@ public class BasePage {
         return newList;
     }
 
-    public Integer getCurrentPage(){
+    public static Integer getCurrentPage(){
         //code to get the current page
         WebElement element = stringToWebElement(page);
         String currentPage = element.getText();
         String [] str = currentPage.split(" ");
         return Integer.parseInt(str[1]);
     }
-    public void lookForTheField(FormContentPojo contentPojo, String strFieldId) {
+    public static void lookForTheField(FormContentPojo contentPojo, String strFieldId) {
         Integer currentPage = getCurrentPage();
         int pageCounter = 0;
         //loop through the pages
@@ -129,16 +130,16 @@ public class BasePage {
         return result;
     }
 
-    public void clickNextPage(){
+    public static void clickNextPage(){
         WebElement element = stringToWebElement(nextPageButton);
         click(element);
     }
-    public void clickPreviousPage(){
+    public static void clickPreviousPage(){
         WebElement element = stringToWebElement(previousPageButton);
         click(element);
     }
 
-    public String getFieldName(FormContentPojo pojo, String strFieldId){
+    public static String getFieldName(FormContentPojo pojo, String strFieldId){
         String fieldName = "";
         for (var fields:pojo.data.getProject().getFields()
         ) {
@@ -213,24 +214,77 @@ public class BasePage {
         System.out.println("Element Found");
     }
 
-    public String stringReplace(String element, String stringToReplace){
+    public static String stringReplace(String element, String stringToReplace){
         element = element.replace("$TEXT",stringToReplace);
         return element;
     }
 
-    public String stringReplaceTwoValues(String elementOne, String stringToReplaceOne, String stringToReplaceTwo){
+    public static String stringReplaceTwoValues(String elementOne, String stringToReplaceOne, String stringToReplaceTwo){
         elementOne = elementOne.replace("$TEXT",stringToReplaceOne);
         elementOne = elementOne.replace("$NUM",stringToReplaceTwo);
         return elementOne;
     }
 
-    public WebElement convertByToWebElement(String element){
+    public static WebElement convertByToWebElement(String element){
         By elem = By.xpath(element);
+//        scrollElementIntoView(driver,driver.findElement(elem));
         WebElement webElem = driverWait.until(ExpectedConditions.presenceOfElementLocated(elem));
         return webElem;
     }
 
-    public WebElement stringReplaceAndConvertToWebElement(String elem, String stringToReplace){
+    public static boolean isFieldIdCheckBox(FormContentPojo pojo, String strFieldId){
+        boolean result = false;
+        outerLoop:
+        for (var page: pojo.data.project.getPages()
+        ) {
+            for (var object: page.getObjects()
+            ) {
+                if(object.getTypename()!=null&&object.getTypename().equalsIgnoreCase("TickboxGroup")){
+                    for (var sub: object.getSubQuestionFields()
+                    ) {
+                        if(sub.getGuidId().equalsIgnoreCase(strFieldId)){
+                            result=true;
+                            break outerLoop;
+                        }
+                    }
+                }
+
+            }
+        }
+        return result;
+    }
+
+    public static boolean getCheckboxRulesForMaximumInputs(FormContentPojo pojo, String strFieldId){
+        for (var fields: pojo.data.project.getFields()
+        ) {
+            if(fields.getGuidId().equalsIgnoreCase(strFieldId)){
+                if(fields.getResponses()!=null&&fields.getResponses().getMaximum()!=0&&isFieldIdCheckBox(pojo,strFieldId)){
+                    CheckboxObject.mandatory = fields.getMandatory();
+                    CheckboxObject.maximum = fields.getResponses().getMaximum();
+                    CheckboxObject.checkboxName = fields.getName();
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static boolean getCheckboxRulesForMinimumInputs(FormContentPojo pojo, String strFieldId){
+        for (var fields: pojo.data.project.getFields()
+        ) {
+            if(fields.getGuidId().equalsIgnoreCase(strFieldId)){
+                if(fields.getResponses()!=null&&fields.getResponses().getMinimum()!=0){
+                    CheckboxObject.mandatory = fields.getMandatory();
+                    CheckboxObject.minimum = fields.getResponses().getMinimum();
+                    CheckboxObject.checkboxName = fields.getName();
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static WebElement stringReplaceAndConvertToWebElement(String elem, String stringToReplace){
         elem = stringReplace(elem,stringToReplace);
         WebElement element = convertByToWebElement(elem);
         return element;
@@ -249,7 +303,7 @@ public class BasePage {
         }
     }
 
-    public void elementVisible(WebElement element){
+    public static void elementVisible(WebElement element){
         try {
             driverWait.until(ExpectedConditions.visibilityOf(element));
         }catch (TimeoutException e){
@@ -265,7 +319,7 @@ public class BasePage {
         return driver.findElements(By.xpath(element)).size();
     }
 
-    public static String getElementIdFromFieldId(FormContentPojo pojo, String strWhenFieldId){
+    public static String getObjectIdFromFieldId(FormContentPojo pojo, String strWhenFieldId){
         String elementId = null;
         outerLoop:
         for (var pages: pojo.data.project.getPages()
@@ -312,7 +366,7 @@ public class BasePage {
     // Below method will be used to scroll element into view via
     // JavaScriptExecuter as some elements are not intractable until
     // they are scrolled into view
-    protected void scrollElementIntoView(WebDriver driver, WebElement element) {
+    protected static void scrollElementIntoView(WebDriver driver, WebElement element) {
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("arguments[0].scrollIntoView({block: 'center'});", element);
     }
@@ -330,7 +384,7 @@ public class BasePage {
     }
 
     // Check for element's visibility
-    protected boolean isElementVisible(WebDriver driver, String xpath ) {
+    protected static boolean isElementVisible(WebDriver driver, String xpath) {
         Wait<WebDriver> wait = new FluentWait<>(driver);
 
         try {
@@ -467,7 +521,34 @@ public class BasePage {
         }
     }
 
-    public WebElement stringToWebElement(String element){
+    public static String getFieldIdByObjectId(FormContentPojo pojo, String strObjectId){
+        String result = "";
+        outerLoop:
+        for (var page : pojo.data.getProject().getPages()
+        ) {
+            for (var object : page.getObjects()
+            ) {
+                if(object.getGuidId()!=null){
+                    if(object.getGuidId().equalsIgnoreCase(strObjectId)){
+                        if(object.getFieldId()!=null){
+                            result = object.getFieldId();
+                        }else{
+                            for ( var sub : object.getSubQuestionFields()
+                            ) {
+                                if(sub.getGuidId()!=null){
+                                    result = sub.getGuidId();
+                                    break outerLoop;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    public static WebElement stringToWebElement(String element){
         WebElement elem;
         try{
             driverWait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(element)));

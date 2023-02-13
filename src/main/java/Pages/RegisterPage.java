@@ -49,6 +49,12 @@ public class RegisterPage extends BasePage{
     @FindBy(xpath = "//li[contains(text(),'Username is required.')]")
     private WebElement usernameErrorMessageLocator;
 
+    String usernameDuplicateErrorMessageLocator = "//li[text()=\"Username '$TEXT' already taken.\"]";
+
+    @FindBy(xpath = "//li[text()='Email already taken.']")
+    private WebElement emailDuplicateErrorMessageLocator;
+
+
     @FindBy(xpath = "//li[contains(text(),'Email is required.')]")
     private WebElement emailErrorMessageLocator;
 
@@ -63,6 +69,54 @@ public class RegisterPage extends BasePage{
 
     public RegisterPage(WebDriver browserDriver){
         super(browserDriver);
+    }
+
+    public boolean userNameLabelVisible(){
+        return isElementVisible(driver,driverWait.until(ExpectedConditions.visibilityOf(usernameLabelLocator)));
+    }
+
+    public boolean fullNameLabelVisible(){
+        return isElementVisible(driver,driverWait.until(ExpectedConditions.visibilityOf(fullNameLabelLocator)));
+    }
+
+    public boolean emailLabelVisible(){
+        return isElementVisible(driver,driverWait.until(ExpectedConditions.visibilityOf(emailLabelLocator)));
+    }
+
+    public boolean passwordLabelVisible(){
+        return isElementVisible(driver,driverWait.until(ExpectedConditions.visibilityOf(passwordLabelLocator)));
+    }
+
+    public boolean confirmPasswordLabelVisible(){
+        return isElementVisible(driver,driverWait.until(ExpectedConditions.visibilityOf(confirmPasswordLabelLocator)));
+    }
+
+    public boolean registerButtonVisible(){
+        return isElementVisible(driver,driverWait.until(ExpectedConditions.visibilityOf(registerButtonLocator)));
+    }
+
+    public boolean cancelButtonVisible(){
+        return isElementVisible(driver,driverWait.until(ExpectedConditions.visibilityOf(cancelButtonLocator)));
+    }
+
+    public boolean userNameTextBoxVisible(){
+        return isElementVisible(driver,driverWait.until(ExpectedConditions.visibilityOf(usernameTextBoxLocator)));
+    }
+
+    public boolean fullNameTextBoxVisible(){
+        return isElementVisible(driver,driverWait.until(ExpectedConditions.visibilityOf(fullNameTextBoxLocator)));
+    }
+
+    public boolean emailTextBoxVisible(){
+        return isElementVisible(driver,driverWait.until(ExpectedConditions.visibilityOf(emailAddressTextBoxLocator)));
+    }
+
+    public boolean passwordTextBoxVisible(){
+        return isElementVisible(driver,driverWait.until(ExpectedConditions.visibilityOf(passwordTextBoxLocator)));
+    }
+
+    public boolean confirmPasswordTextBoxVisible(){
+        return isElementVisible(driver,driverWait.until(ExpectedConditions.visibilityOf(confirmPasswordTextBoxLocator)));
     }
 
     public void registerNewUser(String username, String fullName, String email, String password, String confirmPassword){
@@ -98,7 +152,14 @@ public class RegisterPage extends BasePage{
         enterText(confirmPasswordTextBoxLocator,confirmPassword);
     }
 
+    public boolean usernameAlreadyTakenVisible(String userName){
+        WebElement element = stringReplaceAndConvertToWebElement(usernameDuplicateErrorMessageLocator,userName);
+        return isElementVisible(driver,driverWait.until(ExpectedConditions.visibilityOf(element)));
+    }
 
+    public boolean emailAlreadyTakenVisible(){
+        return isElementVisible(driver,driverWait.until(ExpectedConditions.visibilityOf(emailDuplicateErrorMessageLocator)));
+    }
 
     private void clickRegisterButton(){
         click(registerButtonLocator);
@@ -124,7 +185,7 @@ public class RegisterPage extends BasePage{
         return isElementPresent(confirmPasswordErrorMessageLocator);
     }
 
-    public boolean passwordDoesNotMatchErrorMessageVisible() throws Exception {
+    public boolean passwordDoesNotMatchErrorMessageVisible(){
         return isElementPresent(passwordDoNotMatchErrorMessageLocator);
     }
 

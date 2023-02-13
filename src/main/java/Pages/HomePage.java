@@ -10,7 +10,7 @@ import org.testng.Reporter;
 public class HomePage extends BasePage{
 
 
-    @FindBy(xpath = "//h2[@id='projects-heading']")
+    @FindBy(xpath = "//h1[@id='projects-heading']")
     public WebElement projectHeadingLocator;
 
     @FindBy(xpath = "//h3[contains(text(),'DMC Test Checkbox')]")
@@ -35,9 +35,13 @@ public class HomePage extends BasePage{
         super(driver);
     }
 
-    public boolean confirmMyProjectsIsVisible() throws InterruptedException{
-        waitUntilElementIsPresent(projectHeadingLocator,5000);
-        return isElementPresent(projectHeadingLocator);
+    public boolean confirmMyProjectsIsVisible(){
+        try {
+            waitUntilElementIsPresent(projectHeadingLocator,5000);
+            return isElementPresent(projectHeadingLocator);
+        }catch (InterruptedException e){
+            return false;
+        }
     }
 
     public void selectProject(String project){

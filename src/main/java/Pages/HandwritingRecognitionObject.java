@@ -24,7 +24,7 @@ public class HandwritingRecognitionObject extends BasePage{
     String hroValidationMessageMandatoryLocator = "//div[@data-object-id='$TEXT']/div/div/div[1]";
 
     public void setTextToHro(FormContentPojo pojo, String strFieldId, String strText){
-        String elementId = CheckBoxPage.getElementIdFromFieldId(pojo,strFieldId);
+        String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(hroInputLocator,elementId);
         WebElement element = stringToWebElement(elem);
         System.out.println("Enter text for HRO: "+CheckboxObject.checkboxName+" Input: "+ strText);
@@ -46,7 +46,7 @@ public class HandwritingRecognitionObject extends BasePage{
     }
 
     public void assertHroValidationMessageNumeric(FormContentPojo pojo, String strFieldId){
-        String elementId = CheckBoxPage.getElementIdFromFieldId(pojo,strFieldId);
+        String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(hroValidationMessageLocator,elementId);
         WebElement element = stringToWebElement(elem);
         Reporter.log("<b>Confirm correct validation message should be:</b> This field must be a number.");
@@ -55,7 +55,7 @@ public class HandwritingRecognitionObject extends BasePage{
     }
 
     public void assertHro(FormContentPojo pojo, String strFieldId){
-        String elementId = CheckBoxPage.getElementIdFromFieldId(pojo,strFieldId);
+        String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(hroValidationMessageLocator,elementId);
         String elemMandatory = stringReplace(hroValidationMessageMandatoryLocator,elementId);
         String fieldName = getFieldName(pojo,strFieldId);
@@ -71,17 +71,17 @@ public class HandwritingRecognitionObject extends BasePage{
     }
 
     public void assertHroValidationMessageAlphaNumeric(FormContentPojo pojo, String strFieldId){
-        String elementId = CheckBoxPage.getElementIdFromFieldId(pojo,strFieldId);
+        String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(hroValidationMessageLocator,elementId);
-        WebElement element = stringToWebElement(elem);
         Reporter.log("<b>Confirm correct validation message should be:</b> This field must match the following format: (?"+getNumberOfUnderscore()+").");
+        WebElement element = stringToWebElement(elem);
         Assert.assertEquals(element.getText(),"This field must match the following format: (?"+getNumberOfUnderscore()+").",
                 "The HRO "+ CheckboxObject.checkboxName+" has a validation message of "+element.getText()+" instead of - This field must match the following format: (?"+getNumberOfUnderscore()+").");
 //        recordScreenshot();
     }
 
     public void assertHroValidationMessageAlphabet(FormContentPojo pojo, String strFieldId){
-        String elementId = CheckBoxPage.getElementIdFromFieldId(pojo,strFieldId);
+        String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(hroValidationMessageLocator,elementId);
         WebElement element = stringToWebElement(elem);
         Reporter.log("<b>Confirm correct validation message should be:</b> This field must match the following format: (A"+getNumberOfUnderscore()+").");
@@ -183,7 +183,7 @@ public class HandwritingRecognitionObject extends BasePage{
     }
 
     public int identifyMaximumInputsByFieldId(){
-        if(CheckboxObject.strFormatRegex!=null){
+        if(CheckboxObject.strFormatRegex!=null&&!CheckboxObject.strFormatRegex.equalsIgnoreCase("^[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.][a-zA-Z0-9]+$")){
             String[]  str = CheckboxObject.strFormatRegex.split("]");
             String num = str[1].substring(str[1].indexOf(",")+1, str[1].lastIndexOf("}"));
             return Integer.parseInt(num);
@@ -282,10 +282,12 @@ public class HandwritingRecognitionObject extends BasePage{
         int min = 1;
         int max = 9;
         String num ="";
-        for (int x = 0; x<hroMaximumInputAllowed+1;x++){
-            num = num + (rnd.nextInt(max-min));
+        if(hroMaximumInputAllowed!=0){
+            for (int x = 0; x<hroMaximumInputAllowed+1;x++){
+                num = num + (rnd.nextInt(max-min));
+            }
+            Reporter.log("<b>input number: </b>"+ num);
+            setTextToHro(pojo,strFieldId,num);
         }
-        Reporter.log("<b>input number: </b>"+ num);
-        setTextToHro(pojo,strFieldId,num);
     }
 }
