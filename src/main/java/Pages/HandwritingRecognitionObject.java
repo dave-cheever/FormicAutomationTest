@@ -5,10 +5,12 @@ import Pojo.FormContentPojo;
 import org.openqa.selenium.*;
 import org.testng.Assert;
 import org.testng.Reporter;
+import ru.sbtqa.tag.pagefactory.exceptions.ElementNotFoundException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.NoSuchElementException;
 
 
 public class HandwritingRecognitionObject extends BasePage{
@@ -74,10 +76,15 @@ public class HandwritingRecognitionObject extends BasePage{
         String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(hroValidationMessageLocator,elementId);
         Reporter.log("<b>Confirm correct validation message should be:</b> This field must match the following format: (?"+getNumberOfUnderscore()+").");
-        WebElement element = stringToWebElement(elem);
+        WebElement element;
+        try {
+             Assert.assertTrue(isElementPresentBy(By.xpath(elem)),"Validation message not visible.");
+        } catch (NoSuchElementException e) {
+            throw new Error("Element not found: " + e.getMessage());
+        }
+        element = stringToWebElement(elem);
         Assert.assertEquals(element.getText(),"This field must match the following format: (?"+getNumberOfUnderscore()+").",
                 "The HRO "+ CheckboxObject.checkboxName+" has a validation message of "+element.getText()+" instead of - This field must match the following format: (?"+getNumberOfUnderscore()+").");
-//        recordScreenshot();
     }
 
     public void assertHroValidationMessageAlphabet(FormContentPojo pojo, String strFieldId){

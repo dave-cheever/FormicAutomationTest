@@ -173,17 +173,13 @@ public class CheckBoxPage extends BasePage{
             name = getElementName(graphResponse,fieldId);
             Reporter.log(num+". "+name+" is being tested." );
             System.out.println(num+". "+name+" is being tested." );
-//            if(!checkboxMatrix.isFieldIdCheckBoxMatrix(graphResponse,fieldId)){
-//                System.out.println("Field name "+name+" is not a checkbox matrix");
-//                Reporter.log("Field name "+name+" is not a checkbox matrix");
-//                checkListOfConditions(graphResponse,fieldId,indexNumber);
-//                Reporter.log("--------------------------------------------------------------------------------------------------------------");
-//                System.out.println("--------------------------------------------------------------------------------------------------------------" );
-//            }
-//            else{
-//                Reporter.log("Field name "+name+" is a checkbox matrix so we skip.");
-//                System.out.println("This fieldId: "+fieldId+" with an elementId: "+ getObjectIdFromFieldId(graphResponse,fieldId)+" is a checkbox matrix so we skip");
-//            }
+
+                System.out.println("Field name "+name+" is not a checkbox matrix");
+                Reporter.log("Field name "+name+" is not a checkbox matrix");
+                checkListOfConditions(graphResponse,fieldId,indexNumber);
+                Reporter.log("--------------------------------------------------------------------------------------------------------------");
+                System.out.println("--------------------------------------------------------------------------------------------------------------" );
+
             indexNumber++;
             num++;
         }
@@ -529,37 +525,6 @@ public class CheckBoxPage extends BasePage{
         }
     }
 
-    public String getFieldNameByElementId(FormContentPojo pojo, String strElementId){
-        String strFieldId="";
-        String strFieldName ="";
-        for (var page: pojo.data.project.getPages()
-             ) {
-            for (var object : page.getObjects()
-                 ) {
-                if(object.getGuidId()!=null){
-                    if(object.getGuidId().equalsIgnoreCase(strElementId)){
-                        if(object.getTypename().equalsIgnoreCase("TickboxGroup")){
-
-                            for (var sub : object.getSubQuestionFields()
-                            ) {
-                                strFieldId = sub.getGuidId();
-                            }
-                        }else if(object.getTypename().equalsIgnoreCase("HandwritingRecognitionObject")||object.getTypename().equalsIgnoreCase("ManualImageAreaText")){
-                            strFieldId = object.getFieldId();
-                        }
-                    }
-                }
-            }
-        }
-        for (var field: pojo.data.project.getFields()
-        ) {
-            if(field.getGuidId().equalsIgnoreCase(strFieldId)){
-                strFieldName = field.getName();
-            }
-        }
-        return strFieldName;
-    }
-
     public boolean isElementId(FormContentPojo pojo, String strElementId){
         for (var page: pojo.data.getProject().getPages()
         ) {
@@ -713,10 +678,16 @@ public class CheckBoxPage extends BasePage{
             }else if (Objects.requireNonNull(hro.hroDataType()).equalsIgnoreCase("ALPHA")) {
                 hro.alphaInputs(pojo,strFieldId, hro.identifyMaximumInputsByFieldId());
             }
-//            recordScreenshot();
         }else if(isFieldIdCheckBox(pojo,strFieldId)){
-            int numberOfItems = countCheckboxItems(elementId);
-            clickWithinMinimumMaximumInput(pojo,CheckboxObject.minimum,CheckboxObject.maximum,elementId,numberOfItems);
+            if(CheckboxMatrix.isFieldIdCheckBoxMatrix(pojo,strFieldId)){
+                ArrayList<String> numberOfOptions = CheckboxMatrix.checkboxMatrixOptionsCount(pojo,strFieldId);
+                String strElementId = getObjectIdFromFieldId(pojo,strFieldId);
+                int numberOfItems = CheckboxMatrix.countNumberOfResponses(strElementId,numberOfOptions.size());
+                CheckboxMatrix.clickWithinMinimumMaximumInput(pojo,CheckboxObject.minimum,CheckboxObject.maximum,numberOfOptions,numberOfItems);
+            }else{
+                int numberOfItems = countCheckboxItems(elementId);
+                clickWithinMinimumMaximumInput(pojo,CheckboxObject.minimum,CheckboxObject.maximum,elementId,numberOfItems);
+            }
         }else if(mia.isFieldIdMia(pojo,CheckboxObject.strFieldId)){
             mia.setTextToMia(pojo,CheckboxObject.strFieldId,"test");
         }
@@ -1520,7 +1491,7 @@ public class CheckBoxPage extends BasePage{
         String typeName;
         String action;
         String whenFieldElementId;
-        String fieldIdElementId;
+        String strElementId;
         int hiddenCheckBox;
         for(int x = 0; x < 1;){
             if(!STACK.isEmpty()){
@@ -1530,7 +1501,7 @@ public class CheckBoxPage extends BasePage{
                 typeName = STACK.pop();
                 action = STACK.pop();
                 whenFieldElementId = getObjectIdFromFieldId(pojo,whenFieldId);
-                fieldIdElementId = getObjectIdFromFieldId(pojo,fieldId);
+                strElementId = getObjectIdFromFieldId(pojo,fieldId);
                 System.out.println("In validation WhenfieldID: "+whenFieldId +" HasValue: "+ hasValue +" FieldId: "+fieldId+" typeName: "+ typeName+" Action: "+ action);
                 lookForTheField(pojo,whenFieldId);
                 hiddenCheckBox = identifyHiddenCheckBox(pojo,whenFieldId);
@@ -1540,7 +1511,7 @@ public class CheckBoxPage extends BasePage{
                 }
                 clickSpecificRadioButton(pojo,whenFieldElementId,hasValue);
                 lookForTheField(pojo,fieldId);
-                assertEnableDisableFields(pojo,typeName, fieldIdElementId,action);
+                assertEnableDisableFields(pojo,typeName, strElementId,action);
                 //include here the validation of the fields
                 if(action.equalsIgnoreCase("disable")){
                     lookForTheField(pojo,whenFieldId);
@@ -1557,7 +1528,11 @@ public class CheckBoxPage extends BasePage{
             if(hro.isFieldIdHro(pojo,CheckboxObject.strFieldId)&&CheckboxObject.strFormatRegex!=null){
                 hroInputs(pojo,CheckboxObject.strFieldId);
             }else if(isFieldIdCheckBox(pojo,CheckboxObject.strFieldId)){
-                assertCheckboxMinMaxMandatory(pojo,CheckboxObject.strFieldId);
+                if(CheckboxMatrix.isFieldIdCheckBoxMatrix(pojo,CheckboxObject.strFieldId)){
+
+                }else{
+                    assertCheckboxMinMaxMandatory(pojo,CheckboxObject.strFieldId);
+                }
             }else if(mia.isFieldIdMia(pojo,CheckboxObject.strFieldId)){
                 mia.setTextToMia(pojo,CheckboxObject.strFieldId,"test");
                 mia.assertMiaField(pojo,CheckboxObject.strFieldId);
@@ -1565,13 +1540,17 @@ public class CheckBoxPage extends BasePage{
         }
     }
 
-    public void assertEnableDisableFields(FormContentPojo pojo, String typeName, String fieldIdElementId, String action){
+    public void assertEnableDisableFields(FormContentPojo pojo, String typeName, String strElementId, String action){
         if(typeName.equalsIgnoreCase("TickboxGroup")){
-            checkboxEnabledDisabledValidation(fieldIdElementId,action,pojo);
+            if(CheckboxMatrix.isFieldIdCheckBoxMatrix(pojo,getFieldIdByObjectId(pojo,strElementId))){
+                CheckboxMatrix.checkboxEnabledDisabledValidation(getFieldIdByObjectId(pojo,strElementId),action,pojo);
+            }else{
+                checkboxEnabledDisabledValidation(strElementId,action,pojo);
+            }
         } else if (typeName.equalsIgnoreCase("HandwritingRecognitionObject")) {
-            checkboxEnabledDisabledValidationForHandwritingRecognitionObject(fieldIdElementId,action,pojo);
+            checkboxEnabledDisabledValidationForHandwritingRecognitionObject(strElementId,action,pojo);
         }else if(typeName.equalsIgnoreCase("ManualImageAreaText")){
-            checkboxEnabledDisabledValidationForMia(fieldIdElementId,action,pojo);
+            checkboxEnabledDisabledValidationForMia(strElementId,action,pojo);
         }
     }
 

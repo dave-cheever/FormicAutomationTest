@@ -399,10 +399,17 @@ public class BasePage {
     protected boolean isElementPresent(WebElement element) {
         try{
             elementVisible(element);
-//            recordScreenshot();
             return driver.findElements(By.xpath(getXpathOfWebElement(element))).size() > 0;
         }catch (Exception e){
-//            recordScreenshot();
+            return false;
+        }
+    }
+
+    public static boolean isElementPresentBy(By locator) {
+        try {
+            driver.findElement(locator);
+            return true;
+        } catch (org.openqa.selenium.NoSuchElementException e) {
             return false;
         }
     }
@@ -554,11 +561,42 @@ public class BasePage {
             driverWait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(element)));
             elem = driver.findElement(By.xpath(element));
             elementVisible(elem);
-        }catch (Exception e){
+        }catch (ElementNotVisibleException e){
             scrollElementIntoView(driver,driver.findElement(By.xpath(element)));
             elem = driver.findElement(By.xpath(element));
         }
         return elem;
+    }
+
+    public static String getFieldNameByElementId(FormContentPojo pojo, String strElementId){
+        String strFieldId="";
+        String strFieldName ="";
+        for (var page: pojo.data.project.getPages()
+        ) {
+            for (var object : page.getObjects()
+            ) {
+                if(object.getGuidId()!=null){
+                    if(object.getGuidId().equalsIgnoreCase(strElementId)){
+                        if(object.getTypename().equalsIgnoreCase("TickboxGroup")){
+
+                            for (var sub : object.getSubQuestionFields()
+                            ) {
+                                strFieldId = sub.getGuidId();
+                            }
+                        }else if(object.getTypename().equalsIgnoreCase("HandwritingRecognitionObject")||object.getTypename().equalsIgnoreCase("ManualImageAreaText")){
+                            strFieldId = object.getFieldId();
+                        }
+                    }
+                }
+            }
+        }
+        for (var field: pojo.data.project.getFields()
+        ) {
+            if(field.getGuidId().equalsIgnoreCase(strFieldId)){
+                strFieldName = field.getName();
+            }
+        }
+        return strFieldName;
     }
 
 

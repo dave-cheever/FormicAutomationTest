@@ -31,6 +31,9 @@ public class CheckboxMatrix extends BasePage{
     static String fieldErrorsPopUpValidationMessage = "//h1[text()=\"Field Errors\"]/ancestor::div/following-sibling::div/div/div/div[text()=\"$TEXT\"]/following::div";
     static String checkBoxMatrixSeeFieldErrorsButton = "//div[@data-object-id=\"$TEXT\"]/div/div/div";
     static String closeButton = "(//button[@aria-label=\"Close dialog\"])[2]";
+    static String fieldSetLocator = "//input[@data-field-id=\"$TEXT\"][1]";
+
+    CheckBoxPage checkBoxPage;
 
     public static void clickCloseButton(){
         WebElement element = stringToWebElement(closeButton);
@@ -71,6 +74,123 @@ public class CheckboxMatrix extends BasePage{
             if(!element.isSelected()) {
                 click(element);
             }
+        }
+    }
+
+    public void assertCheckboxMinMaxMandatory(FormContentPojo pojo,String strFieldId) throws Exception {
+        if(CheckboxObject.isMandatoryFieldTest){
+            AssertMandatoryFields(pojo,strFieldId);
+        } else if(CheckboxObject.lessThanMinimumInputs){
+            assertLessThanMinimumInput(pojo,strFieldId);
+        }else if(CheckboxObject.withinMinimumInputs){
+            assertWithinMinimumInput(pojo,strFieldId);
+        }else if (CheckboxObject.withinMaximumInputs){
+            assertWithinMaximumInput(pojo,strFieldId);
+        }else if (CheckboxObject.beyondMaximumInputs){
+            assertBeyondMaximumInput(pojo,strFieldId);
+        }else if(CheckboxObject.minimumConfig){
+            assertMinimumConfig(pojo,strFieldId);
+        }else if(CheckboxObject.withinMinimumMaximumInputs){
+            checkBoxPage.assertWithinMinimumMaximumInput(pojo,strFieldId);
+        }
+    }
+
+    public void assertMinimumConfig(FormContentPojo pojo, String strFieldId) {
+        String elementId = getObjectIdFromFieldId(pojo,strFieldId);
+        lookForTheField(pojo,strFieldId);
+        if(CheckboxObject.minimum==1){
+            assertRequiredField(pojo,elementId,CheckboxObject.checkboxName);
+        }else {
+            assertMinimumConfigNoInputs(elementId,CheckboxObject.checkboxName,CheckboxObject.minimum);
+        }
+    }
+
+    public void assertMinimumConfigNoInputs(String strObjectElementId, String name, Integer minimumInput){
+        WebElement ValidationMessageSideMenu = stringReplaceAndConvertToWebElement(validationMessageUponSubmitSideBar, name);
+        scrollElementIntoView(driver,ValidationMessageSideMenu);
+        Assert.assertEquals(ValidationMessageSideMenu.getText(),"This field requires a minimum of "+minimumInput+" responses.","The expected value is : This field requires a minimum of "+minimumInput+" responses.");
+        clickSeeFieldErrorsByObjectId(strObjectElementId);
+        String validationMessage = getValidationMessageByOptionName(name);
+        Assert.assertEquals(validationMessage,"This field requires a minimum of "+minimumInput+" responses.","The expected value is : This field requires a minimum of "+minimumInput+" responses. but the actual message is "+validationMessage);
+        clickCloseButton();
+        CheckboxObject.checkboxObjectDefaultValue();
+    }
+
+    public void assertBeyondMaximumInput(FormContentPojo pojo, String strFieldId) throws Exception {
+        String elementId = getObjectIdFromFieldId(pojo,strFieldId);
+        lookForTheField(pojo,strFieldId);
+
+        String strElementId = getObjectIdFromFieldId(pojo,strFieldId);
+        getCheckboxRulesForMaximumInputs(pojo,strFieldId);
+        ArrayList<String> numberOfOptions = checkboxMatrixOptionsCount(pojo,strElementId);
+        System.out.println("Number of options is: "+ numberOfOptions.size());
+        int numberOfItems = countNumberOfResponses(strElementId,numberOfOptions.size());
+        System.out.println("number of items is: "+numberOfItems);
+
+        clickBeyondMaximumInput(pojo,CheckboxObject.maximum,strFieldId,numberOfItems);
+        if(CheckboxObject.mandatory){
+            AssertMandatoryFields(pojo,strFieldId);
+        }else{
+            assertWithinAcceptedInputs(CheckboxObject.checkboxName,elementId);
+        }
+    }
+
+    public int clickBeyondMaximumInput(FormContentPojo pojo,int maxInput,String strFieldId,int elementCountInACheckbox){
+        String elem;
+        WebElement element;
+        Random rng = new Random();
+        Set<String> generated = new LinkedHashSet<String>();
+        //if the number of checkboxes available to a certain checkbox is equal to the amount of Max input, do not add+1 because this will trigger an
+        //infinite loop in the while loop below
+        maxInput = elementCountInACheckbox == maxInput ? maxInput : maxInput+1;
+
+        while (generated.size() < maxInput)
+        {
+            String next = Integer.toString(rng.nextInt(elementCountInACheckbox) + 1);
+            generated.add(next);
+        }
+        String[] gen = generated.toArray(new String[generated.size()]);
+
+        for(int x = 0; x<generated.size();x++){
+            elem = stringReplaceTwoValues(checkboxMatrixElementToBeClickedLocator, strFieldId,gen[x]);
+            element = stringToWebElement(elem);
+
+            if(maxInput!=1){
+                scrollElementIntoView(driver,element);
+                if(!element.isSelected()) {
+                    click(element);
+                }
+            }else{
+                scrollElementIntoView(driver,element);
+                if(!element.isSelected()) {
+                    click(element);
+                }
+                return 1;
+            }
+        }
+        return generated.size();
+    }
+
+    public static void checkboxEnabledDisabledValidation(String objectId, String action, FormContentPojo pojo) {
+        //2233066b00dc495c884448d69641f0f9
+        String elem = stringReplace(fieldSetLocator,objectId);
+        WebElement element = stringToWebElement(elem);
+        scrollElementIntoView(driver,element);
+        String name = getFieldNameByElementId(pojo,objectId);
+        if(action.equalsIgnoreCase("DISABLE")){
+            System.out.println("Element: "+objectId+" is expected to be DISABLED");
+            Reporter.log("Field Name: "+name+" is expected to be DISABLED");
+//            recordScreenshot();
+            Assert.assertFalse(element.isEnabled(), "field is not disabled " + name + " " + objectId);
+            Reporter.log("Passed Routing");
+            System.out.println("Passed Routing");
+        }else if(action.equalsIgnoreCase("ENABLE")){
+            System.out.println("Element: "+objectId+" is expected to be ENABLED" );
+            Reporter.log("Field Name: "+name+" is expected to be ENABLED");
+//            recordScreenshot();
+            Assert.assertTrue(element.isEnabled(),"field is not Enabled "+name+" "+ objectId);
+            Reporter.log("Passed Routing");
+            System.out.println("Passed Routing");
         }
     }
 
@@ -215,9 +335,9 @@ public class CheckboxMatrix extends BasePage{
     public static void assertRequiresMinimumOf(String name, String strObjectElementID, int minNumberOfInputs){
         WebElement ValidationMessageSideMenu = stringReplaceAndConvertToWebElement(validationMessageUponSubmitSideBar, name);
         scrollElementIntoView(driver,ValidationMessageSideMenu);
+        Assert.assertEquals(ValidationMessageSideMenu.getText(),"This field requires a minimum of "+minNumberOfInputs+" responses.","The expected value is : This field requires a minimum of "+minNumberOfInputs+" responses.");
         clickSeeFieldErrorsByObjectId(strObjectElementID);
         String validationMessage = getValidationMessageByOptionName(name);
-        Assert.assertEquals(ValidationMessageSideMenu.getText(),"This field requires a minimum of "+minNumberOfInputs+" responses.","The expected value is : This field requires a minimum of "+minNumberOfInputs+" responses. but the actual message is "+validationMessage);
         Assert.assertEquals(validationMessage,"This field requires a minimum of "+minNumberOfInputs+" responses.","The expected value is : This field requires a minimum of "+minNumberOfInputs+" responses. but the actual message is "+validationMessage);
         clickCloseButton();
         CheckboxObject.checkboxObjectDefaultValue();
