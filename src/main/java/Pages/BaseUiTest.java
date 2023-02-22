@@ -18,15 +18,8 @@ import java.util.Map;
 
 public class BaseUiTest {
 
-
-    //    public WebDriver driver;
-
     protected static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
     ScreenshotHelper screenshotHelper;
-
-//    public BaseUiTest(WebDriver driver) {
-//        super(driver);
-//    }
 
     @BeforeSuite
     public void setUpSuite() {
@@ -37,7 +30,6 @@ public class BaseUiTest {
         System.setProperty("webdriver.chrome.driver", defaultDriverPath);
 
     }
-
 
     @BeforeMethod
     public void setDriver() throws MalformedURLException {

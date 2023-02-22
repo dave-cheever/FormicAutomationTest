@@ -63,6 +63,7 @@ public class HandwritingRecognitionObject extends BasePage{
         String fieldName = getFieldName(pojo,strFieldId);
         if(CheckboxObject.mandatory){
             WebElement elementMandatory = stringToWebElement(elemMandatory);
+            scrollElementIntoView(driver,elementMandatory);
             Assert.assertEquals(elementMandatory.getText(),"This field is mandatory.","Validation message incorrect for "+fieldName+". Expected: This field is mandatory. Actual: "+elementMandatory.getText());
 
         }else {
@@ -200,11 +201,9 @@ public class HandwritingRecognitionObject extends BasePage{
 
     public void numericInputs(FormContentPojo pojo, String strFieldId, int hroMaximumInputAllowed){
         Random rnd = new Random();
-        int min = 1;
-        int max = 9;
         String num ="";
         for (int x = 0; x<hroMaximumInputAllowed;x++){
-            num = num + (rnd.nextInt(max-min));
+            num = num + (rnd.nextInt(9)+1);
         }
         Reporter.log("<b>input number: </b>"+ num);
         setTextToHro(pojo,strFieldId,num);

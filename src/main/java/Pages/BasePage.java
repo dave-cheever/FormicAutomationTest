@@ -290,7 +290,7 @@ public class BasePage {
         return element;
     }
 
-    public boolean elementClickable(WebElement element){
+    public static boolean elementClickable(WebElement element){
         try {
             if(element.isEnabled()){
                 return true;
@@ -312,7 +312,7 @@ public class BasePage {
         }
     }
 
-    public int numberOfElementsVisible(String element){
+    public static int numberOfElementsVisible(String element){
         WebElement elem = stringToWebElement(element);
         scrollElementIntoView(driver,elem);
         elementVisible(elem);
@@ -558,10 +558,12 @@ public class BasePage {
     public static WebElement stringToWebElement(String element){
         WebElement elem;
         try{
-            driverWait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(element)));
+            driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(element)));
             elem = driver.findElement(By.xpath(element));
             elementVisible(elem);
-        }catch (ElementNotVisibleException e){
+        }catch (TimeoutException e){
+            JavascriptExecutor js = (JavascriptExecutor) driver;
+            js.executeScript("document.body.style.zoom='80%'");
             scrollElementIntoView(driver,driver.findElement(By.xpath(element)));
             elem = driver.findElement(By.xpath(element));
         }
@@ -599,8 +601,68 @@ public class BasePage {
         return strFieldName;
     }
 
-
-    public void validateIsFileDownloaded(WebDriver driver, String fileName, int millisecondsToStopWaiting) throws InterruptedException {
-        Assert.assertEquals(getNameOfFileDownloaded(driver,fileName,millisecondsToStopWaiting),fileName);
+    public boolean isElementId(FormContentPojo pojo, String strElementId){
+        for (var page: pojo.data.getProject().getPages()
+        ) {
+            for (var object : page.getObjects()
+            ) {
+                if(object.getGuidId()!=null&&object.getGuidId().equalsIgnoreCase(strElementId)){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
+
+    public boolean isElementIdCheckbox(FormContentPojo pojo, String strElementId){
+        for (var page: pojo.data.getProject().getPages()
+        ) {
+            for (var object : page.getObjects()
+            ) {
+                if(object.getTypename()!=null){
+                    if(object.getTypename().equalsIgnoreCase("TickboxGroup")){
+                        if(object.getGuidId()!=null&&object.getGuidId().equalsIgnoreCase(strElementId)){
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean isElementIdHro(FormContentPojo pojo, String strElementId){
+        for (var page: pojo.data.getProject().getPages()
+        ) {
+            for (var object : page.getObjects()
+            ) {
+                if(object.getTypename()!=null){
+                    if(object.getTypename().equalsIgnoreCase("HandwritingRecognitionObject")){
+                        if(object.getGuidId()!=null&&object.getGuidId().equalsIgnoreCase(strElementId)){
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean isElementIdMia(FormContentPojo pojo, String strElementId){
+        for (var page: pojo.data.getProject().getPages()
+        ) {
+            for (var object : page.getObjects()
+            ) {
+                if(object.getTypename()!=null){
+                    if(object.getTypename().equalsIgnoreCase("ManualImageAreaText")){
+                        if(object.getGuidId()!=null&&object.getGuidId().equalsIgnoreCase(strElementId)){
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
 }

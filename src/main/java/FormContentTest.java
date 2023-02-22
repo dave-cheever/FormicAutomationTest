@@ -1,5 +1,6 @@
 import Objects.CheckboxObject;
 import Pages.*;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.ITestContext;
 import org.testng.annotations.BeforeMethod;
@@ -96,4 +97,5 @@ public class FormContentTest extends BaseUiTest {
         CheckboxObject.checkboxInputs.clear();
         CheckboxObject.checkboxObjectDefaultValue();
     }
+
 }
