@@ -16,98 +16,99 @@ public class RulesGraphql {
 
         QueryVariables variable = new QueryVariables();
         variable.setProjectIdentifierInput(input);
+        String graphQLQuery =" query ProjectFields ($projectIdentifierInput: ProjectIdentifierInput!){ project (projectIdentifier: $projectIdentifierInput){ id name pages{ guidId objects{\s...on CaptureObjectBase {\s guidId __typename}...on TickboxGroup{ subQuestionFields{guidId __typename} tickboxResponses{ordinal __typename box{hidden, subQuestionIndex} label{text, __typename}}}...on ManualImageAreaText{guidId fieldId name __typename}...on HandwritingRecognitionObject{guidId fieldId name boxes{dimensions{height, width, __typename},guidId, location{layer, left, top, __typename},ordinal,__typename} __typename}}}fields {guidId id name mandatory dataTypeNew formatRegex formatMask responses {isMultiResponse maximum minimum __typename}__typename}routing {fieldId conditions {action hasValue whenField __typename}__typename}__typename}} ";
 
-        String graphQLQuery = """
-                query ProjectFields ($projectIdentifierInput: ProjectIdentifierInput!){\s
-                  project (projectIdentifier: $projectIdentifierInput){
-                  id
-                  name
-                  pages{
-                  		guidId
-                  		objects{\s
-                  			...on CaptureObjectBase {\s
-                  				        guidId
-                  				        __typename
-                  				}
-                  				...on TickboxGroup{
-                  				        subQuestionFields{
-                  					                        guidId
-                  				                            __typename
-                  				        }
-                  				        tickboxResponses{
-                      				                        ordinal
-                      				                        __typename
-                      				                        box{
-                      				                            hidden,
-                      				                            subQuestionIndex
-                      				                        }
-                      				                        label{
-                      				                            text,
-                      				                            __typename
-                      				                        }
-                      			        }
-                  			    }
-                  			...on ManualImageAreaText{
-                  			            guidId
-                                        fieldId
-                                        name
-                                        __typename
-                            }
-                  			...on HandwritingRecognitionObject{
-                     					guidId
-                     					fieldId
-                     					name
-                     					boxes{
-                     					        dimensions{
-                     					                height,
-                     					                width,
-                     					                __typename
-                     					        }
-                     					        ,guidId,
-                          						location{
-                          						        layer,
-                          						        left,
-                          						        top,
-                          						        __typename
-                          						}
-                          						,ordinal
-                          						,__typename
-                          				}
-                     					__typename
-                     		}
-                  		}
-                  			
-                  }
-                  fields {
-                    guidId
-                    id
-                    name
-                    mandatory
-                    dataTypeNew
-                    formatRegex
-                    formatMask
-                    responses {
-                      isMultiResponse
-                      maximum
-                      minimum
-                      __typename
-                    }
-                    __typename
-                  }
-                  routing {
-                    fieldId
-                    conditions {
-                      action
-                      hasValue
-                      whenField
-                      __typename
-                    }
-                    __typename
-                  }
-                  __typename
-                  } 
-                }
-                """;
+
+//        String graphQLQuery = """
+//                query ProjectFields ($projectIdentifierInput: ProjectIdentifierInput!){\s
+//                  project (projectIdentifier: $projectIdentifierInput){
+//                  id
+//                  name
+//                  pages{
+//                  		guidId
+//                  		objects{\s
+//                  			...on CaptureObjectBase {\s
+//                  				        guidId
+//                  				        __typename
+//                  				}
+//                  				...on TickboxGroup{
+//                  				        subQuestionFields{
+//                  					                        guidId
+//                  				                            __typename
+//                  				        }
+//                  				        tickboxResponses{
+//                      				                        ordinal
+//                      				                        __typename
+//                      				                        box{
+//                      				                            hidden,
+//                      				                            subQuestionIndex
+//                      				                        }
+//                      				                        label{
+//                      				                            text,
+//                      				                            __typename
+//                      				                        }
+//                      			        }
+//                  			    }
+//                  			...on ManualImageAreaText{
+//                  			            guidId
+//                                        fieldId
+//                                        name
+//                                        __typename
+//                            }
+//                  			...on HandwritingRecognitionObject{
+//                     					guidId
+//                     					fieldId
+//                     					name
+//                     					boxes{
+//                     					        dimensions{
+//                     					                height,
+//                     					                width,
+//                     					                __typename
+//                     					        }
+//                     					        ,guidId,
+//                          						location{
+//                          						        layer,
+//                          						        left,
+//                          						        top,
+//                          						        __typename
+//                          						}
+//                          						,ordinal
+//                          						,__typename
+//                          				}
+//                     					__typename
+//                     		}
+//                  		}
+//
+//                  }
+//                  fields {
+//                    guidId
+//                    id
+//                    name
+//                    mandatory
+//                    dataTypeNew
+//                    formatRegex
+//                    formatMask
+//                    responses {
+//                      isMultiResponse
+//                      maximum
+//                      minimum
+//                      __typename
+//                    }
+//                    __typename
+//                  }
+//                  routing {
+//                    fieldId
+//                    conditions {
+//                      action
+//                      hasValue
+//                      whenField
+//                      __typename
+//                    }
+//                    __typename
+//                  }
+//                  __typename
+//                  }
+//                } """;
 
         GraphQLQuery query = new GraphQLQuery();
         query.setQuery(graphQLQuery);
