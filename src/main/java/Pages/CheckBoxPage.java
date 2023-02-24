@@ -369,6 +369,49 @@ public class CheckBoxPage extends BasePage{
         System.out.println(receipt);
         validateInputsAreCorrect(graphResponse);
     }
+
+    public void validateSavedInputsCheckbox() throws Exception {
+        RulesGraphql rules = new RulesGraphql();
+        FormContentPojo graphResponse =  rules.getRules(projectId);
+        sideMenuNavigation.clickSubmitButton();
+        String strListFieldName = "";
+        do{
+            strListFieldName = getListFieldNameByCompletionErrors();
+            String strElementId = getElementIdByFieldName(graphResponse,strListFieldName);
+            CheckboxObject.singleFieldId = getFieldIdByObjectId(graphResponse,strElementId);
+            String strTypeName = getTypeNameByFieldId(graphResponse,CheckboxObject.singleFieldId);
+            clickFieldNameInCompletionErrors(strListFieldName);
+
+            if(strTypeName.equalsIgnoreCase("HandwritingRecognitionObject")){
+                hro.getHroRules(graphResponse,CheckboxObject.singleFieldId);
+                hroInputs(graphResponse,CheckboxObject.singleFieldId);
+            }else if(strTypeName.equalsIgnoreCase("TickboxGroup")){
+                //
+                if(CheckboxMatrix.isFieldIdCheckBoxMatrix(graphResponse,CheckboxObject.singleFieldId)){
+                    getCheckboxRulesForMinimumAndMaximumInputs(graphResponse,CheckboxObject.singleFieldId);
+                    ArrayList<String> numberOfOptions = CheckboxMatrix.checkboxMatrixOptionsCount(graphResponse,strElementId);
+                    int numberOfItems = CheckboxMatrix.countNumberOfResponses(strElementId,numberOfOptions.size());
+                    CheckboxMatrix.clickWithinMinimumMaximumInput(graphResponse,CheckboxObject.minimum,CheckboxObject.maximum,numberOfOptions,numberOfItems);
+                }else{
+                    getCheckboxRulesForMinimumAndMaximumInputs(graphResponse,CheckboxObject.singleFieldId);
+                    int numberOfItems = countCheckboxItems(strElementId);
+                    clickWithinMinimumMaximumInput(graphResponse,CheckboxObject.minimum,CheckboxObject.maximum,strElementId,numberOfItems);
+                }
+            }else if(strTypeName.equalsIgnoreCase("ManualImageAreaText")){
+                mia.getMiaRules(graphResponse,CheckboxObject.singleFieldId);
+                miaInputs(graphResponse,CheckboxObject.singleFieldId);
+            }
+        }while (!getListFieldNameByCompletionErrors().isEmpty());
+        sideMenuNavigation.clickSaveButton();
+        String receipt = getProjectReceiptSave();
+        clickContinueButton();
+        clickSavedFormsButton();
+        Reporter.log("<b>Receipt code:<b/> "+receipt);
+        enterReceiptNumber(receipt);
+        clickGoButton();
+        System.out.println(receipt);
+        validateInputsAreCorrect(graphResponse);
+    }
     //#endregion
 
     public boolean skipSingleHiddenCheckbox(FormContentPojo pojo, String fieldId){
@@ -455,6 +498,22 @@ public class CheckBoxPage extends BasePage{
     public String getProjectReceipt(){
         try{
             String test = "//h2[contains(text(),'Complete')]/ancestor::main/p[contains(text(),'You can use the following receipt to recall this particular form at a later date.')]";
+            WebElement elem = stringToWebElement(test);
+            String text = elem.getText();
+            String [] strReceipt;
+            strReceipt = text.split(". ");
+            return strReceipt[15];
+        }catch (NoSuchElementException e){
+            Reporter.log("Receipt not visible. "+e);
+//            recordScreenshot();
+            return "";
+        }
+    }
+
+
+    public String getProjectReceiptSave(){
+        try{
+            String test = "//h2[contains(text(),'Saved')]/ancestor::main/p[contains(text(),'You can use the following receipt to recall this particular form at a later date.')]";
             WebElement elem = stringToWebElement(test);
             String text = elem.getText();
             String [] strReceipt;
