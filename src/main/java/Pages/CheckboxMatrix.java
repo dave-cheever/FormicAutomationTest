@@ -147,11 +147,11 @@ public class CheckboxMatrix extends BasePage{
             String strFieldId = getFieldIdByObjectId(pojo,elementId);
             outerLoop:
             for(boolean x = false; x == false;){
-                for (var routing : pojo.data.project.getRouting()
+                for (Pojo.Routing routing : pojo.data.project.getRouting()
                 ) {
                     if(!element.isEnabled()){
                         if(routing.getFieldId().equalsIgnoreCase(strFieldId)){
-                            for (var condition : routing.getConditions()
+                            for (Pojo.Condition condition : routing.getConditions()
                             ) {
                                 if(condition.getAction().equalsIgnoreCase("DISABLE")){
                                     lookForTheField(pojo,condition.getWhenField());
@@ -176,10 +176,10 @@ public class CheckboxMatrix extends BasePage{
 
     public static void unselectCheckboxThatDisableField(FormContentPojo pojo, WebElement element, String strFieldId){
         do{
-            for (var routing : pojo.data.project.getRouting()
+            for (Pojo.Routing routing : pojo.data.project.getRouting()
             ) {
                 if(routing.getFieldId().equalsIgnoreCase(strFieldId)){
-                    for (var condition : routing.getConditions()
+                    for (Pojo.Condition condition : routing.getConditions()
                     ) {
                         String strAction = condition.getAction();
                         String strHasValue = condition.getHasValue();
@@ -206,7 +206,7 @@ public class CheckboxMatrix extends BasePage{
         String strElementId = getObjectIdFromFieldId(pojo,strFieldId);
         getCheckboxRulesForMaximumInputs(pojo,strFieldId);
         ArrayList<String> numberOfOptions = checkboxMatrixOptionsCount(pojo,strElementId);
-        for (var fieldId : numberOfOptions
+        for (String fieldId : numberOfOptions
              ) {
             System.out.println("Number of options is: "+ numberOfOptions.size());
             int numberOfItems = countNumberOfResponses(strElementId,numberOfOptions.size());
@@ -290,9 +290,9 @@ public class CheckboxMatrix extends BasePage{
         boolean result = false;
         String strObjectId = getObjectIdFromFieldId(pojo,strFieldId);
         outerLoop:
-        for (var pages: pojo.data.project.getPages()
+        for (Pojo.Page pages: pojo.data.project.getPages()
         ) {
-            for (var object: pages.getObjects()
+            for (Pojo.Object object: pages.getObjects()
             ) {
                 if(object.getSubQuestionFields()!=null){
                     if(object.getGuidId().equalsIgnoreCase(strObjectId)){
@@ -311,13 +311,13 @@ public class CheckboxMatrix extends BasePage{
     public static ArrayList checkboxMatrixOptionsCount(FormContentPojo pojo, String strObjectId){
         ArrayList<String> fieldIdList = new ArrayList<String>();
         outerLoop:
-        for (var pages: pojo.data.project.getPages()
+        for (Pojo.Page pages: pojo.data.project.getPages()
         ) {
-            for (var object: pages.getObjects()
+            for (Pojo.Object object: pages.getObjects()
             ) {
                 if(object.getSubQuestionFields()!=null){
                     if(object.getGuidId().equalsIgnoreCase(strObjectId)){
-                        for (var sub : object.getSubQuestionFields()
+                        for (Pojo.SubQuestionField sub : object.getSubQuestionFields()
                              ) {
                             fieldIdList.add(sub.getGuidId());
                         }
@@ -372,7 +372,7 @@ public class CheckboxMatrix extends BasePage{
                 generated.add(next);
             }
             String[] gen = generated.toArray(new String[generated.size()]);
-            for (var fieldId : strFieldId
+            for (String fieldId : strFieldId
             ) {
                 for(int x = 0; x<generated.size();x++){
                     elem = stringReplaceTwoValues(checkboxMatrixElementToBeClickedLocator,fieldId,gen[x]);
@@ -492,7 +492,7 @@ public class CheckboxMatrix extends BasePage{
             generated.add(next);
         }
         String[] gen = generated.toArray(new String[generated.size()]);
-        for (var fieldId : strFieldId
+        for (String fieldId : strFieldId
              ) {
             for(int x = 0; x<generated.size();x++){
                 elem = stringReplaceTwoValues(checkboxMatrixElementToBeClickedLocator,fieldId,gen[x]);
@@ -509,7 +509,7 @@ public class CheckboxMatrix extends BasePage{
     public static int clickWithinMinimumMaximumInput(FormContentPojo pojo,int minInput,int maxInput,ArrayList<String> strObjectFieldId,int elementCountInACheckbox){
         String[] gen = minMaximumGeneratedInputs(pojo,minInput,maxInput,elementCountInACheckbox);
         gen = adjustInputIfAlreadySelected(pojo,gen);
-        for (var fieldId: strObjectFieldId
+        for (String fieldId: strObjectFieldId
         ) {
             recordInputsFromCheckbox(fieldId,gen);
             System.out.println(CheckboxObject.checkboxInputs);

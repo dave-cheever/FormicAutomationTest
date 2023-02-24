@@ -109,7 +109,7 @@ public class HandwritingRecognitionObject extends BasePage{
     }
 
     public boolean getHroRules(FormContentPojo pojo, String strFieldId){
-        for (var fields: pojo.data.project.getFields()
+        for (Pojo.Field fields: pojo.data.project.getFields()
         ) {
             if(fields.getGuidId().equalsIgnoreCase(strFieldId)&&isFieldIdHro(pojo,strFieldId)){
                 CheckboxObject.mandatory = fields.getMandatory();
@@ -151,9 +151,9 @@ public class HandwritingRecognitionObject extends BasePage{
     public  boolean isFieldIdHro(FormContentPojo pojo, String strFieldId){
         boolean result = false;
         outerLoop:
-        for (var page: pojo.data.project.getPages()
+        for (Pojo.Page page: pojo.data.project.getPages()
         ) {
-            for (var object: page.getObjects()
+            for (Pojo.Object object: page.getObjects()
             ) {
                 if(object.getTypename()!=null&&object.getTypename().equalsIgnoreCase("HandwritingRecognitionObject")){
                     if(object.getFieldId().equalsIgnoreCase(strFieldId)){

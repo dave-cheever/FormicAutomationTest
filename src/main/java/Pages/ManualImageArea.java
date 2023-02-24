@@ -144,9 +144,9 @@ public class ManualImageArea extends BasePage{
     public  boolean isFieldIdMia(FormContentPojo pojo, String strFieldId){
         boolean result = false;
         outerLoop:
-        for (var page: pojo.data.project.getPages()
+        for (Pojo.Page page: pojo.data.project.getPages()
         ) {
-            for (var object: page.getObjects()
+            for (Pojo.Object object: page.getObjects()
             ) {
                 if(object.getTypename()!=null&&object.getTypename().equalsIgnoreCase("ManualImageAreaText")){
                     if(object.getFieldId().equalsIgnoreCase(strFieldId)){
@@ -160,7 +160,7 @@ public class ManualImageArea extends BasePage{
     }
 
     public boolean getMiaRules(FormContentPojo pojo, String strFieldId){
-        for (var fields: pojo.data.project.getFields()
+        for (Pojo.Field fields: pojo.data.project.getFields()
         ) {
             if(fields.getGuidId().equalsIgnoreCase(strFieldId)&&isFieldIdMia(pojo,strFieldId)){
                 CheckboxObject.mandatory = fields.getMandatory();

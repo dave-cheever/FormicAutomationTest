@@ -82,14 +82,14 @@ public class BasePage {
         int pageCounter = 0;
         //loop through the pages
         outerLoop:
-        for (var page: contentPojo.data.project.getPages()
+        for (Pojo.Page page: contentPojo.data.project.getPages()
         ) {
             //loop through the objects of the page
             ++pageCounter;
-            for (var objects: page.getObjects()
+            for (Pojo.Object objects: page.getObjects()
             ) {
                 if(objects.getSubQuestionFields()!=null){
-                    for (var item: objects.getSubQuestionFields()
+                    for (Pojo.SubQuestionField item: objects.getSubQuestionFields()
                     ) {
                         String test = item.getGuidId();
                         if(test.equalsIgnoreCase(strFieldId)){
@@ -141,7 +141,7 @@ public class BasePage {
 
     public static String getFieldName(FormContentPojo pojo, String strFieldId){
         String fieldName = "";
-        for (var fields:pojo.data.getProject().getFields()
+        for (Pojo.Field fields:pojo.data.getProject().getFields()
         ) {
             if(fields.getGuidId()!=null){
                 if(fields.getGuidId().equalsIgnoreCase(strFieldId)){
@@ -235,12 +235,12 @@ public class BasePage {
     public static boolean isFieldIdCheckBox(FormContentPojo pojo, String strFieldId){
         boolean result = false;
         outerLoop:
-        for (var page: pojo.data.project.getPages()
+        for (Pojo.Page page: pojo.data.project.getPages()
         ) {
-            for (var object: page.getObjects()
+            for (Pojo.Object object: page.getObjects()
             ) {
                 if(object.getTypename()!=null&&object.getTypename().equalsIgnoreCase("TickboxGroup")){
-                    for (var sub: object.getSubQuestionFields()
+                    for (Pojo.SubQuestionField sub: object.getSubQuestionFields()
                     ) {
                         if(sub.getGuidId().equalsIgnoreCase(strFieldId)){
                             result=true;
@@ -255,7 +255,7 @@ public class BasePage {
     }
 
     public static boolean getCheckboxRulesForMaximumInputs(FormContentPojo pojo, String strFieldId){
-        for (var fields: pojo.data.project.getFields()
+        for (Pojo.Field fields: pojo.data.project.getFields()
         ) {
             if(fields.getGuidId().equalsIgnoreCase(strFieldId)){
                 if(fields.getResponses()!=null&&fields.getResponses().getMaximum()!=0&&isFieldIdCheckBox(pojo,strFieldId)){
@@ -270,7 +270,7 @@ public class BasePage {
     }
 
     public static boolean getCheckboxRulesForMinimumInputs(FormContentPojo pojo, String strFieldId){
-        for (var fields: pojo.data.project.getFields()
+        for (Pojo.Field fields: pojo.data.project.getFields()
         ) {
             if(fields.getGuidId().equalsIgnoreCase(strFieldId)){
                 if(fields.getResponses()!=null&&fields.getResponses().getMinimum()!=0){
@@ -322,12 +322,12 @@ public class BasePage {
     public static String getObjectIdFromFieldId(FormContentPojo pojo, String strWhenFieldId){
         String elementId = null;
         outerLoop:
-        for (var pages: pojo.data.project.getPages()
+        for (Pojo.Page pages: pojo.data.project.getPages()
         ) {
-            for (var obj: pages.getObjects()
+            for (Pojo.Object obj: pages.getObjects()
             ) {
                 if(obj.getSubQuestionFields()!=null){
-                    for (var sub: obj.getSubQuestionFields()
+                    for (Pojo.SubQuestionField sub: obj.getSubQuestionFields()
                     ) {
                         if(sub.getGuidId().equalsIgnoreCase(strWhenFieldId)){
                             elementId = obj.getGuidId();
@@ -531,16 +531,16 @@ public class BasePage {
     public static String getFieldIdByObjectId(FormContentPojo pojo, String strObjectId){
         String result = "";
         outerLoop:
-        for (var page : pojo.data.getProject().getPages()
+        for (Pojo.Page page : pojo.data.getProject().getPages()
         ) {
-            for (var object : page.getObjects()
+            for (Pojo.Object object : page.getObjects()
             ) {
                 if(object.getGuidId()!=null){
                     if(object.getGuidId().equalsIgnoreCase(strObjectId)){
                         if(object.getFieldId()!=null){
                             result = object.getFieldId();
                         }else{
-                            for ( var sub : object.getSubQuestionFields()
+                            for ( Pojo.SubQuestionField sub : object.getSubQuestionFields()
                             ) {
                                 if(sub.getGuidId()!=null){
                                     result = sub.getGuidId();
@@ -573,15 +573,15 @@ public class BasePage {
     public static String getFieldNameByElementId(FormContentPojo pojo, String strElementId){
         String strFieldId="";
         String strFieldName ="";
-        for (var page: pojo.data.project.getPages()
+        for (Pojo.Page page: pojo.data.project.getPages()
         ) {
-            for (var object : page.getObjects()
+            for (Pojo.Object object : page.getObjects()
             ) {
                 if(object.getGuidId()!=null){
                     if(object.getGuidId().equalsIgnoreCase(strElementId)){
                         if(object.getTypename().equalsIgnoreCase("TickboxGroup")){
 
-                            for (var sub : object.getSubQuestionFields()
+                            for (Pojo.SubQuestionField sub : object.getSubQuestionFields()
                             ) {
                                 strFieldId = sub.getGuidId();
                             }
@@ -592,7 +592,7 @@ public class BasePage {
                 }
             }
         }
-        for (var field: pojo.data.project.getFields()
+        for (Pojo.Field field: pojo.data.project.getFields()
         ) {
             if(field.getGuidId().equalsIgnoreCase(strFieldId)){
                 strFieldName = field.getName();
@@ -602,9 +602,9 @@ public class BasePage {
     }
 
     public boolean isElementId(FormContentPojo pojo, String strElementId){
-        for (var page: pojo.data.getProject().getPages()
+        for (Pojo.Page page: pojo.data.getProject().getPages()
         ) {
-            for (var object : page.getObjects()
+            for (Pojo.Object object : page.getObjects()
             ) {
                 if(object.getGuidId()!=null&&object.getGuidId().equalsIgnoreCase(strElementId)){
                     return true;
@@ -615,9 +615,9 @@ public class BasePage {
     }
 
     public boolean isElementIdCheckbox(FormContentPojo pojo, String strElementId){
-        for (var page: pojo.data.getProject().getPages()
+        for (Pojo.Page page: pojo.data.getProject().getPages()
         ) {
-            for (var object : page.getObjects()
+            for (Pojo.Object object : page.getObjects()
             ) {
                 if(object.getTypename()!=null){
                     if(object.getTypename().equalsIgnoreCase("TickboxGroup")){
@@ -632,9 +632,9 @@ public class BasePage {
     }
 
     public boolean isElementIdHro(FormContentPojo pojo, String strElementId){
-        for (var page: pojo.data.getProject().getPages()
+        for (Pojo.Page page: pojo.data.getProject().getPages()
         ) {
-            for (var object : page.getObjects()
+            for (Pojo.Object object : page.getObjects()
             ) {
                 if(object.getTypename()!=null){
                     if(object.getTypename().equalsIgnoreCase("HandwritingRecognitionObject")){
@@ -649,9 +649,9 @@ public class BasePage {
     }
 
     public boolean isElementIdMia(FormContentPojo pojo, String strElementId){
-        for (var page: pojo.data.getProject().getPages()
+        for (Pojo.Page page: pojo.data.getProject().getPages()
         ) {
-            for (var object : page.getObjects()
+            for (Pojo.Object object : page.getObjects()
             ) {
                 if(object.getTypename()!=null){
                     if(object.getTypename().equalsIgnoreCase("ManualImageAreaText")){
