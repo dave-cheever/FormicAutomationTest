@@ -13,8 +13,8 @@ public class FormContentTest extends BaseUiTest {
     LoginPage loginPage;
     HomePage homePage;
     CheckBoxPage checkBoxPage;
-    String projectName = "DMC Test Checkbox";
-//    String projectName = "Medications with anti-libidinal properties";
+//    String projectName = "DMC Test Checkbox";
+    String projectName = "Medications with anti-libidinal properties";
 
 
 
@@ -85,6 +85,12 @@ public class FormContentTest extends BaseUiTest {
     public void validateSubmittedInputsCheckbox() throws Exception {
         homePage.selectProject(projectName);
         checkBoxPage.validateSubmittedInputsCheckbox();
+    }
+
+    @Test
+    public void validateSavedInputsCheckbox() throws Exception {
+        homePage.selectProject(projectName);
+        checkBoxPage.validateSavedInputsCheckbox();
     }
 
     @BeforeMethod

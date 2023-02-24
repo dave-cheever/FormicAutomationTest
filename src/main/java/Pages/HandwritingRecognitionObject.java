@@ -51,6 +51,7 @@ public class HandwritingRecognitionObject extends BasePage{
         String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(hroValidationMessageLocator,elementId);
         WebElement element = stringToWebElement(elem);
+        scrollElementIntoView(driver,element);
         Reporter.log("<b>Confirm correct validation message should be:</b> This field must be a number.");
         Assert.assertEquals(element.getText(),"This field must be a number.","The HRO "+ CheckboxObject.checkboxName+" has a validation message of "+element.getText()+" instead of - This field must be a number.");
 //        recordScreenshot();
