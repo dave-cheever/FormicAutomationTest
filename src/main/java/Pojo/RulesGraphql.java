@@ -17,14 +17,14 @@ public class RulesGraphql {
         QueryVariables variable = new QueryVariables();
         variable.setProjectIdentifierInput(input);
         StringBuilder queryBuilder = new StringBuilder();
-        queryBuilder.append("                query ProjectFields ($projectIdentifierInput: ProjectIdentifierInput!){\s");
+        queryBuilder.append("                query ProjectFields ($projectIdentifierInput: ProjectIdentifierInput!){");
         queryBuilder.append("                  project (projectIdentifier: $projectIdentifierInput){");
         queryBuilder.append("                  id");
         queryBuilder.append("                  name");
         queryBuilder.append("                  pages{");
         queryBuilder.append("                  guidId");
-        queryBuilder.append("                  objects{\s");
-        queryBuilder.append("                  ...on CaptureObjectBase {\s");
+        queryBuilder.append("                  objects{");
+        queryBuilder.append("                  ...on CaptureObjectBase {");
         queryBuilder.append("                          guidId");
         queryBuilder.append("                          __typename");
         queryBuilder.append("                  }");
