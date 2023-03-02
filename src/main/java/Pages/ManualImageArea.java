@@ -5,7 +5,6 @@ import Pojo.FormContentPojo;
 import org.openqa.selenium.*;
 import org.testng.Assert;
 import org.testng.Reporter;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -91,10 +90,10 @@ public class ManualImageArea extends BasePage{
                 Assert.assertEquals(validationMessageUnderCheckbox.getText(),"Required field.","The expected value is : Required field. "+validationMessageUnderCheckbox.getText());
             }else{
 //                //Side menu validation
-//                WebElement ValidationMessageSideMenu = stringReplaceAndConvertToWebElement(validationMessageUponSubmitSideBar, fieldName);
-//                scrollElementIntoView(driver,ValidationMessageSideMenu);
-//                js.executeScript("window.scrollBy(0,350)", "");
-//                Assert.assertEquals(ValidationMessageSideMenu.getText(),"This field is mandatory.","The expected value is : Required field. "+ValidationMessageSideMenu.getText());
+                WebElement ValidationMessageSideMenu = stringReplaceAndConvertToWebElement(validationMessageUponSubmitSideBar, fieldName);
+                scrollElementIntoView(driver,ValidationMessageSideMenu);
+                js.executeScript("window.scrollBy(0,350)", "");
+                Assert.assertEquals(ValidationMessageSideMenu.getText(),"This field is mandatory.","The expected value is : Required field. "+ValidationMessageSideMenu.getText());
                 //Field validation
                 Reporter.log("<b>Validation message should be: </b> This field is mandatory." );
                 String element = stringReplace(miaValidationMessageMandatoryLocator,elementId);
@@ -110,29 +109,13 @@ public class ManualImageArea extends BasePage{
             Reporter.log("<b>No validation message should be displayed.</b>" );
             Assert.assertTrue(driver.findElements(By.xpath(elementForValidation)).size()==0,"No validation message should be displayed for "+ fieldName +".");
         }
-        //Screenshot
-//        recordScreenshot();
         CheckboxObject.checkboxObjectDefaultValue();
     }
 
     public static void recordInputsFromMia(String strElementId, String strMiaInputs){
-        //1778ec4ee88f4757ae0fed28d47799d7
         CheckboxObject.checkboxInputs.add(strElementId);
         CheckboxObject.checkboxInputs.add(strMiaInputs);
     }
-
-//    public void assertRequiredField(String strObjectElementId, String name){
-//        WebElement ValidationMessageSideMenu = stringReplaceAndConvertToWebElement(validationMessageUponSubmitSideBar, name);
-//        scrollElementIntoView(driver,ValidationMessageSideMenu);
-//        WebElement validationMessageUnderCheckbox = stringReplaceAndConvertToWebElement(validationMessageLocator,strObjectElementId);
-//        scrollElementIntoView(driver,validationMessageUnderCheckbox);
-//        JavascriptExecutor js = (JavascriptExecutor) driver;
-//        js.executeScript("window.scrollBy(0,350)", "");
-//        Assert.assertEquals(ValidationMessageSideMenu.getText(),"Required field.","The expected value is : Required field. "+ValidationMessageSideMenu.getText());
-//        Assert.assertEquals(validationMessageUnderCheckbox.getText(),"Required field.","The expected value is : Required field. "+validationMessageUnderCheckbox.getText());
-//        recordScreenshot();
-//        CheckboxObject.checkboxObjectDefaultValue();
-//    }
 
     public String getMiaTextFromElementId(String strElementId){
         String elem = stringReplace(miaInputLocator,strElementId);

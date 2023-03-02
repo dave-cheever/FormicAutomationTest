@@ -5,8 +5,6 @@ import Pojo.FormContentPojo;
 import org.openqa.selenium.*;
 import org.testng.Assert;
 import org.testng.Reporter;
-import ru.sbtqa.tag.pagefactory.exceptions.ElementNotFoundException;
-
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -96,7 +94,6 @@ public class HandwritingRecognitionObject extends BasePage{
         Reporter.log("<b>Confirm correct validation message should be:</b> This field must match the following format: (A"+getNumberOfUnderscore()+").");
         Assert.assertEquals(element.getText(),"This field must match the following format: (A"+getNumberOfUnderscore()+").",
                 "The HRO "+ CheckboxObject.checkboxName+" has a validation message of "+element.getText()+" instead of - This field must match the following format: (A"+getNumberOfUnderscore()+").");
-//        recordScreenshot();
     }
 
     public String getNumberOfUnderscore(){
