@@ -15,6 +15,7 @@ import com.fasterxml.jackson.annotation.JsonPropertyOrder;
         "fieldId",
         "name",
         "boxes"
+//        "responses"
 })
 @Generated("jsonschema2pojo")
 public class Object {
@@ -33,6 +34,9 @@ public class Object {
     private String name;
     @JsonProperty("boxes")
     private List<Box__1> boxes = null;
+//    @JsonProperty("responses")
+//    private List<Responses> responses = null;
+
 
     @JsonProperty("guidId")
     public String getGuidId() {
@@ -98,10 +102,18 @@ public class Object {
     public List<Box__1> getBoxes() {
         return boxes;
     }
-
     @JsonProperty("boxes")
     public void setBoxes(List<Box__1> boxes) {
         this.boxes = boxes;
     }
+
+//    @JsonProperty("responses")
+//    public List<Responses> getResponses() {
+//        return responses;
+//    }
+//    @JsonProperty("responses")
+//    public void setResponses(List<Responses> responses) {
+//        this.responses = responses;
+//    }
 
 }

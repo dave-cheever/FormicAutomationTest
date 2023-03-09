@@ -10,10 +10,11 @@ import java.text.ParseException;
 import java.util.*;
 
 public class CheckBoxPage extends BasePage{
-    int projectId = 136;
+    int projectId = 146;
     String emailRegEx = "^[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.][a-zA-Z0-9]+$";
     static String validationMessageUponSubmitSideBar = "//h1[contains(text(),'Completion Errors')]//following-sibling::ul/li/button/div/div[contains(text(),'$TEXT')]//following::div[1]";
     static String mandatoryFieldMessageLocator = "//div[@data-object-id='$TEXT']/div/div/div";
+    static String mandatoryFieldMessagePickListLocator = "(//div[@data-object-id='$TEXT']/div/div/div)[2]";
     String validationMessageLocator = "//div[@data-object-id='$TEXT']/div/div/div[2]";
     String fieldSetLocator = "//div[@data-object-id='$TEXT']/div/fieldset/input[1]";
     String ManualImageAreaText = "//div[@data-object-id='$TEXT']/div/textarea";
@@ -84,7 +85,7 @@ public class CheckBoxPage extends BasePage{
     public void validateCheckboxMinimumValidationUponSubmit() throws Exception {
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
-        getFieldIFromGraphqlResult(graphResponse);
+        getCheckboxFieldItems(graphResponse);
         sideMenuNavigation.clickSubmitButton();
         for (String fieldId: CheckboxObject.fieldId
         ) {
@@ -112,7 +113,7 @@ public class CheckBoxPage extends BasePage{
     public void validateCheckboxBeyondMaximumInputsUponSubmit() throws Exception {
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
-        getFieldIFromGraphqlResult(graphResponse);
+        getCheckboxFieldItems(graphResponse);
         sideMenuNavigation.clickSubmitButton();
         for (String fieldId: CheckboxObject.fieldId
         ) {
@@ -141,7 +142,7 @@ public class CheckBoxPage extends BasePage{
     public void validateCheckboxMaximumInputsWithinLimitUponSubmit() throws Exception {
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
-        getFieldIFromGraphqlResult(graphResponse);
+        getCheckboxFieldItems(graphResponse);
         sideMenuNavigation.clickSubmitButton();
         for (String fieldId: CheckboxObject.fieldId
         ) {
@@ -169,7 +170,7 @@ public class CheckBoxPage extends BasePage{
     public void validateCheckboxWithinMinimumInputsUponSubmit() throws Exception {
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
-        getFieldItems(graphResponse);
+        getCheckboxFieldItems(graphResponse);
         sideMenuNavigation.clickSubmitButton();
         for (String fieldId: CheckboxObject.fieldId
         ) {
@@ -198,7 +199,7 @@ public class CheckBoxPage extends BasePage{
     public void validateCheckboxLessThanMinimumInputsUponSubmit() throws Exception {
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
-        getFieldIFromGraphqlResult(graphResponse);
+        getCheckboxFieldItems(graphResponse);
         sideMenuNavigation.clickSubmitButton();
         for (String fieldId: CheckboxObject.fieldId
         ) {
@@ -228,7 +229,6 @@ public class CheckBoxPage extends BasePage{
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
         getFieldItemsHro(graphResponse);
-
         Reporter.log("Click submit button to show all required field validation message.");
         sideMenuNavigation.clickSubmitButton();
         for (String fieldId: CheckboxObject.fieldId
@@ -312,7 +312,7 @@ public class CheckBoxPage extends BasePage{
             CheckboxObject.minimumConfig = true;
             CheckboxObject.strFieldId = fieldId;
             String name = CheckboxObject.checkboxName;
-            if(getMiaRules(graphResponse,fieldId)
+            if(mia.getMiaRules(graphResponse,fieldId)
                     &&!isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
                 if(isFieldIdInRoutingRules(graphResponse,fieldId)){
@@ -321,7 +321,93 @@ public class CheckBoxPage extends BasePage{
                     checkListOfConditions(graphResponse,fieldId);
                 }else {
                     System.out.println(CheckboxObject.checkboxName+ " Is enabled");
-                    mia.assertMiaField(graphResponse,fieldId);
+                    mia.assertMiaMandatoryField(graphResponse,fieldId);
+                }
+            }
+        }
+    }
+
+    public void miaPicklistLessThanMinimumInputs() throws Exception {
+        RulesGraphql rules = new RulesGraphql();
+        FormContentPojo graphResponse =  rules.getRules(projectId);
+        getFieldItemsPicklist(graphResponse);
+        Reporter.log("Click submit button to show all required field validation message.");
+        sideMenuNavigation.clickSubmitButton();
+        for (String fieldId: CheckboxObject.fieldId
+        ) {
+            CheckboxObject.minimumConfig = true;
+            CheckboxObject.strFieldId = fieldId;
+            String name = CheckboxObject.checkboxName;
+            if(mia.getMiaRules(graphResponse,fieldId)
+                    &&!isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
+            {
+                if(mia.isMinimumMaximumNotEmpty()){
+                    if(isFieldIdInRoutingRules(graphResponse,fieldId)){
+                        //meaning this fieldId maybe disabled, and we need to enable it.
+                        System.out.println(name+ " Needs to check if it's disabled");
+                        checkListOfConditions(graphResponse,fieldId);
+                    }else {
+                        System.out.println(CheckboxObject.checkboxName+ " Is enabled");
+                        //f88e3f62c0ca45ceb00bc909fd7918ae
+                        mia.addLessThanMinimumOptions(graphResponse,CheckboxObject.minimum,fieldId);
+                        mia.validateLessThanTheMinimumRequired(graphResponse,CheckboxObject.minimum,fieldId);
+                    }
+                }
+            }
+            CheckboxObject.checkboxObjectDefaultValue();
+        }
+    }
+
+    public void miaPicklistMoreThanMaximumInputs() throws Exception {
+        RulesGraphql rules = new RulesGraphql();
+        FormContentPojo graphResponse =  rules.getRules(projectId);
+        getFieldItemsPicklist(graphResponse);
+        Reporter.log("Click submit button to show all required field validation message.");
+        sideMenuNavigation.clickSubmitButton();
+        for (String fieldId: CheckboxObject.fieldId
+        ) {
+            CheckboxObject.minimumConfig = true;
+            CheckboxObject.strFieldId = fieldId;
+            String name = CheckboxObject.checkboxName;
+            if(mia.getMiaRules(graphResponse,fieldId)
+                    &&!isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId)&&CheckboxObject.maximum!=0&&CheckboxObject.isMultiResponse)
+            {
+                if(isFieldIdInRoutingRules(graphResponse,fieldId)){
+                    //meaning this fieldId maybe disabled, and we need to enable it.
+                    System.out.println(name+ " Needs to check if it's disabled");
+                    checkListOfConditions(graphResponse,fieldId);
+                }else {
+                    System.out.println(CheckboxObject.checkboxName+ " Is enabled");
+                    mia.addMoreThanMaximumOptions(graphResponse,CheckboxObject.maximum,fieldId);
+                    mia.validateMoreThanTheMaximumRequired(graphResponse,CheckboxObject.maximum,fieldId);
+                }
+            }
+            CheckboxObject.checkboxObjectDefaultValue();
+        }
+    }
+
+    public void miaPicklistWithinMinimumMaximumInputs() throws Exception {
+        RulesGraphql rules = new RulesGraphql();
+        FormContentPojo graphResponse =  rules.getRules(projectId);
+        getFieldItemsPicklist(graphResponse);
+        Reporter.log("Click submit button to show all required field validation message.");
+        sideMenuNavigation.clickSubmitButton();
+        for (String fieldId: CheckboxObject.fieldId
+        ) {
+            CheckboxObject.minimumConfig = true;
+            CheckboxObject.strFieldId = fieldId;
+            String name = CheckboxObject.checkboxName;
+            if(mia.getMiaRules(graphResponse,fieldId)
+                    &&!isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
+            {
+                if(isFieldIdInRoutingRules(graphResponse,fieldId)){
+                    //meaning this fieldId maybe disabled, and we need to enable it.
+                    System.out.println(name+ " Needs to check if it's disabled");
+                    checkListOfConditions(graphResponse,fieldId);
+                }else {
+                    System.out.println(CheckboxObject.checkboxName+ " Is enabled");
+                    mia.addWithinMinimumMaximumOptions(graphResponse,CheckboxObject.minimum,fieldId);
+                    mia.validateWithinMinimumMaximumRequired(graphResponse,fieldId);
                 }
             }
         }
@@ -357,6 +443,9 @@ public class CheckBoxPage extends BasePage{
             }else if(strTypeName.equalsIgnoreCase("ManualImageAreaText")){
                 mia.getMiaRules(graphResponse,CheckboxObject.singleFieldId);
                 miaInputs(graphResponse,CheckboxObject.singleFieldId);
+            }else if(strTypeName.equalsIgnoreCase("PickList")){
+                mia.getMiaRules(graphResponse,CheckboxObject.singleFieldId);
+                picklistInputs(graphResponse,CheckboxObject.singleFieldId);
             }
         }while (!getListFieldNameByCompletionErrors().isEmpty());
         sideMenuNavigation.clickSubmitButton();
@@ -400,6 +489,9 @@ public class CheckBoxPage extends BasePage{
             }else if(strTypeName.equalsIgnoreCase("ManualImageAreaText")){
                 mia.getMiaRules(graphResponse,CheckboxObject.singleFieldId);
                 miaInputs(graphResponse,CheckboxObject.singleFieldId);
+            }else if(strTypeName.equalsIgnoreCase("PickList")){
+            mia.getMiaRules(graphResponse,CheckboxObject.singleFieldId);
+                picklistInputs(graphResponse,CheckboxObject.singleFieldId);
             }
         }while (!getListFieldNameByCompletionErrors().isEmpty());
         sideMenuNavigation.clickSaveButton();
@@ -446,6 +538,7 @@ public class CheckBoxPage extends BasePage{
         String strCheckBoxId = null;
         String strHroId = null;
         String strMiaId = null;
+        String strPickListId = null;
         for (String value: CheckboxObject.checkboxInputs
         ) {
             strElementId = getObjectIdFromFieldId(pojo,value)==null? value : getObjectIdFromFieldId(pojo,value);
@@ -454,7 +547,8 @@ public class CheckBoxPage extends BasePage{
                     CheckboxObject.isCheckbox = true;
                     CheckboxObject.isMia = false;
                     CheckboxObject.isHro = false;
-                    lookForTheField(pojo,value);
+                    String fieldId = getFieldIdByObjectId(pojo,value);
+                    lookForTheField(pojo,fieldId);
                     if(CheckboxMatrix.isFieldIdCheckBoxMatrix(pojo,value)){
                         strCheckBoxId = value;
                     }else{
@@ -464,14 +558,27 @@ public class CheckBoxPage extends BasePage{
                     CheckboxObject.isHro = true;
                     CheckboxObject.isCheckbox = false;
                     CheckboxObject.isMia = false;
+                    CheckboxObject.isPicklist = false;
                     strHroId = strElementId;
-                    lookForTheField(pojo,value);
+                    String fieldId = getFieldIdByObjectId(pojo,value);
+                    lookForTheField(pojo,fieldId);
                 } else if (isElementIdMia(pojo,strElementId)) {
                     CheckboxObject.isMia = true;
                     CheckboxObject.isCheckbox = false;
                     CheckboxObject.isHro = false;
+                    CheckboxObject.isPicklist = false;
                     strMiaId = strElementId;
-                    lookForTheField(pojo,value);
+                    String fieldId = getFieldIdByObjectId(pojo,value);
+                    lookForTheField(pojo,fieldId);
+                }else if (isElementIdPicklist(pojo,strElementId)) {
+                    CheckboxObject.isPicklist = true;
+                    CheckboxObject.isMia = false;
+                    CheckboxObject.isCheckbox = false;
+                    CheckboxObject.isHro = false;
+                    strPickListId = strElementId;
+                    String fieldId = getFieldIdByObjectId(pojo,value);
+                    lookForTheField(pojo,fieldId);
+                    CheckboxObject.picklistOptionsCtr = 1;
                 }
             }else{
                 String text;
@@ -490,6 +597,11 @@ public class CheckBoxPage extends BasePage{
                     text = mia.getMiaTextFromElementId(strMiaId);
                     Reporter.log("Expected text: "+ value+" Actual text: "+text);
                     Assert.assertTrue(text.equalsIgnoreCase(value),"Expected text: "+ value+" Actual text: "+text);
+                } else if (CheckboxObject.isPicklist) {
+                    text = mia.getPicklistSelectedOptionsName(strPickListId,CheckboxObject.picklistOptionsCtr);
+                    Reporter.log("Expected text: "+ value+" Actual text: "+text);
+                    Assert.assertTrue(text.equalsIgnoreCase(value),"Expected text: "+ value+" Actual text: "+text);
+                    CheckboxObject.picklistOptionsCtr++;
                 }
             }
         }
@@ -684,22 +796,6 @@ public class CheckBoxPage extends BasePage{
         return false;
     }
 
-    public boolean getMiaRules(FormContentPojo pojo, String strFieldId){
-        for (Pojo.Field fields: pojo.data.project.getFields()
-        ) {
-            if(fields.getGuidId().equalsIgnoreCase(strFieldId)){
-                if(fields.getResponses()!=null){
-                    Reporter.log("<b>Field name: </b>"+getFieldName(pojo,strFieldId));
-                    CheckboxObject.mandatory = fields.getMandatory();
-                    CheckboxObject.checkboxName = fields.getName();
-                    Reporter.log("<b>Mandatory:</b> "+CheckboxObject.mandatory);
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
     public boolean getCheckboxRulesForMinimumAndMaximumInputs(FormContentPojo pojo, String strFieldId){
         for (Pojo.Field fields: pojo.data.project.getFields()
         ) {
@@ -725,7 +821,7 @@ public class CheckBoxPage extends BasePage{
 
     public static int countCheckboxItems(String strObjectElementId){
         String element = stringReplace(checkboxLocator,strObjectElementId);
-        int numberOfElements =  numberOfElementsVisible(element);
+        int numberOfElements = numberOfElementsVisible(element);
         for(int x = 1; x <= numberOfElements; x++){
             element = stringReplaceTwoValues(actionLocator,strObjectElementId,Integer.toString(x));
             WebElement elem = stringToWebElement(element);
@@ -820,13 +916,17 @@ public class CheckBoxPage extends BasePage{
     public static void AssertMandatoryFields(FormContentPojo pojo, String strFieldId) throws Exception {
         lookForTheField(pojo,strFieldId);
         String elementId = getObjectIdFromFieldId(pojo,strFieldId);
-        String element = stringReplace(mandatoryFieldMessageLocator,elementId);
+        String element;
+        if(mia.isFieldIdPickList(pojo,strFieldId)){
+             element = stringReplace(mandatoryFieldMessagePickListLocator,elementId);
+        }else{
+             element = stringReplace(mandatoryFieldMessageLocator,elementId);
+        }
         WebElement validationMessageLocator = stringToWebElement(element);
         scrollElementIntoView(driver,validationMessageLocator);
         String fieldName = getFieldName(pojo,strFieldId);
         Assert.assertEquals(validationMessageLocator.getText(),"This field is mandatory.", fieldName+"The expected validation message for "+fieldName+" was: This field is mandatory. but the actual message was: "+validationMessageLocator.getText());
         Reporter.log("<b>Checkbox Name: <b/>"+fieldName+" <b>is mandatory. <b/>",true);
-//        recordScreenshot();
         CheckboxObject.checkboxObjectDefaultValue();
     }
 
@@ -1198,7 +1298,7 @@ public class CheckBoxPage extends BasePage{
             for (Pojo.Object objects: pages.getObjects()
             ) {
                 if(objects.getTypename()!=null){
-                    if(objects.getTypename().equalsIgnoreCase("HandwritingRecognitionObject")||objects.getTypename().equalsIgnoreCase("ManualImageAreaText")){
+                    if(objects.getTypename().equalsIgnoreCase("HandwritingRecognitionObject")||objects.getTypename().equalsIgnoreCase("ManualImageAreaText")||objects.getTypename().equalsIgnoreCase("PickList")){
 
                         if(objects.getFieldId().equalsIgnoreCase(strFieldId)){
                             result =  objects.getTypename();
@@ -1371,7 +1471,10 @@ public class CheckBoxPage extends BasePage{
                 }
             }else if(mia.isFieldIdMia(pojo,CheckboxObject.strFieldId)){
                 mia.setTextToMia(pojo,CheckboxObject.strFieldId,"test");
-                mia.assertMiaField(pojo,CheckboxObject.strFieldId);
+                mia.assertMiaMandatoryField(pojo,CheckboxObject.strFieldId);
+            }else if(mia.isFieldIdPickList(pojo,CheckboxObject.strFieldId)){
+                mia.addWithinMinimumMaximumOptions(pojo,CheckboxObject.minimum,CheckboxObject.strFieldId);
+                mia.validateWithinMinimumMaximumRequired(pojo,CheckboxObject.strFieldId);
             }
         }
     }
@@ -1431,7 +1534,7 @@ public class CheckBoxPage extends BasePage{
                 }
             }else if(mia.isFieldIdMia(pojo,CheckboxObject.strFieldId)){
                 mia.setTextToMia(pojo,CheckboxObject.strFieldId,"test");
-                mia.assertMiaField(pojo,CheckboxObject.strFieldId);
+                mia.assertMiaMandatoryField(pojo,CheckboxObject.strFieldId);
             }
         }
     }
@@ -1490,6 +1593,17 @@ public class CheckBoxPage extends BasePage{
         }else if(mia.miaDataType().equalsIgnoreCase("DATE_TIME")){
             mia.dateTimeInputs(pojo,strFieldId);
         }
+    }
+
+    public void picklistInputs(FormContentPojo pojo,String strFieldId) throws ParseException {
+        mia.addWithinMinimumMaximumOptions(pojo,CheckboxObject.minimum,strFieldId);
+        int numberOfOptionsSelected = mia.getNumberOfOptionsSelected(pojo,strFieldId);
+        ArrayList<String> optionsName = new ArrayList<>();
+        String elementId = getObjectIdFromFieldId(pojo,strFieldId);
+        for(int x = 0; x<numberOfOptionsSelected;x++){
+            optionsName.add(mia.getPicklistSelectedOptionsName(elementId,x+1));
+        }
+        mia.recordInputsFromPicklist(elementId,optionsName);
     }
 
     public void validateListOfFieldsStackedHro(FormContentPojo pojo) throws Exception {
@@ -1651,6 +1765,25 @@ public class CheckBoxPage extends BasePage{
         CheckboxObject.fieldId = removeDuplicates(CheckboxObject.fieldId);
     }
 
+    public void getCheckboxFieldItems(FormContentPojo pojo){
+        for (var pages : pojo.data.project.getPages()
+             ) {
+            for (var object : pages.getObjects()
+                 ) {
+               if(object.getTypename()!=null){
+                   if (object.getTypename().equalsIgnoreCase("TickboxGroup")){
+                       for (var sub : object.getSubQuestionFields()
+                            ) {
+                           if(!skipSingleHiddenCheckbox(pojo,sub.getGuidId())){
+                               CheckboxObject.fieldId.add(sub.getGuidId());
+                           }
+                       }
+                   }
+               }
+            }
+        }
+    }
+
     public void getFieldIFromGraphqlResult(FormContentPojo pojo){
         for (Pojo.Page pages: pojo.data.project.getPages()
         ) {
@@ -1694,6 +1827,20 @@ public class CheckBoxPage extends BasePage{
             ) {
                 if(object.getGuidId()!=null){
                     if(object.getTypename().equalsIgnoreCase("ManualImageAreaText")){
+                        CheckboxObject.fieldId.add(object.getFieldId());
+                    }
+                }
+            }
+        }
+    }
+
+    public void getFieldItemsPicklist(FormContentPojo pojo){
+        for (Pojo.Page pages: pojo.data.project.getPages()
+        ) {
+            for (Pojo.Object object: pages.getObjects()
+            ) {
+                if(object.getGuidId()!=null){
+                    if(object.getTypename().equalsIgnoreCase("PickList")){
                         CheckboxObject.fieldId.add(object.getFieldId());
                     }
                 }

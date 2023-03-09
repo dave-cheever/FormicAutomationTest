@@ -64,6 +64,9 @@ public class CheckboxObject {
     public static boolean isCheckbox;
     public static boolean isHro;
     public static boolean isMia;
+    public static boolean isPicklist;
+    public static boolean isMultiResponse;
+    public static int picklistOptionsCtr=1;
     public static String singleFieldId;
     public static int testCaseId;
     public static byte[] encodeBytes;
@@ -72,6 +75,8 @@ public class CheckboxObject {
     public static String errorMessage;
 
     public static void checkboxObjectDefaultValue(){
+        isMultiResponse = false;
+        picklistOptionsCtr=1;
         errorMessage="";
         scenarioName ="";
         screenShot = null;

@@ -319,6 +319,14 @@ public class BasePage {
         return driver.findElements(By.xpath(element)).size();
     }
 
+    public void pressArrowDown(WebElement element){
+        element.sendKeys(Keys.DOWN);
+    }
+
+    public void pressEnter(WebElement element){
+        element.sendKeys(Keys.ENTER);
+    }
+
     public static String getObjectIdFromFieldId(FormContentPojo pojo, String strWhenFieldId){
         String elementId = null;
         outerLoop:
@@ -386,7 +394,6 @@ public class BasePage {
     // Check for element's visibility
     protected static boolean isElementVisible(WebDriver driver, String xpath) {
         Wait<WebDriver> wait = new FluentWait<>(driver);
-
         try {
             wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xpath)));
             wait.until(ExpectedConditions.elementToBeClickable(By.xpath(xpath)));
@@ -655,6 +662,23 @@ public class BasePage {
             ) {
                 if(object.getTypename()!=null){
                     if(object.getTypename().equalsIgnoreCase("ManualImageAreaText")){
+                        if(object.getGuidId()!=null&&object.getGuidId().equalsIgnoreCase(strElementId)){
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    public boolean isElementIdPicklist(FormContentPojo pojo, String strElementId){
+        for (Pojo.Page page: pojo.data.getProject().getPages()
+        ) {
+            for (Pojo.Object object : page.getObjects()
+            ) {
+                if(object.getTypename()!=null){
+                    if(object.getTypename().equalsIgnoreCase("PickList")){
                         if(object.getGuidId()!=null&&object.getGuidId().equalsIgnoreCase(strElementId)){
                             return true;
                         }

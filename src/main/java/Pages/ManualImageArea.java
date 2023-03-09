@@ -5,8 +5,11 @@ import Pojo.FormContentPojo;
 import org.openqa.selenium.*;
 import org.testng.Assert;
 import org.testng.Reporter;
+import org.tukaani.xz.check.Check;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Random;
 
@@ -14,10 +17,30 @@ public class ManualImageArea extends BasePage{
     String miaInputLocator = "//div[@data-object-id='$TEXT']/div/textarea";
     String miaValidationMessageLocator = "//div[@data-object-id='$TEXT']/div/div/div[2]";
     String miaValidationMessageMandatoryLocator = "//div[@data-object-id='$TEXT']/div/div/div";
+    String miaValidationMessageMinimumMaximumLocator = "(//div[@data-object-id='$TEXT']/div/div/div)[3]";
     String validationMessageUponSubmitSideBar = "//h1[contains(text(),'Completion Errors')]//following-sibling::ul/li/button/div/div[contains(text(),'$TEXT')]//following::div[1]";
+    String miaPicklistDropdownButton = "//div[@data-object-id='$TEXT']/div/div/div/button";
+    String miaPicklistDropdownInput = "//div[@data-object-id='$TEXT']/div/div/div/input";
+    String picklistNumberOfOptionsSelectedLocator = "//div[@data-object-id='$TEXT']/div/div/div/div";
+    String picklistOptionsSelectedByNumberLocator = "(//div[@data-object-id='$TEXT']/div/div/div/div)[$NUM]";
 
+
+    CompletionErrors comErrors = new CompletionErrors(driver);
     public ManualImageArea(WebDriver driver) {
         super(driver);
+    }
+
+    public int getNumberOfOptionsSelected(FormContentPojo pojo,String strFieldId){
+        String elementId = getObjectIdFromFieldId(pojo,strFieldId);
+        String elem = stringReplace(picklistNumberOfOptionsSelectedLocator,elementId);
+        return driver.findElements(By.xpath(elem)).size();
+    }
+
+    public String getPicklistSelectedOptionsName(String strElementId, int currentNumber){
+        String elem = stringReplaceTwoValues(picklistOptionsSelectedByNumberLocator,strElementId,Integer.toString(currentNumber));
+//        118da75283d74bac90090eb4f92c27cf
+        WebElement element = stringToWebElement(elem);
+        return element.getText();
     }
 
     public void setTextToMia(FormContentPojo pojo, String strFieldId, String strText){
@@ -56,6 +79,31 @@ public class ManualImageArea extends BasePage{
         setTextToMia(pojo,strFieldId,randomDateTime);
     }
 
+    public boolean isFieldIdPickList(FormContentPojo pojo, String strFieldId){
+        boolean result = false;
+        for (var pages : pojo.data.project.getPages()
+             ) {
+            for (var object : pages.getObjects()
+                 ) {
+                if(object.getFieldId()!=null&&object.getFieldId().equalsIgnoreCase(strFieldId)){
+                    if(object.getTypename().equalsIgnoreCase("picklist")){
+                        result = true;
+                    }else{
+                        result = false;
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    public void clickPicklistDropdownButton(FormContentPojo pojo,String strFieldId){
+        String elementId = getObjectIdFromFieldId(pojo,strFieldId);
+        String elem = stringReplace(miaPicklistDropdownButton,elementId);
+        WebElement element = stringToWebElement(elem);
+        click(element);
+    }
+
     public boolean isMiaTextAreaEmpty(FormContentPojo pojo, String strFieldId){
         boolean result=false;
         lookForTheField(pojo, strFieldId);
@@ -70,7 +118,7 @@ public class ManualImageArea extends BasePage{
         return result;
     }
 
-    public void assertMiaField(FormContentPojo pojo, String strFieldId){
+    public void assertMiaMandatoryField(FormContentPojo pojo, String strFieldId){
         JavascriptExecutor js = (JavascriptExecutor) driver;
         String elementId = getObjectIdFromFieldId(pojo,strFieldId);
         String fieldName = getFieldName(pojo,strFieldId);
@@ -117,11 +165,92 @@ public class ManualImageArea extends BasePage{
         CheckboxObject.checkboxInputs.add(strMiaInputs);
     }
 
+    public static void recordInputsFromPicklist(String strElementId, ArrayList<String> strPicklistInputs){
+        CheckboxObject.checkboxInputs.add(strElementId);
+        for (var options: strPicklistInputs
+             ) {
+            CheckboxObject.checkboxInputs.add(options);
+        }
+    }
+
     public String getMiaTextFromElementId(String strElementId){
         String elem = stringReplace(miaInputLocator,strElementId);
         WebElement element = stringToWebElement(elem);
         scrollElementIntoView(driver,element);
         return element.getAttribute("value");
+    }
+
+    public void addLessThanMinimumOptions(FormContentPojo pojo,int minimum, String strFieldId){
+        String elementId = getObjectIdFromFieldId(pojo,strFieldId);
+        String elem = stringReplace(miaPicklistDropdownInput,elementId);
+        WebElement element = stringToWebElement(elem);
+        for(int x = 0; x < minimum-1;x++){
+            clickPicklistDropdownButton(pojo,strFieldId);
+            pressArrowDown(element);
+            pressEnter(element);
+        }
+    }
+
+    public void addMoreThanMaximumOptions(FormContentPojo pojo,int maximum, String strFieldId){
+        String elementId = getObjectIdFromFieldId(pojo,strFieldId);
+        String elem = stringReplace(miaPicklistDropdownInput,elementId);
+        WebElement element = stringToWebElement(elem);
+        for(int x = 1; x <= maximum+1;x++){
+            clickPicklistDropdownButton(pojo,strFieldId);
+            pressArrowDown(element);
+            pressEnter(element);
+        }
+    }
+
+    public void addWithinMinimumMaximumOptions(FormContentPojo pojo,int minimum, String strFieldId){
+        String elementId = getObjectIdFromFieldId(pojo,strFieldId);
+        String elem = stringReplace(miaPicklistDropdownInput,elementId);
+        WebElement element = stringToWebElement(elem);
+        int num = 0;
+        if (minimum == 0) {
+            num = CheckboxObject.maximum;
+        }
+        else {
+            num = minimum;
+        }
+        for(int x = 1; x <= num;x++){
+            clickPicklistDropdownButton(pojo,strFieldId);
+            pressArrowDown(element);
+            pressEnter(element);
+        }
+    }
+
+    public void validateLessThanTheMinimumRequired(FormContentPojo pojo,int minimum,String strFieldId){
+        String strElementId = getObjectIdFromFieldId(pojo,strFieldId);
+        String elem = stringReplace(miaValidationMessageMinimumMaximumLocator,strElementId);
+        WebElement element = stringToWebElement(elem);
+        String validationMessage = element.getText();
+        String fieldName = getFieldName(pojo,strFieldId);
+        if(minimum==1){
+            Assert.assertEquals(validationMessage,"Required field.");
+            comErrors.validateCompletionErrorMessage(fieldName,"Required field.");
+        }else {
+            Assert.assertEquals(validationMessage,"This field requires a minimum of "+minimum+" responses.");
+            comErrors.validateCompletionErrorMessage(fieldName,"This field requires a minimum of "+minimum+" responses.");
+        }
+    }
+
+    public void validateMoreThanTheMaximumRequired(FormContentPojo pojo,int maximum,String strFieldId){
+        String strElementId = getObjectIdFromFieldId(pojo,strFieldId);
+        String elem = stringReplace(miaValidationMessageMinimumMaximumLocator,strElementId);
+        WebElement element = stringToWebElement(elem);
+        String validationMessage = element.getText();
+        Assert.assertEquals(validationMessage,"This field only allows a maximum of "+maximum+" responses.");
+        String fieldName = getFieldName(pojo,strFieldId);
+        comErrors.validateCompletionErrorMessage(fieldName,"This field only allows a maximum of "+maximum+" responses.");
+    }
+
+    public void validateWithinMinimumMaximumRequired(FormContentPojo pojo,String strFieldId){
+        String strElementId = getObjectIdFromFieldId(pojo,strFieldId);
+        String elem = stringReplace(miaValidationMessageMinimumMaximumLocator,strElementId);
+        String fieldName = getFieldName(pojo,strFieldId);
+        Assert.assertFalse(isElementVisible(driver,elem),"The expected for : "+fieldName + " There shouldn't be any validation message displayed below the object.");
+        comErrors.validateCompletionErrorMessageHidden(fieldName);
     }
 
     public  boolean isFieldIdMia(FormContentPojo pojo, String strFieldId){
@@ -145,21 +274,36 @@ public class ManualImageArea extends BasePage{
     public boolean getMiaRules(FormContentPojo pojo, String strFieldId){
         for (Pojo.Field fields: pojo.data.project.getFields()
         ) {
-            if(fields.getGuidId().equalsIgnoreCase(strFieldId)&&isFieldIdMia(pojo,strFieldId)){
+            if(fields.getGuidId().equalsIgnoreCase(strFieldId)&&(isFieldIdPickList(pojo,strFieldId)||isFieldIdMia(pojo,strFieldId))){
                 CheckboxObject.mandatory = fields.getMandatory();
                 CheckboxObject.checkboxName = fields.getName();
                 CheckboxObject.strFormatMask = fields.getFormatMask();
                 CheckboxObject.strFormatRegex = fields.getFormatRegex();
                 CheckboxObject.strDataTypeNew = fields.getDataTypeNew();
+                if(fields.getResponses()!=null){
+                    CheckboxObject.isMultiResponse = fields.getResponses().getIsMultiResponse();
+                    CheckboxObject.minimum = fields.getResponses().getMinimum();
+                    CheckboxObject.maximum = fields.getResponses().getMaximum();
+                }
                 Reporter.log("<b>Mandatory: </b>"+CheckboxObject.mandatory);
                 Reporter.log("<b>Field Name: </b>"+CheckboxObject.checkboxName);
                 Reporter.log("<b>Format Mask: </b>"+CheckboxObject.strFormatMask);
                 Reporter.log("<b>Format Regex: </b>"+ CheckboxObject.strFormatRegex);
                 Reporter.log("<b>Data Type New: </b>"+CheckboxObject.strDataTypeNew);
+                Reporter.log("<b>Minimum: </b>"+CheckboxObject.minimum);
+                Reporter.log("<b>Maximum: </b>"+CheckboxObject.maximum);
                 return true;
             }
         }
         return false;
+    }
+
+    public boolean isMinimumMaximumNotEmpty(){
+        boolean result = false;
+        if(CheckboxObject.minimum!=0&&CheckboxObject.maximum!=0){
+            result = true;
+        }
+        return result;
     }
 
     public void alphaInputs(FormContentPojo pojo, String strFieldId){

@@ -14,8 +14,8 @@ public class FormContentTest extends BaseUiTest {
     HomePage homePage;
     CheckBoxPage checkBoxPage;
 //    String projectName = "DMC Test Checkbox";
-    String projectName = "Medications with anti-libidinal properties";
-
+//    String projectName = "Medications with anti-libidinal properties";
+    String projectName = "DMC Test 1";
 
 
     @Test
@@ -25,13 +25,13 @@ public class FormContentTest extends BaseUiTest {
     }
 
     @Test
-    public void checkboxMandatory() throws Exception{
+    public void validateMandatoryFieldsWithoutInputs() throws Exception{
         homePage.selectProject(projectName);
         checkBoxPage.validateCheckboxMandatory();
     }
 
     @Test
-    public void checkboxValidationMinimumWhenSubmitButtonClicked() throws Exception{
+    public void validateMinimumRequiredWhenSubmitButtonClicked() throws Exception{
         homePage.selectProject(projectName);
         checkBoxPage.validateCheckboxMinimumValidationUponSubmit();
     }
@@ -80,6 +80,26 @@ public class FormContentTest extends BaseUiTest {
         homePage.selectProject(projectName);
         checkBoxPage.miaMandatoryValidation();
     }
+
+    @Test
+    public void miaPicklistLessThanMinimumInputs() throws Exception{
+        homePage.selectProject(projectName);
+        checkBoxPage.miaPicklistLessThanMinimumInputs();
+    }
+
+    @Test
+    public void miaPicklistMoreThanMaximumInputs() throws Exception{
+        homePage.selectProject(projectName);
+        checkBoxPage.miaPicklistMoreThanMaximumInputs();
+    }
+
+    @Test
+    public void miaPicklistWithinMinimumMaximumInputs() throws Exception{
+        homePage.selectProject(projectName);
+        checkBoxPage.miaPicklistWithinMinimumMaximumInputs();
+    }
+
+
 
     @Test
     public void validateSubmittedInputsCheckbox() throws Exception {

@@ -52,6 +52,14 @@ public class RulesGraphql {
         queryBuilder.append("                                        name");
         queryBuilder.append("                                        __typename");
         queryBuilder.append("                            }");
+
+        queryBuilder.append("...on PickList{");
+        queryBuilder.append("guidId,");
+        queryBuilder.append("fieldId,");
+        queryBuilder.append("name,");
+        queryBuilder.append("__typename,");
+        queryBuilder.append("}");
+
         queryBuilder.append("                  ...on HandwritingRecognitionObject{");
         queryBuilder.append("                     guidId");
         queryBuilder.append("                     fieldId");
