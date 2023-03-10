@@ -325,6 +325,7 @@ public class ManualImageArea extends BasePage{
         for (int x = 0; x<10;x++){
             num = num + (rnd.nextInt(max-min));
         }
+        num = removeZeroAtTheBeginning(num);
         Reporter.log("<b>input number: </b>"+ num);
         setTextToMia(pojo,strFieldId,num);
     }

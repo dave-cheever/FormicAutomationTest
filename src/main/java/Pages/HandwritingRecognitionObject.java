@@ -30,7 +30,7 @@ public class HandwritingRecognitionObject extends BasePage{
         System.out.println("Enter text for HRO: "+CheckboxObject.checkboxName+" Input: "+ strText);
         Reporter.log("<b>Enter text for HRO: <b/>"+CheckboxObject.checkboxName+"<b> Input: <b/>"+ strText);
         enterText(element,strText);
-        recordInputsFromHro(strFieldId,strText);
+        recordInputsFromHro(elementId,strText);
     }
 
     public static void recordInputsFromHro(String strElementId, String strHroInputs){

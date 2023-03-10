@@ -511,7 +511,7 @@ public class CheckboxMatrix extends BasePage{
         gen = adjustInputIfAlreadySelected(pojo,gen);
         for (String fieldId: strObjectFieldId
         ) {
-            recordInputsFromCheckbox(fieldId,gen);
+            recordInputsFromCheckbox(getObjectIdFromFieldId(pojo,fieldId),gen);
             System.out.println(CheckboxObject.checkboxInputs);
             clickElementHasValue(gen,fieldId);
         }

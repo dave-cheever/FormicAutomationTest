@@ -562,6 +562,14 @@ public class BasePage {
         return result;
     }
 
+    public String removeZeroAtTheBeginning(String num){
+        String strNum = Long.toString(Long.parseLong(num)); // convert integer to string
+        if (strNum.charAt(0) == '0') {
+            strNum = strNum.substring(1); // remove leading zero
+        }
+        return  strNum;
+    }
+
     public static WebElement stringToWebElement(String element){
         WebElement elem;
         try{

@@ -316,10 +316,10 @@ public class CheckBoxPage extends BasePage{
                     &&!isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
                 if(isFieldIdInRoutingRules(graphResponse,fieldId)){
-                    //meaning this fieldId maybe disabled, and we need to enable it.
                     System.out.println(name+ " Needs to check if it's disabled");
                     checkListOfConditions(graphResponse,fieldId);
                 }else {
+                    lookForTheField(graphResponse,fieldId);
                     System.out.println(CheckboxObject.checkboxName+ " Is enabled");
                     mia.assertMiaMandatoryField(graphResponse,fieldId);
                 }
@@ -343,12 +343,11 @@ public class CheckBoxPage extends BasePage{
             {
                 if(mia.isMinimumMaximumNotEmpty()){
                     if(isFieldIdInRoutingRules(graphResponse,fieldId)){
-                        //meaning this fieldId maybe disabled, and we need to enable it.
                         System.out.println(name+ " Needs to check if it's disabled");
                         checkListOfConditions(graphResponse,fieldId);
                     }else {
+                        lookForTheField(graphResponse,fieldId);
                         System.out.println(CheckboxObject.checkboxName+ " Is enabled");
-                        //f88e3f62c0ca45ceb00bc909fd7918ae
                         mia.addLessThanMinimumOptions(graphResponse,CheckboxObject.minimum,fieldId);
                         mia.validateLessThanTheMinimumRequired(graphResponse,CheckboxObject.minimum,fieldId);
                     }
@@ -377,6 +376,7 @@ public class CheckBoxPage extends BasePage{
                     System.out.println(name+ " Needs to check if it's disabled");
                     checkListOfConditions(graphResponse,fieldId);
                 }else {
+                    lookForTheField(graphResponse,fieldId);
                     System.out.println(CheckboxObject.checkboxName+ " Is enabled");
                     mia.addMoreThanMaximumOptions(graphResponse,CheckboxObject.maximum,fieldId);
                     mia.validateMoreThanTheMaximumRequired(graphResponse,CheckboxObject.maximum,fieldId);
@@ -406,6 +406,7 @@ public class CheckBoxPage extends BasePage{
                     checkListOfConditions(graphResponse,fieldId);
                 }else {
                     System.out.println(CheckboxObject.checkboxName+ " Is enabled");
+                    lookForTheField(graphResponse,fieldId);
                     mia.addWithinMinimumMaximumOptions(graphResponse,CheckboxObject.minimum,fieldId);
                     mia.validateWithinMinimumMaximumRequired(graphResponse,fieldId);
                 }
@@ -535,6 +536,7 @@ public class CheckBoxPage extends BasePage{
 
     public void validateInputsAreCorrect(FormContentPojo pojo){
         String strElementId = "";
+        boolean isCheckboxMatrix = false;
         String strCheckBoxId = null;
         String strHroId = null;
         String strMiaId = null;
@@ -547,11 +549,13 @@ public class CheckBoxPage extends BasePage{
                     CheckboxObject.isCheckbox = true;
                     CheckboxObject.isMia = false;
                     CheckboxObject.isHro = false;
-                    String fieldId = getFieldIdByObjectId(pojo,value);
+                    String fieldId = getFieldIdByObjectId(pojo,strElementId);
                     lookForTheField(pojo,fieldId);
-                    if(CheckboxMatrix.isFieldIdCheckBoxMatrix(pojo,value)){
-                        strCheckBoxId = value;
+                    if(CheckboxMatrix.isFieldIdCheckBoxMatrix(pojo,fieldId)){
+                        isCheckboxMatrix = true;
+                        strCheckBoxId = fieldId;
                     }else{
+                        isCheckboxMatrix = false;
                         strCheckBoxId = strElementId;
                     }
                 } else if (isElementIdHro(pojo,strElementId)) {
@@ -560,7 +564,7 @@ public class CheckBoxPage extends BasePage{
                     CheckboxObject.isMia = false;
                     CheckboxObject.isPicklist = false;
                     strHroId = strElementId;
-                    String fieldId = getFieldIdByObjectId(pojo,value);
+                    String fieldId = getFieldIdByObjectId(pojo,strHroId);
                     lookForTheField(pojo,fieldId);
                 } else if (isElementIdMia(pojo,strElementId)) {
                     CheckboxObject.isMia = true;
@@ -568,7 +572,7 @@ public class CheckBoxPage extends BasePage{
                     CheckboxObject.isHro = false;
                     CheckboxObject.isPicklist = false;
                     strMiaId = strElementId;
-                    String fieldId = getFieldIdByObjectId(pojo,value);
+                    String fieldId = getFieldIdByObjectId(pojo,strMiaId);
                     lookForTheField(pojo,fieldId);
                 }else if (isElementIdPicklist(pojo,strElementId)) {
                     CheckboxObject.isPicklist = true;
@@ -576,14 +580,14 @@ public class CheckBoxPage extends BasePage{
                     CheckboxObject.isCheckbox = false;
                     CheckboxObject.isHro = false;
                     strPickListId = strElementId;
-                    String fieldId = getFieldIdByObjectId(pojo,value);
+                    String fieldId = getFieldIdByObjectId(pojo,strPickListId);
                     lookForTheField(pojo,fieldId);
                     CheckboxObject.picklistOptionsCtr = 1;
                 }
             }else{
                 String text;
                 if(CheckboxObject.isCheckbox){
-                    String elem = CheckboxMatrix.isFieldIdCheckBoxMatrix(pojo,strCheckBoxId)? stringReplaceTwoValues(checkboxMatrixElementToBeClickedLocator,strCheckBoxId,value) : stringReplaceTwoValues(actionLocator,strCheckBoxId,value);
+                    String elem = isCheckboxMatrix? stringReplaceTwoValues(checkboxMatrixElementToBeClickedLocator,strCheckBoxId,value) : stringReplaceTwoValues(actionLocator,strCheckBoxId,value);
                     WebElement element = stringToWebElement(elem);
                     scrollElementIntoView(driver,element);
                     Reporter.log("Checkbox "+getFieldNameByElementId(pojo,strCheckBoxId)+" tickbox number: "+ value+" should be selected.");
@@ -1112,7 +1116,7 @@ public class CheckBoxPage extends BasePage{
     public static int clickWithinMinimumMaximumInput(FormContentPojo pojo, int minInput, int maxInput, String strObjectElementId, int elementCountInACheckbox){
         String[] gen = minMaximumGeneratedInputs(pojo,minInput,maxInput,elementCountInACheckbox);
         gen = adjustInputIfAlreadySelected(pojo,gen);
-        recordInputsFromCheckbox(getFieldIdByObjectId(pojo,strObjectElementId),gen);
+        recordInputsFromCheckbox(strObjectElementId,gen);
         System.out.println(CheckboxObject.checkboxInputs);
         clickElementHasValue(gen,strObjectElementId);
         return gen.length;
