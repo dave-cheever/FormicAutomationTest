@@ -15,7 +15,8 @@ public class FormContentTest extends BaseUiTest {
     CheckBoxPage checkBoxPage;
 //    String projectName = "DMC Test Checkbox";
 //    String projectName = "Medications with anti-libidinal properties";
-    String projectName = "DMC Test 1";
+//    String projectName = "DMC Test 1";
+    String projectName = "STEM Grant Application Form 2021 to 2022";
 
 
     @Test

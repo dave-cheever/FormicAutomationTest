@@ -10,7 +10,7 @@ import java.text.ParseException;
 import java.util.*;
 
 public class CheckBoxPage extends BasePage{
-    int projectId = 146;
+    int projectId = 2;
     String emailRegEx = "^[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.][a-zA-Z0-9]+$";
     static String validationMessageUponSubmitSideBar = "//h1[contains(text(),'Completion Errors')]//following-sibling::ul/li/button/div/div[contains(text(),'$TEXT')]//following::div[1]";
     static String mandatoryFieldMessageLocator = "//div[@data-object-id='$TEXT']/div/div/div";
