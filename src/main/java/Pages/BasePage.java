@@ -1,4 +1,5 @@
 package Pages;
+import Helpers.DataFormatting;
 import Objects.CheckboxObject;
 import Pojo.FormContentPojo;
 import org.apache.commons.lang3.StringUtils;
@@ -9,6 +10,7 @@ import org.testng.Assert;
 import org.testng.Reporter;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 
 public class BasePage {
@@ -562,6 +564,74 @@ public class BasePage {
         return result;
     }
 
+    public static String getDataType(){
+        if(CheckboxObject.strFormatRegex!=null){
+            String[]  str = CheckboxObject.strFormatRegex.split("]");
+            if(str[0].contains("^[a-zA-Z0-9")){
+                return "ALPHA_NUMERIC";
+            } else if (str[0].contains("^[0-9")) {
+                return "NUMERIC";
+            }
+            else if (str[0].contains("^[a-zA-Z")) {
+                return "ALPHA";
+            }else {
+                return DataFormatting.dataFormat(CheckboxObject.strFormatMask);
+            }
+        }else{
+            return CheckboxObject.strDataTypeNew;
+        }
+    }
+
+    public static String alphaNumericInputs(FormContentPojo pojo, String strFieldId, int hroMaximumInputAllowed){
+        Random rnd = new Random();
+        String chars = "123xyz";
+        String output ="";
+        for (int x = 0; x<hroMaximumInputAllowed;x++){
+            output = output + (rnd.nextInt(chars.length()));
+        }
+        Reporter.log("<b>input text: </b>"+ output);
+        return output;
+    }
+
+    public static String alphaInputs(FormContentPojo pojo, String strFieldId, int hroMaximumInputAllowed){
+        Random rnd = new Random();
+        String chars = "abcxyz";
+        String output ="";
+        if(hroMaximumInputAllowed==0){
+            hroMaximumInputAllowed=5;
+        }
+        for (int x = 0; x<hroMaximumInputAllowed;x++){
+            output = output + (chars.charAt(rnd.nextInt(chars.length())));
+        }
+        Reporter.log("<b>input text: </b>"+ output);
+        return output;
+    }
+
+    public String specialCharacterInputs(FormContentPojo pojo, String strFieldId){
+        Random rnd = new Random();
+        String chars []= {"!","@","#","$","%","^","&","*","(",")","_","+","=","<",">","/"};
+        String output ="";
+        for (int x = 0; x<10;x++){
+            output = output + chars[rnd.nextInt(16)];
+        }
+        Reporter.log("<b>input text: </b>"+ output);
+        return output;
+    }
+
+    public String getNumberOfUnderscore(){
+        return CheckboxObject.strFormatMask;
+    }
+
+    public static String numericInputs(FormContentPojo pojo, String strFieldId, int hroMaximumInputAllowed){
+        Random rnd = new Random();
+        String num ="";
+        for (int x = 0; x<hroMaximumInputAllowed;x++){
+            num = num + (rnd.nextInt(9)+1);
+        }
+        Reporter.log("<b>input number: </b>"+ num);
+        return num;
+    }
+
     public String removeZeroAtTheBeginning(String num){
         String strNum = Long.toString(Long.parseLong(num)); // convert integer to string
         if (strNum.charAt(0) == '0') {
@@ -583,6 +653,28 @@ public class BasePage {
             elem = driver.findElement(By.xpath(element));
         }
         return elem;
+    }
+
+    public String inputTelephoneNumber(FormContentPojo pojo, String strFieldId){
+        Random rnd = new Random();
+        int min = 1;
+        int max = 9;
+        String num ="0";
+        for (int x = 0; x<10;x++){
+            num = num + (rnd.nextInt(max-min));
+        }
+        Reporter.log("<b>input number: </b>"+ num);
+        return num;
+    }
+
+    public String emailAddressInputs(FormContentPojo pojo, String strFieldId){
+        Random rand = new Random();
+        String[] emailProviders = {"gmail.com", "yahoo.com", "hotmail.com", "aol.com", "outlook.com"};
+        String[] names = {"john", "jane", "doe", "smith", "miller"};
+        int randomNameIndex = rand.nextInt(names.length);
+        int randomProviderIndex = rand.nextInt(emailProviders.length);
+        String randomEmail = names[randomNameIndex] + "@" + emailProviders[randomProviderIndex];
+        return randomEmail;
     }
 
     public static String getFieldNameByElementId(FormContentPojo pojo, String strElementId){

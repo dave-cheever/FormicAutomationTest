@@ -1,5 +1,6 @@
 package Pages;
 
+import Helpers.DataFormatting;
 import Objects.CheckboxObject;
 import Pojo.FormContentPojo;
 import org.openqa.selenium.*;
@@ -11,9 +12,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.NoSuchElementException;
 import java.util.Random;
 
 public class ManualImageArea extends BasePage{
+    String miaSinglePickListInputLocator = "//div[@data-object-id='$TEXT']/div/div/div/input";
+    String miaMultiPickListInputLocator = "//div[@data-object-id='$TEXT']/div/div/div/div";
+
     String miaInputLocator = "//div[@data-object-id='$TEXT']/div/textarea";
     String miaValidationMessageLocator = "//div[@data-object-id='$TEXT']/div/div/div[2]";
     String miaValidationMessageMandatoryLocator = "//div[@data-object-id='$TEXT']/div/div/div";
@@ -63,7 +68,7 @@ public class ManualImageArea extends BasePage{
             else if (str[0].contains("^[a-zA-Z")) {
                 return "ALPHA";
             }else {
-                return null;
+               return DataFormatting.dataFormat(CheckboxObject.strFormatMask);
             }
         }else{
             return CheckboxObject.strDataTypeNew;
@@ -118,36 +123,49 @@ public class ManualImageArea extends BasePage{
         return result;
     }
 
+    public boolean isMiaPicklistEmpty(FormContentPojo pojo, String strFieldId){
+        boolean result=false;
+        lookForTheField(pojo, strFieldId);
+        String elementId = getObjectIdFromFieldId(pojo,strFieldId);
+        String element;
+        WebElement elem;
+        if(CheckboxObject.isMultiResponse){
+             element = stringReplace(miaMultiPickListInputLocator,elementId);
+             elem = stringToWebElement(element);
+             scrollElementIntoView(driver,elem);
+             if(driver.findElements(By.xpath(element)).size()!=0){
+                 result = true;
+             }
+        }else{
+             element = stringReplace(miaSinglePickListInputLocator,elementId);
+             elem = stringToWebElement(element);
+             scrollElementIntoView(driver,elem);
+            String text = elem.getText();
+            if(text.isEmpty()){
+                result = true;
+            }
+        }
+        return result;
+    }
+
     public void assertMiaMandatoryField(FormContentPojo pojo, String strFieldId){
         JavascriptExecutor js = (JavascriptExecutor) driver;
         String elementId = getObjectIdFromFieldId(pojo,strFieldId);
         String fieldName = getFieldName(pojo,strFieldId);
         lookForTheField(pojo,strFieldId);
         if(CheckboxObject.mandatory){
-            if(isMiaTextAreaEmpty(pojo,strFieldId)){
-                //Side menu validation
-                WebElement ValidationMessageSideMenu = stringReplaceAndConvertToWebElement(validationMessageUponSubmitSideBar, fieldName);
-                scrollElementIntoView(driver,ValidationMessageSideMenu);
-                js.executeScript("window.scrollBy(0,350)", "");
-                Reporter.log("<b>Validation message should be: </b> Required field." );
-                Assert.assertEquals(ValidationMessageSideMenu.getText(),"Required field.","The expected value is : Required field. "+ValidationMessageSideMenu.getText());
-                //Field validation
-                WebElement validationMessageUnderCheckbox = stringReplaceAndConvertToWebElement(miaValidationMessageLocator,elementId);
-                scrollElementIntoView(driver,validationMessageUnderCheckbox);
-                js.executeScript("window.scrollBy(0,350)", "");
-                Assert.assertEquals(validationMessageUnderCheckbox.getText(),"Required field.","The expected value is : Required field. "+validationMessageUnderCheckbox.getText());
+            if(isFieldIdPickList(pojo,strFieldId)){
+                if(isMiaPicklistEmpty(pojo,strFieldId)){
+                    assertMiaPickListRequiredField(pojo,strFieldId);
+                }else{
+                    assertMiaPickListThisFieldIsMandatory(pojo,strFieldId);
+                }
             }else{
-//                //Side menu validation
-                WebElement ValidationMessageSideMenu = stringReplaceAndConvertToWebElement(validationMessageUponSubmitSideBar, fieldName);
-                scrollElementIntoView(driver,ValidationMessageSideMenu);
-                js.executeScript("window.scrollBy(0,350)", "");
-                Assert.assertEquals(ValidationMessageSideMenu.getText(),"This field is mandatory.","The expected value is : Required field. "+ValidationMessageSideMenu.getText());
-                //Field validation
-                Reporter.log("<b>Validation message should be: </b> This field is mandatory." );
-                String element = stringReplace(miaValidationMessageMandatoryLocator,elementId);
-                WebElement validationMessageLocator = stringToWebElement(element);
-                scrollElementIntoView(driver,validationMessageLocator);
-                Assert.assertEquals(validationMessageLocator.getText(),"This field is mandatory.", fieldName+"The expected validation message for "+fieldName+" was: This field is mandatory. but the actual message was: "+validationMessageLocator.getText());
+                if(isMiaTextAreaEmpty(pojo,strFieldId)){
+                    assertMiaTextAreaRequiredField(pojo,strFieldId);
+                }else{
+                    assertMiaTextAreaThisFieldIsMandatory(pojo,strFieldId);
+                }
             }
         }else {
             String elementForValidation = stringReplace(miaValidationMessageLocator,elementId);
@@ -160,9 +178,85 @@ public class ManualImageArea extends BasePage{
         CheckboxObject.checkboxObjectDefaultValue();
     }
 
+    public void assertMiaTextAreaThisFieldIsMandatory(FormContentPojo pojo, String strFieldId){
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        String elementId = getObjectIdFromFieldId(pojo,strFieldId);
+        lookForTheField(pojo,strFieldId);
+
+        WebElement validationMessageUnderCheckbox = stringReplaceAndConvertToWebElement(miaValidationMessageMandatoryLocator,elementId);
+        scrollElementIntoView(driver,validationMessageUnderCheckbox);
+        js.executeScript("window.scrollBy(0,350)", "");
+        Assert.assertEquals(validationMessageUnderCheckbox.getText(),"This field is mandatory.","The expected value is : This field is mandatory.. "+validationMessageUnderCheckbox.getText());
+    }
+
+    public void assertMiaTextAreaRequiredField(FormContentPojo pojo, String strFieldId){
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        String elementId = getObjectIdFromFieldId(pojo,strFieldId);
+        lookForTheField(pojo,strFieldId);
+
+        WebElement validationMessageUnderCheckbox = stringReplaceAndConvertToWebElement(miaValidationMessageLocator,elementId);
+        scrollElementIntoView(driver,validationMessageUnderCheckbox);
+        js.executeScript("window.scrollBy(0,350)", "");
+        Assert.assertEquals(validationMessageUnderCheckbox.getText(),"Required field.","The expected value is : Require field. "+validationMessageUnderCheckbox.getText());
+
+    }
+
+    public void assertMiaPickListThisFieldIsMandatory(FormContentPojo pojo, String strFieldId){
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        String elementId = getObjectIdFromFieldId(pojo,strFieldId);
+        lookForTheField(pojo,strFieldId);
+        WebElement validationMessageUnderCheckbox = stringReplaceAndConvertToWebElement(miaValidationMessageMandatoryLocator,elementId);
+        scrollElementIntoView(driver,validationMessageUnderCheckbox);
+        js.executeScript("window.scrollBy(0,350)", "");
+        Assert.assertEquals(validationMessageUnderCheckbox.getText(),"This field is mandatory.","The expected value is : This field is mandatory.. "+validationMessageUnderCheckbox.getText());
+    }
+
+    public void assertMiaPickListRequiredField(FormContentPojo pojo, String strFieldId){
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        String elementId = getObjectIdFromFieldId(pojo,strFieldId);
+        lookForTheField(pojo,strFieldId);
+        WebElement validationMessageUnderCheckbox = stringReplaceAndConvertToWebElement(miaValidationMessageLocator,elementId);
+        scrollElementIntoView(driver,validationMessageUnderCheckbox);
+        js.executeScript("window.scrollBy(0,350)", "");
+        Assert.assertEquals(validationMessageUnderCheckbox.getText(),"Required field.","The expected value is : Require field. "+validationMessageUnderCheckbox.getText());
+    }
+
     public static void recordInputsFromMia(String strElementId, String strMiaInputs){
         CheckboxObject.checkboxInputs.add(strElementId);
         CheckboxObject.checkboxInputs.add(strMiaInputs);
+    }
+
+    public void assertMiaValidationMessageNumeric(FormContentPojo pojo, String strFieldId){
+        String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
+        String elem = stringReplace(miaValidationMessageLocator,elementId);
+        WebElement element = stringToWebElement(elem);
+        scrollElementIntoView(driver,element);
+        Reporter.log("<b>Confirm correct validation message should be:</b> This field must be a number.");
+        Assert.assertEquals(element.getText(),"This field must be a number.","The HRO "+ CheckboxObject.checkboxName+" has a validation message of "+element.getText()+" instead of - This field must be a number.");
+    }
+
+    public void assertMiaValidationMessageAlphaNumeric(FormContentPojo pojo, String strFieldId){
+        String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
+        String elem = stringReplace(miaValidationMessageLocator,elementId);
+        Reporter.log("<b>Confirm correct validation message should be:</b> This field must match the following format: (?"+getNumberOfUnderscore()+").");
+        WebElement element;
+        try {
+            Assert.assertTrue(isElementPresentBy(By.xpath(elem)),"Validation message not visible.");
+        } catch (NoSuchElementException e) {
+            throw new Error("Element not found: " + e.getMessage());
+        }
+        element = stringToWebElement(elem);
+        Assert.assertEquals(element.getText(),"This field must match the following format: (?"+getNumberOfUnderscore()+").",
+                "The HRO "+ CheckboxObject.checkboxName+" has a validation message of "+element.getText()+" instead of - This field must match the following format: (?"+getNumberOfUnderscore()+").");
+    }
+
+    public void assertMiaValidationMessageAlphabet(FormContentPojo pojo, String strFieldId){
+        String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
+        String elem = stringReplace(miaValidationMessageLocator,elementId);
+        WebElement element = stringToWebElement(elem);
+        Reporter.log("<b>Confirm correct validation message should be:</b> This field must match the following format: ("+getNumberOfUnderscore()+").");
+        Assert.assertEquals(element.getText(),"This field must match the following format: ("+getNumberOfUnderscore()+").",
+                "The HRO "+ CheckboxObject.checkboxName+" has a validation message of "+element.getText()+" instead of - This field must match the following format: (A"+getNumberOfUnderscore()+").");
     }
 
     public static void recordInputsFromPicklist(String strElementId, ArrayList<String> strPicklistInputs){
@@ -322,7 +416,11 @@ public class ManualImageArea extends BasePage{
         int min = 1;
         int max = 9;
         String num ="";
-        for (int x = 0; x<10;x++){
+        int maxNumber = 3;
+        if(CheckboxObject.strFormatMask!=null){
+            maxNumber = CheckboxObject.strFormatMask.length();
+        }
+        for (int x = 0; x<maxNumber;x++){
             num = num + (rnd.nextInt(max-min));
         }
         num = removeZeroAtTheBeginning(num);

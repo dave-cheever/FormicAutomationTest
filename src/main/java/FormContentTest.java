@@ -70,6 +70,13 @@ public class FormContentTest extends BaseUiTest {
     }
 
     @Test
+    public void miaFormatValidation() throws Exception{
+        //hro validation message
+        homePage.selectProject(projectName);
+        checkBoxPage.miaFormatValidation();
+    }
+
+    @Test
     public void hroMaximumInputsValidation() throws Exception{
         //hro validation message
         homePage.selectProject(projectName);

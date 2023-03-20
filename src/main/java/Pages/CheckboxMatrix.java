@@ -32,6 +32,8 @@ public class CheckboxMatrix extends BasePage{
     static String checkBoxMatrixSeeFieldErrorsButton = "//div[@data-object-id=\"$TEXT\"]/div/div/div";
     static String closeButton = "(//button[@aria-label=\"Close dialog\"])[2]";
     static String fieldSetLocator = "//input[@data-field-id=\"$TEXT\"][1]";
+    static String checkboxMatrixCheckboxLocator = "//input[@data-field-id=\"$TEXT\"]";
+
 
     CheckBoxPage checkBoxPage;
     static CheckboxObject checkboxObject;
@@ -76,6 +78,36 @@ public class CheckboxMatrix extends BasePage{
                 click(element);
             }
         }
+    }
+
+    public static int countCheckboxItems(String strObjectElementId){
+        String element = stringReplace(checkboxMatrixCheckboxLocator,strObjectElementId);
+        int numberOfElements = numberOfElementsVisible(element);
+        for(int x = 1; x <= numberOfElements; x++){
+            element = stringReplaceTwoValues(checkboxMatrixElementToBeClickedLocator,strObjectElementId,Integer.toString(x));
+            WebElement elem = stringToWebElement(element);
+            if(elem.isSelected()){
+                CheckboxObject.hasValueList.add(Integer.toString(x));
+            }
+        }
+        return numberOfElements;
+    }
+
+    public static boolean isCheckboxMatrixFieldNotChecked(FormContentPojo pojo, String strFieldId){
+        int numberOfCheckbox = countCheckboxItems(strFieldId);
+        String elem = "";
+        WebElement element;
+        boolean result = true;
+        outerLoop:
+        for(int x = 1; x<=numberOfCheckbox;x++){
+            elem = stringReplaceTwoValues(checkboxMatrixElementToBeClickedLocator,strFieldId,Integer.toString(x));
+            element = stringToWebElement(elem);
+            if(element.isSelected()){
+                result = false;
+                break outerLoop;
+            }
+        }
+        return result;
     }
 
     public static void assertCheckboxMinMaxMandatory(FormContentPojo pojo, String strFieldId) throws Exception {
@@ -214,7 +246,7 @@ public class CheckboxMatrix extends BasePage{
             clickBeyondMaximumInput(pojo,CheckboxObject.maximum,fieldId,numberOfItems);
         }
         if(CheckboxObject.mandatory){
-            AssertMandatoryFields(pojo,strFieldId);
+            assertThisFieldIsMandatory(pojo,strFieldId,getFieldName(pojo,strFieldId));
         }else{
             assertWithinAcceptedInputs(CheckboxObject.checkboxName,elementId);
         }
@@ -339,7 +371,7 @@ public class CheckboxMatrix extends BasePage{
         System.out.println("number of items is: "+numberOfItems);
         clickWithinMaximumInput(pojo,checkboxObject.maximum,numberOfOptions,numberOfItems);
         if(checkboxObject.mandatory){
-            AssertMandatoryFields(pojo,strFieldId);
+            assertThisFieldIsMandatory(pojo,strFieldId,getFieldName(pojo,strFieldId));
         }else {
             assertWithinAcceptedInputs(checkboxObject.checkboxName,elementId);
         }
@@ -405,15 +437,20 @@ public class CheckboxMatrix extends BasePage{
     }
 
     public static void assertRequiredField(FormContentPojo pojo, String strObjectElementId, String name){
-        WebElement ValidationMessageSideMenu = stringReplaceAndConvertToWebElement(validationMessageUponSubmitSideBar, name);
-        scrollElementIntoView(driver,ValidationMessageSideMenu);
-        Assert.assertEquals(ValidationMessageSideMenu.getText(),"Required field.","The expected value is : Required field. "+ValidationMessageSideMenu.getText());
-
+        comp.validateCompletionErrorMessage(name,"Required field.");
         clickSeeFieldErrorsByObjectId(strObjectElementId);
         String optionName = getFieldName(pojo,getFieldIdByObjectId(pojo,strObjectElementId));
         String validationMessage = getValidationMessageByOptionName(optionName);
         Assert.assertEquals(validationMessage,"Required field.","The expected value is : Required field. "+validationMessage);
         clickCloseButton();
+        CheckboxObject.checkboxObjectDefaultValue();
+    }
+
+    public static void assertThisFieldIsMandatory(FormContentPojo pojo, String strFieldId, String name){
+        String elementId = getObjectIdFromFieldId(pojo,strFieldId);
+        String elem = stringReplace(mandatoryFieldMessageLocator,elementId);
+        WebElement element = stringToWebElement(elem);
+        Assert.assertEquals(element.getText(),"This field is mandatory.","The expected value is : This field is mandatory. "+element.getText());
         CheckboxObject.checkboxObjectDefaultValue();
     }
 
@@ -469,13 +506,10 @@ public class CheckboxMatrix extends BasePage{
     public static void AssertMandatoryFields(FormContentPojo pojo, String strFieldId) throws Exception {
         lookForTheField(pojo,strFieldId);
         String elementId = getObjectIdFromFieldId(pojo,strFieldId);
-        String element = stringReplace(mandatoryFieldMessageLocator,elementId);
-        WebElement validationMessageLocator = stringToWebElement(element);
-        scrollElementIntoView(driver,validationMessageLocator);
         String fieldName = getFieldName(pojo,strFieldId);
-        Assert.assertEquals(validationMessageLocator.getText(),"This field is mandatory.", fieldName+"The expected validation message for "+fieldName+" was: This field is mandatory. but the actual message was: "+validationMessageLocator.getText());
-        Reporter.log("<b>Checkbox Name: <b/>"+fieldName+" <b>is mandatory. <b/>",true);
-        CheckboxObject.checkboxObjectDefaultValue();
+        if(CheckboxObject.minimum==1||CheckboxObject.minimum==0){
+            assertLessThanMinimumInput(pojo,strFieldId);
+        }
     }
 
     public static int clickWithinMaximumInput(FormContentPojo pojo, int maxInput, ArrayList<String> strFieldId, int elementCountInACheckbox){

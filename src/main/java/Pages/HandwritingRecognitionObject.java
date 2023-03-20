@@ -1,5 +1,6 @@
 package Pages;
 
+import Helpers.DataFormatting;
 import Objects.CheckboxObject;
 import Pojo.FormContentPojo;
 import org.openqa.selenium.*;
@@ -20,8 +21,9 @@ public class HandwritingRecognitionObject extends BasePage{
 
 
     static String hroInputLocator = "//div[@data-object-id='$TEXT']/div/input";
-    String hroValidationMessageLocator = "//div[@data-object-id='$TEXT']/div/div/div[2]";
-    String hroValidationMessageMandatoryLocator = "//div[@data-object-id='$TEXT']/div/div/div[1]";
+    static String hroValidationMessageLocator = "//div[@data-object-id='$TEXT']/div/div/div[2]";
+    static String hroValidationMessageMandatoryLocator = "//div[@data-object-id='$TEXT']/div/div/div[1]";
+    static CompletionErrors comp = new CompletionErrors(driver);
 
     public void setTextToHro(FormContentPojo pojo, String strFieldId, String strText){
         String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
@@ -52,7 +54,6 @@ public class HandwritingRecognitionObject extends BasePage{
         scrollElementIntoView(driver,element);
         Reporter.log("<b>Confirm correct validation message should be:</b> This field must be a number.");
         Assert.assertEquals(element.getText(),"This field must be a number.","The HRO "+ CheckboxObject.checkboxName+" has a validation message of "+element.getText()+" instead of - This field must be a number.");
-//        recordScreenshot();
     }
 
     public void assertHro(FormContentPojo pojo, String strFieldId){
@@ -68,14 +69,59 @@ public class HandwritingRecognitionObject extends BasePage{
         }else {
             Assert.assertTrue(driver.findElements(By.xpath(elem)).size()==0,"No validation message should be displayed for "+ fieldName +".");
         }
-//        recordScreenshot();
+    }
 
+    public static void assertHroMandatoryField(FormContentPojo pojo, String strFieldId){
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        String elementId = getObjectIdFromFieldId(pojo,strFieldId);
+        String fieldName = getFieldName(pojo,strFieldId);
+        lookForTheField(pojo,strFieldId);
+        if(CheckboxObject.mandatory){
+            if(isHroEmpty(pojo,strFieldId)){
+                //Side menu validation
+                comp.validateCompletionErrorMessage(fieldName,"Required Field.");
+                //Field validation
+                WebElement validationMessageUnderCheckbox = stringReplaceAndConvertToWebElement(hroValidationMessageLocator,elementId);
+                scrollElementIntoView(driver,validationMessageUnderCheckbox);
+                js.executeScript("window.scrollBy(0,350)", "");
+                Assert.assertEquals(validationMessageUnderCheckbox.getText(),"Required field.","The expected value is : Required field. "+validationMessageUnderCheckbox.getText());
+            }else{
+//                //Side menu validation
+                WebElement ValidationMessageSideMenu = stringReplaceAndConvertToWebElement(hroValidationMessageMandatoryLocator, fieldName);
+                scrollElementIntoView(driver,ValidationMessageSideMenu);
+                js.executeScript("window.scrollBy(0,350)", "");
+                Assert.assertEquals(ValidationMessageSideMenu.getText(),"This field is mandatory.","The expected value is : Required field. "+ValidationMessageSideMenu.getText());
+                //Field validation
+                Reporter.log("<b>Validation message should be: </b> This field is mandatory." );
+                String element = stringReplace(hroValidationMessageMandatoryLocator,elementId);
+                WebElement validationMessageLocator = stringToWebElement(element);
+                scrollElementIntoView(driver,validationMessageLocator);
+                Assert.assertEquals(validationMessageLocator.getText(),"This field is mandatory.", fieldName+"The expected validation message for "+fieldName+" was: This field is mandatory. but the actual message was: "+validationMessageLocator.getText());
+            }
+        }else {
+            String elementForValidation = stringReplace(hroValidationMessageLocator,elementId);
+            Reporter.log("<b>No validation message should be displayed.</b>" );
+            Assert.assertTrue(driver.findElements(By.xpath(elementForValidation)).size()==0,"No validation message should be displayed for "+ fieldName +".");
+        }
+        CheckboxObject.checkboxObjectDefaultValue();
+    }
+
+    public static boolean isHroEmpty(FormContentPojo pojo, String strFieldId){
+        boolean result = false;
+        String elementId = getObjectIdFromFieldId(pojo,strFieldId);
+        String elem = stringReplace(hroInputLocator,elementId);
+        WebElement element = stringToWebElement(elem);
+        scrollElementIntoView(driver,element);
+        if(element.getText().equalsIgnoreCase("")){
+            result = true;
+        }
+        return result;
     }
 
     public void assertHroValidationMessageAlphaNumeric(FormContentPojo pojo, String strFieldId){
         String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(hroValidationMessageLocator,elementId);
-        Reporter.log("<b>Confirm correct validation message should be:</b> This field must match the following format: (?"+getNumberOfUnderscore()+").");
+        Reporter.log("<b>Confirm correct validation message should be:</b> This field must match the following format: ("+getNumberOfUnderscore()+").");
         WebElement element;
         try {
              Assert.assertTrue(isElementPresentBy(By.xpath(elem)),"Validation message not visible.");
@@ -83,7 +129,7 @@ public class HandwritingRecognitionObject extends BasePage{
             throw new Error("Element not found: " + e.getMessage());
         }
         element = stringToWebElement(elem);
-        Assert.assertEquals(element.getText(),"This field must match the following format: (?"+getNumberOfUnderscore()+").",
+        Assert.assertEquals(element.getText(),"This field must match the following format: ("+getNumberOfUnderscore()+").",
                 "The HRO "+ CheckboxObject.checkboxName+" has a validation message of "+element.getText()+" instead of - This field must match the following format: (?"+getNumberOfUnderscore()+").");
     }
 
@@ -91,19 +137,12 @@ public class HandwritingRecognitionObject extends BasePage{
         String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(hroValidationMessageLocator,elementId);
         WebElement element = stringToWebElement(elem);
-        Reporter.log("<b>Confirm correct validation message should be:</b> This field must match the following format: (A"+getNumberOfUnderscore()+").");
-        Assert.assertEquals(element.getText(),"This field must match the following format: (A"+getNumberOfUnderscore()+").",
+        Reporter.log("<b>Confirm correct validation message should be:</b> This field must match the following format: ("+getNumberOfUnderscore()+").");
+        Assert.assertEquals(element.getText(),"This field must match the following format: ("+getNumberOfUnderscore()+").",
                 "The HRO "+ CheckboxObject.checkboxName+" has a validation message of "+element.getText()+" instead of - This field must match the following format: (A"+getNumberOfUnderscore()+").");
     }
 
-    public String getNumberOfUnderscore(){
-        int num = identifyMaximumInputsByFieldId();
-        String underScore="";
-        for(int x =1; x<num;x++){
-            underScore = underScore+"_";
-        }
-        return underScore;
-    }
+
 
     public boolean getHroRules(FormContentPojo pojo, String strFieldId){
         for (Pojo.Field fields: pojo.data.project.getFields()
@@ -125,27 +164,7 @@ public class HandwritingRecognitionObject extends BasePage{
         return false;
     }
 
-
-
-    public  String hroDataType(){
-        if(CheckboxObject.strFormatRegex!=null){
-            String[]  str = CheckboxObject.strFormatRegex.split("]");
-            if(str[0].contains("^[a-zA-Z0-9")){
-                return "ALPHA_NUMERIC";
-            } else if (str[0].contains("^[0-9")) {
-                return "NUMERIC";
-            }
-            else if (str[0].contains("^[a-zA-Z")) {
-                return "ALPHA";
-            }else {
-                return null;
-            }
-        }else{
-            return CheckboxObject.strDataTypeNew;
-        }
-    }
-
-    public  boolean isFieldIdHro(FormContentPojo pojo, String strFieldId){
+    public static boolean isFieldIdHro(FormContentPojo pojo, String strFieldId){
         boolean result = false;
         outerLoop:
         for (Pojo.Page page: pojo.data.project.getPages()
@@ -197,66 +216,12 @@ public class HandwritingRecognitionObject extends BasePage{
         return 0;
     }
 
-    public void numericInputs(FormContentPojo pojo, String strFieldId, int hroMaximumInputAllowed){
-        Random rnd = new Random();
-        String num ="";
-        for (int x = 0; x<hroMaximumInputAllowed;x++){
-            num = num + (rnd.nextInt(9)+1);
-        }
-        Reporter.log("<b>input number: </b>"+ num);
-        setTextToHro(pojo,strFieldId,num);
-    }
-
-    public void alphaNumericInputs(FormContentPojo pojo, String strFieldId, int hroMaximumInputAllowed){
-        Random rnd = new Random();
-        String chars = "123xyz";
-        String output ="";
-        for (int x = 0; x<hroMaximumInputAllowed;x++){
-            output = output + (rnd.nextInt(chars.length()));
-        }
-        Reporter.log("<b>input text: </b>"+ output);
-        setTextToHro(pojo,strFieldId,output);
-    }
-
-    public void emailAddressInputs(FormContentPojo pojo, String strFieldId){
-        Random rand = new Random();
-        String[] emailProviders = {"gmail.com", "yahoo.com", "hotmail.com", "aol.com", "outlook.com"};
-        String[] names = {"john", "jane", "doe", "smith", "miller"};
-        int randomNameIndex = rand.nextInt(names.length);
-        int randomProviderIndex = rand.nextInt(emailProviders.length);
-        String randomEmail = names[randomNameIndex] + "@" + emailProviders[randomProviderIndex];
-        setTextToHro(pojo,strFieldId,randomEmail);
-    }
-
-    public void specialCharacterInputs(FormContentPojo pojo, String strFieldId){
-        Random rnd = new Random();
-        String chars []= {"!","@","#","$","%","^","&","*","(",")","_","+","=","<",">","/"};
-        String output ="";
-        for (int x = 0; x<10;x++){
-            output = output + chars[rnd.nextInt(16)];
-        }
-        Reporter.log("<b>input text: </b>"+ output);
-        setTextToHro(pojo,strFieldId,output);
-
-    }
-
-    public void alphaInputs(FormContentPojo pojo, String strFieldId, int hroMaximumInputAllowed){
-        Random rnd = new Random();
-        String chars = "abcxyz";
-        String output ="";
-        for (int x = 0; x<hroMaximumInputAllowed;x++){
-            output = output + (chars.charAt(rnd.nextInt(chars.length())));
-        }
-        Reporter.log("<b>input text: </b>"+ output);
-        setTextToHro(pojo,strFieldId,output);
-    }
-
-    public void dateTimeInputs(FormContentPojo pojo, String strFieldId) throws ParseException {
+    public String dateTimeInputs(FormContentPojo pojo, String strFieldId) throws ParseException {
         SimpleDateFormat dateFormat;
         dateFormat = new SimpleDateFormat(CheckboxObject.strFormatMask.replace("-","/").replace("mm","MM").replace("m","M").replace("DD","dd").replace("hh","HH"));
         Date randomDate = new Date((long)(Math.random() * (System.currentTimeMillis() + 1)));
         String randomDateTime = dateFormat.format(randomDate);
-        setTextToHro(pojo,strFieldId,randomDateTime);
+        return randomDateTime;
     }
 
     public void alphaInputsBeyondTheMaximumAllowed(FormContentPojo pojo, String strFieldId, int hroMaximumInputAllowed){
