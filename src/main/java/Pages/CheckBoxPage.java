@@ -1,4 +1,6 @@
 package Pages;
+import Helpers.FormatMask;
+import Helpers.FormatRegex;
 import Objects.CheckboxObject;
 import Pojo.FormContentPojo;
 import Pojo.RulesGraphql;
@@ -6,11 +8,13 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;
 import org.testng.Assert;
 import org.testng.Reporter;
+import org.tukaani.xz.check.Check;
+
 import java.text.ParseException;
 import java.util.*;
 
 public class CheckBoxPage extends BasePage{
-    int projectId = 2;
+    int projectId = 148;
     String emailRegEx = "^[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.][a-zA-Z0-9]+$";
     static String validationMessageUponSubmitSideBar = "//h1[contains(text(),'Completion Errors')]//following-sibling::ul/li/button/div/div[contains(text(),'$TEXT')]//following::div[1]";
     static String mandatoryFieldMessageLocator = "//div[@data-object-id='$TEXT']/div/div/div";
@@ -240,10 +244,10 @@ public class CheckBoxPage extends BasePage{
                     System.out.println(name+ " Needs to check if it's disabled");
                     checkListOfConditions(graphResponse,fieldId);
                 }else if(!isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId)){
+                    System.out.println(CheckboxObject.checkboxName+ " Is enabled");
                     if(CheckboxMatrix.isFieldIdCheckBoxMatrix(graphResponse,fieldId)){
                         CheckboxMatrix.assertLessThanMinimumInput(graphResponse, fieldId);
                     }else {
-                        System.out.println(CheckboxObject.checkboxName+ " Is enabled");
                         assertLessThanMinimumInput(graphResponse,fieldId);
                     }
                 }
@@ -274,21 +278,36 @@ public class CheckBoxPage extends BasePage{
                     String email = emailAddressInputs(graphResponse,CheckboxObject.strFieldId);
                     hro.setTextToHro(graphResponse,fieldId,email);
                 }else {
-                    String inputs="";
-                    if (getDataType().equalsIgnoreCase("NUMERIC")) {
-                        inputs = alphaInputs(graphResponse, CheckboxObject.strFieldId, hro.identifyMaximumInputsByFieldId());
-                        hro.setTextToHro(graphResponse,fieldId,inputs);
-                        hro.assertHroValidationMessageNumeric(graphResponse, fieldId);
-                    } else if (getDataType().equalsIgnoreCase("ALPHA_NUMERIC")) {
-                        inputs = specialCharacterInputs(graphResponse, CheckboxObject.strFieldId);
-                        hro.setTextToHro(graphResponse,fieldId,inputs);
-                        hro.assertHroValidationMessageAlphaNumeric(graphResponse, fieldId);
-                    } else if (getDataType().equalsIgnoreCase("ALPHA")) {
-                        inputs = numericInputs(graphResponse, CheckboxObject.strFieldId, hro.identifyMaximumInputsByFieldId());
-                        hro.setTextToHro(graphResponse,fieldId,inputs);
-                        hro.assertHroValidationMessageAlphabet(graphResponse, fieldId);
-                    } else if (getDataType().equalsIgnoreCase("DATE_TIME")) {
+                    String inputs = "";
+                    boolean flag = false;
+                    if (CheckboxObject.strFormatRegex != null) {
+                        inputs = FormatRegex.generateFormattedString(CheckboxObject.strFormatRegex);
+                        if (!inputs.equalsIgnoreCase("")) {
+                            hro.setTextToHro(graphResponse, fieldId, "!@#");
+                            hro.assertFormatMaskValidation(graphResponse,fieldId);
+                            flag = true;
+                        }
+                    }
 
+                    if (CheckboxObject.strFormatMask!=null&&flag!=true){
+                        inputs = FormatMask.formatDateTime(CheckboxObject.strFormatMask);
+                        if(inputs!=null){
+                            hro.setTextToHro(graphResponse, fieldId, "test");
+                            hro.assertDateTimeFormat(graphResponse,fieldId);
+                            flag = true;
+                        }
+                    }
+
+                    if (CheckboxObject.strDataTypeNew != null&&flag!=true) {
+                        if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("NUMERIC")) {
+                            hro.processNumericDataType(graphResponse, fieldId);
+                        } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("ALPHA_NUMERIC")) {
+                            hro.processAlphaNumericDataType(graphResponse, fieldId);
+                        } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("ALPHA")) {
+                            hro.processAlphaDataType(graphResponse, fieldId);
+                        } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("DATE_TIME")) {
+                            hro.processDateTimeDataType(graphResponse,fieldId);
+                        }
                     }
                 }
             }
@@ -319,24 +338,39 @@ public class CheckBoxPage extends BasePage{
                     String email = emailAddressInputs(graphResponse,CheckboxObject.strFieldId);
                     mia.setTextToMia(graphResponse,fieldId,email);
                 }else {
-                    String inputs = "";
-                    if(CheckboxObject.strFormatMask!=null||CheckboxObject.strFormatRegex!=null){
-                        if (getDataType().equalsIgnoreCase("NUMERIC")) {
-                            inputs = alphaInputs(graphResponse, CheckboxObject.strFieldId, hro.identifyMaximumInputsByFieldId());
-                            mia.setTextToMia(graphResponse,fieldId,inputs);
-                            mia.assertMiaValidationMessageNumeric(graphResponse, fieldId);
-                        } else if (getDataType().equalsIgnoreCase("ALPHA_NUMERIC")) {
-                            inputs = specialCharacterInputs(graphResponse, CheckboxObject.strFieldId);
-                            mia.setTextToMia(graphResponse,fieldId,inputs);
-                            mia.assertMiaValidationMessageAlphaNumeric(graphResponse, fieldId);
-                        } else if (getDataType().equalsIgnoreCase("ALPHA")) {
-                            inputs = numericInputs(graphResponse, CheckboxObject.strFieldId, hro.identifyMaximumInputsByFieldId());
-                            mia.setTextToMia(graphResponse,fieldId,inputs);
-                            mia.assertMiaValidationMessageAlphabet(graphResponse, fieldId);
-                        } else if (getDataType().equalsIgnoreCase("DATE_TIME")) {
 
+                    String inputs = "";
+                    boolean flag = false;
+                    if (CheckboxObject.strFormatRegex != null) {
+                        inputs = FormatRegex.generateFormattedString(CheckboxObject.strFormatRegex);
+                        if (!inputs.equalsIgnoreCase("")) {
+                            mia.setTextToMia(graphResponse, fieldId, "!@#");
+                            mia.assertFormatMaskValidation(graphResponse,fieldId);
+                            flag = true;
                         }
                     }
+
+                    if (CheckboxObject.strFormatMask!=null&&flag!=true){
+                        inputs = FormatMask.formatDateTime(CheckboxObject.strFormatMask);
+                        if(inputs!=null){
+                            mia.setTextToMia(graphResponse,fieldId,"test");
+                            mia.assertDateTimeFormat(graphResponse,fieldId);
+                            flag = true;
+                        }
+                    }
+
+                    if (CheckboxObject.strDataTypeNew != null&&flag!=true) {
+                        if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("NUMERIC")) {
+                            mia.processNumericDataType(graphResponse, fieldId);
+                        } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("ALPHA_NUMERIC")) {
+                            mia.processAlphaNumericDataType(graphResponse, fieldId);
+                        } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("ALPHA")) {
+                            mia.processAlphaDataType(graphResponse, fieldId);
+                        } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("DATE_TIME")) {
+                            mia.processDateTimeDataType(graphResponse,fieldId);
+                        }
+                    }
+
                 }
             }
 
@@ -363,13 +397,13 @@ public class CheckBoxPage extends BasePage{
                         checkListOfConditionsHro(graphResponse,fieldId);
                     }else if(!isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId)){
                         lookForTheField(graphResponse,fieldId);
-                        if(getDataType().equalsIgnoreCase("NUMERIC")){
+                        if(CheckboxObject.strDataTypeNew.equalsIgnoreCase("NUMERIC")){
                             hro.numericInputsBeyondTheMaximumAllowed(graphResponse,CheckboxObject.strFieldId, hro.identifyMaximumInputsByFieldId());
-                        } else if (getDataType().equalsIgnoreCase("ALPHA_NUMERIC")) {
+                        } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("ALPHA_NUMERIC")) {
                             hro.alphaNumericInputsBeyondTheMaximumAllowed(graphResponse,CheckboxObject.strFieldId, hro.identifyMaximumInputsByFieldId());
-                        }else if (getDataType().equalsIgnoreCase("ALPHA")) {
+                        }else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("ALPHA")) {
                             hro.alphaInputsBeyondTheMaximumAllowed(graphResponse,CheckboxObject.strFieldId, hro.identifyMaximumInputsByFieldId());
-                        }else if (getDataType().equalsIgnoreCase("DATE_TIME")) {
+                        }else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("DATE_TIME")) {
 
                         }
                         hro.assertHro(graphResponse,fieldId);
@@ -812,13 +846,13 @@ public class CheckBoxPage extends BasePage{
         lookForTheField(pojo,strFieldId);
         if(hro.isFieldIdHro(pojo,strFieldId)){
             String inputs = "";
-            if(Objects.requireNonNull(getDataType()).equalsIgnoreCase("NUMERIC")){
+            if(Objects.requireNonNull(CheckboxObject.strDataTypeNew).equalsIgnoreCase("NUMERIC")){
                 inputs = numericInputs(pojo,strFieldId,hro.identifyMaximumInputsByFieldId());
                 hro.setTextToHro(pojo,strFieldId,inputs);
-            } else if (Objects.requireNonNull(getDataType()).equalsIgnoreCase("ALPHA_NUMERIC")) {
+            } else if (Objects.requireNonNull(CheckboxObject.strDataTypeNew).equalsIgnoreCase("ALPHA_NUMERIC")) {
                 inputs = alphaNumericInputs(pojo,strFieldId, hro.identifyMaximumInputsByFieldId());
                 hro.setTextToHro(pojo,strFieldId,inputs);
-            }else if (Objects.requireNonNull(getDataType()).equalsIgnoreCase("ALPHA")) {
+            }else if (Objects.requireNonNull(CheckboxObject.strDataTypeNew).equalsIgnoreCase("ALPHA")) {
                 inputs = alphaInputs(pojo,strFieldId, hro.identifyMaximumInputsByFieldId());
                 hro.setTextToHro(pojo,strFieldId,inputs);
             }
@@ -1884,19 +1918,19 @@ public class CheckBoxPage extends BasePage{
 
     public void hroInputs(FormContentPojo pojo,String strFieldId) throws ParseException {
         String inputs;
-        if(getDataType().equalsIgnoreCase("NUMERIC")){
+        if(CheckboxObject.strDataTypeNew.equalsIgnoreCase("NUMERIC")){
             inputs = hro.numericInputs(pojo,strFieldId, hro.identifyMaximumInputsByFieldId());
             hro.setTextToHro(pojo,strFieldId,inputs);
-        } else if (getDataType().equalsIgnoreCase("ALPHA_NUMERIC")) {
+        } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("ALPHA_NUMERIC")) {
             inputs = hro.alphaNumericInputs(pojo,strFieldId, hro.identifyMaximumInputsByFieldId());
             hro.setTextToHro(pojo,strFieldId,inputs);
-        }else if (getDataType().equalsIgnoreCase("ALPHA")) {
+        }else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("ALPHA")) {
             inputs = hro.alphaInputs(pojo,strFieldId, hro.identifyMaximumInputsByFieldId());
             hro.setTextToHro(pojo,strFieldId,inputs);
-        }else if(getDataType().equalsIgnoreCase("DATE_TIME")){
+        }else if(CheckboxObject.strDataTypeNew.equalsIgnoreCase("DATE_TIME")){
             inputs = hro.dateTimeInputs(pojo,strFieldId);
             hro.setTextToHro(pojo,strFieldId,inputs);
-        } else if (getDataType().equalsIgnoreCase("Telephone")) {
+        } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("Telephone")) {
             String telephoneNumber = inputTelephoneNumber(pojo,strFieldId);
             hro.setTextToHro(pojo,strFieldId,telephoneNumber);
         }
@@ -1978,15 +2012,15 @@ public class CheckBoxPage extends BasePage{
             if(hro.isFieldIdHro(pojo,CheckboxObject.strFieldId)&&CheckboxObject.strFormatRegex!=null){
                 lookForTheField(pojo,CheckboxObject.strFieldId);
                 String inputs;
-                if(getDataType().equalsIgnoreCase("NUMERIC")){
+                if(CheckboxObject.strDataTypeNew.equalsIgnoreCase("NUMERIC")){
                     inputs = hro.alphaInputs(pojo,CheckboxObject.strFieldId, hro.identifyMaximumInputsByFieldId());
                     hro.setTextToHro(pojo,CheckboxObject.strFieldId,inputs);
                     hro.assertHroValidationMessageNumeric(pojo,CheckboxObject.strFieldId);
-                } else if (getDataType().equalsIgnoreCase("ALPHA_NUMERIC")) {
+                } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("ALPHA_NUMERIC")) {
                     inputs = hro.specialCharacterInputs(pojo,CheckboxObject.strFieldId);
                     hro.setTextToHro(pojo,CheckboxObject.strFieldId,inputs);
                     hro.assertHroValidationMessageAlphaNumeric(pojo,CheckboxObject.strFieldId);
-                }else if (getDataType().equalsIgnoreCase("ALPHA")) {
+                }else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("ALPHA")) {
                     inputs = hro.numericInputs(pojo,CheckboxObject.strFieldId, hro.identifyMaximumInputsByFieldId());
                     hro.setTextToHro(pojo,CheckboxObject.strFieldId,inputs);
                     hro.assertHroValidationMessageAlphabet(pojo,CheckboxObject.strFieldId);

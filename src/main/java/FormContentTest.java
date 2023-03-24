@@ -14,9 +14,11 @@ public class FormContentTest extends BaseUiTest {
     HomePage homePage;
     CheckBoxPage checkBoxPage;
 //    String projectName = "DMC Test Checkbox";
+//    String projectName = "MIA project";
+String projectName = "HRO Format";
 //    String projectName = "Medications with anti-libidinal properties";
 //    String projectName = "DMC Test 1";
-    String projectName = "STEM Grant Application Form 2021 to 2022";
+//    String projectName = "STEM Grant Application Form 2021 to 2022";
 
 
     @Test
@@ -59,19 +61,16 @@ public class FormContentTest extends BaseUiTest {
     public void checkboxValidationLessThanMinimumInputs() throws Exception{
         homePage.selectProject(projectName);
         checkBoxPage.validateCheckboxLessThanMinimumInputsUponSubmit();
-        //applied testing for checkbox matrix
     }
 
     @Test
     public void hroFormatValidation() throws Exception{
-        //hro validation message
         homePage.selectProject(projectName);
         checkBoxPage.hroFormatValidation();
     }
 
     @Test
     public void miaFormatValidation() throws Exception{
-        //hro validation message
         homePage.selectProject(projectName);
         checkBoxPage.miaFormatValidation();
     }

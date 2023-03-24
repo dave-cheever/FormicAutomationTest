@@ -1,6 +1,8 @@
 package Pages;
 
 import Helpers.DataFormatting;
+import Helpers.FormatMask;
+import Helpers.InputLimitExtractor;
 import Objects.CheckboxObject;
 import Pojo.FormContentPojo;
 import org.openqa.selenium.*;
@@ -29,10 +31,76 @@ public class HandwritingRecognitionObject extends BasePage{
         String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(hroInputLocator,elementId);
         WebElement element = stringToWebElement(elem);
+        scrollElementIntoView(driver,element);
         System.out.println("Enter text for HRO: "+CheckboxObject.checkboxName+" Input: "+ strText);
         Reporter.log("<b>Enter text for HRO: <b/>"+CheckboxObject.checkboxName+"<b> Input: <b/>"+ strText);
         enterText(element,strText);
         recordInputsFromHro(elementId,strText);
+    }
+
+    public void assertDateTimeFormat(FormContentPojo pojo, String strFieldId){
+        String elementId = getObjectIdFromFieldId(pojo,strFieldId);
+        String elem = stringReplace(hroValidationMessageLocator,elementId);
+        WebElement element = stringToWebElement(elem);
+        String format = CheckboxObject.strFormatMask.toUpperCase();
+        format = format.replace("HH:MM:SS","HH:mm:ss");
+        format = format.replace("HH:MM","HH:mm");
+        format = format.replace("MM:SS","mm:ss");
+        Assert.assertEquals(element.getText(),"Please follow date format: ("+format+").");
+    }
+
+    public void assertFormatMaskValidation(FormContentPojo pojo, String strFieldId){
+        String elementId = getObjectIdFromFieldId(pojo,strFieldId);
+        String elem = stringReplace(hroValidationMessageLocator,elementId);
+        WebElement element = stringToWebElement(elem);
+        String format = CheckboxObject.strFormatMask.toUpperCase();
+        Assert.assertEquals(element.getText(),"This field must match the following format: ("+format+").");
+    }
+
+    public void processNumericDataType(FormContentPojo graphResponse,  String strFieldId) {
+        String inputs = alphaInputs(graphResponse, strFieldId, InputLimitExtractor.extractInputLimit(CheckboxObject.strFormatRegex));
+        setTextToHro(graphResponse, strFieldId, inputs);
+        if(CheckboxObject.strFormatMask!=null&&CheckboxObject.strFormatRegex!=null){
+            assertHroValidationMessageNumeric(graphResponse, strFieldId);
+        }else {
+            assertNoValidationMessage(getObjectIdFromFieldId(graphResponse,strFieldId),getFieldName(graphResponse,strFieldId));
+        }
+    }
+
+    public void processAlphaNumericDataType(FormContentPojo graphResponse,  String strFieldId) {
+        String inputs = specialCharacterInputs(graphResponse, strFieldId);
+        setTextToHro(graphResponse, strFieldId, inputs);
+        if(CheckboxObject.strFormatMask!=null&&CheckboxObject.strFormatRegex!=null){
+            assertHroValidationMessageAlphaNumeric(graphResponse, strFieldId);
+        }else {
+            assertNoValidationMessage(getObjectIdFromFieldId(graphResponse,strFieldId),getFieldName(graphResponse,strFieldId));
+        }
+    }
+
+    public void processAlphaDataType(FormContentPojo graphResponse, String strFieldId) {
+        String inputs = numericInputs(graphResponse, strFieldId, InputLimitExtractor.extractInputLimit(CheckboxObject.strFormatRegex));
+        setTextToHro(graphResponse, strFieldId, inputs);
+        if(CheckboxObject.strFormatMask!=null&&CheckboxObject.strFormatRegex!=null){
+            assertHroValidationMessageAlphabet(graphResponse, strFieldId);
+        }else {
+            assertNoValidationMessage(getObjectIdFromFieldId(graphResponse,strFieldId),getFieldName(graphResponse,strFieldId));
+        }
+
+    }
+
+    public void assertNoValidationMessage(String elementId, String fieldName) {
+        String elementForValidation = stringReplace(hroValidationMessageLocator,elementId);
+        String elementForTextArea = stringReplace(hroInputLocator,elementId);
+        WebElement webElementTextArea = stringToWebElement(elementForTextArea);
+        scrollElementIntoView(driver,webElementTextArea);
+        Reporter.log("<b>No validation message should be displayed.</b>" );
+        Assert.assertTrue(driver.findElements(By.xpath(elementForValidation)).size()==0,"No validation message should be displayed for "+ fieldName +".");
+    }
+
+    public void processDateTimeDataType(FormContentPojo graphResponse,String strFieldId) {
+        String inputs =  FormatMask.formatDateTime(CheckboxObject.strFormatMask);
+        setTextToHro(graphResponse, strFieldId, inputs);
+        //Create assert for date time
     }
 
     public static void recordInputsFromHro(String strElementId, String strHroInputs){

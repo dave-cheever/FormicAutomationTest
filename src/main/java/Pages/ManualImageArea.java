@@ -1,6 +1,8 @@
 package Pages;
 
 import Helpers.DataFormatting;
+import Helpers.FormatMask;
+import Helpers.InputLimitExtractor;
 import Objects.CheckboxObject;
 import Pojo.FormContentPojo;
 import org.openqa.selenium.*;
@@ -43,7 +45,6 @@ public class ManualImageArea extends BasePage{
 
     public String getPicklistSelectedOptionsName(String strElementId, int currentNumber){
         String elem = stringReplaceTwoValues(picklistOptionsSelectedByNumberLocator,strElementId,Integer.toString(currentNumber));
-//        118da75283d74bac90090eb4f92c27cf
         WebElement element = stringToWebElement(elem);
         return element.getText();
     }
@@ -55,6 +56,25 @@ public class ManualImageArea extends BasePage{
         System.out.println("Enter text for MIA: "+CheckboxObject.checkboxName+" Inputs: "+ strText);
         enterText(element,strText);
         recordInputsFromMia(strFieldId,strText);
+    }
+
+    public void assertDateTimeFormat(FormContentPojo pojo, String strFieldId){
+        String elementId = getObjectIdFromFieldId(pojo,strFieldId);
+        String elem = stringReplace(miaValidationMessageLocator,elementId);
+        WebElement element = stringToWebElement(elem);
+        String format = CheckboxObject.strFormatMask.toUpperCase();
+        format = format.replace("HH:MM:SS","HH:mm:ss");
+        format = format.replace("HH:MM","HH:mm");
+        format = format.replace("MM:SS","mm:ss");
+        Assert.assertEquals(element.getText(),"Please follow date format: ("+format+").");
+    }
+
+    public void assertFormatMaskValidation(FormContentPojo pojo, String strFieldId){
+        String elementId = getObjectIdFromFieldId(pojo,strFieldId);
+        String elem = stringReplace(miaValidationMessageLocator,elementId);
+        WebElement element = stringToWebElement(elem);
+        String format = CheckboxObject.strFormatMask.toUpperCase();
+        Assert.assertEquals(element.getText(),"This field must match the following format: ("+format+").");
     }
 
     public  String miaDataType(){
@@ -168,15 +188,21 @@ public class ManualImageArea extends BasePage{
                 }
             }
         }else {
-            String elementForValidation = stringReplace(miaValidationMessageLocator,elementId);
-            String elementForTextArea = stringReplace(miaInputLocator,elementId);
-            WebElement webElementTextArea = stringToWebElement(elementForTextArea);
-            scrollElementIntoView(driver,webElementTextArea);
-            Reporter.log("<b>No validation message should be displayed.</b>" );
-            Assert.assertTrue(driver.findElements(By.xpath(elementForValidation)).size()==0,"No validation message should be displayed for "+ fieldName +".");
+            assertNoValidationMessage(elementId,fieldName);
         }
         CheckboxObject.checkboxObjectDefaultValue();
     }
+
+    public void assertNoValidationMessage(String elementId, String fieldName) {
+        String elementForValidation = stringReplace(miaValidationMessageLocator,elementId);
+        String elementForTextArea = stringReplace(miaInputLocator,elementId);
+        WebElement webElementTextArea = stringToWebElement(elementForTextArea);
+        scrollElementIntoView(driver,webElementTextArea);
+        Reporter.log("<b>No validation message should be displayed.</b>" );
+        Assert.assertTrue(driver.findElements(By.xpath(elementForValidation)).size()==0,"No validation message should be displayed for "+ fieldName +".");
+    }
+
+
 
     public void assertMiaTextAreaThisFieldIsMandatory(FormContentPojo pojo, String strFieldId){
         JavascriptExecutor js = (JavascriptExecutor) driver;
@@ -390,6 +416,43 @@ public class ManualImageArea extends BasePage{
             }
         }
         return false;
+    }
+
+    public void processNumericDataType(FormContentPojo graphResponse,  String strFieldId) {
+        String inputs = alphaInputs(graphResponse, strFieldId, InputLimitExtractor.extractInputLimit(CheckboxObject.strFormatRegex));
+        setTextToMia(graphResponse, strFieldId, inputs);
+        if(CheckboxObject.strFormatMask!=null&&CheckboxObject.strFormatRegex!=null){
+            assertMiaValidationMessageNumeric(graphResponse, strFieldId);
+        }else {
+            assertNoValidationMessage(getObjectIdFromFieldId(graphResponse,strFieldId),getFieldName(graphResponse,strFieldId));
+        }
+    }
+
+    public void processAlphaNumericDataType(FormContentPojo graphResponse,  String strFieldId) {
+        String inputs = specialCharacterInputs(graphResponse, strFieldId);
+        setTextToMia(graphResponse, strFieldId, inputs);
+        if(CheckboxObject.strFormatMask!=null&&CheckboxObject.strFormatRegex!=null){
+            assertMiaValidationMessageAlphaNumeric(graphResponse, strFieldId);
+        }else {
+            assertNoValidationMessage(getObjectIdFromFieldId(graphResponse,strFieldId),getFieldName(graphResponse,strFieldId));
+        }
+    }
+
+    public void processAlphaDataType(FormContentPojo graphResponse, String strFieldId) {
+        String inputs = numericInputs(graphResponse, strFieldId, InputLimitExtractor.extractInputLimit(CheckboxObject.strFormatRegex));
+        setTextToMia(graphResponse, strFieldId, inputs);
+        if(CheckboxObject.strFormatMask!=null&&CheckboxObject.strFormatRegex!=null){
+            assertMiaValidationMessageAlphabet(graphResponse, strFieldId);
+        }else {
+            assertNoValidationMessage(getObjectIdFromFieldId(graphResponse,strFieldId),getFieldName(graphResponse,strFieldId));
+        }
+
+    }
+
+    public void processDateTimeDataType(FormContentPojo graphResponse,String strFieldId) {
+       String inputs =  FormatMask.formatDateTime(CheckboxObject.strFormatMask);
+       setTextToMia(graphResponse, strFieldId, inputs);
+       //Create assert for date time
     }
 
     public boolean isMinimumMaximumNotEmpty(){

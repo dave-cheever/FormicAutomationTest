@@ -564,24 +564,6 @@ public class BasePage {
         return result;
     }
 
-    public static String getDataType(){
-        if(CheckboxObject.strFormatRegex!=null){
-            String[]  str = CheckboxObject.strFormatRegex.split("]");
-            if(str[0].contains("^[a-zA-Z0-9")){
-                return "ALPHA_NUMERIC";
-            } else if (str[0].contains("^[0-9")) {
-                return "NUMERIC";
-            }
-            else if (str[0].contains("^[a-zA-Z")) {
-                return "ALPHA";
-            }else {
-                return DataFormatting.dataFormat(CheckboxObject.strFormatMask);
-            }
-        }else{
-            return CheckboxObject.strDataTypeNew;
-        }
-    }
-
     public static String alphaNumericInputs(FormContentPojo pojo, String strFieldId, int hroMaximumInputAllowed){
         Random rnd = new Random();
         String chars = "123xyz";
