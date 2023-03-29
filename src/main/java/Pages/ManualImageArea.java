@@ -2,6 +2,7 @@ package Pages;
 
 import Helpers.DataFormatting;
 import Helpers.FormatMask;
+import Helpers.FormatRegex;
 import Helpers.InputLimitExtractor;
 import Objects.CheckboxObject;
 import Pojo.FormContentPojo;
@@ -22,6 +23,7 @@ public class ManualImageArea extends BasePage{
     String miaMultiPickListInputLocator = "//div[@data-object-id='$TEXT']/div/div/div/div";
 
     String miaInputLocator = "//div[@data-object-id='$TEXT']/div/textarea";
+    String miaTextAreaLocator = "//div[@data-object-id='$TEXT']/div/textarea";
     String miaValidationMessageLocator = "//div[@data-object-id='$TEXT']/div/div/div[2]";
     String miaValidationMessageMandatoryLocator = "//div[@data-object-id='$TEXT']/div/div/div";
     String miaValidationMessageMinimumMaximumLocator = "(//div[@data-object-id='$TEXT']/div/div/div)[3]";
@@ -53,6 +55,7 @@ public class ManualImageArea extends BasePage{
         String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(miaInputLocator,elementId);
         WebElement element = stringToWebElement(elem);
+        scrollElementIntoView(driver,element);
         System.out.println("Enter text for MIA: "+CheckboxObject.checkboxName+" Inputs: "+ strText);
         enterText(element,strText);
         recordInputsFromMia(strFieldId,strText);
@@ -67,6 +70,34 @@ public class ManualImageArea extends BasePage{
         format = format.replace("HH:MM","HH:mm");
         format = format.replace("MM:SS","mm:ss");
         Assert.assertEquals(element.getText(),"Please follow date format: ("+format+").");
+    }
+
+    public void processMiaInputsForValidation(FormContentPojo graphResponse,String fieldId,boolean flag){
+        if (CheckboxObject.strDataTypeNew != null&&flag!=true) {
+            if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("NUMERIC")) {
+              processNumericDataType(graphResponse, fieldId);
+            } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("ALPHA_NUMERIC")) {
+               processAlphaNumericDataType(graphResponse, fieldId);
+            } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("ALPHA")) {
+               processAlphaDataType(graphResponse, fieldId);
+            } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("DATE_TIME")) {
+                processDateTimeDataType(graphResponse,fieldId);
+            }
+        }
+    }
+
+    public void processMiaInputsForSubmitSave(FormContentPojo graphResponse,String fieldId){
+        if (CheckboxObject.strDataTypeNew != null&&CheckboxObject.strFormatRegex!=null) {
+            if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("NUMERIC")) {
+                processNumericInputForSubmitSave(graphResponse, fieldId);
+            } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("ALPHA_NUMERIC")) {
+                processAlphaNumericDataType(graphResponse, fieldId);
+            } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("ALPHA")) {
+                processAlphaDataType(graphResponse, fieldId);
+            } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("DATE_TIME")) {
+                processDateTimeDataType(graphResponse,fieldId);
+            }
+        }
     }
 
     public void assertFormatMaskValidation(FormContentPojo pojo, String strFieldId){
@@ -272,7 +303,7 @@ public class ManualImageArea extends BasePage{
             throw new Error("Element not found: " + e.getMessage());
         }
         element = stringToWebElement(elem);
-        Assert.assertEquals(element.getText(),"This field must match the following format: (?"+getNumberOfUnderscore()+").",
+        Assert.assertEquals(element.getText(),"This field must match the following format: ("+getNumberOfUnderscore()+").",
                 "The HRO "+ CheckboxObject.checkboxName+" has a validation message of "+element.getText()+" instead of - This field must match the following format: (?"+getNumberOfUnderscore()+").");
     }
 
@@ -421,11 +452,22 @@ public class ManualImageArea extends BasePage{
     public void processNumericDataType(FormContentPojo graphResponse,  String strFieldId) {
         String inputs = alphaInputs(graphResponse, strFieldId, InputLimitExtractor.extractInputLimit(CheckboxObject.strFormatRegex));
         setTextToMia(graphResponse, strFieldId, inputs);
-        if(CheckboxObject.strFormatMask!=null&&CheckboxObject.strFormatRegex!=null){
+        if(CheckboxObject.strFormatMask!=null&&CheckboxObject.strFormatRegex!=null||CheckboxObject.strDataTypeNew.equalsIgnoreCase("NUMERIC")){
             assertMiaValidationMessageNumeric(graphResponse, strFieldId);
         }else {
             assertNoValidationMessage(getObjectIdFromFieldId(graphResponse,strFieldId),getFieldName(graphResponse,strFieldId));
         }
+    }
+
+    public void processNumericInputForSubmitSave(FormContentPojo graphResponse,  String strFieldId) {
+        String inputs = FormatRegex.generateFormattedString(CheckboxObject.strFormatRegex);
+        if(inputs!=""){
+            setTextToMia(graphResponse, strFieldId, inputs);
+        }
+
+
+        assertNoValidationMessage(getObjectIdFromFieldId(graphResponse,strFieldId),getFieldName(graphResponse,strFieldId));
+
     }
 
     public void processAlphaNumericDataType(FormContentPojo graphResponse,  String strFieldId) {

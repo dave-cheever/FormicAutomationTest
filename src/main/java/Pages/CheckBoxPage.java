@@ -1,6 +1,7 @@
 package Pages;
 import Helpers.FormatMask;
 import Helpers.FormatRegex;
+import Helpers.InputLimitExtractor;
 import Objects.CheckboxObject;
 import Pojo.FormContentPojo;
 import Pojo.RulesGraphql;
@@ -14,7 +15,7 @@ import java.text.ParseException;
 import java.util.*;
 
 public class CheckBoxPage extends BasePage{
-    int projectId = 148;
+    int projectId = 137;
     String emailRegEx = "^[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.][a-zA-Z0-9]+$";
     static String validationMessageUponSubmitSideBar = "//h1[contains(text(),'Completion Errors')]//following-sibling::ul/li/button/div/div[contains(text(),'$TEXT')]//following::div[1]";
     static String mandatoryFieldMessageLocator = "//div[@data-object-id='$TEXT']/div/div/div";
@@ -73,6 +74,7 @@ public class CheckBoxPage extends BasePage{
         sideMenuNavigation.clickSubmitButton();
         for (String fieldId: CheckboxObject.fieldId
         ) {
+            //da0ed11dfc2a42b1a6dc58ab9ad69539
             CheckboxObject.strFieldId = fieldId;
             CheckboxObject.isMandatoryFieldTest = true;
             if(getFieldItemRules(graphResponse, fieldId)&&!isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
@@ -128,6 +130,11 @@ public class CheckBoxPage extends BasePage{
                     //meaning this fieldId maybe disabled, and we need to enable it.
                     System.out.println(name+ " Needs to check if it's disabled");
                     checkListOfConditions(graphResponse,fieldId);
+                    if(CheckboxMatrix.isFieldIdCheckBoxMatrix(graphResponse,fieldId)){
+                        CheckboxMatrix.assertMinimumConfig(graphResponse,fieldId);
+                    }else {
+                        assertMinimumConfig(graphResponse,fieldId);
+                    }
                 }else {
                     if(CheckboxMatrix.isFieldIdCheckBoxMatrix(graphResponse,fieldId)){
                         CheckboxMatrix.assertMinimumConfig(graphResponse,fieldId);
@@ -157,6 +164,12 @@ public class CheckBoxPage extends BasePage{
                     String name = CheckboxObject.checkboxName;
                     System.out.println(name+ " Needs to check if it's disabled");
                     checkListOfConditions(graphResponse,fieldId);
+                    if(CheckboxMatrix.isFieldIdCheckBoxMatrix(graphResponse,fieldId)){
+                        CheckboxMatrix.assertWithinMaximumInput(graphResponse, fieldId);
+                    }else {
+                        System.out.println(CheckboxObject.checkboxName+ " Is enabled");
+                        assertWithinMaximumInput(graphResponse,fieldId);
+                    }
                 }else {
                     if(CheckboxMatrix.isFieldIdCheckBoxMatrix(graphResponse,fieldId)){
                         CheckboxMatrix.assertWithinMaximumInput(graphResponse, fieldId);
@@ -213,7 +226,15 @@ public class CheckBoxPage extends BasePage{
                 if(isFieldIdInRoutingRules(graphResponse,fieldId)){
                     //meaning this fieldId maybe disabled, and we need to enable it.
                     System.out.println(name+ " Needs to check if it's disabled");
+                    //0ffbce696d084e91a3076b4a5e7c4969
+                    //0659a893463c49c9af85256bbea48f35
                     checkListOfConditions(graphResponse,fieldId);
+                    if(CheckboxMatrix.isFieldIdCheckBoxMatrix(graphResponse,fieldId)){
+                        CheckboxMatrix.assertWithinMinimumInput(graphResponse, fieldId);
+                    }else {
+                        System.out.println(CheckboxObject.checkboxName+ " Is enabled");
+                        assertWithinMinimumInput(graphResponse,fieldId);
+                    }
                 }else if(!isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId)){
                     if(CheckboxMatrix.isFieldIdCheckBoxMatrix(graphResponse,fieldId)){
                         CheckboxMatrix.assertWithinMinimumInput(graphResponse, fieldId);
@@ -243,6 +264,11 @@ public class CheckBoxPage extends BasePage{
                     //meaning this fieldId maybe disabled, and we need to enable it.
                     System.out.println(name+ " Needs to check if it's disabled");
                     checkListOfConditions(graphResponse,fieldId);
+                    if(CheckboxMatrix.isFieldIdCheckBoxMatrix(graphResponse,fieldId)){
+                        CheckboxMatrix.assertLessThanMinimumInput(graphResponse, fieldId);
+                    }else {
+                        assertLessThanMinimumInput(graphResponse,fieldId);
+                    }
                 }else if(!isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId)){
                     System.out.println(CheckboxObject.checkboxName+ " Is enabled");
                     if(CheckboxMatrix.isFieldIdCheckBoxMatrix(graphResponse,fieldId)){
@@ -271,47 +297,81 @@ public class CheckBoxPage extends BasePage{
             if(isFieldIdInRoutingRules(graphResponse,fieldId)){
                 //meaning this fieldId maybe disabled, and we need to enable it.
                 System.out.println(name+ " Needs to check if it's disabled");
-                checkListOfConditionsHro(graphResponse,fieldId);
+                checkListOfConditions(graphResponse,fieldId);
+                AssertHroFormatValidation(graphResponse,fieldId);
             }else if(!isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId)){
-                lookForTheField(graphResponse,fieldId);
-                if(CheckboxObject.strFormatRegex!=null&&CheckboxObject.strFormatRegex.equalsIgnoreCase(emailRegEx)){
-                    String email = emailAddressInputs(graphResponse,CheckboxObject.strFieldId);
-                    hro.setTextToHro(graphResponse,fieldId,email);
-                }else {
-                    String inputs = "";
-                    boolean flag = false;
-                    if (CheckboxObject.strFormatRegex != null) {
-                        inputs = FormatRegex.generateFormattedString(CheckboxObject.strFormatRegex);
-                        if (!inputs.equalsIgnoreCase("")) {
-                            hro.setTextToHro(graphResponse, fieldId, "!@#");
-                            hro.assertFormatMaskValidation(graphResponse,fieldId);
-                            flag = true;
-                        }
-                    }
+                AssertHroFormatValidation(graphResponse,fieldId);
+            }
+        }
+    }
 
-                    if (CheckboxObject.strFormatMask!=null&&flag!=true){
-                        inputs = FormatMask.formatDateTime(CheckboxObject.strFormatMask);
-                        if(inputs!=null){
-                            hro.setTextToHro(graphResponse, fieldId, "test");
-                            hro.assertDateTimeFormat(graphResponse,fieldId);
-                            flag = true;
-                        }
-                    }
+    public void AssertMiaFormatValidation(FormContentPojo graphResponse,String fieldId){
+        lookForTheField(graphResponse,fieldId);
+        if(CheckboxObject.strFormatRegex!=null&&CheckboxObject.strFormatRegex.equalsIgnoreCase(emailRegEx)){
+            String email = emailAddressInputs(graphResponse,CheckboxObject.strFieldId);
+            mia.setTextToMia(graphResponse,fieldId,email);
+        }else {
 
-                    if (CheckboxObject.strDataTypeNew != null&&flag!=true) {
-                        if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("NUMERIC")) {
-                            hro.processNumericDataType(graphResponse, fieldId);
-                        } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("ALPHA_NUMERIC")) {
-                            hro.processAlphaNumericDataType(graphResponse, fieldId);
-                        } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("ALPHA")) {
-                            hro.processAlphaDataType(graphResponse, fieldId);
-                        } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("DATE_TIME")) {
-                            hro.processDateTimeDataType(graphResponse,fieldId);
-                        }
-                    }
+            String inputs = "";
+            boolean flag = false;
+            if (CheckboxObject.strFormatRegex != null) {
+                inputs = FormatRegex.generateFormattedString(CheckboxObject.strFormatRegex);
+                if (!inputs.equalsIgnoreCase("")) {
+                    mia.setTextToMia(graphResponse, fieldId, "!@#");
+                    mia.assertFormatMaskValidation(graphResponse,fieldId);
+                    flag = true;
                 }
             }
 
+            if (CheckboxObject.strFormatMask!=null&&flag!=true){
+                inputs = FormatMask.formatDateTime(CheckboxObject.strFormatMask);
+                if(inputs!=null){
+                    mia.setTextToMia(graphResponse,fieldId,"test");
+                    mia.assertDateTimeFormat(graphResponse,fieldId);
+                    flag = true;
+                }
+            }
+            mia.processMiaInputsForValidation(graphResponse,fieldId,flag);
+        }
+    }
+
+    public void AssertHroFormatValidation(FormContentPojo graphResponse, String fieldId){
+        lookForTheField(graphResponse,fieldId);
+        if(CheckboxObject.strFormatRegex!=null&&CheckboxObject.strFormatRegex.equalsIgnoreCase(emailRegEx)){
+            String email = emailAddressInputs(graphResponse,CheckboxObject.strFieldId);
+            hro.setTextToHro(graphResponse,fieldId,email);
+        }else {
+            String inputs = "";
+            boolean flag = false;
+            if (CheckboxObject.strFormatRegex != null) {
+                inputs = FormatRegex.generateFormattedString(CheckboxObject.strFormatRegex);
+                if (!inputs.equalsIgnoreCase("")) {
+                    hro.setTextToHro(graphResponse, fieldId, "!@#");
+                    hro.assertFormatMaskValidation(graphResponse,fieldId);
+                    flag = true;
+                }
+            }
+
+            if (CheckboxObject.strFormatMask!=null&&flag!=true){
+                inputs = FormatMask.formatDateTime(CheckboxObject.strFormatMask);
+                if(inputs!=null){
+                    hro.setTextToHro(graphResponse, fieldId, "test");
+                    hro.assertDateTimeFormat(graphResponse,fieldId);
+                    flag = true;
+                }
+            }
+
+            if (CheckboxObject.strDataTypeNew != null&&flag!=true) {
+                if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("NUMERIC")) {
+                    hro.processNumericDataType(graphResponse, fieldId);
+                } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("ALPHA_NUMERIC")) {
+                    hro.processAlphaNumericDataType(graphResponse, fieldId);
+                } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("ALPHA")) {
+                    hro.processAlphaDataType(graphResponse, fieldId);
+                } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("DATE_TIME")) {
+                    hro.processDateTimeDataType(graphResponse,fieldId);
+                }
+            }
         }
     }
 
@@ -331,82 +391,93 @@ public class CheckBoxPage extends BasePage{
             if(isFieldIdInRoutingRules(graphResponse,fieldId)){
                 //meaning this fieldId maybe disabled, and we need to enable it.
                 System.out.println(name+ " Needs to check if it's disabled");
-                checkListOfConditionsHro(graphResponse,fieldId);
+                checkListOfConditions(graphResponse,fieldId);
+                AssertMiaFormatValidation(graphResponse,fieldId);
             }else if(!isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId)){
-                lookForTheField(graphResponse,fieldId);
-                if(CheckboxObject.strFormatRegex!=null&&CheckboxObject.strFormatRegex.equalsIgnoreCase(emailRegEx)){
-                    String email = emailAddressInputs(graphResponse,CheckboxObject.strFieldId);
-                    mia.setTextToMia(graphResponse,fieldId,email);
-                }else {
-
-                    String inputs = "";
-                    boolean flag = false;
-                    if (CheckboxObject.strFormatRegex != null) {
-                        inputs = FormatRegex.generateFormattedString(CheckboxObject.strFormatRegex);
-                        if (!inputs.equalsIgnoreCase("")) {
-                            mia.setTextToMia(graphResponse, fieldId, "!@#");
-                            mia.assertFormatMaskValidation(graphResponse,fieldId);
-                            flag = true;
-                        }
-                    }
-
-                    if (CheckboxObject.strFormatMask!=null&&flag!=true){
-                        inputs = FormatMask.formatDateTime(CheckboxObject.strFormatMask);
-                        if(inputs!=null){
-                            mia.setTextToMia(graphResponse,fieldId,"test");
-                            mia.assertDateTimeFormat(graphResponse,fieldId);
-                            flag = true;
-                        }
-                    }
-
-                    if (CheckboxObject.strDataTypeNew != null&&flag!=true) {
-                        if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("NUMERIC")) {
-                            mia.processNumericDataType(graphResponse, fieldId);
-                        } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("ALPHA_NUMERIC")) {
-                            mia.processAlphaNumericDataType(graphResponse, fieldId);
-                        } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("ALPHA")) {
-                            mia.processAlphaDataType(graphResponse, fieldId);
-                        } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("DATE_TIME")) {
-                            mia.processDateTimeDataType(graphResponse,fieldId);
-                        }
-                    }
-
-                }
+                AssertMiaFormatValidation(graphResponse,fieldId);
             }
-
         }
     }
 
 
     public void hroMaximumInputsValidation() throws Exception {
         RulesGraphql rules = new RulesGraphql();
-        FormContentPojo graphResponse =  rules.getRules(projectId);
+        FormContentPojo graphResponse = rules.getRules(projectId);
         getFieldItemsHro(graphResponse);
         sideMenuNavigation.clickSubmitButton();
-        for (String fieldId: CheckboxObject.fieldId
+        for (String fieldId : CheckboxObject.fieldId
         ) {
             CheckboxObject.lessThanMinimumInputs = true;
             CheckboxObject.strFieldId = fieldId;
             String name = CheckboxObject.checkboxName;
-            hro.getHroRules(graphResponse,fieldId);
-            if(CheckboxObject.strFormatRegex!=null){
-                if(!CheckboxObject.strFormatRegex.equalsIgnoreCase(emailRegEx)){
-                    if(isFieldIdInRoutingRules(graphResponse,fieldId)){
+            hro.getHroRules(graphResponse, fieldId);
+            if (CheckboxObject.strFormatRegex != null) {
+                if (!CheckboxObject.strFormatRegex.equalsIgnoreCase(emailRegEx)) {
+                    if (isFieldIdInRoutingRules(graphResponse, fieldId)) {
                         //meaning this fieldId maybe disabled, and we need to enable it.
-                        System.out.println(name+ " Needs to check if it's disabled");
-                        checkListOfConditionsHro(graphResponse,fieldId);
-                    }else if(!isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId)){
-                        lookForTheField(graphResponse,fieldId);
-                        if(CheckboxObject.strDataTypeNew.equalsIgnoreCase("NUMERIC")){
-                            hro.numericInputsBeyondTheMaximumAllowed(graphResponse,CheckboxObject.strFieldId, hro.identifyMaximumInputsByFieldId());
+                        System.out.println(name + " Needs to check if it's disabled");
+                        checkListOfConditions(graphResponse, fieldId);
+                        lookForTheField(graphResponse, fieldId);
+
+                        if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("NUMERIC")) {
+                            hro.numericInputsBeyondTheMaximumAllowed(graphResponse, CheckboxObject.strFieldId, hro.identifyMaximumInputsByFieldId());
                         } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("ALPHA_NUMERIC")) {
-                            hro.alphaNumericInputsBeyondTheMaximumAllowed(graphResponse,CheckboxObject.strFieldId, hro.identifyMaximumInputsByFieldId());
-                        }else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("ALPHA")) {
-                            hro.alphaInputsBeyondTheMaximumAllowed(graphResponse,CheckboxObject.strFieldId, hro.identifyMaximumInputsByFieldId());
-                        }else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("DATE_TIME")) {
+                            FormatRegex.RegexType strDataType = FormatRegex.getRegexType(CheckboxObject.strFormatRegex);
+                            if (strDataType.equals(FormatRegex.RegexType.ONLY_LETTERS)) {
+                                hro.alphaInputsBeyondTheMaximumAllowed(graphResponse, CheckboxObject.strFieldId, hro.identifyMaximumInputsByFieldId());
+                            } else {
+                                hro.numericInputsBeyondTheMaximumAllowed(graphResponse, CheckboxObject.strFieldId, hro.identifyMaximumInputsByFieldId());
+                            }
+                        } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("DATE_TIME")) {
 
                         }
-                        hro.assertHro(graphResponse,fieldId);
+                        if (CheckboxObject.strFormatRegex != null && CheckboxObject.strFormatMask != null) {
+                            hro.assertHro(graphResponse, fieldId);
+                        } else {
+                            AssertHroFormatValidation(graphResponse, fieldId);
+                        }
+                    } else if (!isFieldIdInRoutingRulesWhenFieldDisable(graphResponse, fieldId)) {
+                        lookForTheField(graphResponse, fieldId);
+                        if (CheckboxObject.strFormatRegex != null && CheckboxObject.strFormatRegex.equalsIgnoreCase(emailRegEx)) {
+                            String email = emailAddressInputs(graphResponse, CheckboxObject.strFieldId);
+                            hro.setTextToHro(graphResponse, fieldId, email);
+                        } else {
+
+                            String inputs = "";
+                            boolean flag = false;
+                            if (CheckboxObject.strFormatRegex != null) {
+                                inputs = FormatRegex.generateFormattedString(CheckboxObject.strFormatRegex);
+                                if (!inputs.equalsIgnoreCase("")) {
+                                    hro.setTextToHro(graphResponse, fieldId, inputs);
+                                    flag = true;
+                                }
+                            }
+
+                            if (CheckboxObject.strFormatMask != null && flag != true) {
+                                inputs = FormatMask.formatDateTime(CheckboxObject.strFormatMask);
+                                if (inputs != null) {
+                                    hro.setTextToHro(graphResponse, fieldId, inputs);
+                                    flag = true;
+                                }
+                            }
+                            if (flag != true) {
+                                if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("NUMERIC")) {
+                                    hro.numericInputsBeyondTheMaximumAllowed(graphResponse, CheckboxObject.strFieldId, hro.identifyMaximumInputsByFieldId());
+                                } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("ALPHA_NUMERIC")) {
+                                    FormatRegex.RegexType strDataType = FormatRegex.getRegexType(CheckboxObject.strFormatRegex);
+                                    if (strDataType.equals(FormatRegex.RegexType.ONLY_LETTERS)) {
+                                        hro.alphaInputsBeyondTheMaximumAllowed(graphResponse, CheckboxObject.strFieldId, hro.identifyMaximumInputsByFieldId());
+                                    } else {
+                                        hro.numericInputsBeyondTheMaximumAllowed(graphResponse, CheckboxObject.strFieldId, hro.identifyMaximumInputsByFieldId());
+                                    }
+                                }
+                                if (CheckboxObject.strFormatRegex != null && CheckboxObject.strFormatMask != null) {
+                                    hro.assertHro(graphResponse, fieldId);
+                                } else {
+                                    AssertHroFormatValidation(graphResponse, fieldId);
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -430,6 +501,9 @@ public class CheckBoxPage extends BasePage{
                 if(isFieldIdInRoutingRules(graphResponse,fieldId)){
                     System.out.println(name+ " Needs to check if it's disabled");
                     checkListOfConditions(graphResponse,fieldId);
+                    lookForTheField(graphResponse,fieldId);
+                    System.out.println(CheckboxObject.checkboxName+ " Is enabled");
+                    mia.assertMiaMandatoryField(graphResponse,fieldId);
                 }else {
                     lookForTheField(graphResponse,fieldId);
                     System.out.println(CheckboxObject.checkboxName+ " Is enabled");
@@ -457,6 +531,10 @@ public class CheckBoxPage extends BasePage{
                     if(isFieldIdInRoutingRules(graphResponse,fieldId)){
                         System.out.println(name+ " Needs to check if it's disabled");
                         checkListOfConditions(graphResponse,fieldId);
+                        lookForTheField(graphResponse,fieldId);
+                        System.out.println(CheckboxObject.checkboxName+ " Is enabled");
+                        mia.addLessThanMinimumOptions(graphResponse,CheckboxObject.minimum,fieldId);
+                        mia.validateLessThanTheMinimumRequired(graphResponse,CheckboxObject.minimum,fieldId);
                     }else {
                         lookForTheField(graphResponse,fieldId);
                         System.out.println(CheckboxObject.checkboxName+ " Is enabled");
@@ -487,6 +565,10 @@ public class CheckBoxPage extends BasePage{
                     //meaning this fieldId maybe disabled, and we need to enable it.
                     System.out.println(name+ " Needs to check if it's disabled");
                     checkListOfConditions(graphResponse,fieldId);
+                    lookForTheField(graphResponse,fieldId);
+                    System.out.println(CheckboxObject.checkboxName+ " Is enabled");
+                    mia.addMoreThanMaximumOptions(graphResponse,CheckboxObject.maximum,fieldId);
+                    mia.validateMoreThanTheMaximumRequired(graphResponse,CheckboxObject.maximum,fieldId);
                 }else {
                     lookForTheField(graphResponse,fieldId);
                     System.out.println(CheckboxObject.checkboxName+ " Is enabled");
@@ -516,6 +598,9 @@ public class CheckBoxPage extends BasePage{
                     //meaning this fieldId maybe disabled, and we need to enable it.
                     System.out.println(name+ " Needs to check if it's disabled");
                     checkListOfConditions(graphResponse,fieldId);
+                    lookForTheField(graphResponse,fieldId);
+                    mia.addWithinMinimumMaximumOptions(graphResponse,CheckboxObject.minimum,fieldId);
+                    mia.validateWithinMinimumMaximumRequired(graphResponse,fieldId);
                 }else {
                     System.out.println(CheckboxObject.checkboxName+ " Is enabled");
                     lookForTheField(graphResponse,fieldId);
@@ -548,10 +633,9 @@ public class CheckBoxPage extends BasePage{
                     hroInputs(graphResponse,CheckboxObject.singleFieldId);
                 }
             }else if(strTypeName.equalsIgnoreCase("TickboxGroup")){
-                //
                 if(CheckboxMatrix.isFieldIdCheckBoxMatrix(graphResponse,CheckboxObject.singleFieldId)){
                     getCheckboxRulesForMinimumAndMaximumInputs(graphResponse,CheckboxObject.singleFieldId);
-                    ArrayList<String> numberOfOptions = CheckboxMatrix.checkboxMatrixOptionsCount(graphResponse,strElementId);
+                    ArrayList<String> numberOfOptions = CheckboxMatrix.checkboxMatrixOptionsCount(graphResponse,CheckboxObject.singleFieldId);
                     int numberOfItems = CheckboxMatrix.countNumberOfResponses(strElementId,numberOfOptions.size());
                     CheckboxMatrix.clickWithinMinimumMaximumInput(graphResponse,CheckboxObject.minimum,CheckboxObject.maximum,numberOfOptions,numberOfItems);
                 }else{
@@ -609,7 +693,7 @@ public class CheckBoxPage extends BasePage{
                 //
                 if(CheckboxMatrix.isFieldIdCheckBoxMatrix(graphResponse,CheckboxObject.singleFieldId)){
                     getCheckboxRulesForMinimumAndMaximumInputs(graphResponse,CheckboxObject.singleFieldId);
-                    ArrayList<String> numberOfOptions = CheckboxMatrix.checkboxMatrixOptionsCount(graphResponse,strElementId);
+                    ArrayList<String> numberOfOptions = CheckboxMatrix.checkboxMatrixOptionsCount(graphResponse, CheckboxObject.singleFieldId);
                     int numberOfItems = CheckboxMatrix.countNumberOfResponses(strElementId,numberOfOptions.size());
                     CheckboxMatrix.clickWithinMinimumMaximumInput(graphResponse,CheckboxObject.minimum,CheckboxObject.maximum,numberOfOptions,numberOfItems);
                 }else{
@@ -1500,7 +1584,11 @@ public class CheckBoxPage extends BasePage{
                             System.out.println("We now check if whenField: "+getFieldName(pojo, whenField)+ " is enabled");
                             testFindTheWhenFieldThatDisablesTheFieldId(pojo,whenField);
                             validateListOfFieldsStackedSubmit(pojo);
+//                            anotherValidation(pojo);
                             break outerLoop;
+                        }else{
+                            uncheckWhenFieldIdThatDisablesFieldId(pojo,strFieldId);
+                            testFindTheWhenFieldThatDisablesTheFieldId(pojo,whenField);
                         }
                     }
                 }
@@ -1522,21 +1610,24 @@ public class CheckBoxPage extends BasePage{
                         String whenField = conditions.getWhenField();
                         whenFieldElementId = getObjectIdFromFieldId(pojo,whenField);
                         Reporter.log("We check if the field: "+getFieldName(pojo, strFieldId) +" is disabled by another field: "+ getFieldName(pojo, whenField));
+                        String typeName = getTypeNameByFieldId(pojo,strFieldId);
+                        STACK.push(conditions.getAction());
+                        STACK.push(typeName);
+                        STACK.push(strFieldId);
+                        STACK.push(conditions.getHasValue());
+                        STACK.push(whenField);
                         if(whenFieldElementId!=null&&conditions.getAction().equalsIgnoreCase("enable")){
                             System.out.println(CheckboxObject.checkboxName+ " is enabled");
-                            String typeName = getTypeNameByFieldId(pojo,strFieldId);
-                            STACK.push(conditions.getAction());
-                            STACK.push(typeName);
-                            STACK.push(strFieldId);
-                            STACK.push(conditions.getHasValue());
-                            STACK.push(whenField);
                             System.out.println("We now check if whenField: "+getFieldName(pojo, whenField)+ " is enabled");
                             testFindTheWhenFieldThatDisablesTheFieldId(pojo,whenField);
                             validateListOfFieldsStackedSubmitNoInputs(pojo);
+                            AssertMandatoryFieldsWithoutInputs(pojo,strFieldId);
                             break outerLoop;
                         }else{
                             uncheckWhenFieldIdThatDisablesFieldId(pojo,strFieldId);
+                            testFindTheWhenFieldThatDisablesTheFieldId(pojo,whenField);
                             validateListOfFieldsStackedSubmitNoInputs(pojo);
+                            AssertMandatoryFieldsWithoutInputs(pojo,strFieldId);
                         }
                     }
                 }
@@ -1745,6 +1836,9 @@ public class CheckBoxPage extends BasePage{
                 x = 1;
             }
         }
+    }
+
+    public void anotherValidation(FormContentPojo pojo)throws Exception{
         if(!CheckboxObject.isEnableDisabledFields){
             if(hro.isFieldIdHro(pojo,CheckboxObject.strFieldId)&&CheckboxObject.strFormatRegex!=null){
                 hroInputs(pojo,CheckboxObject.strFieldId);
@@ -1808,20 +1902,6 @@ public class CheckBoxPage extends BasePage{
                 x = 1;
             }
         }
-        if(!CheckboxObject.isEnableDisabledFields){
-            if(hro.isFieldIdHro(pojo,CheckboxObject.strFieldId)&&CheckboxObject.strFormatRegex!=null){
-                hroInputs(pojo,CheckboxObject.strFieldId);
-            }else if(isFieldIdCheckBox(pojo,CheckboxObject.strFieldId)){
-                if(CheckboxMatrix.isFieldIdCheckBoxMatrix(pojo,CheckboxObject.strFieldId)){
-                    CheckboxMatrix.assertCheckboxMinMaxMandatory(pojo, CheckboxObject.strFieldId);
-                }else{
-                    assertCheckboxMinMaxMandatory(pojo,CheckboxObject.strFieldId);
-                }
-            }else if(mia.isFieldIdMia(pojo,CheckboxObject.strFieldId)){
-                mia.setTextToMia(pojo,CheckboxObject.strFieldId,"test");
-                mia.assertMiaMandatoryField(pojo,CheckboxObject.strFieldId);
-            }
-        }
     }
 
     public void validateListOfFieldsStackedSubmitNoInputs(FormContentPojo pojo) throws Exception {
@@ -1868,20 +1948,21 @@ public class CheckBoxPage extends BasePage{
                 x = 1;
             }
         }
-        if(!CheckboxObject.isEnableDisabledFields){
-            if(hro.isFieldIdHro(pojo,CheckboxObject.strFieldId)&&CheckboxObject.strFormatRegex!=null){
-                hroInputs(pojo,CheckboxObject.strFieldId);
-            }else if(isFieldIdCheckBox(pojo,CheckboxObject.strFieldId)){
-                if(CheckboxMatrix.isFieldIdCheckBoxMatrix(pojo,CheckboxObject.strFieldId)){
-                    CheckboxMatrix.assertCheckboxMinMaxMandatory(pojo, CheckboxObject.strFieldId);
-                }else{
-                    assertCheckboxMinMaxMandatory(pojo,CheckboxObject.strFieldId);
-                }
-            }else if(mia.isFieldIdMia(pojo,CheckboxObject.strFieldId)){
-                mia.assertMiaMandatoryField(pojo,CheckboxObject.strFieldId);
-            }
-        }
     }
+    //from validateListOfFieldsStackedSubmitNoInputs
+    // if(!CheckboxObject.isEnableDisabledFields){
+    //            if(hro.isFieldIdHro(pojo,CheckboxObject.strFieldId)&&CheckboxObject.strFormatRegex!=null){
+    //                hroInputs(pojo,CheckboxObject.strFieldId);
+    //            }else if(isFieldIdCheckBox(pojo,CheckboxObject.strFieldId)){
+    //                if(CheckboxMatrix.isFieldIdCheckBoxMatrix(pojo,CheckboxObject.strFieldId)){
+    //                    CheckboxMatrix.assertCheckboxMinMaxMandatory(pojo, CheckboxObject.strFieldId);
+    //                }else{
+    //                    assertCheckboxMinMaxMandatory(pojo,CheckboxObject.strFieldId);
+    //                }
+    //            }else if(mia.isFieldIdMia(pojo,CheckboxObject.strFieldId)){
+    //                mia.assertMiaMandatoryField(pojo,CheckboxObject.strFieldId);
+    //            }
+    //        }
 
 
     public void assertEnableDisableFields(FormContentPojo pojo, String typeName, String strElementId, String action){
@@ -1917,39 +1998,118 @@ public class CheckBoxPage extends BasePage{
     }
 
     public void hroInputs(FormContentPojo pojo,String strFieldId) throws ParseException {
-        String inputs;
-        if(CheckboxObject.strDataTypeNew.equalsIgnoreCase("NUMERIC")){
-            inputs = hro.numericInputs(pojo,strFieldId, hro.identifyMaximumInputsByFieldId());
-            hro.setTextToHro(pojo,strFieldId,inputs);
-        } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("ALPHA_NUMERIC")) {
-            inputs = hro.alphaNumericInputs(pojo,strFieldId, hro.identifyMaximumInputsByFieldId());
-            hro.setTextToHro(pojo,strFieldId,inputs);
-        }else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("ALPHA")) {
-            inputs = hro.alphaInputs(pojo,strFieldId, hro.identifyMaximumInputsByFieldId());
-            hro.setTextToHro(pojo,strFieldId,inputs);
-        }else if(CheckboxObject.strDataTypeNew.equalsIgnoreCase("DATE_TIME")){
-            inputs = hro.dateTimeInputs(pojo,strFieldId);
-            hro.setTextToHro(pojo,strFieldId,inputs);
-        } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("Telephone")) {
-            String telephoneNumber = inputTelephoneNumber(pojo,strFieldId);
-            hro.setTextToHro(pojo,strFieldId,telephoneNumber);
+        lookForTheField(pojo, strFieldId);
+        if (CheckboxObject.strFormatRegex != null && CheckboxObject.strFormatRegex.equalsIgnoreCase(emailRegEx)) {
+            String email = emailAddressInputs(pojo, CheckboxObject.strFieldId);
+            hro.setTextToHro(pojo, strFieldId, email);
+        } else {
+
+            String inputs = "";
+            boolean flag = false;
+            if (CheckboxObject.strFormatRegex != null) {
+                inputs = FormatRegex.generateFormattedString(CheckboxObject.strFormatRegex);
+                if (!inputs.equalsIgnoreCase("")) {
+                    hro.setTextToHro(pojo, strFieldId, inputs);
+                    flag = true;
+                }
+            }
+
+            if (CheckboxObject.strFormatMask != null && flag != true) {
+                inputs = FormatMask.formatDateTime(CheckboxObject.strFormatMask);
+                if (inputs != null) {
+                    hro.setTextToHro(pojo, strFieldId, inputs);
+                    flag = true;
+                }
+            }
+            if(flag!=true&&CheckboxObject.strFormatRegex!=null){
+                FormatRegex.RegexType regex = FormatRegex.getRegexType(CheckboxObject.strFormatRegex);
+                if(regex.equals(FormatRegex.RegexType.ONLY_NUMBERS)){
+                    inputs = hro.numericInputs(pojo,strFieldId, InputLimitExtractor.extractInputLimit(CheckboxObject.strFormatRegex));
+                    hro.setTextToHro(pojo, strFieldId, inputs);
+                } else if (regex.equals(FormatRegex.RegexType.ALPHANUMERIC)) {
+                    inputs = hro.alphaNumericInputs(pojo,strFieldId,InputLimitExtractor.extractInputLimit(CheckboxObject.strFormatRegex));
+                    hro.setTextToHro(pojo, strFieldId, inputs);
+                }else if (regex.equals(FormatRegex.RegexType.ONLY_LETTERS)) {
+                    inputs =  hro.alphaInputs(pojo,strFieldId,InputLimitExtractor.extractInputLimit(CheckboxObject.strFormatRegex));
+                    hro.setTextToHro(pojo, strFieldId, inputs);
+                }
+            }else if(flag!=true){
+                if(CheckboxObject.strDataTypeNew.equalsIgnoreCase("NUMERIC")){
+                    inputs = hro.numericInputs(pojo,strFieldId,3);
+                    hro.setTextToHro(pojo, strFieldId, inputs);
+                } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("ALPHA_NUMERIC")) {
+                    inputs = hro.alphaNumericInputs(pojo,strFieldId,3);
+                    hro.setTextToHro(pojo, strFieldId, inputs);
+                }
+            }
         }
+
+
+
+
+
+
+
+
+
+//        String inputs;
+//        if(CheckboxObject.strDataTypeNew.equalsIgnoreCase("NUMERIC")){
+//            inputs = hro.numericInputs(pojo,strFieldId, hro.identifyMaximumInputsByFieldId());
+//            hro.setTextToHro(pojo,strFieldId,inputs);
+//        } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("ALPHA_NUMERIC")) {
+//            FormatRegex.RegexType strDataType = FormatRegex.getRegexType(CheckboxObject.strFormatRegex);
+//            if(strDataType.equals(FormatRegex.RegexType.ONLY_LETTERS)){
+//                inputs = hro.alphaInputs(pojo,strFieldId, hro.identifyMaximumInputsByFieldId());
+//                hro.setTextToHro(pojo,strFieldId,inputs);
+//            }else{
+//                inputs = hro.alphaNumericInputs(pojo,strFieldId, hro.identifyMaximumInputsByFieldId());
+//                hro.setTextToHro(pojo,strFieldId,inputs);
+//            }
+//        }else if(CheckboxObject.strDataTypeNew.equalsIgnoreCase("DATE_TIME")){
+//            inputs = hro.dateTimeInputs(pojo,strFieldId);
+//            hro.setTextToHro(pojo,strFieldId,inputs);
+//        } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("Telephone")) {
+//            String telephoneNumber = inputTelephoneNumber(pojo,strFieldId);
+//            hro.setTextToHro(pojo,strFieldId,telephoneNumber);
+//        }
     }
 
     public void miaInputs(FormContentPojo pojo,String strFieldId) throws ParseException {
-        if(mia.miaDataType().equalsIgnoreCase("NUMERIC")){
-            mia.numericInputs(pojo,strFieldId);
-        } else if (mia.miaDataType().equalsIgnoreCase("ALPHA_NUMERIC")) {
-            mia.alphaNumericInputs(pojo,strFieldId);
-        }else if (mia.miaDataType().equalsIgnoreCase("ALPHA")) {
-            mia.alphaInputs(pojo,strFieldId);
-        }else if(mia.miaDataType().equalsIgnoreCase("DATE_TIME")){
-            mia.dateTimeInputs(pojo,strFieldId);
-        } else if (mia.miaDataType().equalsIgnoreCase("Telephone")) {
-            String telephoneNumber = inputTelephoneNumber(pojo,strFieldId);
-            mia.setTextToMia(pojo,strFieldId,telephoneNumber);
+        lookForTheField(pojo, strFieldId);
+        if (CheckboxObject.strFormatRegex != null && CheckboxObject.strFormatRegex.equalsIgnoreCase(emailRegEx)) {
+            String email = emailAddressInputs(pojo, CheckboxObject.strFieldId);
+            mia.setTextToMia(pojo, strFieldId, email);
+        } else {
+
+            String inputs = "";
+            boolean flag = false;
+            if (CheckboxObject.strFormatRegex != null) {
+                inputs = FormatRegex.generateFormattedString(CheckboxObject.strFormatRegex);
+                if (!inputs.equalsIgnoreCase("")) {
+                    mia.setTextToMia(pojo, strFieldId, inputs);
+                    flag = true;
+                }
+            }
+
+            if (CheckboxObject.strFormatMask != null && flag != true) {
+                inputs = FormatMask.formatDateTime(CheckboxObject.strFormatMask);
+                if (inputs != null) {
+                    mia.setTextToMia(pojo, strFieldId, inputs);
+                    flag = true;
+                }
+            }
+            if(flag!=true){
+                if(mia.miaDataType().equalsIgnoreCase("NUMERIC")){
+                    mia.numericInputs(pojo,strFieldId);
+                } else if (mia.miaDataType().equalsIgnoreCase("ALPHA_NUMERIC")) {
+                    mia.alphaNumericInputs(pojo,strFieldId);
+                }else if (mia.miaDataType().equalsIgnoreCase("ALPHA")) {
+                    mia.alphaInputs(pojo,strFieldId);
+                }
+            }
         }
     }
+
 
     public void picklistInputs(FormContentPojo pojo,String strFieldId) throws ParseException {
         mia.addWithinMinimumMaximumOptions(pojo,CheckboxObject.minimum,strFieldId);
@@ -1987,16 +2147,13 @@ public class CheckBoxPage extends BasePage{
                 if(hiddenCheckBox!=0){
                     hasValue =  adjustHasValueForHiddenFields(hasValue,hiddenCheckBox);
                 }
-                clickSpecificRadioButton(pojo,whenFieldId,hasValue);
-                lookForTheField(pojo,fieldId);
-                if(typeName.equalsIgnoreCase("TickboxGroup")){
-                    checkboxEnabledDisabledValidation(fieldIdElementId,action,pojo);
-                } else if (typeName.equalsIgnoreCase("HandwritingRecognitionObject")) {
-                    checkboxEnabledDisabledValidationForHandwritingRecognitionObject(fieldIdElementId,action,pojo);
-                }else if(typeName.equalsIgnoreCase("ManualImageAreaText")){
-                    checkboxEnabledDisabledValidationForMia(fieldIdElementId,action,pojo);
+                if(CheckboxMatrix.isFieldIdCheckBoxMatrix(pojo,whenFieldId)){
+                    CheckboxMatrix.clickSpecificRadioButtonForEnableDisableFields(pojo,whenFieldId,hasValue);
+                }else{
+                    clickSpecificRadioButtonForEnableDisableFields(pojo,whenFieldElementId,hasValue);
                 }
-                //include here the validation of the fields
+                lookForTheField(pojo,fieldId);
+                assertEnableDisableFields(pojo,typeName, fieldIdElementId,action);
                 if(action.equalsIgnoreCase("disable")){
                     lookForTheField(pojo,whenFieldId);
                     clickSpecificRadioButtonAlreadyClicked(whenFieldElementId,hasValue);
@@ -2008,39 +2165,24 @@ public class CheckBoxPage extends BasePage{
                 x = 1;
             }
         }
-        if(!CheckboxObject.isEnableDisabledFields){
-            if(hro.isFieldIdHro(pojo,CheckboxObject.strFieldId)&&CheckboxObject.strFormatRegex!=null){
-                lookForTheField(pojo,CheckboxObject.strFieldId);
-                String inputs;
-                if(CheckboxObject.strDataTypeNew.equalsIgnoreCase("NUMERIC")){
-                    inputs = hro.alphaInputs(pojo,CheckboxObject.strFieldId, hro.identifyMaximumInputsByFieldId());
-                    hro.setTextToHro(pojo,CheckboxObject.strFieldId,inputs);
-                    hro.assertHroValidationMessageNumeric(pojo,CheckboxObject.strFieldId);
-                } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("ALPHA_NUMERIC")) {
-                    inputs = hro.specialCharacterInputs(pojo,CheckboxObject.strFieldId);
-                    hro.setTextToHro(pojo,CheckboxObject.strFieldId,inputs);
-                    hro.assertHroValidationMessageAlphaNumeric(pojo,CheckboxObject.strFieldId);
-                }else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("ALPHA")) {
-                    inputs = hro.numericInputs(pojo,CheckboxObject.strFieldId, hro.identifyMaximumInputsByFieldId());
-                    hro.setTextToHro(pojo,CheckboxObject.strFieldId,inputs);
-                    hro.assertHroValidationMessageAlphabet(pojo,CheckboxObject.strFieldId);
-                }
-            }else if(isFieldIdCheckBox(pojo,CheckboxObject.strFieldId)){
-                if(CheckboxObject.isMandatoryFieldTest){
-                    AssertMandatoryFieldsWithInputs(pojo,CheckboxObject.strFieldId);
-                } else if(CheckboxObject.lessThanMinimumInputs){
-                    assertLessThanMinimumInput(pojo,CheckboxObject.strFieldId);
-                }else if(CheckboxObject.withinMinimumInputs){
-                    assertWithinMinimumInput(pojo,CheckboxObject.strFieldId);
-                }else if (CheckboxObject.withinMaximumInputs){
-                    assertWithinMaximumInput(pojo,CheckboxObject.strFieldId);
-                }else if (CheckboxObject.beyondMaximumInputs){
-                    assertBeyondMaximumInput(pojo,CheckboxObject.strFieldId);
-                }else if(CheckboxObject.minimumConfig){
-                    assertMinimumConfig(pojo,CheckboxObject.strFieldId);
-                }else if(CheckboxObject.withinMinimumMaximumInputs){
-                    assertWithinMinimumMaximumInput(pojo,CheckboxObject.strFieldId);
-                }
+    }
+
+    public void validateCheckBoxRules(FormContentPojo pojo)throws Exception{
+        if(isFieldIdCheckBox(pojo,CheckboxObject.strFieldId)){
+            if(CheckboxObject.isMandatoryFieldTest){
+                AssertMandatoryFieldsWithInputs(pojo,CheckboxObject.strFieldId);
+            } else if(CheckboxObject.lessThanMinimumInputs){
+                assertLessThanMinimumInput(pojo,CheckboxObject.strFieldId);
+            }else if(CheckboxObject.withinMinimumInputs){
+                assertWithinMinimumInput(pojo,CheckboxObject.strFieldId);
+            }else if (CheckboxObject.withinMaximumInputs){
+                assertWithinMaximumInput(pojo,CheckboxObject.strFieldId);
+            }else if (CheckboxObject.beyondMaximumInputs){
+                assertBeyondMaximumInput(pojo,CheckboxObject.strFieldId);
+            }else if(CheckboxObject.minimumConfig){
+                assertMinimumConfig(pojo,CheckboxObject.strFieldId);
+            }else if(CheckboxObject.withinMinimumMaximumInputs){
+                assertWithinMinimumMaximumInput(pojo,CheckboxObject.strFieldId);
             }
         }
     }

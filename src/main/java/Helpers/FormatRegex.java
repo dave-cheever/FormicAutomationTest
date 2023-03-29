@@ -29,5 +29,45 @@ public class FormatRegex {
         }
         return "";
     }
+
+    public enum RegexType {
+        ONLY_LETTERS,
+        ONLY_NUMBERS,
+        ALPHANUMERIC,
+        OTHER
+    }
+
+    public static RegexType getRegexType(String formatRegex) {
+        String testLetters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String testNumbers = "0123456789";
+
+        Pattern pattern = Pattern.compile(formatRegex);
+        boolean matchesLetters = false;
+        boolean matchesNumbers = false;
+
+        for (char c : testLetters.toCharArray()) {
+            if (pattern.matcher(Character.toString(c)).matches()) {
+                matchesLetters = true;
+                break;
+            }
+        }
+
+        for (char c : testNumbers.toCharArray()) {
+            if (pattern.matcher(Character.toString(c)).matches()) {
+                matchesNumbers = true;
+                break;
+            }
+        }
+
+        if (matchesLetters && matchesNumbers) {
+            return RegexType.ALPHANUMERIC;
+        } else if (matchesLetters) {
+            return RegexType.ONLY_LETTERS;
+        } else if (matchesNumbers) {
+            return RegexType.ONLY_NUMBERS;
+        } else {
+            return RegexType.OTHER;
+        }
+    }
 }
 
