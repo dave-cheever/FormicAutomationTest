@@ -9,7 +9,6 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.NoSuchElementException;
 import org.testng.Assert;
 import org.testng.Reporter;
-import org.tukaani.xz.check.Check;
 
 import java.text.ParseException;
 import java.util.*;
@@ -70,11 +69,10 @@ public class CheckBoxPage extends BasePage{
     public void validateCheckboxMandatory() throws Exception {
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
-        getFieldItems(graphResponse);
+        getAllFieldId(graphResponse);
         sideMenuNavigation.clickSubmitButton();
         for (String fieldId: CheckboxObject.fieldId
         ) {
-            //da0ed11dfc2a42b1a6dc58ab9ad69539
             CheckboxObject.strFieldId = fieldId;
             CheckboxObject.isMandatoryFieldTest = true;
             if(getFieldItemRules(graphResponse, fieldId)&&!isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
@@ -226,8 +224,6 @@ public class CheckBoxPage extends BasePage{
                 if(isFieldIdInRoutingRules(graphResponse,fieldId)){
                     //meaning this fieldId maybe disabled, and we need to enable it.
                     System.out.println(name+ " Needs to check if it's disabled");
-                    //0ffbce696d084e91a3076b4a5e7c4969
-                    //0659a893463c49c9af85256bbea48f35
                     checkListOfConditions(graphResponse,fieldId);
                     if(CheckboxMatrix.isFieldIdCheckBoxMatrix(graphResponse,fieldId)){
                         CheckboxMatrix.assertWithinMinimumInput(graphResponse, fieldId);
@@ -284,7 +280,7 @@ public class CheckBoxPage extends BasePage{
     public void hroFormatValidation() throws Exception {
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
-        getFieldItemsHro(graphResponse);
+        getFieldIdHro(graphResponse);
         Reporter.log("Click submit button to show all required field validation message.");
         sideMenuNavigation.clickSubmitButton();
         for (String fieldId: CheckboxObject.fieldId
@@ -378,7 +374,7 @@ public class CheckBoxPage extends BasePage{
     public void miaFormatValidation() throws Exception {
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
-        getFieldItemsMia(graphResponse);
+        getFieldIdMia(graphResponse);
         Reporter.log("Click submit button to show all required field validation message.");
         sideMenuNavigation.clickSubmitButton();
         for (String fieldId: CheckboxObject.fieldId
@@ -403,7 +399,7 @@ public class CheckBoxPage extends BasePage{
     public void hroMaximumInputsValidation() throws Exception {
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse = rules.getRules(projectId);
-        getFieldItemsHro(graphResponse);
+        getFieldIdHro(graphResponse);
         sideMenuNavigation.clickSubmitButton();
         for (String fieldId : CheckboxObject.fieldId
         ) {
@@ -487,7 +483,7 @@ public class CheckBoxPage extends BasePage{
     public void miaMandatoryValidation() throws Exception {
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
-        getFieldItemsMia(graphResponse);
+        getFieldIdMia(graphResponse);
         Reporter.log("Click submit button to show all required field validation message.");
         sideMenuNavigation.clickSubmitButton();
         for (String fieldId: CheckboxObject.fieldId
@@ -516,7 +512,7 @@ public class CheckBoxPage extends BasePage{
     public void miaPicklistLessThanMinimumInputs() throws Exception {
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
-        getFieldItemsPicklist(graphResponse);
+        getFieldIdPicklist(graphResponse);
         Reporter.log("Click submit button to show all required field validation message.");
         sideMenuNavigation.clickSubmitButton();
         for (String fieldId: CheckboxObject.fieldId
@@ -550,7 +546,7 @@ public class CheckBoxPage extends BasePage{
     public void miaPicklistMoreThanMaximumInputs() throws Exception {
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
-        getFieldItemsPicklist(graphResponse);
+        getFieldIdPicklist(graphResponse);
         Reporter.log("Click submit button to show all required field validation message.");
         sideMenuNavigation.clickSubmitButton();
         for (String fieldId: CheckboxObject.fieldId
@@ -583,7 +579,7 @@ public class CheckBoxPage extends BasePage{
     public void miaPicklistWithinMinimumMaximumInputs() throws Exception {
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
-        getFieldItemsPicklist(graphResponse);
+        getFieldIdPicklist(graphResponse);
         Reporter.log("Click submit button to show all required field validation message.");
         sideMenuNavigation.clickSubmitButton();
         for (String fieldId: CheckboxObject.fieldId
@@ -831,184 +827,6 @@ public class CheckBoxPage extends BasePage{
         }
     }
 
-    public String getProjectReceipt(){
-        try{
-            String test = "//h2[contains(text(),'Complete')]/ancestor::main/p[contains(text(),'You can use the following receipt to recall this particular form at a later date.')]";
-            WebElement elem = stringToWebElement(test);
-            String text = elem.getText();
-            String [] strReceipt;
-            strReceipt = text.split(". ");
-            return strReceipt[15];
-        }catch (NoSuchElementException e){
-            Reporter.log("Receipt not visible. "+e);
-//            recordScreenshot();
-            return "";
-        }
-    }
-
-
-    public String getProjectReceiptSave(){
-        try{
-            String test = "//h2[contains(text(),'Saved')]/ancestor::main/p[contains(text(),'You can use the following receipt to recall this particular form at a later date.')]";
-            WebElement elem = stringToWebElement(test);
-            String text = elem.getText();
-            String [] strReceipt;
-            strReceipt = text.split(". ");
-            return strReceipt[15];
-        }catch (NoSuchElementException e){
-            Reporter.log("Receipt not visible. "+e);
-//            recordScreenshot();
-            return "";
-        }
-    }
-
-    public void clickContinueButton(){
-        try{
-            String continueBtn = "//button[text()='Continue']";
-            WebElement element = stringToWebElement(continueBtn);
-            click(element);
-        }catch(Exception e){
-//            recordScreenshot();
-            Reporter.log("Continue button missing. "+e);
-        }
-    }
-
-    public void clickSavedFormsButton(){
-        try{
-            String continueBtn = "//span[text()='Saved Forms']";
-            WebElement element = stringToWebElement(continueBtn);
-            click(element);
-        }catch (NoSuchElementException e){
-            Reporter.log("Save forms button not visible.");
-        }
-
-    }
-
-    public void enterReceiptNumber(String strReceipt){
-        String strReceiptNumber = "//input[@id='receipt-entry-input']";
-        WebElement element = stringToWebElement(strReceiptNumber);
-        enterText(element,strReceipt);
-    }
-
-    public void clickGoButton(){
-        String strGoButton = "//button[text()='Go']";
-        try{
-            WebElement element = stringToWebElement(strGoButton);
-            click(element);
-        }catch (NoSuchElementException e){
-            Reporter.log("Go button not visible. " + e);
-//            recordScreenshot();
-        }
-    }
-
-    public void assertLessThanMinimumInput(FormContentPojo pojo, String strFieldId) {
-        String elementId = getObjectIdFromFieldId(pojo,strFieldId);
-        lookForTheField(pojo,strFieldId);
-        int numberOfItems = countCheckboxItems(elementId);
-        int numberOfInputs = clickLessThanMinimumInput(CheckboxObject.minimum,elementId,numberOfItems);
-        if(CheckboxObject.minimum==1&&numberOfInputs==1||numberOfInputs==0){
-            assertRequiredField(elementId,CheckboxObject.checkboxName);
-        }else{
-            assertRequiresMinimumOf(CheckboxObject.checkboxName,elementId,CheckboxObject.minimum);
-        }
-    }
-
-    public void assertWithinMinimumInput(FormContentPojo pojo, String strFieldId) throws Exception {
-        String elementId = getObjectIdFromFieldId(pojo,strFieldId);
-        lookForTheField(pojo,strFieldId);
-        int numberOfItems = countCheckboxItems(elementId);
-        clickWithinMinimumInput(CheckboxObject.minimum,elementId,numberOfItems);
-        if(CheckboxObject.mandatory){
-            AssertMandatoryFieldsWithInputs(pojo,strFieldId);
-        }else{
-            assertWithinAcceptedInputs(CheckboxObject.checkboxName,elementId);
-        }
-    }
-
-    public static void assertWithinMinimumMaximumInput(FormContentPojo pojo, String strFieldId) throws Exception {
-        String elementId = getObjectIdFromFieldId(pojo,strFieldId);
-        lookForTheField(pojo,strFieldId);
-        if(hro.isFieldIdHro(pojo,strFieldId)){
-            String inputs = "";
-            if(Objects.requireNonNull(CheckboxObject.strDataTypeNew).equalsIgnoreCase("NUMERIC")){
-                inputs = numericInputs(pojo,strFieldId,hro.identifyMaximumInputsByFieldId());
-                hro.setTextToHro(pojo,strFieldId,inputs);
-            } else if (Objects.requireNonNull(CheckboxObject.strDataTypeNew).equalsIgnoreCase("ALPHA_NUMERIC")) {
-                inputs = alphaNumericInputs(pojo,strFieldId, hro.identifyMaximumInputsByFieldId());
-                hro.setTextToHro(pojo,strFieldId,inputs);
-            }else if (Objects.requireNonNull(CheckboxObject.strDataTypeNew).equalsIgnoreCase("ALPHA")) {
-                inputs = alphaInputs(pojo,strFieldId, hro.identifyMaximumInputsByFieldId());
-                hro.setTextToHro(pojo,strFieldId,inputs);
-            }
-        }else if(isFieldIdCheckBox(pojo,strFieldId)){
-            if(CheckboxMatrix.isFieldIdCheckBoxMatrix(pojo,strFieldId)){
-                ArrayList<String> numberOfOptions = CheckboxMatrix.checkboxMatrixOptionsCount(pojo,strFieldId);
-                String strElementId = getObjectIdFromFieldId(pojo,strFieldId);
-                int numberOfItems = CheckboxMatrix.countNumberOfResponses(strElementId,numberOfOptions.size());
-                CheckboxMatrix.clickWithinMinimumMaximumInput(pojo,CheckboxObject.minimum,CheckboxObject.maximum,numberOfOptions,numberOfItems);
-            }else{
-                int numberOfItems = countCheckboxItems(elementId);
-                clickWithinMinimumMaximumInput(pojo,CheckboxObject.minimum,CheckboxObject.maximum,elementId,numberOfItems);
-            }
-        }else if(mia.isFieldIdMia(pojo,CheckboxObject.strFieldId)){
-            mia.setTextToMia(pojo,CheckboxObject.strFieldId,"test");
-        }
-
-        if(CheckboxObject.mandatory){
-            AssertMandatoryFieldsWithInputs(pojo,strFieldId);
-        }else{
-            assertWithinAcceptedInputs(CheckboxObject.checkboxName,elementId);
-        }
-    }
-
-    public void assertBeyondMaximumInput(FormContentPojo pojo, String strFieldId) throws Exception {
-        String elementId = getObjectIdFromFieldId(pojo,strFieldId);
-        lookForTheField(pojo,strFieldId);
-        int numberOfItems = countCheckboxItems(elementId);
-        clickBeyondMaximumInput(pojo,CheckboxObject.maximum,strFieldId,numberOfItems);
-        if(CheckboxObject.mandatory){
-            AssertMandatoryFieldsWithInputs(pojo,strFieldId);
-        }else{
-            assertWithinAcceptedInputs(CheckboxObject.checkboxName,elementId);
-        }
-    }
-
-    public void assertWithinMaximumInput(FormContentPojo pojo, String strFieldId) throws Exception {
-        String elementId = getObjectIdFromFieldId(pojo,strFieldId);
-        lookForTheField(pojo,strFieldId);
-        int numberOfItems = countCheckboxItems(elementId);
-        clickWithinMaximumInput(pojo,CheckboxObject.maximum,strFieldId,numberOfItems);
-        if(CheckboxObject.mandatory){
-            AssertMandatoryFieldsWithInputs(pojo,strFieldId);
-        }else{
-            assertWithinAcceptedInputs(CheckboxObject.checkboxName,elementId);
-        }
-    }
-
-    public void assertMinimumConfig(FormContentPojo pojo, String strFieldId) {
-        String elementId = getObjectIdFromFieldId(pojo,strFieldId);
-        lookForTheField(pojo,strFieldId);
-        if(CheckboxObject.minimum==1){
-            assertRequiredField(elementId,CheckboxObject.checkboxName);
-        }else {
-            assertMinimumConfigNoInputs(elementId,CheckboxObject.checkboxName,CheckboxObject.minimum);
-        }
-    }
-
-    public boolean getCheckboxRulesForMandatory(FormContentPojo pojo, String strFieldId){
-        for (Pojo.Field fields: pojo.data.project.getFields()
-        ) {
-            if(fields.getGuidId().equalsIgnoreCase(strFieldId)){
-                if(fields.getResponses()!=null&& fields.getMandatory()){
-                    CheckboxObject.mandatory = fields.getMandatory();
-                    CheckboxObject.checkboxName = fields.getName();
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
     public boolean getFieldItemRules(FormContentPojo pojo, String strFieldId){
         for (Pojo.Field fields: pojo.data.project.getFields()
         ) {
@@ -1078,53 +896,6 @@ public class CheckBoxPage extends BasePage{
         return numberOfElements;
     }
 
-    public static void assertWithinAcceptedInputs(String strName, String strObjectElementId){
-        String elemValidationMessage = stringReplace(newValidationMessageUponSubmit,strObjectElementId);
-        String elemCompilationErrors = stringReplace(validationMessageUponSubmitSideBar,strObjectElementId);
-        Assert.assertFalse(isElementVisible(driver,elemValidationMessage),"The expected for : "+strName + " There shouldn't be any validation message displayed below the object.");
-        Assert.assertFalse(isElementVisible(driver,elemCompilationErrors),"The expected for: "+strName + "Completion Errors isn't displayed. The actual is Completion errors is displayed.");
-        Reporter.log("There shouldn't be any validation message displayed below the field: "+ strName);
-        CheckboxObject.checkboxObjectDefaultValue();
-    }
-
-    public void assertMinimumConfigNoInputs(String strObjectElementId, String name, Integer minimumInput){
-        WebElement ValidationMessageSideMenu = stringReplaceAndConvertToWebElement(validationMessageUponSubmitSideBar, name);
-        scrollElementIntoView(driver,ValidationMessageSideMenu);
-        WebElement validationMessageUnderCheckbox = stringReplaceAndConvertToWebElement(validationMessageLocator,strObjectElementId);
-        Assert.assertEquals(validationMessageUnderCheckbox.getText(),"This field requires a minimum of "+minimumInput+" responses.","The expected value is : This field requires a minimum of "+minimumInput+" responses. but the actual message is "+validationMessageUnderCheckbox.getText());
-        Assert.assertEquals(ValidationMessageSideMenu.getText(),"This field requires a minimum of "+minimumInput+" responses.","The expected value is : This field requires a minimum of "+minimumInput+" responses. but the actual message is "+validationMessageUnderCheckbox.getText());
-        CheckboxObject.checkboxObjectDefaultValue();
-    }
-
-    public static void assertRequiredField(String strObjectElementId, String name){
-        comp.validateCompletionErrorMessage(name,"Required field.");
-        WebElement validationMessageUnderCheckbox = stringReplaceAndConvertToWebElement(validationMessageLocator,strObjectElementId);
-        scrollElementIntoView(driver,validationMessageUnderCheckbox);
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("window.scrollBy(0,350)", "");
-        Assert.assertEquals(validationMessageUnderCheckbox.getText(),"Required field.","The expected value is : Required field. "+validationMessageUnderCheckbox.getText());
-        CheckboxObject.checkboxObjectDefaultValue();
-    }
-
-    public static void assertThisFieldIsMandatory(String strObjectElementId, String name){
-        WebElement validationMessageUnderCheckbox = stringReplaceAndConvertToWebElement(mandatoryFieldMessageLocator,strObjectElementId);
-        scrollElementIntoView(driver,validationMessageUnderCheckbox);
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("window.scrollBy(0,350)", "");
-        Assert.assertEquals(validationMessageUnderCheckbox.getText(),"This field is mandatory.","The expected value is : This field is mandatory. "+validationMessageUnderCheckbox.getText());
-        CheckboxObject.checkboxObjectDefaultValue();
-    }
-
-
-    public void assertRequiresMinimumOf(String name,String strObjectElementID, int minNumberOfInputs){
-        WebElement ValidationMessageSideMenu = stringReplaceAndConvertToWebElement(validationMessageUponSubmitSideBar, name);
-        scrollElementIntoView(driver,ValidationMessageSideMenu);
-        WebElement validationMessageUnderCheckbox = stringReplaceAndConvertToWebElement(newValidationMessageUponSubmit,strObjectElementID);
-        Assert.assertEquals(validationMessageUnderCheckbox.getText(),"This field requires a minimum of "+minNumberOfInputs+" responses.","The expected value is : This field requires a minimum of "+minNumberOfInputs+" responses. but the actual message is "+validationMessageUnderCheckbox.getText());
-        Assert.assertEquals(ValidationMessageSideMenu.getText(),"This field requires a minimum of "+minNumberOfInputs+" responses.","The expected value is : This field requires a minimum of "+minNumberOfInputs+" responses. but the actual message is "+validationMessageUnderCheckbox.getText());
-        CheckboxObject.checkboxObjectDefaultValue();
-    }
-
     public boolean isFieldIdInRoutingRules(FormContentPojo pojo, String strFieldId){
         boolean result = false;
         loopBreak:
@@ -1163,87 +934,6 @@ public class CheckBoxPage extends BasePage{
             }
         }
         return result;
-    }
-
-    public static void AssertMandatoryFieldsWithInputs(FormContentPojo pojo, String strFieldId) throws Exception {
-        lookForTheField(pojo,strFieldId);
-        String elementId = getObjectIdFromFieldId(pojo,strFieldId);
-        String element;
-        if(mia.isFieldIdPickList(pojo,strFieldId)||mia.isFieldIdMia(pojo,strFieldId)){
-             element = stringReplace(mandatoryFieldMessagePickListLocator,elementId);
-        }else{
-             element = stringReplace(mandatoryFieldMessageLocator,elementId);
-        }
-        WebElement validationMessageLocator = stringToWebElement(element);
-        scrollElementIntoView(driver,validationMessageLocator);
-        String fieldName = getFieldName(pojo,strFieldId);
-        Assert.assertEquals(validationMessageLocator.getText(),"This field is mandatory.", fieldName+"The expected validation message for "+fieldName+" was: This field is mandatory. but the actual message was: "+validationMessageLocator.getText());
-        Reporter.log("<b>Checkbox Name: <b/>"+fieldName+" <b>is mandatory. <b/>",true);
-        CheckboxObject.checkboxObjectDefaultValue();
-    }
-
-    public static void AssertMandatoryFieldsWithoutInputs(FormContentPojo pojo, String strFieldId) throws Exception {
-        lookForTheField(pojo,strFieldId);
-        if(mia.isFieldIdPickList(pojo,strFieldId)||mia.isFieldIdMia(pojo,strFieldId)){
-            if(CheckboxObject.minimum==1||CheckboxObject.minimum==0){
-                mia.assertMiaMandatoryField(pojo,strFieldId);
-            }
-        }else if (isFieldIdCheckBox(pojo,strFieldId)){
-            if(CheckboxObject.minimum==1||CheckboxObject.minimum==0) {
-                if(CheckboxMatrix.isFieldIdCheckBoxMatrix(pojo,strFieldId)){
-                    if(CheckboxMatrix.isCheckboxMatrixFieldNotChecked(pojo,strFieldId)){
-                        CheckboxMatrix.assertRequiredField(pojo,getObjectIdFromFieldId(pojo,strFieldId),getFieldName(pojo,strFieldId));
-                    }else {
-                        CheckboxMatrix.assertThisFieldIsMandatory(pojo,getObjectIdFromFieldId(pojo,strFieldId),getFieldName(pojo,strFieldId));
-                    }
-                }else{
-                    if(isCheckboxFieldNotChecked(pojo,strFieldId)){
-                        assertRequiredField(getObjectIdFromFieldId(pojo,strFieldId),getFieldName(pojo,strFieldId));
-                    }else{
-                        assertThisFieldIsMandatory(getObjectIdFromFieldId(pojo,strFieldId),strFieldId);
-                    }
-                }
-            }
-        } else if (hro.isFieldIdHro(pojo,strFieldId)) {
-            if(CheckboxObject.minimum==1||CheckboxObject.minimum==0) {
-                hro.assertHroMandatoryField(pojo, strFieldId);
-            }
-        }
-        String fieldName = getFieldName(pojo,strFieldId);
-        Reporter.log("<b>Checkbox Name: <b/>"+fieldName+" <b>is mandatory. <b/>",true);
-        CheckboxObject.checkboxObjectDefaultValue();
-    }
-
-    public void assertCheckboxMandatoryField(FormContentPojo pojo, String strFieldId){
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        String elementId = getObjectIdFromFieldId(pojo,strFieldId);
-        String fieldName = getFieldName(pojo,strFieldId);
-        lookForTheField(pojo,strFieldId);
-        if(CheckboxObject.mandatory){
-            if (isFieldIdCheckBox(pojo,strFieldId)){
-                if(CheckboxObject.minimum==1||CheckboxObject.minimum==0) {
-                    if(CheckboxMatrix.isFieldIdCheckBoxMatrix(pojo,strFieldId)){
-                        if(CheckboxMatrix.isCheckboxMatrixFieldNotChecked(pojo,strFieldId)){
-                            CheckboxMatrix.assertRequiredField(pojo,getObjectIdFromFieldId(pojo,strFieldId),getFieldName(pojo,strFieldId));
-                        }else {
-                            CheckboxMatrix.assertThisFieldIsMandatory(pojo,getObjectIdFromFieldId(pojo,strFieldId),getFieldName(pojo,strFieldId));
-                        }
-                    }else{
-                        if(isCheckboxFieldNotChecked(pojo,strFieldId)){
-                            assertRequiredField(getObjectIdFromFieldId(pojo,strFieldId),fieldName);
-                        }else{
-                            assertThisFieldIsMandatory(getObjectIdFromFieldId(pojo,strFieldId),strFieldId);
-                        }
-                    }
-                }
-            }
-            Reporter.log("<b>Checkbox Name: <b/>"+fieldName+" <b>is mandatory. <b/>",true);
-        }else {
-            String elementForValidation = stringReplace(validationMessageLocator,elementId);
-            Reporter.log("<b>No validation message should be displayed.</b>" );
-            Assert.assertTrue(driver.findElements(By.xpath(elementForValidation)).size()==0,"No validation message should be displayed for "+ fieldName +".");
-        }
-        CheckboxObject.checkboxObjectDefaultValue();
     }
 
     public static boolean isCheckboxFieldNotChecked(FormContentPojo pojo, String strFieldId){
@@ -1558,7 +1248,6 @@ public class CheckBoxPage extends BasePage{
         }
     }
 
-
     public void checkListOfConditions(FormContentPojo pojo, String strFieldId) throws Exception {
         String whenFieldElementId;
         String fieldIdElementId;
@@ -1628,38 +1317,6 @@ public class CheckBoxPage extends BasePage{
                             testFindTheWhenFieldThatDisablesTheFieldId(pojo,whenField);
                             validateListOfFieldsStackedSubmitNoInputs(pojo);
                             AssertMandatoryFieldsWithoutInputs(pojo,strFieldId);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    public void checkListOfConditionsHro(FormContentPojo pojo, String strFieldId) throws Exception {
-        String whenFieldElementId;
-        String fieldIdElementId;
-        outerLoop:
-        for (Pojo.Routing routing: pojo.data.project.getRouting()
-        ) {
-            for (Pojo.Condition conditions: routing.getConditions()
-            ) {
-                if(routing.getFieldId().equalsIgnoreCase(strFieldId)){
-                    fieldIdElementId = getObjectIdFromFieldId(pojo,strFieldId);
-                    if(fieldIdElementId!=null){
-                        String whenField = conditions.getWhenField();
-                        whenFieldElementId = getObjectIdFromFieldId(pojo,whenField);
-                        if(whenFieldElementId!=null&&conditions.getAction().equalsIgnoreCase("enable")){
-                            System.out.println(CheckboxObject.checkboxName+ " is enabled");
-                            String typeName = getTypeNameByFieldId(pojo,strFieldId);
-                            STACK.push(conditions.getAction());
-                            STACK.push(typeName);
-                            STACK.push(strFieldId);
-                            STACK.push(conditions.getHasValue());
-                            STACK.push(whenField);
-                            System.out.println("We now check if whenField: "+whenField+ " is enabled");
-                            testFindTheWhenFieldThatDisablesTheFieldId(pojo,whenField);
-                            validateListOfFieldsStackedHro(pojo);
-                            break outerLoop;
                         }
                     }
                 }
@@ -1838,26 +1495,6 @@ public class CheckBoxPage extends BasePage{
         }
     }
 
-    public void anotherValidation(FormContentPojo pojo)throws Exception{
-        if(!CheckboxObject.isEnableDisabledFields){
-            if(hro.isFieldIdHro(pojo,CheckboxObject.strFieldId)&&CheckboxObject.strFormatRegex!=null){
-                hroInputs(pojo,CheckboxObject.strFieldId);
-            }else if(isFieldIdCheckBox(pojo,CheckboxObject.strFieldId)){
-                if(CheckboxMatrix.isFieldIdCheckBoxMatrix(pojo,CheckboxObject.strFieldId)){
-                    CheckboxMatrix.assertCheckboxMinMaxMandatory(pojo,CheckboxObject.strFieldId);
-                }else{
-                    assertCheckboxMinMaxMandatory(pojo,CheckboxObject.strFieldId);
-                }
-            }else if(mia.isFieldIdMia(pojo,CheckboxObject.strFieldId)){
-                mia.setTextToMia(pojo,CheckboxObject.strFieldId,"test");
-                mia.assertMiaMandatoryField(pojo,CheckboxObject.strFieldId);
-            }else if(mia.isFieldIdPickList(pojo,CheckboxObject.strFieldId)){
-                mia.addWithinMinimumMaximumOptions(pojo,CheckboxObject.minimum,CheckboxObject.strFieldId);
-                mia.validateWithinMinimumMaximumRequired(pojo,CheckboxObject.strFieldId);
-            }
-        }
-    }
-
     public void validateListOfFieldsStackedSubmit(FormContentPojo pojo) throws Exception {
         String whenFieldId;
         String hasValue;
@@ -1949,53 +1586,6 @@ public class CheckBoxPage extends BasePage{
             }
         }
     }
-    //from validateListOfFieldsStackedSubmitNoInputs
-    // if(!CheckboxObject.isEnableDisabledFields){
-    //            if(hro.isFieldIdHro(pojo,CheckboxObject.strFieldId)&&CheckboxObject.strFormatRegex!=null){
-    //                hroInputs(pojo,CheckboxObject.strFieldId);
-    //            }else if(isFieldIdCheckBox(pojo,CheckboxObject.strFieldId)){
-    //                if(CheckboxMatrix.isFieldIdCheckBoxMatrix(pojo,CheckboxObject.strFieldId)){
-    //                    CheckboxMatrix.assertCheckboxMinMaxMandatory(pojo, CheckboxObject.strFieldId);
-    //                }else{
-    //                    assertCheckboxMinMaxMandatory(pojo,CheckboxObject.strFieldId);
-    //                }
-    //            }else if(mia.isFieldIdMia(pojo,CheckboxObject.strFieldId)){
-    //                mia.assertMiaMandatoryField(pojo,CheckboxObject.strFieldId);
-    //            }
-    //        }
-
-
-    public void assertEnableDisableFields(FormContentPojo pojo, String typeName, String strElementId, String action){
-        if(typeName.equalsIgnoreCase("TickboxGroup")){
-            if(CheckboxMatrix.isFieldIdCheckBoxMatrix(pojo,getFieldIdByObjectId(pojo,strElementId))){
-                CheckboxMatrix.checkboxEnabledDisabledValidation(getFieldIdByObjectId(pojo,strElementId),action,pojo);
-            }else{
-                checkboxEnabledDisabledValidation(strElementId,action,pojo);
-            }
-        } else if (typeName.equalsIgnoreCase("HandwritingRecognitionObject")) {
-            checkboxEnabledDisabledValidationForHandwritingRecognitionObject(strElementId,action,pojo);
-        }else if(typeName.equalsIgnoreCase("ManualImageAreaText")){
-            checkboxEnabledDisabledValidationForMia(strElementId,action,pojo);
-        }
-    }
-
-    public void assertCheckboxMinMaxMandatory(FormContentPojo pojo,String strFieldId) throws Exception {
-        if(CheckboxObject.isMandatoryFieldTest){
-            assertCheckboxMandatoryField(pojo,strFieldId);
-        } else if(CheckboxObject.lessThanMinimumInputs){
-            assertLessThanMinimumInput(pojo,strFieldId);
-        }else if(CheckboxObject.withinMinimumInputs){
-            assertWithinMinimumInput(pojo,strFieldId);
-        }else if (CheckboxObject.withinMaximumInputs){
-            assertWithinMaximumInput(pojo,strFieldId);
-        }else if (CheckboxObject.beyondMaximumInputs){
-            assertBeyondMaximumInput(pojo,strFieldId);
-        }else if(CheckboxObject.minimumConfig){
-            assertMinimumConfig(pojo,strFieldId);
-        }else if(CheckboxObject.withinMinimumMaximumInputs){
-            assertWithinMinimumMaximumInput(pojo,strFieldId);
-        }
-    }
 
     public void hroInputs(FormContentPojo pojo,String strFieldId) throws ParseException {
         lookForTheField(pojo, strFieldId);
@@ -2043,35 +1633,6 @@ public class CheckBoxPage extends BasePage{
                 }
             }
         }
-
-
-
-
-
-
-
-
-
-//        String inputs;
-//        if(CheckboxObject.strDataTypeNew.equalsIgnoreCase("NUMERIC")){
-//            inputs = hro.numericInputs(pojo,strFieldId, hro.identifyMaximumInputsByFieldId());
-//            hro.setTextToHro(pojo,strFieldId,inputs);
-//        } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("ALPHA_NUMERIC")) {
-//            FormatRegex.RegexType strDataType = FormatRegex.getRegexType(CheckboxObject.strFormatRegex);
-//            if(strDataType.equals(FormatRegex.RegexType.ONLY_LETTERS)){
-//                inputs = hro.alphaInputs(pojo,strFieldId, hro.identifyMaximumInputsByFieldId());
-//                hro.setTextToHro(pojo,strFieldId,inputs);
-//            }else{
-//                inputs = hro.alphaNumericInputs(pojo,strFieldId, hro.identifyMaximumInputsByFieldId());
-//                hro.setTextToHro(pojo,strFieldId,inputs);
-//            }
-//        }else if(CheckboxObject.strDataTypeNew.equalsIgnoreCase("DATE_TIME")){
-//            inputs = hro.dateTimeInputs(pojo,strFieldId);
-//            hro.setTextToHro(pojo,strFieldId,inputs);
-//        } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("Telephone")) {
-//            String telephoneNumber = inputTelephoneNumber(pojo,strFieldId);
-//            hro.setTextToHro(pojo,strFieldId,telephoneNumber);
-//        }
     }
 
     public void miaInputs(FormContentPojo pojo,String strFieldId) throws ParseException {
@@ -2120,71 +1681,6 @@ public class CheckBoxPage extends BasePage{
             optionsName.add(mia.getPicklistSelectedOptionsName(elementId,x+1));
         }
         mia.recordInputsFromPicklist(elementId,optionsName);
-    }
-
-    public void validateListOfFieldsStackedHro(FormContentPojo pojo) throws Exception {
-        String whenFieldId;
-        String hasValue;
-        String fieldId;
-        String typeName;
-        String action;
-        String whenFieldElementId;
-        String fieldIdElementId;
-        int hiddenCheckBox;
-        for(int x = 0; x < 1;){
-            if(!STACK.isEmpty()){
-                whenFieldId = STACK.pop();
-                hasValue = STACK.pop();
-                fieldId = STACK.pop();
-                typeName = STACK.pop();
-                action = STACK.pop();
-                whenFieldElementId = getObjectIdFromFieldId(pojo,whenFieldId);
-                fieldIdElementId = getObjectIdFromFieldId(pojo,fieldId);
-                System.out.println("In validation WhenfieldID: "+whenFieldId +" HasValue: "+ hasValue +" FieldId: "+fieldId+" typeName: "+ typeName+" Action: "+ action);
-                lookForTheField(pojo,whenFieldId);
-                hiddenCheckBox = identifyHiddenCheckBox(pojo,whenFieldId);
-                // This will adjust the hasValue when some checkbox is hidden
-                if(hiddenCheckBox!=0){
-                    hasValue =  adjustHasValueForHiddenFields(hasValue,hiddenCheckBox);
-                }
-                if(CheckboxMatrix.isFieldIdCheckBoxMatrix(pojo,whenFieldId)){
-                    CheckboxMatrix.clickSpecificRadioButtonForEnableDisableFields(pojo,whenFieldId,hasValue);
-                }else{
-                    clickSpecificRadioButtonForEnableDisableFields(pojo,whenFieldElementId,hasValue);
-                }
-                lookForTheField(pojo,fieldId);
-                assertEnableDisableFields(pojo,typeName, fieldIdElementId,action);
-                if(action.equalsIgnoreCase("disable")){
-                    lookForTheField(pojo,whenFieldId);
-                    clickSpecificRadioButtonAlreadyClicked(whenFieldElementId,hasValue);
-                    lookForTheField(pojo,fieldId);
-                }
-                System.out.println("___________________________________________________");
-            }
-            else {
-                x = 1;
-            }
-        }
-    }
-
-    public void validateCheckBoxRules(FormContentPojo pojo)throws Exception{
-        if(isFieldIdCheckBox(pojo,CheckboxObject.strFieldId)){
-            if(CheckboxObject.isMandatoryFieldTest){
-                AssertMandatoryFieldsWithInputs(pojo,CheckboxObject.strFieldId);
-            } else if(CheckboxObject.lessThanMinimumInputs){
-                assertLessThanMinimumInput(pojo,CheckboxObject.strFieldId);
-            }else if(CheckboxObject.withinMinimumInputs){
-                assertWithinMinimumInput(pojo,CheckboxObject.strFieldId);
-            }else if (CheckboxObject.withinMaximumInputs){
-                assertWithinMaximumInput(pojo,CheckboxObject.strFieldId);
-            }else if (CheckboxObject.beyondMaximumInputs){
-                assertBeyondMaximumInput(pojo,CheckboxObject.strFieldId);
-            }else if(CheckboxObject.minimumConfig){
-                assertMinimumConfig(pojo,CheckboxObject.strFieldId);
-            }else if(CheckboxObject.withinMinimumMaximumInputs){
-                assertWithinMinimumMaximumInput(pojo,CheckboxObject.strFieldId);
-            }
-        }
     }
 
     public String getElementName(FormContentPojo pojo, String strFieldId){
@@ -2252,21 +1748,6 @@ public class CheckBoxPage extends BasePage{
         }
     }
 
-    public void getFieldItems(FormContentPojo pojo){
-        for (Pojo.Routing routing: pojo.data.project.getRouting()
-        ) {
-            CheckboxObject.fieldId.add(routing.getFieldId());
-        }
-
-        for (Pojo.Field fields: pojo.data.project.getFields()
-        ) {
-            if(!skipSingleHiddenCheckbox(pojo,fields.getGuidId())){
-                CheckboxObject.fieldId.add(fields.getGuidId());
-            }
-        }
-        CheckboxObject.fieldId = removeDuplicates(CheckboxObject.fieldId);
-    }
-
     public void getCheckboxFieldItems(FormContentPojo pojo){
         for (var pages : pojo.data.project.getPages()
              ) {
@@ -2282,70 +1763,6 @@ public class CheckBoxPage extends BasePage{
                        }
                    }
                }
-            }
-        }
-    }
-
-    public void getFieldIFromGraphqlResult(FormContentPojo pojo){
-        for (Pojo.Page pages: pojo.data.project.getPages()
-        ) {
-            for (Pojo.Object object: pages.getObjects()
-                 ) {
-                if(object.getGuidId()!=null){
-                    if(object.getTypename().equalsIgnoreCase("HandwritingRecognitionObject")){
-                        CheckboxObject.fieldId.add(object.getFieldId());
-                    } else if (object.getTypename().equalsIgnoreCase("TickboxGroup")) {
-                        for (Pojo.SubQuestionField sub: object.getSubQuestionFields()){
-                            if(!skipSingleHiddenCheckbox(pojo,sub.getGuidId())){
-                                CheckboxObject.fieldId.add(sub.getGuidId());
-                            }
-                        }
-                    }else if (object.getTypename().equalsIgnoreCase("ManualImageAreaText")) {
-                        CheckboxObject.fieldId.add(object.getFieldId());
-                    }
-                }
-            }
-        }
-    }
-
-    public void getFieldItemsHro(FormContentPojo pojo){
-        for (Pojo.Page pages: pojo.data.project.getPages()
-        ) {
-            for (Pojo.Object object: pages.getObjects()
-            ) {
-                if(object.getGuidId()!=null){
-                    if(object.getTypename().equalsIgnoreCase("HandwritingRecognitionObject")){
-                        CheckboxObject.fieldId.add(object.getFieldId());
-                    }
-                }
-            }
-        }
-    }
-
-    public void getFieldItemsMia(FormContentPojo pojo){
-        for (Pojo.Page pages: pojo.data.project.getPages()
-        ) {
-            for (Pojo.Object object: pages.getObjects()
-            ) {
-                if(object.getGuidId()!=null){
-                    if(object.getTypename().equalsIgnoreCase("ManualImageAreaText")){
-                        CheckboxObject.fieldId.add(object.getFieldId());
-                    }
-                }
-            }
-        }
-    }
-
-    public void getFieldItemsPicklist(FormContentPojo pojo){
-        for (Pojo.Page pages: pojo.data.project.getPages()
-        ) {
-            for (Pojo.Object object: pages.getObjects()
-            ) {
-                if(object.getGuidId()!=null){
-                    if(object.getTypename().equalsIgnoreCase("PickList")){
-                        CheckboxObject.fieldId.add(object.getFieldId());
-                    }
-                }
             }
         }
     }
@@ -2444,6 +1861,91 @@ public class CheckBoxPage extends BasePage{
         }
     }
 
+
+
+    public String getListFieldNameByCompletionErrors(){
+        String fieldNames = "";
+        try{
+            int numberOfElements = driver.findElements(By.xpath(completionErrorsFieldNameList)).size();
+            for(int x = 1; x <= numberOfElements; x++){
+                String elem = stringReplace(completionErrorsFieldName,Integer.toString(x));
+                WebElement element = stringToWebElement(elem);
+                scrollElementIntoView(driver,element);
+                fieldNames = element.getText();
+                break;
+            }
+            return fieldNames;
+        }catch (Exception e){
+            Reporter.log("No more items in Completion errors.");
+            return null;
+        }
+    }
+
+    public void clickFieldNameInCompletionErrors(String strFieldName){
+        String elem = stringReplace(completionErrorsFieldNameButton,strFieldName);
+        WebElement element = stringToWebElement(elem);
+        element.click();
+    }
+
+    //#region getFieldIds for mia hro and picklist
+    public void getAllFieldId(FormContentPojo pojo){
+        for (Pojo.Routing routing: pojo.data.project.getRouting()
+        ) {
+            CheckboxObject.fieldId.add(routing.getFieldId());
+        }
+
+        for (Pojo.Field fields: pojo.data.project.getFields()
+        ) {
+            if(!skipSingleHiddenCheckbox(pojo,fields.getGuidId())){
+                CheckboxObject.fieldId.add(fields.getGuidId());
+            }
+        }
+        CheckboxObject.fieldId = removeDuplicates(CheckboxObject.fieldId);
+    }
+    public void getFieldIdHro(FormContentPojo pojo){
+        for (Pojo.Page pages: pojo.data.project.getPages()
+        ) {
+            for (Pojo.Object object: pages.getObjects()
+            ) {
+                if(object.getGuidId()!=null){
+                    if(object.getTypename().equalsIgnoreCase("HandwritingRecognitionObject")){
+                        CheckboxObject.fieldId.add(object.getFieldId());
+                    }
+                }
+            }
+        }
+    }
+
+    public void getFieldIdMia(FormContentPojo pojo){
+        for (Pojo.Page pages: pojo.data.project.getPages()
+        ) {
+            for (Pojo.Object object: pages.getObjects()
+            ) {
+                if(object.getGuidId()!=null){
+                    if(object.getTypename().equalsIgnoreCase("ManualImageAreaText")){
+                        CheckboxObject.fieldId.add(object.getFieldId());
+                    }
+                }
+            }
+        }
+    }
+
+    public void getFieldIdPicklist(FormContentPojo pojo){
+        for (Pojo.Page pages: pojo.data.project.getPages()
+        ) {
+            for (Pojo.Object object: pages.getObjects()
+            ) {
+                if(object.getGuidId()!=null){
+                    if(object.getTypename().equalsIgnoreCase("PickList")){
+                        CheckboxObject.fieldId.add(object.getFieldId());
+                    }
+                }
+            }
+        }
+    }
+    //#endregion
+
+    //#region Routing rules validation
     public void checkboxEnabledDisabledValidation(String objectId, String action,FormContentPojo pojo) {
         String elem = stringReplace(fieldSetLocator,objectId);
         WebElement element = stringToWebElement(elem);
@@ -2506,42 +2008,310 @@ public class CheckBoxPage extends BasePage{
             System.out.println("Passed Routing");
         }
     }
+    //#endregion
 
-    public String getListFieldNameByCompletionErrors(){
-        String fieldNames = "";
+    //#region Asserts
+    public void assertEnableDisableFields(FormContentPojo pojo, String typeName, String strElementId, String action){
+        if(typeName.equalsIgnoreCase("TickboxGroup")){
+            if(CheckboxMatrix.isFieldIdCheckBoxMatrix(pojo,getFieldIdByObjectId(pojo,strElementId))){
+                CheckboxMatrix.checkboxEnabledDisabledValidation(getFieldIdByObjectId(pojo,strElementId),action,pojo);
+            }else{
+                checkboxEnabledDisabledValidation(strElementId,action,pojo);
+            }
+        } else if (typeName.equalsIgnoreCase("HandwritingRecognitionObject")) {
+            checkboxEnabledDisabledValidationForHandwritingRecognitionObject(strElementId,action,pojo);
+        }else if(typeName.equalsIgnoreCase("ManualImageAreaText")){
+            checkboxEnabledDisabledValidationForMia(strElementId,action,pojo);
+        }
+    }
+
+    public static void AssertMandatoryFieldsWithInputs(FormContentPojo pojo, String strFieldId) throws Exception {
+        lookForTheField(pojo,strFieldId);
+        String elementId = getObjectIdFromFieldId(pojo,strFieldId);
+        String element;
+        if(mia.isFieldIdPickList(pojo,strFieldId)||mia.isFieldIdMia(pojo,strFieldId)){
+            element = stringReplace(mandatoryFieldMessagePickListLocator,elementId);
+        }else{
+            element = stringReplace(mandatoryFieldMessageLocator,elementId);
+        }
+        WebElement validationMessageLocator = stringToWebElement(element);
+        scrollElementIntoView(driver,validationMessageLocator);
+        String fieldName = getFieldName(pojo,strFieldId);
+        Assert.assertEquals(validationMessageLocator.getText(),"This field is mandatory.", fieldName+"The expected validation message for "+fieldName+" was: This field is mandatory. but the actual message was: "+validationMessageLocator.getText());
+        Reporter.log("<b>Checkbox Name: <b/>"+fieldName+" <b>is mandatory. <b/>",true);
+        CheckboxObject.checkboxObjectDefaultValue();
+    }
+
+    public static void AssertMandatoryFieldsWithoutInputs(FormContentPojo pojo, String strFieldId) throws Exception {
+        lookForTheField(pojo,strFieldId);
+        if(mia.isFieldIdPickList(pojo,strFieldId)||mia.isFieldIdMia(pojo,strFieldId)){
+            if(CheckboxObject.minimum==1||CheckboxObject.minimum==0){
+                mia.assertMiaMandatoryField(pojo,strFieldId);
+            }
+        }else if (isFieldIdCheckBox(pojo,strFieldId)){
+            if(CheckboxObject.minimum==1||CheckboxObject.minimum==0) {
+                if(CheckboxMatrix.isFieldIdCheckBoxMatrix(pojo,strFieldId)){
+                    if(CheckboxMatrix.isCheckboxMatrixFieldNotChecked(pojo,strFieldId)){
+                        CheckboxMatrix.assertRequiredField(pojo,getObjectIdFromFieldId(pojo,strFieldId),getFieldName(pojo,strFieldId));
+                    }else {
+                        CheckboxMatrix.assertThisFieldIsMandatory(pojo,getObjectIdFromFieldId(pojo,strFieldId),getFieldName(pojo,strFieldId));
+                    }
+                }else{
+                    if(isCheckboxFieldNotChecked(pojo,strFieldId)){
+                        assertRequiredField(getObjectIdFromFieldId(pojo,strFieldId),getFieldName(pojo,strFieldId));
+                    }else{
+                        assertThisFieldIsMandatory(getObjectIdFromFieldId(pojo,strFieldId),strFieldId);
+                    }
+                }
+            }
+        } else if (hro.isFieldIdHro(pojo,strFieldId)) {
+            if(CheckboxObject.minimum==1||CheckboxObject.minimum==0) {
+                hro.assertHroMandatoryField(pojo, strFieldId);
+            }
+        }
+        String fieldName = getFieldName(pojo,strFieldId);
+        Reporter.log("<b>Checkbox Name: <b/>"+fieldName+" <b>is mandatory. <b/>",true);
+        CheckboxObject.checkboxObjectDefaultValue();
+    }
+
+    public void assertCheckboxMandatoryField(FormContentPojo pojo, String strFieldId){
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        String elementId = getObjectIdFromFieldId(pojo,strFieldId);
+        String fieldName = getFieldName(pojo,strFieldId);
+        lookForTheField(pojo,strFieldId);
+        if(CheckboxObject.mandatory){
+            if (isFieldIdCheckBox(pojo,strFieldId)){
+                if(CheckboxObject.minimum==1||CheckboxObject.minimum==0) {
+                    if(CheckboxMatrix.isFieldIdCheckBoxMatrix(pojo,strFieldId)){
+                        if(CheckboxMatrix.isCheckboxMatrixFieldNotChecked(pojo,strFieldId)){
+                            CheckboxMatrix.assertRequiredField(pojo,getObjectIdFromFieldId(pojo,strFieldId),getFieldName(pojo,strFieldId));
+                        }else {
+                            CheckboxMatrix.assertThisFieldIsMandatory(pojo,getObjectIdFromFieldId(pojo,strFieldId),getFieldName(pojo,strFieldId));
+                        }
+                    }else{
+                        if(isCheckboxFieldNotChecked(pojo,strFieldId)){
+                            assertRequiredField(getObjectIdFromFieldId(pojo,strFieldId),fieldName);
+                        }else{
+                            assertThisFieldIsMandatory(getObjectIdFromFieldId(pojo,strFieldId),strFieldId);
+                        }
+                    }
+                }
+            }
+            Reporter.log("<b>Checkbox Name: <b/>"+fieldName+" <b>is mandatory. <b/>",true);
+        }else {
+            String elementForValidation = stringReplace(validationMessageLocator,elementId);
+            Reporter.log("<b>No validation message should be displayed.</b>" );
+            Assert.assertTrue(driver.findElements(By.xpath(elementForValidation)).size()==0,"No validation message should be displayed for "+ fieldName +".");
+        }
+        CheckboxObject.checkboxObjectDefaultValue();
+    }
+
+    public static void assertWithinAcceptedInputs(String strName, String strObjectElementId){
+        String elemValidationMessage = stringReplace(newValidationMessageUponSubmit,strObjectElementId);
+        String elemCompilationErrors = stringReplace(validationMessageUponSubmitSideBar,strObjectElementId);
+        Assert.assertFalse(isElementVisible(driver,elemValidationMessage),"The expected for : "+strName + " There shouldn't be any validation message displayed below the object.");
+        Assert.assertFalse(isElementVisible(driver,elemCompilationErrors),"The expected for: "+strName + "Completion Errors isn't displayed. The actual is Completion errors is displayed.");
+        Reporter.log("There shouldn't be any validation message displayed below the field: "+ strName);
+        CheckboxObject.checkboxObjectDefaultValue();
+    }
+
+    public void assertMinimumConfigNoInputs(String strObjectElementId, String name, Integer minimumInput){
+        WebElement ValidationMessageSideMenu = stringReplaceAndConvertToWebElement(validationMessageUponSubmitSideBar, name);
+        scrollElementIntoView(driver,ValidationMessageSideMenu);
+        WebElement validationMessageUnderCheckbox = stringReplaceAndConvertToWebElement(validationMessageLocator,strObjectElementId);
+        Assert.assertEquals(validationMessageUnderCheckbox.getText(),"This field requires a minimum of "+minimumInput+" responses.","The expected value is : This field requires a minimum of "+minimumInput+" responses. but the actual message is "+validationMessageUnderCheckbox.getText());
+        Assert.assertEquals(ValidationMessageSideMenu.getText(),"This field requires a minimum of "+minimumInput+" responses.","The expected value is : This field requires a minimum of "+minimumInput+" responses. but the actual message is "+validationMessageUnderCheckbox.getText());
+        CheckboxObject.checkboxObjectDefaultValue();
+    }
+
+    public static void assertRequiredField(String strObjectElementId, String name){
+        comp.validateCompletionErrorMessage(name,"Required field.");
+        WebElement validationMessageUnderCheckbox = stringReplaceAndConvertToWebElement(validationMessageLocator,strObjectElementId);
+        scrollElementIntoView(driver,validationMessageUnderCheckbox);
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("window.scrollBy(0,350)", "");
+        Assert.assertEquals(validationMessageUnderCheckbox.getText(),"Required field.","The expected value is : Required field. "+validationMessageUnderCheckbox.getText());
+        CheckboxObject.checkboxObjectDefaultValue();
+    }
+
+    public static void assertThisFieldIsMandatory(String strObjectElementId, String name){
+        WebElement validationMessageUnderCheckbox = stringReplaceAndConvertToWebElement(mandatoryFieldMessageLocator,strObjectElementId);
+        scrollElementIntoView(driver,validationMessageUnderCheckbox);
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("window.scrollBy(0,350)", "");
+        Assert.assertEquals(validationMessageUnderCheckbox.getText(),"This field is mandatory.","The expected value is : This field is mandatory. "+validationMessageUnderCheckbox.getText());
+        CheckboxObject.checkboxObjectDefaultValue();
+    }
+
+
+    public void assertRequiresMinimumOf(String name,String strObjectElementID, int minNumberOfInputs){
+        WebElement ValidationMessageSideMenu = stringReplaceAndConvertToWebElement(validationMessageUponSubmitSideBar, name);
+        scrollElementIntoView(driver,ValidationMessageSideMenu);
+        WebElement validationMessageUnderCheckbox = stringReplaceAndConvertToWebElement(newValidationMessageUponSubmit,strObjectElementID);
+        Assert.assertEquals(validationMessageUnderCheckbox.getText(),"This field requires a minimum of "+minNumberOfInputs+" responses.","The expected value is : This field requires a minimum of "+minNumberOfInputs+" responses. but the actual message is "+validationMessageUnderCheckbox.getText());
+        Assert.assertEquals(ValidationMessageSideMenu.getText(),"This field requires a minimum of "+minNumberOfInputs+" responses.","The expected value is : This field requires a minimum of "+minNumberOfInputs+" responses. but the actual message is "+validationMessageUnderCheckbox.getText());
+        CheckboxObject.checkboxObjectDefaultValue();
+    }
+
+    public void assertLessThanMinimumInput(FormContentPojo pojo, String strFieldId) {
+        String elementId = getObjectIdFromFieldId(pojo,strFieldId);
+        lookForTheField(pojo,strFieldId);
+        int numberOfItems = countCheckboxItems(elementId);
+        int numberOfInputs = clickLessThanMinimumInput(CheckboxObject.minimum,elementId,numberOfItems);
+        if(CheckboxObject.minimum==1&&numberOfInputs==1||numberOfInputs==0){
+            assertRequiredField(elementId,CheckboxObject.checkboxName);
+        }else{
+            assertRequiresMinimumOf(CheckboxObject.checkboxName,elementId,CheckboxObject.minimum);
+        }
+    }
+
+    public void assertWithinMinimumInput(FormContentPojo pojo, String strFieldId) throws Exception {
+        String elementId = getObjectIdFromFieldId(pojo,strFieldId);
+        lookForTheField(pojo,strFieldId);
+        int numberOfItems = countCheckboxItems(elementId);
+        clickWithinMinimumInput(CheckboxObject.minimum,elementId,numberOfItems);
+        if(CheckboxObject.mandatory){
+            AssertMandatoryFieldsWithInputs(pojo,strFieldId);
+        }else{
+            assertWithinAcceptedInputs(CheckboxObject.checkboxName,elementId);
+        }
+    }
+
+    public static void assertWithinMinimumMaximumInput(FormContentPojo pojo, String strFieldId) throws Exception {
+        String elementId = getObjectIdFromFieldId(pojo,strFieldId);
+        lookForTheField(pojo,strFieldId);
+        if(hro.isFieldIdHro(pojo,strFieldId)){
+            String inputs = "";
+            if(Objects.requireNonNull(CheckboxObject.strDataTypeNew).equalsIgnoreCase("NUMERIC")){
+                inputs = numericInputs(pojo,strFieldId,hro.identifyMaximumInputsByFieldId());
+                hro.setTextToHro(pojo,strFieldId,inputs);
+            } else if (Objects.requireNonNull(CheckboxObject.strDataTypeNew).equalsIgnoreCase("ALPHA_NUMERIC")) {
+                inputs = alphaNumericInputs(pojo,strFieldId, hro.identifyMaximumInputsByFieldId());
+                hro.setTextToHro(pojo,strFieldId,inputs);
+            }else if (Objects.requireNonNull(CheckboxObject.strDataTypeNew).equalsIgnoreCase("ALPHA")) {
+                inputs = alphaInputs(pojo,strFieldId, hro.identifyMaximumInputsByFieldId());
+                hro.setTextToHro(pojo,strFieldId,inputs);
+            }
+        }else if(isFieldIdCheckBox(pojo,strFieldId)){
+            if(CheckboxMatrix.isFieldIdCheckBoxMatrix(pojo,strFieldId)){
+                ArrayList<String> numberOfOptions = CheckboxMatrix.checkboxMatrixOptionsCount(pojo,strFieldId);
+                String strElementId = getObjectIdFromFieldId(pojo,strFieldId);
+                int numberOfItems = CheckboxMatrix.countNumberOfResponses(strElementId,numberOfOptions.size());
+                CheckboxMatrix.clickWithinMinimumMaximumInput(pojo,CheckboxObject.minimum,CheckboxObject.maximum,numberOfOptions,numberOfItems);
+            }else{
+                int numberOfItems = countCheckboxItems(elementId);
+                clickWithinMinimumMaximumInput(pojo,CheckboxObject.minimum,CheckboxObject.maximum,elementId,numberOfItems);
+            }
+        }else if(mia.isFieldIdMia(pojo,CheckboxObject.strFieldId)){
+            mia.setTextToMia(pojo,CheckboxObject.strFieldId,"test");
+        }
+
+        if(CheckboxObject.mandatory){
+            AssertMandatoryFieldsWithInputs(pojo,strFieldId);
+        }else{
+            assertWithinAcceptedInputs(CheckboxObject.checkboxName,elementId);
+        }
+    }
+
+    public void assertBeyondMaximumInput(FormContentPojo pojo, String strFieldId) throws Exception {
+        String elementId = getObjectIdFromFieldId(pojo,strFieldId);
+        lookForTheField(pojo,strFieldId);
+        int numberOfItems = countCheckboxItems(elementId);
+        clickBeyondMaximumInput(pojo,CheckboxObject.maximum,strFieldId,numberOfItems);
+        if(CheckboxObject.mandatory){
+            AssertMandatoryFieldsWithInputs(pojo,strFieldId);
+        }else{
+            assertWithinAcceptedInputs(CheckboxObject.checkboxName,elementId);
+        }
+    }
+
+    public void assertWithinMaximumInput(FormContentPojo pojo, String strFieldId) throws Exception {
+        String elementId = getObjectIdFromFieldId(pojo,strFieldId);
+        lookForTheField(pojo,strFieldId);
+        int numberOfItems = countCheckboxItems(elementId);
+        clickWithinMaximumInput(pojo,CheckboxObject.maximum,strFieldId,numberOfItems);
+        if(CheckboxObject.mandatory){
+            AssertMandatoryFieldsWithInputs(pojo,strFieldId);
+        }else{
+            assertWithinAcceptedInputs(CheckboxObject.checkboxName,elementId);
+        }
+    }
+
+    public void assertMinimumConfig(FormContentPojo pojo, String strFieldId) {
+        String elementId = getObjectIdFromFieldId(pojo,strFieldId);
+        lookForTheField(pojo,strFieldId);
+        if(CheckboxObject.minimum==1){
+            assertRequiredField(elementId,CheckboxObject.checkboxName);
+        }else {
+            assertMinimumConfigNoInputs(elementId,CheckboxObject.checkboxName,CheckboxObject.minimum);
+        }
+    }
+    //#endregion
+
+    //#region Submit and save functions
+    public String getProjectReceipt(){
         try{
-            int numberOfElements = driver.findElements(By.xpath(completionErrorsFieldNameList)).size();
-            for(int x = 1; x <= numberOfElements; x++){
-                String elem = stringReplace(completionErrorsFieldName,Integer.toString(x));
-                WebElement element = stringToWebElement(elem);
-                scrollElementIntoView(driver,element);
-                fieldNames = element.getText();
-                break;
-            }
-            return fieldNames;
-        }catch (Exception e){
-            Reporter.log("No more items in Completion errors.");
-            return null;
+            String test = "//h2[contains(text(),'Complete')]/ancestor::main/p[contains(text(),'You can use the following receipt to recall this particular form at a later date.')]";
+            WebElement elem = stringToWebElement(test);
+            String text = elem.getText();
+            String [] strReceipt;
+            strReceipt = text.split(". ");
+            return strReceipt[15];
+        }catch (NoSuchElementException e){
+            Reporter.log("Receipt not visible. "+e);
+            return "";
         }
     }
 
-    public String getElementIdByFieldName(FormContentPojo pojo, String strFieldName){
-        String result = "";
-        outerLoop:
-        for (Pojo.Field field : pojo.data.project.getFields()
-             ) {
-            if (field.getName().equalsIgnoreCase(strFieldName)){
-                String guidId = field.getGuidId();
-                result = getObjectIdFromFieldId(pojo,guidId);
-                break outerLoop;
-            }
+    public String getProjectReceiptSave(){
+        try{
+            String test = "//h2[contains(text(),'Saved')]/ancestor::main/p[contains(text(),'You can use the following receipt to recall this particular form at a later date.')]";
+            WebElement elem = stringToWebElement(test);
+            String text = elem.getText();
+            String [] strReceipt;
+            strReceipt = text.split(". ");
+            return strReceipt[15];
+        }catch (NoSuchElementException e){
+            Reporter.log("Receipt not visible. "+e);
+            return "";
         }
-        return result;
     }
 
-    public void clickFieldNameInCompletionErrors(String strFieldName){
-        String elem = stringReplace(completionErrorsFieldNameButton,strFieldName);
-        WebElement element = stringToWebElement(elem);
-        element.click();
+    public void clickContinueButton(){
+        try{
+            String continueBtn = "//button[text()='Continue']";
+            WebElement element = stringToWebElement(continueBtn);
+            click(element);
+        }catch(Exception e){
+            Reporter.log("Continue button missing. "+e);
+        }
     }
+
+    public void clickSavedFormsButton(){
+        try{
+            String continueBtn = "//span[text()='Saved Forms']";
+            WebElement element = stringToWebElement(continueBtn);
+            click(element);
+        }catch (NoSuchElementException e){
+            Reporter.log("Save forms button not visible.");
+        }
+
+    }
+
+    public void enterReceiptNumber(String strReceipt){
+        String strReceiptNumber = "//input[@id='receipt-entry-input']";
+        WebElement element = stringToWebElement(strReceiptNumber);
+        enterText(element,strReceipt);
+    }
+
+    public void clickGoButton(){
+        String strGoButton = "//button[text()='Go']";
+        try{
+            WebElement element = stringToWebElement(strGoButton);
+            click(element);
+        }catch (NoSuchElementException e){
+            Reporter.log("Go button not visible. " + e);
+        }
+    }
+    //#endregion
 }

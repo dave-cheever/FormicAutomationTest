@@ -575,6 +575,20 @@ public class BasePage {
         return output;
     }
 
+    public String getElementIdByFieldName(FormContentPojo pojo, String strFieldName){
+        String result = "";
+        outerLoop:
+        for (Pojo.Field field : pojo.data.project.getFields()
+        ) {
+            if (field.getName().equalsIgnoreCase(strFieldName)){
+                String guidId = field.getGuidId();
+                result = getObjectIdFromFieldId(pojo,guidId);
+                break outerLoop;
+            }
+        }
+        return result;
+    }
+
     public static String alphaInputs(FormContentPojo pojo, String strFieldId, int hroMaximumInputAllowed){
         Random rnd = new Random();
         String chars = "abcxyz";
