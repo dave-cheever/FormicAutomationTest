@@ -136,7 +136,7 @@
         <configuration>
           <source>15</source>
           <target>15</target>
-<!--          <compilerArgument>-proc:none</compilerArgument>-->
+          <compilerArgument>-proc:none</compilerArgument>
         </configuration>
       </plugin>
     </plugins>

@@ -34,6 +34,7 @@ import java.io.IOException;
  * @deprecated Don't use!
  */
 @Mojo( name = "touch", defaultPhase = LifecyclePhase.PROCESS_SOURCES )
+@Deprecated
 public class MyMojo
     extends AbstractMojo
 {
