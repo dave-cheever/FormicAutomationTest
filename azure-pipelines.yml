@@ -22,4 +22,4 @@ steps:
 
 - script: mvn -B package
   displayName: 'Build project with Maven'
-  workingDirectory: 'FormicOF2Test/pom.xml'
+  workingDirectory: 'pom.xml'
