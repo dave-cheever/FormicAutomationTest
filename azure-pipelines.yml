@@ -22,3 +22,5 @@ steps:
 
 - script: mvn -B package
   displayName: 'Build project with Maven'
+  workingDirectory: '$(system.defaultWorkingDirectory)/pom.xml'
+  
