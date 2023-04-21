@@ -20,6 +20,9 @@ steps:
     jdkSourceOption: 'jdkFile'
     jdkFile: '$(Build.BinariesDirectory)/jdk-15.tar.gz'
 
+  - script: ls -la
+  displayName: 'List directory contents'
+
 - script: mvn -B package
   displayName: 'Build project with Maven'
   workingDirectory: 'src'
