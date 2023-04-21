@@ -10,7 +10,7 @@ steps:
       versionSpec: '15'
       jdkArchitectureOption: 'x64'
       jdkSourceOption: 'jdkFile'
-      jdkFile: 'https://api.adoptopenjdk.net/v3/binary/latest/15/ga/linux/x64/jdk/hotspot/normal/adoptopenjdk'
+      jdkFile: 'https://api.adoptopenjdk.net/v3/binary/latest/15/ga/linux/x64/jdk/hotspot/normal/adoptopenjdk?file_type=.tar.gz'
 
   - script: mvn -B package
     displayName: 'Build project with Maven'
