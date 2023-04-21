@@ -5,12 +5,12 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-  - task: DownloadFile@1
+  - task: DownloadSecureFile@1
     displayName: 'Download JDK 15'
     inputs:
-      FileUrl: 'https://api.adoptopenjdk.net/v3/binary/latest/15/ga/linux/x64/jdk/hotspot/normal/adoptopenjdk?file_type=.tar.gz'
-      DestinationFolder: '$(Build.BinariesDirectory)'
-      ResultFileName: 'jdk-15.tar.gz'
+      connection: '<YourServiceConnectionName>'
+      path: '<PathToYourJDKBinary>'
+      secureFile: 'jdk-15.tar.gz'
 
   - task: JavaToolInstaller@0
     displayName: 'Install JDK 15'
@@ -18,7 +18,7 @@ steps:
       versionSpec: '15'
       jdkArchitectureOption: 'x64'
       jdkSourceOption: 'jdkFile'
-      jdkFile: '$(Build.BinariesDirectory)/jdk-15.tar.gz'
+      jdkFile: '$(Agent.TempDirectory)/jdk-15.tar.gz'
 
   - script: mvn -B package
     displayName: 'Build project with Maven'
