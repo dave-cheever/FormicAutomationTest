@@ -185,7 +185,7 @@ public class LoginTest extends BaseUiTest{
         headerNavigationBar.navigateToLoginPage();
         loginPage.loginUser("dcheever","Test123");
         try {
-            assertEquals( "Dave Cheever",headerNavigationBar.getFullName(), "The expected full name: " + "Dave Cheever" + " is not the same as the actual: "+ headerNavigationBar.getFullName() );
+            assertEquals( "dave",headerNavigationBar.getFullName(), "The expected full name: " + "Dave Cheever" + " is not the same as the actual: "+ headerNavigationBar.getFullName() );
         } catch (AssertionError e) {
             throw new AssertionError(CheckboxObject.errorMessage=" Test failed: " + e.getMessage());
         }

@@ -14,35 +14,35 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <maven.compiler.source>19.0.2</maven.compiler.source>
-    <maven.compiler.target>19.0.2</maven.compiler.target>
-    <java.version>19.0.2</java.version>
+    <maven.compiler.source>15</maven.compiler.source>
+    <maven.compiler.target>15</maven.compiler.target>
+    <java.version>15</java.version>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>org.apache.maven.plugin-tools</groupId>
       <artifactId>maven-plugin-annotations</artifactId>
-      <version>3.7.0</version>
+      <version>3.8.1</version>
       <scope>provided</scope>
     </dependency>
 
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
-      <version>7.1.0</version>
+      <version>7.7.0</version>
     </dependency>
 
     <dependency>
       <groupId>ru.stqa.selenium</groupId>
       <artifactId>webdriver-factory</artifactId>
-      <version>4.3</version>
+      <version>4.4</version>
     </dependency>
 
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
       <artifactId>selenium-java</artifactId>
-      <version>4.7.2</version>
+      <version>4.8.1</version>
     </dependency>
 
     <dependency>
@@ -54,13 +54,13 @@
     <dependency>
       <groupId>io.rest-assured</groupId>
       <artifactId>rest-assured</artifactId>
-      <version>5.2.0</version>
+      <version>5.3.0</version>
     </dependency>
 
     <dependency>
       <groupId>io.leangen.graphql</groupId>
       <artifactId>graphql-spqr-spring-boot-starter</artifactId>
-      <version>0.0.4</version>
+      <version>0.0.7</version>
     </dependency>
 
     <dependency>

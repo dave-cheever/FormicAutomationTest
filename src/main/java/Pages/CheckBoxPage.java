@@ -664,6 +664,65 @@ public class CheckBoxPage extends BasePage{
         validateInputsAreCorrect(graphResponse);
     }
 
+    public void test() throws Exception {
+        RulesGraphql rules = new RulesGraphql();
+        FormContentPojo graphResponse =  rules.getRules(projectId);
+        getAllFieldId(graphResponse);
+        String strListFieldName = "";
+        for (String fieldId: CheckboxObject.fieldId
+        ) {
+            strListFieldName = getFieldName(graphResponse,fieldId);
+            String strElementId = getElementIdByFieldName(graphResponse,strListFieldName);
+            CheckboxObject.singleFieldId = getFieldIdByObjectId(graphResponse,strElementId);
+            String strTypeName = getTypeNameByFieldId(graphResponse,CheckboxObject.singleFieldId);
+            lookForTheField(graphResponse,fieldId);
+            if(strTypeName!=null){
+                if(strTypeName.equalsIgnoreCase("HandwritingRecognitionObject")){
+                    hro.getHroRules(graphResponse,CheckboxObject.singleFieldId);
+                    lookForTheField(graphResponse,CheckboxObject.singleFieldId);
+                    if(CheckboxObject.strFormatRegex!=null&&CheckboxObject.strFormatRegex.equalsIgnoreCase(emailRegEx)){
+                        String email = emailAddressInputs(graphResponse,CheckboxObject.strFieldId);
+                        hro.setTextToHro(graphResponse,CheckboxObject.singleFieldId,email);
+                    }else {
+                        hroInputs(graphResponse,CheckboxObject.singleFieldId);
+                    }
+                }else if(strTypeName.equalsIgnoreCase("TickboxGroup")){
+                    if(CheckboxMatrix.isFieldIdCheckBoxMatrix(graphResponse,CheckboxObject.singleFieldId)){
+                        getCheckboxRulesForMinimumAndMaximumInputs(graphResponse,CheckboxObject.singleFieldId);
+                        ArrayList<String> numberOfOptions = CheckboxMatrix.checkboxMatrixOptionsCount(graphResponse,CheckboxObject.singleFieldId);
+                        int numberOfItems = CheckboxMatrix.countNumberOfResponses(strElementId,numberOfOptions.size());
+                        CheckboxMatrix.clickWithinMinimumMaximumInput(graphResponse,CheckboxObject.minimum,CheckboxObject.maximum,numberOfOptions,numberOfItems);
+                    }else{
+                        getCheckboxRulesForMinimumAndMaximumInputs(graphResponse,CheckboxObject.singleFieldId);
+                        int numberOfItems = countCheckboxItems(strElementId);
+                        clickWithinMinimumMaximumInput(graphResponse,CheckboxObject.minimum,CheckboxObject.maximum,strElementId,numberOfItems);
+                    }
+                }else if(strTypeName.equalsIgnoreCase("ManualImageAreaText")){
+                    mia.getMiaRules(graphResponse,CheckboxObject.singleFieldId);
+                    lookForTheField(graphResponse,CheckboxObject.singleFieldId);
+                    if(CheckboxObject.strFormatRegex!=null&&CheckboxObject.strFormatRegex.equalsIgnoreCase(emailRegEx)){
+                        String email = emailAddressInputs(graphResponse,CheckboxObject.strFieldId);
+                        mia.setTextToMia(graphResponse,CheckboxObject.singleFieldId,email);
+                    }else {
+                        miaInputs(graphResponse,CheckboxObject.singleFieldId);
+                    }
+                }else if(strTypeName.equalsIgnoreCase("PickList")){
+                    mia.getMiaRules(graphResponse,CheckboxObject.singleFieldId);
+                    picklistInputs(graphResponse,CheckboxObject.singleFieldId);
+                }
+            }
+        }
+        sideMenuNavigation.clickSubmitButton();
+        String receipt = getProjectReceipt();
+        clickContinueButton();
+        clickSavedFormsButton();
+        Reporter.log("<b>Receipt code:<b/> "+receipt);
+        enterReceiptNumber(receipt);
+        clickGoButton();
+        System.out.println(receipt);
+        validateInputsAreCorrect(graphResponse);
+    }
+
     public void validateSavedInputsCheckbox() throws Exception {
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);

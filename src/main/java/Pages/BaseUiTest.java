@@ -53,10 +53,10 @@ public class BaseUiTest {
     public void driverTearDown(ITestResult result) throws IOException, InterruptedException, APIException {
         if(result.getStatus()==ITestResult.SUCCESS&&CheckboxObject.testCaseId!=0){
             screenshotHelper.takeScreenshot(CheckboxObject.scenarioName);
-            TestRailManger.updateResult(CheckboxObject.testCaseId,TestRailManger.TEST_CASE_PASSED_STATUS,24);
+            TestRailManger.updateResult(CheckboxObject.testCaseId,TestRailManger.TEST_CASE_PASSED_STATUS,50);
         } else if (result.getStatus()==ITestResult.FAILURE&&CheckboxObject.testCaseId!=0) {
             screenshotHelper.takeScreenshot(CheckboxObject.scenarioName);
-            TestRailManger.updateResult(CheckboxObject.testCaseId,TestRailManger.TEST_CASE_FAILED_STATUS,24);
+            TestRailManger.updateResult(CheckboxObject.testCaseId,TestRailManger.TEST_CASE_FAILED_STATUS,50);
         }
         Process process = Runtime. getRuntime(). exec("taskkill /F /IM chromedriver.exe /T");
         process.destroy();

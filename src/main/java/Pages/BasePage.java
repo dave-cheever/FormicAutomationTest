@@ -74,47 +74,54 @@ public class BasePage {
 
     public static Integer getCurrentPage(){
         //code to get the current page
-        WebElement element = stringToWebElement(page);
-        String currentPage = element.getText();
-        String [] str = currentPage.split(" ");
-        return Integer.parseInt(str[1]);
+        try {
+            driver.findElement(By.xpath(page));
+            WebElement element = stringToWebElement(page);
+            String currentPage = element.getText();
+            String [] str = currentPage.split(" ");
+            return Integer.parseInt(str[1]);
+        }catch (NoSuchElementException e){
+            return null;
+        }
     }
     public static void lookForTheField(FormContentPojo contentPojo, String strFieldId) {
         Integer currentPage = getCurrentPage();
         int pageCounter = 0;
         //loop through the pages
-        outerLoop:
-        for (Pojo.Page page: contentPojo.data.project.getPages()
-        ) {
-            //loop through the objects of the page
-            ++pageCounter;
-            for (Pojo.Object objects: page.getObjects()
+        if(currentPage!=null){
+            outerLoop:
+            for (Pojo.Page page: contentPojo.data.project.getPages()
             ) {
-                if(objects.getSubQuestionFields()!=null){
-                    for (Pojo.SubQuestionField item: objects.getSubQuestionFields()
-                    ) {
-                        String test = item.getGuidId();
+                //loop through the objects of the page
+                ++pageCounter;
+                for (Pojo.Object objects: page.getObjects()
+                ) {
+                    if(objects.getSubQuestionFields()!=null){
+                        for (Pojo.SubQuestionField item: objects.getSubQuestionFields()
+                        ) {
+                            String test = item.getGuidId();
+                            if(test.equalsIgnoreCase(strFieldId)){
+                                break outerLoop;
+                            }
+                        }
+                    }else if(objects.getFieldId()!=null){
+                        String test = objects.getFieldId();
                         if(test.equalsIgnoreCase(strFieldId)){
                             break outerLoop;
                         }
                     }
-                }else if(objects.getFieldId()!=null){
-                    String test = objects.getFieldId();
-                    if(test.equalsIgnoreCase(strFieldId)){
-                        break outerLoop;
-                    }
                 }
             }
-        }
-        if(currentPage < pageCounter){
-            int nextPageCounter = pageCounter - currentPage;
-            for(int x = 1; x<=nextPageCounter; ++x){
-                clickNextPage();
-            }
-        }else if(currentPage > pageCounter){
-            int previousPageCounter = currentPage - pageCounter;
-            for(int x = 1; x<=previousPageCounter; ++x){
-                clickPreviousPage();
+            if(currentPage < pageCounter){
+                int nextPageCounter = pageCounter - currentPage;
+                for(int x = 1; x<=nextPageCounter; ++x){
+                    clickNextPage();
+                }
+            }else if(currentPage > pageCounter){
+                int previousPageCounter = currentPage - pageCounter;
+                for(int x = 1; x<=previousPageCounter; ++x){
+                    clickPreviousPage();
+                }
             }
         }
     }

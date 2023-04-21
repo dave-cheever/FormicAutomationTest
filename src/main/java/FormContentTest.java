@@ -19,6 +19,11 @@ public class FormContentTest extends BaseUiTest {
 //    String projectName = "Medications with anti-libidinal properties"; //136
 //    String projectName = "DMC Test 1"; //146
 //    String projectName = "STEM Grant Application Form 2021 to 2022";
+//    String projectName = "01 Children Primary"; //52
+//    String projectName = "No validation Project"; //159
+
+
+
 
 
     @Test
@@ -119,6 +124,12 @@ public class FormContentTest extends BaseUiTest {
         homePage.selectProject(projectName);
         checkBoxPage.validateSavedInputsCheckbox();
     }
+
+//    @Test
+//    public void test() throws Exception {
+//        homePage.selectProject(projectName);
+//        checkBoxPage.test();
+//    }
 
     @BeforeMethod
     public void initialisePageElements(ITestContext iTestContext) {
