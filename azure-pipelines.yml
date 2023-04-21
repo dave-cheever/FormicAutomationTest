@@ -8,7 +8,7 @@ steps:
   - task: JavaToolInstaller@0
     inputs:
       versionSpec: '15'
-      jdkArchitecture: 'x64'
+      jdkArchitectureOption: 'x64'
 
   - script: mvn -B package
     displayName: 'Build project with Maven'
