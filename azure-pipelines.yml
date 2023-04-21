@@ -1,0 +1,15 @@
+trigger:
+  - main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+  - task: UseJava@0
+    inputs:
+      version: '15'
+      javaPath: '/usr/lib/jvm'
+      jdkArchitecture: 'x64'
+
+  - script: mvn -B package
+    displayName: 'Build project with Maven'
