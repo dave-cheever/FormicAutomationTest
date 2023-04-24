@@ -1,24 +1,29 @@
 trigger:
-  - main
+- main
 
 pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-  - task: DownloadSecureFile@1
-    displayName: 'Download JDK 15'
-    inputs:
-      connection: '<YourServiceConnectionName>'
-      path: '<PathToYourJDKBinary>'
-      secureFile: 'jdk-15.tar.gz'
+- task: Bash@3
+  displayName: 'Download JDK 15'
+  inputs:
+    targetType: 'inline'
+    script: |
+      curl -L -o $(Build.BinariesDirectory)/jdk-15.tar.gz 'https://api.adoptopenjdk.net/v3/binary/latest/15/ga/linux/x64/jdk/hotspot/normal/adoptopenjdk?file_type=.tar.gz'
 
-  - task: JavaToolInstaller@0
-    displayName: 'Install JDK 15'
-    inputs:
-      versionSpec: '15'
-      jdkArchitectureOption: 'x64'
-      jdkSourceOption: 'jdkFile'
-      jdkFile: '$(Agent.TempDirectory)/jdk-15.tar.gz'
+- task: JavaToolInstaller@0
+  displayName: 'Install JDK 15'
+  inputs:
+    versionSpec: '15'
+    jdkArchitectureOption: 'x64'
+    jdkSourceOption: 'jdkFile'
+    jdkFile: '$(Build.BinariesDirectory)/jdk-15.tar.gz'
 
-  - script: mvn -B package
-    displayName: 'Build project with Maven'
+- script: ls -la
+  displayName: 'List directory contents'
+
+- script: mvn -B package
+  displayName: 'Build project with Maven'
+  workingDirectory: '$(system.defaultWorkingDirectory)/pom.xml'
+  
