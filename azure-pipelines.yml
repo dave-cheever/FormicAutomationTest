@@ -5,22 +5,15 @@ pool:
   vmImage: 'ubuntu-latest'
 
 steps:
-- task: Bash@3
-  displayName: 'Download JDK 15'
-  inputs:
-    targetType: 'inline'
-    script: |
-      curl -L -o $(Build.BinariesDirectory)/jdk-15.tar.gz 'https://api.adoptopenjdk.net/v3/binary/latest/15/ga/linux/x64/jdk/hotspot/normal/adoptopenjdk?file_type=.tar.gz'
+- checkout: self
 
-- task: JavaToolInstaller@0
-  displayName: 'Install JDK 15'
+- task: Maven@3
   inputs:
-    versionSpec: '15'
+    mavenPomFile: 'pom.xml'
+    options: '-DskipTests'
+    mavenOptions: '-Xmx3072m'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.11'
     jdkArchitectureOption: 'x64'
-    jdkSourceOption: 'jdkFile'
-    jdkFile: '$(Build.BinariesDirectory)/jdk-15.tar.gz'
-
-- script: mvn -B package
-  displayName: 'Build project with Maven'
-  workingDirectory: '$(system.defaultWorkingDirectory)/pom.xml'
-  
+    publishJUnitResults: true
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
