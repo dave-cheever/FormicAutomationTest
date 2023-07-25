@@ -22,14 +22,14 @@ public class ManualImageArea extends BasePage{
     String miaSinglePickListInputLocator = "//div[@data-object-id='$TEXT']/div/div/div/input";
     String miaMultiPickListInputLocator = "//div[@data-object-id='$TEXT']/div/div/div/div";
 
-    String miaInputLocator = "//div[@data-object-id='$TEXT']/div/textarea";
+    String miaInputLocator = "//div[@data-object-id='$TEXT']/textarea";
     String miaTextAreaLocator = "//div[@data-object-id='$TEXT']/div/textarea";
-    String miaValidationMessageLocator = "//div[@data-object-id='$TEXT']/div/div/div[2]";
+    String miaValidationMessageLocator = "//div[@data-object-id='$TEXT']/div/div[2]";
     String miaValidationMessageMandatoryLocator = "//div[@data-object-id='$TEXT']/div/div/div";
-    String miaValidationMessageMinimumMaximumLocator = "(//div[@data-object-id='$TEXT']/div/div/div)[3]";
+    String miaValidationMessageMinimumMaximumLocator = "(//div[@data-object-id='$TEXT']/div/div)[3]";
     String validationMessageUponSubmitSideBar = "//h1[contains(text(),'Completion Errors')]//following-sibling::ul/li/button/div/div[contains(text(),'$TEXT')]//following::div[1]";
-    String miaPicklistDropdownButton = "//div[@data-object-id='$TEXT']/div/div/div/button";
-    String miaPicklistDropdownInput = "//div[@data-object-id='$TEXT']/div/div/div/input";
+    String miaPicklistDropdownButton = "//div[@data-object-id='$TEXT']/div/div/button";
+    String miaPicklistDropdownInput = "//div[@data-object-id='$TEXT']/div/div/input";
     String picklistNumberOfOptionsSelectedLocator = "//div[@data-object-id='$TEXT']/div/div/div/div";
     String picklistOptionsSelectedByNumberLocator = "(//div[@data-object-id='$TEXT']/div/div/div/div)[$NUM]";
 
@@ -109,7 +109,7 @@ public class ManualImageArea extends BasePage{
     }
 
     public  String miaDataType(){
-        if(CheckboxObject.strFormatRegex!=null){
+        if(CheckboxObject.strFormatRegex!=null&&CheckboxObject.strFormatMask!=null){
             String[]  str = CheckboxObject.strFormatRegex.split("]");
             if(str[0].contains("^[a-zA-Z0-9")){
                 return "ALPHA_NUMERIC";

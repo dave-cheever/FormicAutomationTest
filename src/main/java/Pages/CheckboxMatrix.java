@@ -23,24 +23,37 @@ public class CheckboxMatrix extends BasePage{
         super(driver);
     }
 
-    static String checkboxMatrixLocator = "//div[@data-object-id=\"$TEXT\"]/div/fieldset/label";
+    static String checkboxMatrixLocator = "//div[@data-object-id=\"$TEXT\"]/fieldset/label";
     static String checkboxMatrixElementToBeClickedLocator = "//input[@data-field-id=\"$TEXT\"][$NUM]";
     static String checkboxMatrixValidationMessage = "//h1[@id=\"dialog-title-13\"]/ancestor::div/following-sibling::div/div/div/div[2]";
     static String validationMessageUponSubmitSideBar = "//h1[contains(text(),'Completion Errors')]//following-sibling::ul/li/button/div/div[contains(text(),'$TEXT')]//following::div[1]";
-    static String mandatoryFieldMessageLocator = "//div[@data-object-id='$TEXT']/div/div/div";
+    static String mandatoryFieldMessageLocator = "//div[@data-object-id='$TEXT']/div/div";
     static String fieldErrorsPopUpValidationMessage = "//h1[text()=\"Field Errors\"]/ancestor::div/following-sibling::div/div/div/div[text()=\"$TEXT\"]/following::div";
-    static String checkBoxMatrixSeeFieldErrorsButton = "//div[@data-object-id=\"$TEXT\"]/div/div/div";
-    static String closeButton = "(//button[@aria-label=\"Close dialog\"])[2]";
+    static String checkBoxMatrixSeeFieldErrorsButton = "//div[@data-object-id=\"$TEXT\"]/div/div";
+    static String closeButton1 = "(//button[@aria-label=\"Close dialog\"])[1]";
+    static String closeButton2 = "(//button[@aria-label=\"Close dialog\"])[2]";
     static String fieldSetLocator = "//input[@data-field-id=\"$TEXT\"][1]";
     static String checkboxMatrixCheckboxLocator = "//input[@data-field-id=\"$TEXT\"]";
+    static String fieldErrorsElementCount = "//h1[text()=\"Field Errors\"]/ancestor::div/following-sibling::div/div/div/div[1]";
 
 
     CheckBoxPage checkBoxPage;
     static CheckboxObject checkboxObject;
 
     public static void clickCloseButton(){
-        WebElement element = stringToWebElement(closeButton);
+        String closeButtonElement;
+        if(numberOfFieldErrorsCheckboxMatrix()==1){
+            closeButtonElement = closeButton2;
+        }else{
+            closeButtonElement = closeButton1;
+        }
+        driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(closeButtonElement)));
+        WebElement element = stringToWebElement(closeButtonElement);
         click(element);
+    }
+
+    public static int numberOfFieldErrorsCheckboxMatrix(){
+        return driver.findElements(By.xpath(fieldErrorsElementCount)).size();
     }
     public static String getValidationMessageByOptionName(String strName){
         String elem = stringReplace(fieldErrorsPopUpValidationMessage,strName);

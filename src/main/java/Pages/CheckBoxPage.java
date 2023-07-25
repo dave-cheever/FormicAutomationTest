@@ -14,19 +14,19 @@ import java.text.ParseException;
 import java.util.*;
 
 public class CheckBoxPage extends BasePage{
-    int projectId = 137;
+    int projectId = 136;
     String emailRegEx = "^[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.][a-zA-Z0-9]+$";
     static String validationMessageUponSubmitSideBar = "//h1[contains(text(),'Completion Errors')]//following-sibling::ul/li/button/div/div[contains(text(),'$TEXT')]//following::div[1]";
-    static String mandatoryFieldMessageLocator = "//div[@data-object-id='$TEXT']/div/div/div";
+    static String mandatoryFieldMessageLocator = "//div[@data-object-id='$TEXT']/div/div";
     static String mandatoryFieldMessagePickListLocator = "(//div[@data-object-id='$TEXT']/div/div/div)[2]";
-    static String validationMessageLocator = "//div[@data-object-id='$TEXT']/div/div/div[2]";
-    String fieldSetLocator = "//div[@data-object-id='$TEXT']/div/fieldset/input[1]";
+    static String validationMessageLocator = "//div[@data-object-id='$TEXT']/div/div[2]";
+    String fieldSetLocator = "//div[@data-object-id='$TEXT']/fieldset/input[1]";
     String ManualImageAreaText = "//div[@data-object-id='$TEXT']/div/textarea";
-    String HandwritingRecognitionObject = "//div[@data-object-id='$TEXT']/div/input";
-    static String actionLocator = "//div[@data-object-id='$TEXT']/div/fieldset/input[$NUM]";
-    static String newValidationMessageUponSubmit = "//div[@data-object-id='$TEXT']/div/div/div[2]";
-    static String checkboxLocator = "//div[@data-object-id='$TEXT']/div/fieldset/input";
-    static String checkboxElementToBeClickedLocator = "//div[@data-object-id='$TEXT']/div/fieldset/input[$NUM]";
+    String HandwritingRecognitionObject = "//div[@data-object-id='$TEXT']/input";
+    static String actionLocator = "//div[@data-object-id='$TEXT']/fieldset/input[$NUM]";
+    static String newValidationMessageUponSubmit = "//div[@data-object-id='$TEXT']/div/div[2]";
+    static String checkboxLocator = "//div[@data-object-id='$TEXT']/fieldset/input";
+    static String checkboxElementToBeClickedLocator = "//div[@data-object-id='$TEXT']/fieldset/input[$NUM]";
     String checkboxMatrixElementToBeClickedLocator = "//input[@data-field-id='$TEXT'][$NUM]";
     String completionErrorsFieldNameList = "//h1[contains(text(),'Completion Errors')]//following-sibling::ul/li/button/div/div[1]";
     String completionErrorsFieldName = "(//h1[contains(text(),'Completion Errors')]//following-sibling::ul/li/button/div/div[1])[$TEXT]";
@@ -809,13 +809,14 @@ public class CheckBoxPage extends BasePage{
         return false;
     }
 
-    public void validateInputsAreCorrect(FormContentPojo pojo){
+    public void validateInputsAreCorrect(FormContentPojo pojo) throws InterruptedException {
         String strElementId = "";
         boolean isCheckboxMatrix = false;
         String strCheckBoxId = null;
         String strHroId = null;
         String strMiaId = null;
         String strPickListId = null;
+        Thread.sleep(500);
         for (String value: CheckboxObject.checkboxInputs
         ) {
             strElementId = getObjectIdFromFieldId(pojo,value)==null? value : getObjectIdFromFieldId(pojo,value);
@@ -870,15 +871,15 @@ public class CheckBoxPage extends BasePage{
                     Assert.assertTrue(element.isSelected(),"Checkbox "+getFieldNameByElementId(pojo,strCheckBoxId)+ " failed because tickbox number: "+ value+" is not selected.");
                 } else if (CheckboxObject.isHro) {
                     text = hro.getHroTextFromElementId(strHroId);
-                    Reporter.log("Expected text: "+ value+" Actual text: "+text);
+                    Reporter.log("Field name: "+getFieldNameByElementId(pojo,strHroId)+" Expected text: "+ value+" Actual text: "+text);
                     Assert.assertTrue(text.equalsIgnoreCase(value),"Expected text: "+ value+" Actual text: "+text);
                 } else if (CheckboxObject.isMia) {
                     text = mia.getMiaTextFromElementId(strMiaId);
-                    Reporter.log("Expected text: "+ value+" Actual text: "+text);
+                    Reporter.log("Field name: "+getFieldNameByElementId(pojo,strMiaId)+" Expected text: "+ value+" Actual text: "+text);
                     Assert.assertTrue(text.equalsIgnoreCase(value),"Expected text: "+ value+" Actual text: "+text);
                 } else if (CheckboxObject.isPicklist) {
                     text = mia.getPicklistSelectedOptionsName(strPickListId,CheckboxObject.picklistOptionsCtr);
-                    Reporter.log("Expected text: "+ value+" Actual text: "+text);
+                    Reporter.log("Field name: "+getFieldNameByElementId(pojo,strPickListId)+ " Expected text: "+ value+" Actual text: "+text);
                     Assert.assertTrue(text.equalsIgnoreCase(value),"Expected text: "+ value+" Actual text: "+text);
                     CheckboxObject.picklistOptionsCtr++;
                 }

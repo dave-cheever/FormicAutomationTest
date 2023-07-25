@@ -139,11 +139,11 @@ public class BasePage {
         return result;
     }
 
-    public static void clickNextPage(){
+    public static void clickNextPage() {
         WebElement element = stringToWebElement(nextPageButton);
         click(element);
     }
-    public static void clickPreviousPage(){
+    public static void clickPreviousPage() {
         WebElement element = stringToWebElement(previousPageButton);
         click(element);
     }

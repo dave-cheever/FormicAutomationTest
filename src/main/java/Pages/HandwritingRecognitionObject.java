@@ -22,9 +22,9 @@ public class HandwritingRecognitionObject extends BasePage{
 //    CheckBoxPage chk = new CheckBoxPage(1);
 
 
-    static String hroInputLocator = "//div[@data-object-id='$TEXT']/div/input";
-    static String hroValidationMessageLocator = "//div[@data-object-id='$TEXT']/div/div/div[2]";
-    static String hroValidationMessageMandatoryLocator = "//div[@data-object-id='$TEXT']/div/div/div[1]";
+    static String hroInputLocator = "//div[@data-object-id='$TEXT']/input";
+    static String hroValidationMessageLocator = "//div[@data-object-id='$TEXT']/div/div[2]";
+    static String hroValidationMessageMandatoryLocator = "//div[@data-object-id='$TEXT']/div/div[1]";
     static CompletionErrors comp = new CompletionErrors(driver);
 
     public void setTextToHro(FormContentPojo pojo, String strFieldId, String strText){
@@ -139,7 +139,7 @@ public class HandwritingRecognitionObject extends BasePage{
         }
     }
 
-    public static void assertHroMandatoryField(FormContentPojo pojo, String strFieldId){
+    public static void assertHroMandatoryField(FormContentPojo pojo, String strFieldId) throws InterruptedException {
         JavascriptExecutor js = (JavascriptExecutor) driver;
         String elementId = getObjectIdFromFieldId(pojo,strFieldId);
         String fieldName = getFieldName(pojo,strFieldId);
@@ -192,7 +192,7 @@ public class HandwritingRecognitionObject extends BasePage{
         Reporter.log("<b>Confirm correct validation message should be:</b> This field must match the following format: ("+getNumberOfUnderscore()+").");
         WebElement element;
         try {
-             Assert.assertTrue(isElementPresentBy(By.xpath(elem)),"Validation message not visible.");
+             Assert.assertTrue(isElementPresentBy(By.xpath(elem)),"Field: "+getFieldName(pojo, strFieldId)+" - Validation message not visible.");
         } catch (NoSuchElementException e) {
             throw new Error("Element not found: " + e.getMessage());
         }
