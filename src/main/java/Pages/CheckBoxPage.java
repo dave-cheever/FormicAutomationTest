@@ -14,14 +14,14 @@ import java.text.ParseException;
 import java.util.*;
 
 public class CheckBoxPage extends BasePage{
-    int projectId = 136;
+    int projectId = 137;
     String emailRegEx = "^[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.][a-zA-Z0-9]+$";
     static String validationMessageUponSubmitSideBar = "//h1[contains(text(),'Completion Errors')]//following-sibling::ul/li/button/div/div[contains(text(),'$TEXT')]//following::div[1]";
     static String mandatoryFieldMessageLocator = "//div[@data-object-id='$TEXT']/div/div";
     static String mandatoryFieldMessagePickListLocator = "(//div[@data-object-id='$TEXT']/div/div/div)[2]";
     static String validationMessageLocator = "//div[@data-object-id='$TEXT']/div/div[2]";
     String fieldSetLocator = "//div[@data-object-id='$TEXT']/fieldset/input[1]";
-    String ManualImageAreaText = "//div[@data-object-id='$TEXT']/div/textarea";
+    String ManualImageAreaText = "//div[@data-object-id='$TEXT']/textarea";
     String HandwritingRecognitionObject = "//div[@data-object-id='$TEXT']/input";
     static String actionLocator = "//div[@data-object-id='$TEXT']/fieldset/input[$NUM]";
     static String newValidationMessageUponSubmit = "//div[@data-object-id='$TEXT']/div/div[2]";

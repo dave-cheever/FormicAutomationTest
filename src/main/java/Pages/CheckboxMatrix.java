@@ -30,8 +30,7 @@ public class CheckboxMatrix extends BasePage{
     static String mandatoryFieldMessageLocator = "//div[@data-object-id='$TEXT']/div/div";
     static String fieldErrorsPopUpValidationMessage = "//h1[text()=\"Field Errors\"]/ancestor::div/following-sibling::div/div/div/div[text()=\"$TEXT\"]/following::div";
     static String checkBoxMatrixSeeFieldErrorsButton = "//div[@data-object-id=\"$TEXT\"]/div/div";
-    static String closeButton1 = "(//button[@aria-label=\"Close dialog\"])[1]";
-    static String closeButton2 = "(//button[@aria-label=\"Close dialog\"])[2]";
+    static String closeButton = "//h1[text()='Field Errors']/following::button";
     static String fieldSetLocator = "//input[@data-field-id=\"$TEXT\"][1]";
     static String checkboxMatrixCheckboxLocator = "//input[@data-field-id=\"$TEXT\"]";
     static String fieldErrorsElementCount = "//h1[text()=\"Field Errors\"]/ancestor::div/following-sibling::div/div/div/div[1]";
@@ -42,19 +41,12 @@ public class CheckboxMatrix extends BasePage{
 
     public static void clickCloseButton(){
         String closeButtonElement;
-        if(numberOfFieldErrorsCheckboxMatrix()==1){
-            closeButtonElement = closeButton2;
-        }else{
-            closeButtonElement = closeButton1;
-        }
+        closeButtonElement = closeButton;
         driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath(closeButtonElement)));
         WebElement element = stringToWebElement(closeButtonElement);
         click(element);
     }
 
-    public static int numberOfFieldErrorsCheckboxMatrix(){
-        return driver.findElements(By.xpath(fieldErrorsElementCount)).size();
-    }
     public static String getValidationMessageByOptionName(String strName){
         String elem = stringReplace(fieldErrorsPopUpValidationMessage,strName);
         WebElement element = stringToWebElement(elem);

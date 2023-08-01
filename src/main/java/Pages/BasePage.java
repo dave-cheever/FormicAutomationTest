@@ -26,9 +26,11 @@ public class BasePage {
     public BasePage(WebDriver driver){
         this.driver = driver;
         driverWait = new WebDriverWait(this.driver,15);
-        driver.get("https://formic-onlineforms-test.azurewebsites.net/");
-        //Initialise Elements
         PageFactory.initElements(driver, this);
+    }
+
+    public void visit(String url) {
+        driver.get(url);
     }
 
     public void javascriptClearInputValue(WebElement element){
