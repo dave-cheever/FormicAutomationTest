@@ -1,14 +1,12 @@
 package Pages;
-import Helpers.DataFormatting;
 import Objects.CheckboxObject;
 import Pojo.FormContentPojo;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.ui.*;
-import org.testng.Assert;
 import org.testng.Reporter;
-import java.time.Duration;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -25,9 +23,8 @@ public class BasePage {
 
 
     public BasePage(WebDriver driver){
-        long seconds = 15;
         this.driver = driver;
-        driverWait = new WebDriverWait(this.driver,seconds);
+        driverWait = new WebDriverWait(this.driver,15);
         PageFactory.initElements(driver, this);
     }
 
@@ -52,12 +49,8 @@ public class BasePage {
         try{
             driverWait.until(ExpectedConditions.elementToBeClickable(element));
             element.click();
-        }catch (ElementNotVisibleException e){
-//            recordScreenshot();
-//            e.printStackTrace();
-//            javascriptClick(element);
+        }catch (Exception e){
             Reporter.log("Element not visible. ");
-
         }
     }
 
@@ -674,14 +667,13 @@ public class BasePage {
         return num;
     }
 
-    public String emailAddressInputs(FormContentPojo pojo, String strFieldId){
+    public String emailAddressInputs(){
         Random rand = new Random();
         String[] emailProviders = {"gmail.com", "yahoo.com", "hotmail.com", "aol.com", "outlook.com"};
         String[] names = {"john", "jane", "doe", "smith", "miller"};
         int randomNameIndex = rand.nextInt(names.length);
         int randomProviderIndex = rand.nextInt(emailProviders.length);
-        String randomEmail = names[randomNameIndex] + "@" + emailProviders[randomProviderIndex];
-        return randomEmail;
+        return names[randomNameIndex] + "@" + emailProviders[randomProviderIndex];
     }
 
     public static String getFieldNameByElementId(FormContentPojo pojo, String strElementId){

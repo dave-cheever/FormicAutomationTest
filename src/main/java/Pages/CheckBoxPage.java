@@ -91,7 +91,7 @@ public class CheckBoxPage extends BasePage{
     public void uncheckWhenFieldIdThatDisablesFieldId(FormContentPojo pojo, String strFieldId){
         String hasValue = "0";
         String whenFieldId = "";
-        String elementId = "";
+        String elementId;
         outerLoop:
         for (var routing : pojo.data.project.getRouting()
              ) {
@@ -304,11 +304,11 @@ public class CheckBoxPage extends BasePage{
     public void AssertMiaFormatValidation(FormContentPojo graphResponse,String fieldId){
         lookForTheField(graphResponse,fieldId);
         if(CheckboxObject.strFormatRegex!=null&&CheckboxObject.strFormatRegex.equalsIgnoreCase(emailRegEx)){
-            String email = emailAddressInputs(graphResponse,CheckboxObject.strFieldId);
+            String email = emailAddressInputs();
             mia.setTextToMia(graphResponse,fieldId,email);
         }else {
 
-            String inputs = "";
+            String inputs;
             boolean flag = false;
             if (CheckboxObject.strFormatRegex != null) {
                 inputs = FormatRegex.generateFormattedString(CheckboxObject.strFormatRegex);
@@ -319,7 +319,7 @@ public class CheckBoxPage extends BasePage{
                 }
             }
 
-            if (CheckboxObject.strFormatMask!=null&&flag!=true){
+            if (CheckboxObject.strFormatMask!=null&&!flag){
                 inputs = FormatMask.formatDateTime(CheckboxObject.strFormatMask);
                 if(inputs!=null){
                     mia.setTextToMia(graphResponse,fieldId,"test");
@@ -334,10 +334,10 @@ public class CheckBoxPage extends BasePage{
     public void AssertHroFormatValidation(FormContentPojo graphResponse, String fieldId){
         lookForTheField(graphResponse,fieldId);
         if(CheckboxObject.strFormatRegex!=null&&CheckboxObject.strFormatRegex.equalsIgnoreCase(emailRegEx)){
-            String email = emailAddressInputs(graphResponse,CheckboxObject.strFieldId);
+            String email = emailAddressInputs();
             hro.setTextToHro(graphResponse,fieldId,email);
         }else {
-            String inputs = "";
+            String inputs;
             boolean flag = false;
             if (CheckboxObject.strFormatRegex != null) {
                 inputs = FormatRegex.generateFormattedString(CheckboxObject.strFormatRegex);
@@ -348,7 +348,7 @@ public class CheckBoxPage extends BasePage{
                 }
             }
 
-            if (CheckboxObject.strFormatMask!=null&&flag!=true){
+            if (CheckboxObject.strFormatMask!=null&&!flag){
                 inputs = FormatMask.formatDateTime(CheckboxObject.strFormatMask);
                 if(inputs!=null){
                     hro.setTextToHro(graphResponse, fieldId, "test");
@@ -357,7 +357,7 @@ public class CheckBoxPage extends BasePage{
                 }
             }
 
-            if (CheckboxObject.strDataTypeNew != null&&flag!=true) {
+            if (CheckboxObject.strDataTypeNew != null&&!flag) {
                 if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("NUMERIC")) {
                     hro.processNumericDataType(graphResponse, fieldId);
                 } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("ALPHA_NUMERIC")) {
@@ -435,11 +435,11 @@ public class CheckBoxPage extends BasePage{
                     } else if (!isFieldIdInRoutingRulesWhenFieldDisable(graphResponse, fieldId)) {
                         lookForTheField(graphResponse, fieldId);
                         if (CheckboxObject.strFormatRegex != null && CheckboxObject.strFormatRegex.equalsIgnoreCase(emailRegEx)) {
-                            String email = emailAddressInputs(graphResponse, CheckboxObject.strFieldId);
+                            String email = emailAddressInputs();
                             hro.setTextToHro(graphResponse, fieldId, email);
                         } else {
 
-                            String inputs = "";
+                            String inputs;
                             boolean flag = false;
                             if (CheckboxObject.strFormatRegex != null) {
                                 inputs = FormatRegex.generateFormattedString(CheckboxObject.strFormatRegex);
@@ -449,14 +449,14 @@ public class CheckBoxPage extends BasePage{
                                 }
                             }
 
-                            if (CheckboxObject.strFormatMask != null && flag != true) {
+                            if (CheckboxObject.strFormatMask != null && !flag) {
                                 inputs = FormatMask.formatDateTime(CheckboxObject.strFormatMask);
                                 if (inputs != null) {
                                     hro.setTextToHro(graphResponse, fieldId, inputs);
                                     flag = true;
                                 }
                             }
-                            if (flag != true) {
+                            if (!flag) {
                                 if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("NUMERIC")) {
                                     hro.numericInputsBeyondTheMaximumAllowed(graphResponse, CheckboxObject.strFieldId, hro.identifyMaximumInputsByFieldId());
                                 } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("ALPHA_NUMERIC")) {
@@ -611,7 +611,7 @@ public class CheckBoxPage extends BasePage{
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
         sideMenuNavigation.clickSubmitButton();
-        String strListFieldName = "";
+        String strListFieldName;
         do{
             strListFieldName = getListFieldNameByCompletionErrors();
             String strElementId = getElementIdByFieldName(graphResponse,strListFieldName);
@@ -623,7 +623,7 @@ public class CheckBoxPage extends BasePage{
                 hro.getHroRules(graphResponse,CheckboxObject.singleFieldId);
                 lookForTheField(graphResponse,CheckboxObject.singleFieldId);
                 if(CheckboxObject.strFormatRegex!=null&&CheckboxObject.strFormatRegex.equalsIgnoreCase(emailRegEx)){
-                    String email = emailAddressInputs(graphResponse,CheckboxObject.strFieldId);
+                    String email = emailAddressInputs();
                     hro.setTextToHro(graphResponse,CheckboxObject.singleFieldId,email);
                 }else {
                     hroInputs(graphResponse,CheckboxObject.singleFieldId);
@@ -643,7 +643,7 @@ public class CheckBoxPage extends BasePage{
                 mia.getMiaRules(graphResponse,CheckboxObject.singleFieldId);
                 lookForTheField(graphResponse,CheckboxObject.singleFieldId);
                 if(CheckboxObject.strFormatRegex!=null&&CheckboxObject.strFormatRegex.equalsIgnoreCase(emailRegEx)){
-                    String email = emailAddressInputs(graphResponse,CheckboxObject.strFieldId);
+                    String email = emailAddressInputs();
                     mia.setTextToMia(graphResponse,CheckboxObject.singleFieldId,email);
                 }else {
                     miaInputs(graphResponse,CheckboxObject.singleFieldId);
@@ -668,7 +668,7 @@ public class CheckBoxPage extends BasePage{
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
         getAllFieldId(graphResponse);
-        String strListFieldName = "";
+        String strListFieldName;
         for (String fieldId: CheckboxObject.fieldId
         ) {
             strListFieldName = getFieldName(graphResponse,fieldId);
@@ -681,7 +681,7 @@ public class CheckBoxPage extends BasePage{
                     hro.getHroRules(graphResponse,CheckboxObject.singleFieldId);
                     lookForTheField(graphResponse,CheckboxObject.singleFieldId);
                     if(CheckboxObject.strFormatRegex!=null&&CheckboxObject.strFormatRegex.equalsIgnoreCase(emailRegEx)){
-                        String email = emailAddressInputs(graphResponse,CheckboxObject.strFieldId);
+                        String email = emailAddressInputs();
                         hro.setTextToHro(graphResponse,CheckboxObject.singleFieldId,email);
                     }else {
                         hroInputs(graphResponse,CheckboxObject.singleFieldId);
@@ -701,7 +701,7 @@ public class CheckBoxPage extends BasePage{
                     mia.getMiaRules(graphResponse,CheckboxObject.singleFieldId);
                     lookForTheField(graphResponse,CheckboxObject.singleFieldId);
                     if(CheckboxObject.strFormatRegex!=null&&CheckboxObject.strFormatRegex.equalsIgnoreCase(emailRegEx)){
-                        String email = emailAddressInputs(graphResponse,CheckboxObject.strFieldId);
+                        String email = emailAddressInputs();
                         mia.setTextToMia(graphResponse,CheckboxObject.singleFieldId,email);
                     }else {
                         miaInputs(graphResponse,CheckboxObject.singleFieldId);
@@ -727,7 +727,7 @@ public class CheckBoxPage extends BasePage{
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
         sideMenuNavigation.clickSubmitButton();
-        String strListFieldName = "";
+        String strListFieldName;
         do{
             strListFieldName = getListFieldNameByCompletionErrors();
             String strElementId = getElementIdByFieldName(graphResponse,strListFieldName);
@@ -739,7 +739,7 @@ public class CheckBoxPage extends BasePage{
                 hro.getHroRules(graphResponse,CheckboxObject.singleFieldId);
                 lookForTheField(graphResponse,CheckboxObject.singleFieldId);
                 if(CheckboxObject.strFormatRegex!=null&&CheckboxObject.strFormatRegex.equalsIgnoreCase(emailRegEx)){
-                    String email = emailAddressInputs(graphResponse,CheckboxObject.strFieldId);
+                    String email = emailAddressInputs();
                     hro.setTextToHro(graphResponse,CheckboxObject.singleFieldId,email);
                 }else {
                     hroInputs(graphResponse,CheckboxObject.singleFieldId);
@@ -760,7 +760,7 @@ public class CheckBoxPage extends BasePage{
                 mia.getMiaRules(graphResponse,CheckboxObject.singleFieldId);
                 lookForTheField(graphResponse,CheckboxObject.singleFieldId);
                 if(CheckboxObject.strFormatRegex!=null&&CheckboxObject.strFormatRegex.equalsIgnoreCase(emailRegEx)){
-                    String email = emailAddressInputs(graphResponse,CheckboxObject.strFieldId);
+                    String email = emailAddressInputs();
                     mia.setTextToMia(graphResponse,CheckboxObject.singleFieldId,email);
                 }else {
                     miaInputs(graphResponse,CheckboxObject.singleFieldId);
@@ -810,7 +810,7 @@ public class CheckBoxPage extends BasePage{
     }
 
     public void validateInputsAreCorrect(FormContentPojo pojo) throws InterruptedException {
-        String strElementId = "";
+        String strElementId;
         boolean isCheckboxMatrix = false;
         String strCheckBoxId = null;
         String strHroId = null;
@@ -999,16 +999,15 @@ public class CheckBoxPage extends BasePage{
     public static boolean isCheckboxFieldNotChecked(FormContentPojo pojo, String strFieldId){
         String elementId = getObjectIdFromFieldId(pojo,strFieldId);
         int numberOfCheckbox = countCheckboxItems(elementId);
-        String elem = "";
+        String elem;
         WebElement element;
         boolean result = true;
-        outerLoop:
         for(int x = 1; x<=numberOfCheckbox;x++){
              elem = stringReplaceTwoValues(checkboxElementToBeClickedLocator,elementId,Integer.toString(x));
              element = stringToWebElement(elem);
              if(element.isSelected()){
                  result = false;
-                 break outerLoop;
+                 break;
              }
         }
         return result;
@@ -1650,7 +1649,7 @@ public class CheckBoxPage extends BasePage{
     public void hroInputs(FormContentPojo pojo,String strFieldId) throws ParseException {
         lookForTheField(pojo, strFieldId);
         if (CheckboxObject.strFormatRegex != null && CheckboxObject.strFormatRegex.equalsIgnoreCase(emailRegEx)) {
-            String email = emailAddressInputs(pojo, CheckboxObject.strFieldId);
+            String email = emailAddressInputs();
             hro.setTextToHro(pojo, strFieldId, email);
         } else {
 
@@ -1698,7 +1697,7 @@ public class CheckBoxPage extends BasePage{
     public void miaInputs(FormContentPojo pojo,String strFieldId) throws ParseException {
         lookForTheField(pojo, strFieldId);
         if (CheckboxObject.strFormatRegex != null && CheckboxObject.strFormatRegex.equalsIgnoreCase(emailRegEx)) {
-            String email = emailAddressInputs(pojo, CheckboxObject.strFieldId);
+            String email = emailAddressInputs();
             mia.setTextToMia(pojo, strFieldId, email);
         } else {
 
@@ -2199,7 +2198,7 @@ public class CheckBoxPage extends BasePage{
         scrollElementIntoView(driver,validationMessageUnderCheckbox);
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("window.scrollBy(0,350)", "");
-        Assert.assertEquals(validationMessageUnderCheckbox.getText(),"This field is mandatory.","The expected value is : This field is mandatory. "+validationMessageUnderCheckbox.getText());
+        Assert.assertEquals(validationMessageUnderCheckbox.getText(),"This field is mandatory.","The expected value is for the field "+name+" : This field is mandatory. "+validationMessageUnderCheckbox.getText());
         CheckboxObject.checkboxObjectDefaultValue();
     }
 
@@ -2241,7 +2240,7 @@ public class CheckBoxPage extends BasePage{
         String elementId = getObjectIdFromFieldId(pojo,strFieldId);
         lookForTheField(pojo,strFieldId);
         if(hro.isFieldIdHro(pojo,strFieldId)){
-            String inputs = "";
+            String inputs;
             if(Objects.requireNonNull(CheckboxObject.strDataTypeNew).equalsIgnoreCase("NUMERIC")){
                 inputs = numericInputs(pojo,strFieldId,hro.identifyMaximumInputsByFieldId());
                 hro.setTextToHro(pojo,strFieldId,inputs);
@@ -2273,17 +2272,17 @@ public class CheckBoxPage extends BasePage{
         }
     }
 
-    public void assertBeyondMaximumInput(FormContentPojo pojo, String strFieldId) throws Exception {
-        String elementId = getObjectIdFromFieldId(pojo,strFieldId);
-        lookForTheField(pojo,strFieldId);
-        int numberOfItems = countCheckboxItems(elementId);
-        clickBeyondMaximumInput(pojo,CheckboxObject.maximum,strFieldId,numberOfItems);
-        if(CheckboxObject.mandatory){
-            AssertMandatoryFieldsWithInputs(pojo,strFieldId);
-        }else{
-            assertWithinAcceptedInputs(CheckboxObject.checkboxName,elementId);
-        }
-    }
+//    public void assertBeyondMaximumInput(FormContentPojo pojo, String strFieldId) throws Exception {
+//        String elementId = getObjectIdFromFieldId(pojo,strFieldId);
+//        lookForTheField(pojo,strFieldId);
+//        int numberOfItems = countCheckboxItems(elementId);
+//        clickBeyondMaximumInput(pojo,CheckboxObject.maximum,strFieldId,numberOfItems);
+//        if(CheckboxObject.mandatory){
+//            AssertMandatoryFieldsWithInputs(pojo,strFieldId);
+//        }else{
+//            assertWithinAcceptedInputs(CheckboxObject.checkboxName,elementId);
+//        }
+//    }
 
     public void assertWithinMaximumInput(FormContentPojo pojo, String strFieldId) throws Exception {
         String elementId = getObjectIdFromFieldId(pojo,strFieldId);
