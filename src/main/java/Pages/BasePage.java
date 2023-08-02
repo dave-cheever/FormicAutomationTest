@@ -8,6 +8,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.*;
 import org.testng.Assert;
 import org.testng.Reporter;
+import java.time.Duration;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -24,8 +25,9 @@ public class BasePage {
 
 
     public BasePage(WebDriver driver){
+        long seconds = 15;
         this.driver = driver;
-        driverWait = new WebDriverWait(this.driver,15);
+        driverWait = new WebDriverWait(this.driver,seconds);
         PageFactory.initElements(driver, this);
     }
 
