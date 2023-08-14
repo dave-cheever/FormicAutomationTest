@@ -8,8 +8,12 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.openqa.selenium.support.ui.*;
 import org.testng.Reporter;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Random;
+import org.openqa.selenium.TimeoutException;
+import org.openqa.selenium.WebDriver;
+
 
 
 public class BasePage {
@@ -24,7 +28,8 @@ public class BasePage {
 
     public BasePage(WebDriver driver){
         this.driver = driver;
-        driverWait = new WebDriverWait(this.driver,15);
+        long sec = 15;
+        driverWait = new WebDriverWait(this.driver,sec);
         PageFactory.initElements(driver, this);
     }
 
