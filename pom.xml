@@ -6,7 +6,7 @@
   <artifactId>FormicOF2Test</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>jar</packaging>
-  <url>http://maven.apache.org</url>
+  <url>https://formic-onlineforms-test.azurewebsites.net</url>
 
   <name>Archetype - FormicOF2Test</name>
   <description>This test is created for OF2 Form Content Test</description>
@@ -20,13 +20,6 @@
   </properties>
 
   <dependencies>
-
-    <!-- https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-compiler-plugin -->
-    <dependency>
-      <groupId>org.apache.maven.plugins</groupId>
-      <artifactId>maven-compiler-plugin</artifactId>
-      <version>3.11.0</version>
-    </dependency>
 
     <dependency>
       <groupId>org.apache.maven.plugin-tools</groupId>
@@ -168,24 +161,15 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.11.0</version>
+        <version>3.8.1</version>
         <configuration>
           <source>20</source>
           <target>20</target>
-          <executable>C:\Program Files\Java\jdk-20\bin</executable>
+          <compilerArgument>-proc:none</compilerArgument>
+          <executable>C:\Program Files\Java\jdk-20\bin\javac.exe</executable>
         </configuration>
       </plugin>
 
-<!--      <plugin>-->
-<!--        <groupId>org.apache.maven.plugins</groupId>-->
-<!--        <artifactId>maven-compiler-plugin</artifactId>-->
-<!--        <version>3.10.1</version>-->
-<!--        <configuration>-->
-<!--          <source>15</source>-->
-<!--          <target>15</target>-->
-<!--          <compilerArgument>-proc:none</compilerArgument>-->
-<!--        </configuration>-->
-<!--      </plugin>-->
     </plugins>
   </build>
   <!-- profiles -->
