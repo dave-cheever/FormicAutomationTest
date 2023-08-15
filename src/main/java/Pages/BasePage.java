@@ -21,6 +21,7 @@ public class BasePage {
     protected static WebDriver driver;
     protected static WebDriverWait driverWait;
 
+
     static String nextPageButton = "//li//button//div[contains(text(),'Next Page')]";
     static String previousPageButton = "//li//button//div[contains(text(),'Previous Page')]";
     static String page = "//div[@data-testid='page-progress']";
@@ -28,8 +29,7 @@ public class BasePage {
 
     public BasePage(WebDriver driver){
         this.driver = driver;
-        long sec = 15;
-        driverWait = new WebDriverWait(this.driver,sec);
+        driverWait = new WebDriverWait(driver,Duration.ofSeconds(15));
         PageFactory.initElements(driver, this);
     }
 
