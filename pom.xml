@@ -123,14 +123,14 @@
 
     <resources>
       <resource>
-        <directory>src/main/resources</directory>
+        <directory>src/main/java/com/Formic/OF2</directory>
         <filtering>true</filtering>
       </resource>
     </resources>
 
     <testResources>
       <testResource>
-        <directory>src/test/resources</directory>
+        <directory>src/test/java/com/Formic/OF2/testcases</directory>
         <filtering>true</filtering>
       </testResource>
     </testResources>
