@@ -26,8 +26,6 @@ public class FormContentTest extends BaseUiTest {
 
 
 
-
-
     @Test
     public void checkboxValidationEnableDisableFieldsCheckbox() throws Exception{
         homePage.selectProject(projectName);
