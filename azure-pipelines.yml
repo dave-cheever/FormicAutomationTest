@@ -12,6 +12,11 @@ steps:
       script: |
         curl -L -o $(Build.BinariesDirectory)/jdk-15.tar.gz 'https://api.adoptopenjdk.net/v3/binary/latest/15/ga/linux/x64/jdk/hotspot/normal/adoptopenjdk?file_type=.tar.gz'
 
+  - task: Maven@3
+    displayName: Maven Build
+    inputs:
+      pomFile: 'src/pom.xml'
+
   - task: JavaToolInstaller@0
     displayName: 'Install JDK 15'
     inputs:
