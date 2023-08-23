@@ -8,6 +8,7 @@
   <packaging>jar</packaging>
   <url>https://formic-onlineforms-test.azurewebsites.net</url>
 
+
   <name>Archetype - FormicOF2Test</name>
   <description>This test is created for OF2 Form Content Test</description>
 
