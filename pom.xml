@@ -161,7 +161,6 @@
         <version>3.11.0</version>
         <configuration>
           <compilerArgument>-proc:none</compilerArgument>
-          <executable>${JAVA_HOME}/bin/javac</executable>
         </configuration>
       </plugin>
 
