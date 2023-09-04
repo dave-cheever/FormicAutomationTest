@@ -49,10 +49,23 @@ public class BaseUiTest {
                 System.getProperty("user.dir") + File.separator + "downloadFiles");
         options.setExperimentalOption("prefs", prefs);
         // Test is running on docker, use the remote web driver
-        driver.set(new ChromeDriver(options));
+
+        driver.set(new ChromeDriver(ChromeOptionsUtil.getHeadlessChromeOptions()));
+//        driver.set(new ChromeDriver(options));
+
         //setDriver(new ChromeDriver(options));
         getDriver().manage().window().maximize();
         screenshotHelper = PageFactory.initElements(getDriver(),ScreenshotHelper.class);
+    }
+
+    public class ChromeOptionsUtil {
+        public static ChromeOptions getHeadlessChromeOptions() {
+            ChromeOptions options = new ChromeOptions();
+            options.addArguments("--headless"); // Run in headless mode
+            options.addArguments("--disable-gpu"); // Disable GPU for headless mode
+            // Add any additional options you need
+            return options;
+        }
     }
 
     @AfterMethod
