@@ -8,6 +8,7 @@
   <packaging>jar</packaging>
   <url>https://formic-onlineforms-test.azurewebsites.net</url>
 
+
   <name>Archetype - FormicOF2Test</name>
   <description>This test is created for OF2 Form Content Test</description>
 
@@ -146,11 +147,21 @@
       </plugin>
 
       <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.0.0-M7</version>
+
+        <dependencies>
+          <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>7.7.0</version> <!-- Specify your TestNG version -->
+          </dependency>
+        </dependencies>
+
         <configuration>
           <suiteXmlFiles>
-            <suiteXmlFile>testng.xml</suiteXmlFile>
+            <suiteXmlFile>src/testng.xml</suiteXmlFile>
           </suiteXmlFiles>
         </configuration>
       </plugin>
@@ -161,6 +172,8 @@
         <version>3.11.0</version>
         <configuration>
           <compilerArgument>-proc:none</compilerArgument>
+          <source>17</source> <!-- Specify the Java version you are targeting -->
+          <target>17</target>
         </configuration>
       </plugin>
 
