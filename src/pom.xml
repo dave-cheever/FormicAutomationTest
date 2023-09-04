@@ -156,7 +156,6 @@
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <version>7.7.0</version> <!-- Specify your TestNG version -->
-            <scope>test</scope>
           </dependency>
         </dependencies>
 
