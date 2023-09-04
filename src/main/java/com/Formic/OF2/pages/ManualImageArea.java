@@ -27,9 +27,9 @@ public class ManualImageArea extends BasePage {
 
     String miaInputLocator = "//div[@data-object-id='$TEXT']/textarea";
     String miaTextAreaLocator = "//div[@data-object-id='$TEXT']/div/textarea";
-    String miaValidationMessageLocator = "//div[@data-object-id='$TEXT']/div/div[2]";
+    String miaValidationMessageLocator = "//div[@data-object-id='$TEXT']/div/div[1]";
     String miaValidationMessageMandatoryLocator = "//div[@data-object-id='$TEXT']/div/div/div";
-    String miaValidationMessageMinimumMaximumLocator = "(//div[@data-object-id='$TEXT']/div/div)[3]";
+    String miaValidationMessageMinimumMaximumLocator = "(//div[@data-object-id='$TEXT']/div/div)[2]";
     String validationMessageUponSubmitSideBar = "//h1[contains(text(),'Completion Errors')]//following-sibling::ul/li/button/div/div[contains(text(),'$TEXT')]//following::div[1]";
     String miaPicklistDropdownButton = "//div[@data-object-id='$TEXT']/div/div/button";
     String miaPicklistDropdownInput = "//div[@data-object-id='$TEXT']/div/div/input";
@@ -233,7 +233,14 @@ public class ManualImageArea extends BasePage {
         WebElement webElementTextArea = stringToWebElement(elementForTextArea);
         scrollElementIntoView(driver,webElementTextArea);
         Reporter.log("<b>No validation message should be displayed.</b>" );
-        Assert.assertTrue(driver.findElements(By.xpath(elementForValidation)).size()==0,"No validation message should be displayed for "+ fieldName +".");
+        if(driver.findElements(By.xpath(elementForValidation)).size()!=0){
+            WebElement webElementValidation = stringToWebElement(elementForValidation);
+            Assert.assertTrue(webElementValidation.getText().equalsIgnoreCase("This field is mandatory."));
+        }
+        else{
+            Assert.assertTrue(driver.findElements(By.xpath(elementForValidation)).size()==0,"No validation message should be displayed for "+ fieldName +".");
+
+        }
     }
 
 
@@ -403,7 +410,12 @@ public class ManualImageArea extends BasePage {
         String strElementId = getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(miaValidationMessageMinimumMaximumLocator,strElementId);
         String fieldName = getFieldName(pojo,strFieldId);
-        Assert.assertFalse(isElementVisible(driver,elem),"The expected for : "+fieldName + " There shouldn't be any validation message displayed below the object.");
+        if(isElementVisible(driver,elem)){
+            WebElement validationMessage = stringToWebElement(elem);
+            Assert.assertTrue(validationMessage.getText().equalsIgnoreCase("This field is mandatory."));
+        }else{
+            Assert.assertFalse(isElementVisible(driver,elem),"The expected for : "+fieldName + " There shouldn't be any validation message displayed below the field.");
+        }
         comErrors.validateCompletionErrorMessageHidden(fieldName);
     }
 

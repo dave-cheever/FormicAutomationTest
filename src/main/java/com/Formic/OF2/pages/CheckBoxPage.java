@@ -21,12 +21,12 @@ public class CheckBoxPage extends BasePage {
     static String validationMessageUponSubmitSideBar = "//h1[contains(text(),'Completion Errors')]//following-sibling::ul/li/button/div/div[contains(text(),'$TEXT')]//following::div[1]";
     static String mandatoryFieldMessageLocator = "//div[@data-object-id='$TEXT']/div/div";
     static String mandatoryFieldMessagePickListLocator = "(//div[@data-object-id='$TEXT']/div/div/div)[2]";
-    static String validationMessageLocator = "//div[@data-object-id='$TEXT']/div/div[2]";
+    static String validationMessageLocator = "//div[@data-object-id='$TEXT']/div/div[1]";
     String fieldSetLocator = "//div[@data-object-id='$TEXT']/fieldset/input[1]";
     String ManualImageAreaText = "//div[@data-object-id='$TEXT']/textarea";
     String HandwritingRecognitionObject = "//div[@data-object-id='$TEXT']/input";
     static String actionLocator = "//div[@data-object-id='$TEXT']/fieldset/input[$NUM]";
-    static String newValidationMessageUponSubmit = "//div[@data-object-id='$TEXT']/div/div[2]";
+    static String newValidationMessageUponSubmit = "//div[@data-object-id='$TEXT']/div/div[1]";
     static String checkboxLocator = "//div[@data-object-id='$TEXT']/fieldset/input";
     static String checkboxElementToBeClickedLocator = "//div[@data-object-id='$TEXT']/fieldset/input[$NUM]";
     String checkboxMatrixElementToBeClickedLocator = "//input[@data-field-id='$TEXT'][$NUM]";

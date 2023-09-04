@@ -25,7 +25,7 @@ public class HandwritingRecognitionObject extends BasePage {
 //    CheckBoxPage chk = new CheckBoxPage(1);
 
     static String hroInputLocator = "//div[@data-object-id='$TEXT']/input";
-    static String hroValidationMessageLocator = "//div[@data-object-id='$TEXT']/div/div[2]";
+    static String hroValidationMessageLocator = "//div[@data-object-id='$TEXT']/div/div[1]";
     static String hroValidationMessageMandatoryLocator = "//div[@data-object-id='$TEXT']/div/div[1]";
     static CompletionErrors comp = new CompletionErrors(driver);
 
