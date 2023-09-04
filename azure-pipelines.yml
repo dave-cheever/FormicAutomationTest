@@ -19,7 +19,7 @@ steps:
       jdkArchitectureOption: 'x64'
       publishJUnitResults: true
       testResultsFiles: '**/surefire-reports/TEST-*.xml'
-      goals: 'clean test'  # Include 'clean' to ensure a clean build
+      goals: 'clean test -Dtestng.config.path=src/testng.xml'  # Include 'clean' to ensure a clean build
       codeCoverageToolOption: 'None'  # If you don't need code coverage reports
 
   - script: |
