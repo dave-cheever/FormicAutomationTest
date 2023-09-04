@@ -1,34 +1,28 @@
+# Maven
+# Build your Java project and run tests with Apache Maven.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/java
+
 trigger:
-  - main
+  - master
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: ubuntu-latest
 
 steps:
-  - task: Bash@3
-    displayName: 'Download JDK 15'
-    inputs:
-      targetType: 'inline'
-      script: |
-        curl -L -o $(Build.BinariesDirectory)/jdk-15.tar.gz 'https://api.adoptopenjdk.net/v3/binary/latest/15/ga/linux/x64/jdk/hotspot/normal/adoptopenjdk?file_type=.tar.gz'
-
   - task: Maven@3
-    displayName: Maven Build
     inputs:
-      pomFile: 'src/pom.xml'
-
-  - task: JavaToolInstaller@0
-    displayName: 'Install JDK 15'
-    inputs:
-      versionSpec: '15'
+      mavenPomFile: 'src/pom.xml'
+      mavenOptions: '-Xmx3072m'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '1.8'
       jdkArchitectureOption: 'x64'
-      jdkSourceOption: 'jdkFile'
-      jdkFile: '$(Build.BinariesDirectory)/jdk-15.tar.gz'
+      publishJUnitResults: true
+      testResultsFiles: '**/surefire-reports/TEST-*.xml'
+      goals: 'clean test'  # Include 'clean' to ensure a clean build
+      codeCoverageToolOption: 'None'  # If you don't need code coverage reports
 
-  - script: ls -la
-    displayName: 'List directory contents'
+  - script: |
+      mvn test -Dtestng.config.path=src/testng.xml
+    displayName: 'Run TestNG tests'
 
-  - script: mvn -B package
-    displayName: 'Build project with Maven'
-    workingDirectory: '$(system.defaultWorkingDirectory)/pom.xml'
-  
