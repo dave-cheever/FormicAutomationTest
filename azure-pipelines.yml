@@ -17,12 +17,17 @@ steps:
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: '17'
       jdkArchitectureOption: 'x64'
-      publishJUnitResults: true
-      testResultsFiles: '**/surefire-reports/TEST-*.xml'
-      goals: 'clean test -Dtestng.config.path=src/testng.xml'  # Include 'clean' to ensure a clean build
+      goals: 'clean test'  # Include 'clean' to ensure a clean build
       codeCoverageToolOption: 'None'  # If you don't need code coverage reports
 
   - script: |
-      mvn test -Dtestng.config.path=src/testng.xml
-    displayName: 'Run TestNG tests'
+      # Download and install any required dependencies
+      mvn clean install -U
+      # Adjust the command based on your specific requirements
+    displayName: 'Install Maven Dependencies'
 
+  - script: |
+      # Run your TestNG test suites
+      mvn test -Dtestng.config.path=src/testng.xml
+      # Adjust the command based on your build tool and test suite configuration
+    displayName: 'Run TestNG tests'
