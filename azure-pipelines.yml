@@ -1,0 +1,42 @@
+# Maven
+# Build your Java project and run tests with Apache Maven.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/java
+
+trigger:
+  - master
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+  - task: Maven@3
+    inputs:
+      mavenPomFile: 'src/pom.xml'
+      mavenOptions: '-Xmx3072m'
+      javaHomeOption: 'JDKVersion'
+      jdkVersionOption: '17'
+      jdkArchitectureOption: 'x64'
+#      goals: 'clean test'  # Include 'clean' to ensure a clean build
+      codeCoverageToolOption: 'None'  # If you don't need code coverage reports
+
+
+  - script: |
+      # Navigate to the project directory where the pom.xml file is located
+      cd $(Build.SourcesDirectory)/src/pom.xml
+
+      # Build the project and run the TestNG tests
+      mvn clean install test -Dtestng.config.path=src/testng.xml
+    displayName: 'Build and Run Tests'
+
+#  - script: |
+#      # Download and install any required dependencies
+#      mvn clean install -U
+#      # Adjust the command based on your specific requirements
+#    displayName: 'Install Maven Dependencies'
+#
+#  - script: |
+#      # Run your TestNG test suites
+#      mvn -Dtestng.config.path=src/testng.xml
+#      # Adjust the command based on your build tool and test suite configuration
+#    displayName: 'Run TestNG tests'
