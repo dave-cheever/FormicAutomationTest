@@ -6,6 +6,7 @@
     <test name="Regression">
         <classes>
             <class name="Formic.testcases.TestFormContent" />
+            <class name="Formic.testcases.LoginTest" />
             <!-- Add more classes as needed -->
         </classes>
     </test>
