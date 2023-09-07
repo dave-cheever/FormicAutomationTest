@@ -1,4 +1,4 @@
-package com.Formic.OF2.testcases;
+package Formic.testcases;
 
 import com.Formic.OF2.test.BaseUiTest;
 import com.Formic.OF2.pages.*;

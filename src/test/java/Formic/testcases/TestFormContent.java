@@ -1,4 +1,4 @@
-package com.Formic.OF2.testcases;
+package Formic.testcases;
 
 import com.Formic.OF2.test.BaseUiTest;
 import com.Formic.OF2.utils.CheckboxObject;
@@ -9,7 +9,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 
-public class FormContentTest extends BaseUiTest {
+public class TestFormContent extends BaseUiTest {
 
     HeaderNavigationBar headerNavigationBar;
     LoginPage loginPage;
