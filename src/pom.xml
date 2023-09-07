@@ -131,7 +131,7 @@
 
     <testResources>
       <testResource>
-        <directory>src/test/java/com/Formic/OF2/testcases</directory>
+        <directory>src/test/java/Formic/testcases</directory>
         <filtering>true</filtering>
       </testResource>
     </testResources>
