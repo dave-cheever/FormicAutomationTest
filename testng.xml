@@ -5,7 +5,7 @@
     </listeners>
     <test name="Regression">
         <classes>
-            <class name="com.Formic.OF2.testcases.FormContentTest" />
+            <class name="Formic.testcases.TestFormContent" />
             <!-- Add more classes as needed -->
         </classes>
     </test>
