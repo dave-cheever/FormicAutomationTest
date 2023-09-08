@@ -20,14 +20,20 @@ steps:
 #      goals: 'clean test'  # Include 'clean' to ensure a clean build
       codeCoverageToolOption: 'None'  # If you don't need code coverage reports
 
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFormat: 'JUnit'
+      testResultsFiles: '**/testng.xml'
 
   - script: |
       # Navigate to the project directory where the pom.xml file is located
       cd $(Build.SourcesDirectory)/src/pom.xml
 
       # Build the project and run the TestNG tests
-      mvn integration-test -Dtestng.config.path=testng.xml
+      mvn verify -Dtestng.config.path=testng.xml
     displayName: 'Build and Run Tests'
+
+
 
 #  - script: |
 #      # Download and install any required dependencies
