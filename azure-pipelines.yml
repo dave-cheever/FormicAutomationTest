@@ -26,7 +26,7 @@ steps:
       cd $(Build.SourcesDirectory)/src/pom.xml
 
       # Build the project and run the TestNG tests
-      mvn clean install test -Dtestng.config.path=testng.xml
+      mvn integration-test -Dtestng.config.path=testng.xml
     displayName: 'Build and Run Tests'
 
 #  - script: |
