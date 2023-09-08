@@ -22,8 +22,8 @@ steps:
 
   - task: PublishTestResults@2
     inputs:
-      testResultsFormat: 'JUnit'
-      testResultsFiles: '**/testng.xml'
+      testResultsFormat: 'JUnit'  # Specify the format of your test results
+      testResultsFiles: '**/test-output/Suite/*.xml'  # Update this path to match your XML files
 
   - script: |
       # Navigate to the project directory where the pom.xml file is located
