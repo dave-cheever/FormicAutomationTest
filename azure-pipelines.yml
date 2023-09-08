@@ -20,10 +20,6 @@ steps:
 #      goals: 'clean test'  # Include 'clean' to ensure a clean build
       codeCoverageToolOption: 'None'  # If you don't need code coverage reports
 
-  - task: PublishTestResults@2
-    inputs:
-      testResultsFormat: 'JUnit'  # Specify the format of your test results
-      testResultsFiles: '**/TEST-*.xml'  # Update this path to match your XML files
 
   - script: |
       # Navigate to the project directory where the pom.xml file is located
@@ -33,7 +29,10 @@ steps:
       mvn verify -Dtestng.config.path=testng.xml
     displayName: 'Build and Run Tests'
 
-
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFormat: 'JUnit'  # Specify the format of your test results
+      testResultsFiles: '**/TEST-*.xml'  # Update this path to match your XML files
 
 #  - script: |
 #      # Download and install any required dependencies
