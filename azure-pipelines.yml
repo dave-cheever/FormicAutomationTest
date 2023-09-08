@@ -22,12 +22,16 @@ steps:
 
 
   - script: |
-      # Navigate to the project directory where the pom.xml file is located
-      cd $(Build.SourcesDirectory)/src/pom.xml
+    # Debugging: List the contents of the test-output directory
+    ls -R $(Build.SourcesDirectory)/test-output
 
-      # Build the project and run the TestNG tests
-      mvn verify -Dtestng.config.path=testng.xml
-    displayName: 'Build and Run Tests'
+    # Navigate to the project directory where the pom.xml file is located
+    cd $(Build.SourcesDirectory)/src/pom.xml
+
+    # Build the project and run the TestNG tests
+    mvn verify -Dtestng.config.path=testng.xml
+  displayName: 'Build and Run Tests'
+
 
   - task: PublishTestResults@2
     inputs:
