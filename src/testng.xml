@@ -3,13 +3,19 @@
     <listeners>
         <listener class-name="org.testng.reporters.XMLReporter" />
     </listeners>
-    <test name="Regression">
+
+    <test name="Form Content Test">
         <classes>
             <class name="Formic.testcases.TestFormContent" />
-            <class name="Formic.testcases.LoginTest" />
-            <!-- Add more classes as needed -->
         </classes>
     </test>
+
+    <test name="Login Test">
+        <classes>
+            <class name="Formic.testcases.LoginTest" />
+        </classes>
+    </test>
+
     <suite-files>
         <!-- Other suite files if needed -->
     </suite-files>
