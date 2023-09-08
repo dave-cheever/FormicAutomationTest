@@ -30,7 +30,7 @@ steps:
       cd $(Build.SourcesDirectory)/src/pom.xml
 
       # Build the project and run the TestNG tests
-      mvn verify -Dtestng.config.path=testng.xml
+      mvn verify -Dtestng.config.path=src/testng.xml
     displayName: 'Build and Run Tests'
 
 
