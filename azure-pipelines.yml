@@ -36,7 +36,7 @@ steps:
   - task: PublishTestResults@2
     inputs:
       testResultsFormat: 'JUnit'  # Specify the format of your test results
-      testResultsFiles: '**/test-output/Suite/*.xml'  # Update this path to match your XML files
+      testResultsFiles: ' cd $(Build.SourcesDirectory)/test-output/Suite/*.xml'  # Update this path to match your XML files
 
 #  - script: |
 #      # Download and install any required dependencies
