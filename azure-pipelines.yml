@@ -26,6 +26,11 @@ steps:
       # Adjust the command based on your specific requirements
     displayName: 'Install Maven Dependencies and run test'
 
+  - script: |
+      # Debugging: List the contents of the surefire-reports directory
+      ls -R $(Build.SourcesDirectory)/target/surefire-reports
+    displayName: 'List the contents of the surefire-reports directory'
+
 #  - script: |
 #      # Run your TestNG test suites
 #      -Dtestng.config.path=$(Build.SourcesDirectory)/testng.xml
@@ -42,7 +47,4 @@ steps:
       pathToPublish: '$(Build.SourcesDirectory)/target'
       artifactName: 'test-results'
 
-  - script: |
-      # Debugging: List the contents of the surefire-reports directory
-      ls -R $(Build.SourcesDirectory)/target/surefire-reports
-    displayName: 'List the contents of the surefire-reports directory'
+
