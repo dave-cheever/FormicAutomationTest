@@ -12,7 +12,7 @@ pool:
 steps:
   - task: Maven@3
     inputs:
-      mavenPomFile: 'src/pom.xml'
+      mavenPomFile: '$(Build.SourcesDirectory)/pom.xml'
       mavenOptions: '-Xmx3072m'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: '17'
@@ -20,38 +20,21 @@ steps:
 #      goals: 'clean test'  # Include 'clean' to ensure a clean build
       codeCoverageToolOption: 'None'  # If you don't need code coverage reports
 
+  - script: |
+      # Download and install any required dependencies
+      mvn clean install -U
+      # Adjust the command based on your specific requirements
+    displayName: 'Install Maven Dependencies'
 
   - script: |
-      # Navigate to the project directory where the pom.xml file is located
-      cd $(Build.SourcesDirectory)/pom.xml
-
-      # Build the project and run the TestNG tests
-      mvn verify -Dtestng.config.path=**/testng.xml
-      
-      # Debugging: List the contents of the test-output directory
-      ls -R $(Build.SourcesDirectory)/target/surefire-reports/*.xml
-    displayName: 'Build and Run Tests'
-
+      # Run your TestNG test suites
+      mvn verify -Dtestng.config.path=$(Build.SourcesDirectory)/testng.xml
+      # Adjust the command based on your build tool and test suite configuration
+    displayName: 'Run TestNG tests'
 
   - task: PublishTestResults@2
+    # Debugging: List the contents of the test-output directory
+      ls -R $(Build.SourcesDirectory)/target/surefire-reports
     inputs:
-      testResultsFormat: 'JUnit'
-      testResultsFiles: '$(Build.SourcesDirectory)/target/surefire-reports/*.xml'
-
-
-#  - task: PublishTestResults@2
-#    inputs:
-#      testResultsFormat: 'JUnit'  # Specify the format of your test results
-#      testResultsFiles: 'cd $(Build.SourcesDirectory)/test-output/Suite/*.xml'  # Update this path to match your XML files
-
-#  - script: |
-#      # Download and install any required dependencies
-#      mvn clean install -U
-#      # Adjust the command based on your specific requirements
-#    displayName: 'Install Maven Dependencies'
-#
-#  - script: |
-#      # Run your TestNG test suites
-#      mvn -Dtestng.config.path=src/testng.xml
-#      # Adjust the command based on your build tool and test suite configuration
-#    displayName: 'Run TestNG tests'
+      testResultsFormat: 'JUnit'  # Specify the format of your test results
+      testResultsFiles: 'cd $(Build.SourcesDirectory)/target/surefire-reports/*.xml'  # Update this path to match your XML files
