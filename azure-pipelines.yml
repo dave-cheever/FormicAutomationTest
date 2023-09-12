@@ -20,6 +20,11 @@ steps:
 #      goals: 'clean test'  # Include 'clean' to ensure a clean build
       codeCoverageToolOption: 'None'  # If you don't need code coverage reports
 
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathToPublish: '$(Build.SourcesDirectory)/target'
+      artifactName: 'test-results'
+
   - script: |
       # Download and install any required dependencies
       mvn verify
@@ -42,9 +47,6 @@ steps:
       testResultsFormat: 'JUnit'  # Specify the format of your test results
       testResultsFiles: '$(Build.SourcesDirectory)/target/surefire-reports/*.xml'  # Update this path to match your XML files
 
-  - task: PublishBuildArtifacts@1
-    inputs:
-      pathToPublish: '$(Build.SourcesDirectory)/target'
-      artifactName: 'test-results'
+
 
 
