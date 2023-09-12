@@ -33,8 +33,6 @@ steps:
     displayName: 'Run TestNG tests'
 
   - task: PublishTestResults@2
-    # Debugging: List the contents of the test-output directory
-      ls -R $(Build.SourcesDirectory)/target/surefire-reports
     inputs:
       testResultsFormat: 'JUnit'  # Specify the format of your test results
       testResultsFiles: 'cd $(Build.SourcesDirectory)/target/surefire-reports/*.xml'  # Update this path to match your XML files
