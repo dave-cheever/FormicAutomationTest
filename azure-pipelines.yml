@@ -22,21 +22,27 @@ steps:
 
 
   - script: |
-      # Debugging: List the contents of the test-output directory
-      ls -R $(Build.SourcesDirectory)/test-output
-
       # Navigate to the project directory where the pom.xml file is located
       cd $(Build.SourcesDirectory)/pom.xml
 
       # Build the project and run the TestNG tests
       mvn verify -Dtestng.config.path=**/testng.xml
+      
+      # Debugging: List the contents of the test-output directory
+      ls -R $(Build.SourcesDirectory)/test-output
     displayName: 'Build and Run Tests'
 
 
   - task: PublishTestResults@2
     inputs:
-      testResultsFormat: 'JUnit'  # Specify the format of your test results
-      testResultsFiles: ' cd $(Build.SourcesDirectory)/test-output/Suite/*.xml'  # Update this path to match your XML files
+      testResultsFormat: 'JUnit'
+      testResultsFiles: '**/target/surefire-reports/*.xml'
+
+
+#  - task: PublishTestResults@2
+#    inputs:
+#      testResultsFormat: 'JUnit'  # Specify the format of your test results
+#      testResultsFiles: 'cd $(Build.SourcesDirectory)/test-output/Suite/*.xml'  # Update this path to match your XML files
 
 #  - script: |
 #      # Download and install any required dependencies
