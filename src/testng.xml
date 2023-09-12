@@ -14,6 +14,6 @@
     <suite-files>
         <!-- Other suite files if needed -->
     </suite-files>
-    <parameter name="outputDirectory" value="test-output/Suite"/> <!-- Specify the output directory -->
+    <parameter name="outputDirectory" value="src/target/surefire-reports"/> <!-- Specify the output directory -->
 </suite>
 
