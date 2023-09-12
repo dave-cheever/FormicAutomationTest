@@ -29,7 +29,7 @@ steps:
       mvn verify -Dtestng.config.path=**/testng.xml
       
       # Debugging: List the contents of the test-output directory
-      ls -R $(Build.SourcesDirectory)/test-output
+      ls -R $(Build.SourcesDirectory)/target/surefire-reports/*.xml
     displayName: 'Build and Run Tests'
 
 
