@@ -29,14 +29,14 @@ steps:
       cd $(Build.SourcesDirectory)/pom.xml
 
       # Build the project and run the TestNG tests
-      mvn verify -Dtestng.config.path=$(Build.SourcesDirectory)/testng.xml
+      mvn verify -Dtestng.config.path=**/testng.xml
     displayName: 'Build and Run Tests'
 
 
   - task: PublishTestResults@2
     inputs:
       testResultsFormat: 'JUnit'  # Specify the format of your test results
-      testResultsFiles: ' cd $(Build.SourcesDirectory)/test-output/Suite/Form Content Test.xml'  # Update this path to match your XML files
+      testResultsFiles: ' cd $(Build.SourcesDirectory)/test-output/Suite/*.xml'  # Update this path to match your XML files
 
 #  - script: |
 #      # Download and install any required dependencies
