@@ -22,17 +22,17 @@ steps:
 
   - script: |
       # Download and install any required dependencies
-      mvn clean install -U
+      mvn verify
       # Adjust the command based on your specific requirements
     displayName: 'Install Maven Dependencies'
 
-  - script: |
-      # Run your TestNG test suites
-      mvn verify -Dtestng.config.path=$(Build.SourcesDirectory)/testng.xml
-      # Adjust the command based on your build tool and test suite configuration
-    displayName: 'Run TestNG tests'
+#  - script: |
+#      # Run your TestNG test suites
+#      -Dtestng.config.path=$(Build.SourcesDirectory)/testng.xml
+#      # Adjust the command based on your build tool and test suite configuration
+#    displayName: 'Run TestNG tests'
 
   - task: PublishTestResults@2
     inputs:
       testResultsFormat: 'JUnit'  # Specify the format of your test results
-      testResultsFiles: 'cd $(Build.SourcesDirectory)/target/*.xml'  # Update this path to match your XML files
+      testResultsFiles: 'cd $(Build.SourcesDirectory)/target/surefire-reports/*.xml'  # Update this path to match your XML files
