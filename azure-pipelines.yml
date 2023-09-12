@@ -36,7 +36,7 @@ steps:
   - task: PublishTestResults@2
     inputs:
       testResultsFormat: 'JUnit'
-      testResultsFiles: '**/target/surefire-reports/*.xml'
+      testResultsFiles: '$(Build.SourcesDirectory)/target/surefire-reports/*.xml'
 
 
 #  - task: PublishTestResults@2
