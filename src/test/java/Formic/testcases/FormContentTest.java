@@ -9,7 +9,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 
-public class TestFormContent extends BaseUiTest {
+public class FormContentTest extends BaseUiTest {
 
     HeaderNavigationBar headerNavigationBar;
     LoginPage loginPage;
@@ -26,7 +26,7 @@ public class TestFormContent extends BaseUiTest {
 
 
 
-    @Test
+    @Test()
     public void checkboxValidationEnableDisableFieldsCheckbox() throws Exception{
         homePage.selectProject(projectName);
         checkBoxPage.validateEnableDisableFieldsCheckbox();

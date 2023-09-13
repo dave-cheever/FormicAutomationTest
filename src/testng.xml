@@ -3,7 +3,7 @@
 
     <test name="TEST-Form Content Test">
         <classes>
-            <class name="Formic.testcases.TestFormContent" />
+            <class name="Formic.testcases.FormContentTest" />
         </classes>
     </test>
 
