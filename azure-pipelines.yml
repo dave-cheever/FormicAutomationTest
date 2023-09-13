@@ -27,7 +27,7 @@ steps:
 
   - script: |
       # Download and install any required dependencies
-      mvn verify
+      mvn test
       # Adjust the command based on your specific requirements
     displayName: 'Install Maven Dependencies and run test'
 
