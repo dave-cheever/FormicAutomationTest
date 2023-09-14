@@ -26,6 +26,11 @@ public class FormContentTest extends BaseUiTest {
 //    String projectName = "No validation Project"; //159
 
 
+    @Test()
+    public void validateMandatoryFieldsWithoutInputs() throws Exception{
+        homePage.selectProject(projectName);
+        checkBoxPage.validateCheckboxMandatory();
+    }
 
     @Test()
     public void checkboxValidationEnableDisableFieldsCheckbox() throws Exception{
@@ -33,11 +38,6 @@ public class FormContentTest extends BaseUiTest {
         checkBoxPage.validateEnableDisableFieldsCheckbox();
     }
 
-    @Test()
-    public void validateMandatoryFieldsWithoutInputs() throws Exception{
-        homePage.selectProject(projectName);
-        checkBoxPage.validateCheckboxMandatory();
-    }
 
     @Test()
     public void validateMinimumRequiredWhenSubmitButtonClicked() throws Exception{
