@@ -45,7 +45,7 @@ steps:
   - task: PublishTestResults@2
     inputs:
       testResultsFormat: 'JUnit'  # Specify the format of your test results
-      testResultsFiles: '$(Build.SourcesDirectory)/target/surefire-reports/*.xml'  # Update this path to match your XML files
+      testResultsFiles: '$(Build.SourcesDirectory)/target/surefire-reports/index.html'  # Update this path to match your XML files
 
 
 
