@@ -33,7 +33,7 @@ steps:
 
   - script: |
       # Debugging: List the contents of the surefire-reports directory
-      ls -R $(Build.SourcesDirectory)/target
+      ls -R $(Build.SourcesDirectory)/target/surefire-reports
     displayName: 'List the contents of the surefire-reports directory'
 
 #  - script: |
