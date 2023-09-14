@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="apache.maven.plugin.tools.annotations" type="repository">
+    <properties maven-id="org.apache.maven.plugin-tools:maven-plugin-annotations:3.9.0" />
+    <CLASSES>
+      <root url="jar://$MAVEN_REPOSITORY$/org/apache/maven/plugin-tools/maven-plugin-annotations/3.9.0/maven-plugin-annotations-3.9.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
