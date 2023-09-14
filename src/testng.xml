@@ -1,7 +1,7 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
 <suite name="Suite">
 
-    <test name="TEST-Form Content Test">
+    <test name="Form Content Test">
         <classes>
             <class name="Formic.testcases.FormContentTest" />
         </classes>

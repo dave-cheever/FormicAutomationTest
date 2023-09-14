@@ -41,7 +41,7 @@ public class BaseUiTest {
     public void setDriver() throws MalformedURLException {
         // Start driver
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--lang=en-GB");
+//        options.addArguments("--lang=en-GB");
         // Setting new download directory path
         Map<String, Object> prefs = new HashMap<String, Object>();
         // Use File.separator as it will work on any OS
