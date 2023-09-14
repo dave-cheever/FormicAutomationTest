@@ -12,7 +12,7 @@ pool:
 steps:
   - task: Maven@3
     inputs:
-      mavenPomFile: '$(Build.SourcesDirectory)/pom.xml'
+      mavenPomFile: '$(Build.SourcesDirectory)/src/pom.xml'
       mavenOptions: '-Xmx3072m'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: '17'
@@ -27,7 +27,7 @@ steps:
 
   - script: |
       # Download and install any required dependencies
-      mvn test
+      mvn verify
       # Adjust the command based on your specific requirements
     displayName: 'Install Maven Dependencies and run test'
 
