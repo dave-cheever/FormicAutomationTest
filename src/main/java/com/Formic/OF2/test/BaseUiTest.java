@@ -47,11 +47,11 @@ public class BaseUiTest {
         // Use File.separator as it will work on any OS
         prefs.put("download.default_directory",
                 System.getProperty("user.dir") + File.separator + "downloadFiles");
-        options.setExperimentalOption("prefs", prefs);
+//        options.setExperimentalOption("prefs", prefs);
         // Test is running on docker, use the remote web driver
 
-        driver.set(new ChromeDriver(ChromeOptionsUtil.getHeadlessChromeOptions()));
-//        driver.set(new ChromeDriver(options));
+//        driver.set(new ChromeDriver(ChromeOptionsUtil.getHeadlessChromeOptions()));
+        driver.set(new ChromeDriver(options));
 
         //setDriver(new ChromeDriver(options));
         getDriver().manage().window().maximize();

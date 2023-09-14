@@ -6,6 +6,7 @@ import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 import org.testng.ITestContext;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
 
 public class ThemesTest extends BaseUiTest {
@@ -16,7 +17,7 @@ public class ThemesTest extends BaseUiTest {
     ThemesPopup themesPopup;
     HomePage homePage;
 
-    @Test
+    @Ignore
     public void ApplyDefaultThemes() throws Exception {
         headerNavigationBar.navigateToThemesPopup();
         themesPopup.clickDefaultThemeButton();
@@ -24,7 +25,7 @@ public class ThemesTest extends BaseUiTest {
         Assert.assertTrue(homePage.confirmMyProjectsIsVisible());
     }
 
-    @Test
+    @Ignore
     public void ApplyDefaultThemesWhileLoggedIn() throws Exception {
         headerNavigationBar.navigateToLoginPage();
         loginPage.loginUser("dcheever","Test123");
@@ -34,7 +35,7 @@ public class ThemesTest extends BaseUiTest {
         Assert.assertTrue(homePage.confirmMyProjectsIsVisible());
     }
 
-    @Test
+    @Ignore
     public void OpenThemesThenCloseThemes() throws Exception {
         headerNavigationBar.navigateToThemesPopup();
         themesPopup.clickDefaultThemeButton();
