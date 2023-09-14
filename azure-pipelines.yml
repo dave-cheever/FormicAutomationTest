@@ -12,7 +12,7 @@ pool:
 steps:
   - task: Maven@3
     inputs:
-      mavenPomFile: '$(Build.SourcesDirectory)/src/pom.xml'
+      mavenPomFile: '$(Build.SourcesDirectory)/pom.xml'
       mavenOptions: '-Xmx3072m'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: '17'
@@ -20,25 +20,20 @@ steps:
 #      goals: 'clean test'  # Include 'clean' to ensure a clean build
       codeCoverageToolOption: 'None'  # If you don't need code coverage reports
 
-  - script: |
-      # Debugging: List the contents of the surefire-reports directory
-      ls -R $(Build.SourcesDirectory)/target/surefire-reports
-    displayName: 'List the contents of the surefire-reports directory'
-    
   - task: PublishBuildArtifacts@1
     inputs:
-      pathToPublish: '$(Build.SourcesDirectory)/target/surefire-reports'
+      pathToPublish: '$(Build.SourcesDirectory)/target'
       artifactName: 'test-results'
 
   - script: |
       # Download and install any required dependencies
-      mvn verify
+      mvn test
       # Adjust the command based on your specific requirements
     displayName: 'Install Maven Dependencies and run test'
 
   - script: |
       # Debugging: List the contents of the surefire-reports directory
-      ls -R $(Build.SourcesDirectory)/target/surefire-reports
+      ls -R $(Build.SourcesDirectory)/target
     displayName: 'List the contents of the surefire-reports directory'
 
 #  - script: |
