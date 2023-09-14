@@ -20,6 +20,11 @@ steps:
 #      goals: 'clean test'  # Include 'clean' to ensure a clean build
       codeCoverageToolOption: 'None'  # If you don't need code coverage reports
 
+  - script: |
+      # Debugging: List the contents of the surefire-reports directory
+      ls -R $(Build.SourcesDirectory)/target/surefire-reports
+    displayName: 'List the contents of the surefire-reports directory'
+    
   - task: PublishBuildArtifacts@1
     inputs:
       pathToPublish: '$(Build.SourcesDirectory)/target/surefire-reports'
