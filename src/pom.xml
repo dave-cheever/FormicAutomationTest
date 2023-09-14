@@ -133,12 +133,12 @@
       <scope>test</scope>
     </dependency>
 
-    <dependency>
-      <groupId>org.testng</groupId>
-      <artifactId>testng</artifactId>
-      <version>7.7.0</version>
-      <scope>compile</scope>
-    </dependency>
+    <!--    <dependency>-->
+    <!--      <groupId>org.testng</groupId>-->
+    <!--      <artifactId>testng</artifactId>-->
+    <!--      <version>7.7.0</version>-->
+    <!--      <scope>compile</scope>-->
+    <!--    </dependency>-->
 
   </dependencies>
 
@@ -179,12 +179,12 @@
 
     </plugins>
 
-        <testResources>
-          <testResource>
-            <directory>src/test/java/Formic/testcases</directory>
-            <filtering>true</filtering>
-          </testResource>
-        </testResources>
+    <testResources>
+      <testResource>
+        <directory>src/test/java/Formic/testcases</directory>
+        <filtering>true</filtering>
+      </testResource>
+    </testResources>
 
     <resources>
       <resource>
