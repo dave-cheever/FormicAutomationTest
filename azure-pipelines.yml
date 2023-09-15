@@ -21,8 +21,8 @@ steps:
         artifactName: 'test-results'
 
   - script: |
-      # Run TestNG tests using the 'testng.xml' file
-      test -Dsurefire.suiteXmlFiles=$(Build.SourcesDirectory)/testng.xml
+    # Run TestNG tests using the 'testng.xml' file
+     test -Dsurefire.suiteXmlFiles=$(Build.SourcesDirectory)/testng.xml
     displayName: 'Run TestNG Tests'
 
   - script: |
