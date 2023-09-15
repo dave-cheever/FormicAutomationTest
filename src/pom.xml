@@ -204,6 +204,7 @@
       <properties>
         <capabilities>/chrome.capabilities</capabilities>
       </properties>
+
       <activation>
         <activeByDefault>true</activeByDefault>
       </activation>
