@@ -38,6 +38,6 @@ steps:
   - task: PublishTestResults@2
     inputs:
       testResultsFormat: 'JUnit'  # Specify the format of your test results (e.g., 'JUnit', 'NUnit')
-      testResultsFiles: '$(Build.SourcesDirectory)/target/surefire-reports/*.xml'  # Update this path to match your XML files
+      testResultsFiles: '$(Build.SourcesDirectory)/src/test-results/*.xml'  # Update this path to match your XML files
     condition: succeededOrFailed()  # Conditionally run this step based on the previous step's result
     displayName: 'Publish TestNG Test Results'
