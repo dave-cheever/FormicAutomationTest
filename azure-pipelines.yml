@@ -17,7 +17,7 @@ steps:
 
   - task: PublishBuildArtifacts@1
     inputs:
-      pathToPublish: '$(Build.SourcesDirectory)/src/target'
+      pathToPublish: '$(Build.SourcesDirectory)/target'
       artifactName: 'test-results'
 
   - script: |
