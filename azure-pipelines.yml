@@ -17,22 +17,22 @@ steps:
 
   - task: PublishBuildArtifacts@1
     inputs:
-        pathToPublish: '$(Build.SourcesDirectory)/src/target'
-        artifactName: 'test-results'
+      pathToPublish: '$(Build.SourcesDirectory)/src/target'
+      artifactName: 'test-results'
 
   - script: |
-    # Run TestNG tests using the 'testng.xml' file
-     clean test -Dsurefire.suiteXmlFiles=$(Build.SourcesDirectory)/testng.xml
+      # Run TestNG tests using the 'testng.xml' file
+      mvn test -Dsurefire.suiteXmlFiles=$(Build.SourcesDirectory)/testng.xml
     displayName: 'Run TestNG Tests'
 
   - script: |
-    # Debugging: List the contents of the surefire-reports directory
-     ls -R $(Build.SourcesDirectory)/src
+      # Debugging: List the contents of the surefire-reports directory
+      ls -R $(Build.SourcesDirectory)/target/surefire-reports
     displayName: 'List the contents of the surefire-reports directory'
 
   - task: PublishTestResults@2
     inputs:
       testResultsFormat: 'JUnit'  # Specify the format of your test results (e.g., 'JUnit', 'NUnit')
       testResultsFiles: '$(Build.SourcesDirectory)/target/surefire-reports/*.xml'  # Update this path to match your XML files
+    condition: succeededOrFailed()  # Conditionally run this step based on the previous step's result
     displayName: 'Publish TestNG Test Results'
-
