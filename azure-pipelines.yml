@@ -15,10 +15,20 @@ steps:
       goals: 'clean'  # Remove 'verify' from here as you'll run tests separately
       codeCoverageToolOption: 'None'
 
+  - task: PublishBuildArtifacts@1
+    inputs:
+        pathToPublish: '$(Build.SourcesDirectory)/src/target'
+        artifactName: 'test-results'
+
   - script: |
       # Run TestNG tests using the 'testng.xml' file
-      test -Dsurefire.suiteXmlFiles=$(Build.SourcesDirectory)/src/testng.xml
+      test -Dsurefire.suiteXmlFiles=$(Build.SourcesDirectory)/testng.xml
     displayName: 'Run TestNG Tests'
+
+  - script: |
+    # Debugging: List the contents of the surefire-reports directory
+     ls -R $(Build.SourcesDirectory)/src
+    displayName: 'List the contents of the surefire-reports directory'
 
   - task: PublishTestResults@2
     inputs:
