@@ -15,32 +15,14 @@ steps:
       goals: 'clean install'  # Build the project and install dependencies
       codeCoverageToolOption: 'None'
 
-  - script: |
-      # Download and install Maven
-      wget -q https://apache.osuosl.org/maven/maven-3/3.8.7/binaries/apache-maven-3.8.7-bin.tar.gz
-      tar xf apache-maven-3.8.7-bin.tar.gz
-      export PATH=$PWD/apache-maven-3.8.7/bin:$PATH
-    displayName: 'Install Maven'
-
-  - script: |
-      # Debugging: List the contents of the surefire-reports directory
-      ls -R $(Build.SourcesDirectory)
-    displayName: 'List the contents of the surefire-reports directory'
-
-  - script: |
-      # Run TestNG tests using the 'testng.xml' file
-      cd $(Build.SourcesDirectory)  # Navigate to the project directory
-      test -Dsurefire.suiteXmlFiles=$(Build.SourcesDirectory)/testng.xml
-    displayName: 'Run TestNG Tests'
-
-  - script: |
-      # Debugging: List the contents of the surefire-reports directory
-      ls -R $(Build.SourcesDirectory)
-    displayName: 'List the contents of the surefire-reports directory'
+  - task: RunTestNGTests@2
+    inputs:
+      testFiles: '**/testng.xml'
+      testNGVersion: '7.4.0'
 
   - task: PublishTestResults@2
     inputs:
-      testResultsFormat: 'JUnit'  # Specify the format of your test results (e.g., 'JUnit', 'NUnit')
-      testResultsFiles: '**/src/target/surefire-reports/*.xml'  # Update this path to match your XML files
-    condition: succeededOrFailed()  # Conditionally run this step based on the previous step's result
+      testResultsFiles: '**/src/target/surefire-reports/*.xml'
+      testResultsFormat: 'JUnit'
+      condition: always()
     displayName: 'Publish TestNG Test Results'
