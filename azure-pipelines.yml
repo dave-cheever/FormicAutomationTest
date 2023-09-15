@@ -16,8 +16,15 @@ steps:
       codeCoverageToolOption: 'None'
 
   - script: |
+      # Download and install Maven
+      wget -q https://apache.osuosl.org/maven/maven-3/3.8.7/binaries/apache-maven-3.8.7-bin.tar.gz
+      tar xf apache-maven-3.8.7-bin.tar.gz
+      export PATH=$PWD/apache-maven-3.8.7/bin:$PATH
+    displayName: 'Install Maven'
+
+  - script: |
       # Run TestNG tests using the 'testng.xml' file
-      test -Dsurefire.suiteXmlFiles=$(Build.SourcesDirectory)/src/testng.xml
+      mvn test -Dsurefire.suiteXmlFiles=$(Build.SourcesDirectory)/src/testng.xml
     displayName: 'Run TestNG Tests'
 
   - script: |
