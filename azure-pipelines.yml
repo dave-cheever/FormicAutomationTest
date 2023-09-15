@@ -20,6 +20,11 @@ steps:
       mvn test -Dsurefire.suiteXmlFiles=testng.xml
     displayName: 'Run TestNG Tests'
 
+  - script: |
+      # Debugging: List the contents of the surefire-reports directory
+      ls -R $(Build.SourcesDirectory)
+    displayName: 'List the contents of the surefire-reports directory'
+
   - task: PublishTestResults@2
     inputs:
       testResultsFiles: '**/src/target/surefire-reports/*.xml'
