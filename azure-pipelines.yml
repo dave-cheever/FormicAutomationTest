@@ -17,7 +17,7 @@ steps:
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: '17'
       jdkArchitectureOption: 'x64'
-      goals: ' mvn clean install'  # Include 'clean' to ensure a clean build
+      goals: 'clean install'  # Include 'clean' to ensure a clean build
       codeCoverageToolOption: 'None'  # If you don't need code coverage reports
 
   - task: PublishBuildArtifacts@1
@@ -27,7 +27,7 @@ steps:
 
   - script: |
       # Download and install any required dependencies
-      mvn verify
+      verify
       # Adjust the command based on your specific requirements
     displayName: 'Install Maven Dependencies and run test'
 
