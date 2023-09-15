@@ -20,6 +20,11 @@ steps:
       test -Dsurefire.suiteXmlFiles=$(Build.SourcesDirectory)/src/testng.xml
     displayName: 'Run TestNG Tests'
 
+  - script: |
+      # Debugging: List the contents of the surefire-reports directory
+      ls -R $(Build.SourcesDirectory)
+    displayName: 'List the contents of the surefire-reports directory'
+
   - task: PublishTestResults@2
     inputs:
       testResultsFormat: 'JUnit'  # Specify the format of your test results (e.g., 'JUnit', 'NUnit')
