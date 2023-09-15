@@ -23,6 +23,11 @@ steps:
     displayName: 'Install Maven'
 
   - script: |
+      # Debugging: List the contents of the surefire-reports directory
+      ls -R $(Build.SourcesDirectory)
+    displayName: 'List the contents of the surefire-reports directory'
+
+  - script: |
       # Run TestNG tests using the 'testng.xml' file
       cd $(Build.SourcesDirectory)  # Navigate to the project directory
       test -Dsurefire.suiteXmlFiles=$(Build.SourcesDirectory)/testng.xml
