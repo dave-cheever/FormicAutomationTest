@@ -1,8 +1,3 @@
-# Maven
-# Build your Java project and run tests with Apache Maven.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/java
-
 trigger:
   - master
 
@@ -17,44 +12,17 @@ steps:
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: '17'
       jdkArchitectureOption: 'x64'
-      goals: 'clean verify'  # Include 'clean' to ensure a clean build
-      codeCoverageToolOption: 'None'  # If you don't need code coverage reports
-
-  - task: PublishBuildArtifacts@1
-    inputs:
-      pathToPublish: '$(Build.SourcesDirectory)/src/target'
-      artifactName: 'test-results'
+      goals: 'clean'  # Remove 'verify' from here as you'll run tests separately
+      codeCoverageToolOption: 'None'
 
   - script: |
-    # Publish and Test TestNG reports as build artifacts
-      vsTest.console $(System.DefaultWorkingDirectory)/src/testng.xml
-      mkdir -p $(Build.ArtifactStagingDirectory)/testng-reports
-      cp -r target/surefire-reports/* $(Build.ArtifactStagingDirectory)/testng-reports
-      displayName: 'Run TestNG Tests and Publish Reports'
-
-  - task: PublishBuildArtifacts@1
-    inputs:
-        pathToPublish: $(Build.ArtifactStagingDirectory)/testng-reports
-        artifactName: 'TestNGReports'
-        publishLocation: 'Container'
-        displayName: 'Publish TestNG Reports'
-
-  - script: |
-      # Debugging: List the contents of the surefire-reports directory
-      ls -R $(Build.SourcesDirectory)/src
-    displayName: 'List the contents of the surefire-reports directory'
-
-#  - script: |
-#      # Run your TestNG test suites
-#      -Dtestng.config.path=$(Build.SourcesDirectory)/testng.xml
-#      # Adjust the command based on your build tool and test suite configuration
-#    displayName: 'Run TestNG tests'
+      # Run TestNG tests using the 'testng.xml' file
+      test -Dsurefire.suiteXmlFiles=$(Build.SourcesDirectory)/src/testng.xml
+    displayName: 'Run TestNG Tests'
 
   - task: PublishTestResults@2
     inputs:
-      testResultsFormat: 'JUnit'  # Specify the format of your test results
-      testResultsFiles: '$(Build.SourcesDirectory)/target/surefire-reports/index.html'  # Update this path to match your XML files
-
-
-
+      testResultsFormat: 'JUnit'  # Specify the format of your test results (e.g., 'JUnit', 'NUnit')
+      testResultsFiles: '$(Build.SourcesDirectory)/target/surefire-reports/*.xml'  # Update this path to match your XML files
+    displayName: 'Publish TestNG Test Results'
 
