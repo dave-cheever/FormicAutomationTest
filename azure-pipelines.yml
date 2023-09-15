@@ -12,32 +12,17 @@ steps:
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: '17'
       jdkArchitectureOption: 'x64'
-      goals: 'clean'  # Remove 'verify' from here as you'll run tests separately
+      goals: 'clean install'  # Build the project and install dependencies
       codeCoverageToolOption: 'None'
 
   - script: |
-      # Debugging: List the contents of the surefire-reports directory
-      ls -R $(Build.SourcesDirectory)
-    displayName: 'List the contents of the surefire-reports directory'
-
-  - script: |
       # Run TestNG tests using the 'testng.xml' file
-      test -Dsurefire.suiteXmlFiles=$(Build.SourcesDirectory)/src/testng.xml
+      mvn test -Dsurefire.suiteXmlFiles=$(Build.SourcesDirectory)/src/testng.xml
     displayName: 'Run TestNG Tests'
-
-  - task: PublishBuildArtifacts@1
-    inputs:
-      pathToPublish: '$(Build.SourcesDirectory)/src'
-      artifactName: 'test-results'
-
-  - script: |
-      # Debugging: List the contents of the surefire-reports directory
-      ls -R $(Build.SourcesDirectory)
-    displayName: 'List the contents of the surefire-reports directory'
 
   - task: PublishTestResults@2
     inputs:
       testResultsFormat: 'JUnit'  # Specify the format of your test results (e.g., 'JUnit', 'NUnit')
-      testResultsFiles: '$(Build.SourcesDirectory)/src/test-results/*.xml'  # Update this path to match your XML files
+      testResultsFiles: '**/src/target/surefire-reports/*.xml'  # Update this path to match your XML files
     condition: succeededOrFailed()  # Conditionally run this step based on the previous step's result
     displayName: 'Publish TestNG Test Results'
