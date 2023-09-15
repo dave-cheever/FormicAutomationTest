@@ -26,17 +26,18 @@ steps:
       artifactName: 'test-results'
 
   - script: |
-    # Replace with any pre-test setup if needed
-     echo "Preparing the environment before running tests..."
+    # Publish and Test TestNG reports as build artifacts
+      vsTest.console $(System.DefaultWorkingDirectory)/src/testng.xml
+      mkdir -p $(Build.ArtifactStagingDirectory)/testng-reports
+      cp -r target/surefire-reports/* $(Build.ArtifactStagingDirectory)/testng-reports
+      displayName: 'Run TestNG Tests and Publish Reports'
 
-    # Use the TestPublisher task to publish your TestNG XML file
-     echo "Publishing TestNG XML file..."
-     echo "##vso[task.addattachment type=Distributedtask.Core.Summary;name=TestNGResults;]$(System.DefaultWorkingDirectory)/src/testng.xml"
-
-    # Use the VSTest task to run TestNG tests
-     echo "Running TestNG tests..."
-     vstest.console $(System.DefaultWorkingDirectory)//src/testng.xml
-    displayName: 'Run TestNG Tests'
+  - task: PublishBuildArtifacts@1
+    inputs:
+        pathToPublish: $(Build.ArtifactStagingDirectory)/testng-reports
+        artifactName: 'TestNGReports'
+        publishLocation: 'Container'
+        displayName: 'Publish TestNG Reports'
 
   - script: |
       # Debugging: List the contents of the surefire-reports directory
