@@ -15,7 +15,7 @@ steps:
       goals: 'clean install'  # Build the project and install dependencies
       codeCoverageToolOption: 'None'
 
-  - task: RunTestNGTests@2
+  - task: RunJUnitTests@2
     inputs:
       testFiles: '**/testng.xml'
       testNGVersion: '7.4.0'
