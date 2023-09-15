@@ -23,6 +23,13 @@
   <dependencies>
 
     <dependency>
+      <groupId>org.testng</groupId>
+      <artifactId>testng</artifactId>
+      <version>7.7.0</version>
+      <scope>test</scope>
+    </dependency>
+
+    <dependency>
       <groupId>org.apache.maven.plugin-tools</groupId>
       <artifactId>maven-plugin-annotations</artifactId>
       <version>3.9.0</version>
@@ -125,15 +132,14 @@
       <artifactId>surefire-testng-utils</artifactId>
       <version>3.0.0-M9</version>
     </dependency>
-
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
       <version>7.7.0</version>
-      <scope>test</scope>
+      <scope>compile</scope>
     </dependency>
 
-<!--    <dependency>-->
+    <!--    <dependency>-->
 <!--      <groupId>org.testng</groupId>-->
 <!--      <artifactId>testng</artifactId>-->
 <!--      <version>7.7.0</version>-->

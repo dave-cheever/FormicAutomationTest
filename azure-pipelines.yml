@@ -15,10 +15,10 @@ steps:
       goals: 'clean install'  # Build the project and install dependencies
       codeCoverageToolOption: 'None'
 
-  - task: RunJUnitTests@2
-    inputs:
-      testFiles: '**/testng.xml'
-      testNGVersion: '7.4.0'
+  - script: |
+      # Run TestNG tests using a script
+      mvn test -Dsurefire.suiteXmlFiles=testng.xml
+    displayName: 'Run TestNG Tests'
 
   - task: PublishTestResults@2
     inputs:
