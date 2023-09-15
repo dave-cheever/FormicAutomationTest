@@ -32,7 +32,7 @@ steps:
 
   - script: |
       # Debugging: List the contents of the surefire-reports directory
-      ls -R $(Build.SourcesDirectory)/target/surefire-reports
+      ls -R $(Build.SourcesDirectory)
     displayName: 'List the contents of the surefire-reports directory'
 
   - task: PublishTestResults@2
