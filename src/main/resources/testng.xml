@@ -2,7 +2,8 @@
 <suite name="Suite" verbose="1">
 
     <test name="Form Content Test">
-        <parameter name="browser" value="chrome"></parameter>
+        <parameter name="browser" value="chrome"/>
+
         <classes>
             <class name="Formic.testcases.FormContentTest" />
         </classes>
