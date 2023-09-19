@@ -188,7 +188,7 @@
       </testResource>
     </testResources>
 
-    <testSourceDirectory>src/test/java/Formic</testSourceDirectory>
+    <testSourceDirectory>src/test/java</testSourceDirectory>
 
     <resources>
       <resource>
