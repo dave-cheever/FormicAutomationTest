@@ -164,6 +164,7 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.11.0</version>
         <configuration>
+
           <!--          <compilerArgument>-proc:none</compilerArgument>-->
           <source>17</source> <!-- Specify the Java version you are targeting -->
           <target>17</target>
@@ -188,11 +189,11 @@
       </testResource>
     </testResources>
 
-    <testSourceDirectory>src/test/java</testSourceDirectory>
+    <!--    <testSourceDirectory>src/main/java</testSourceDirectory>-->
 
     <resources>
       <resource>
-        <directory>src/main/java/com/Formic/OF2</directory>
+        <directory>main/java/com/Formic/OF2</directory>
         <filtering>false</filtering>
       </resource>
     </resources>
