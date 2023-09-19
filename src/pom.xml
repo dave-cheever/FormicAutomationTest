@@ -153,7 +153,7 @@
           <!--          &lt;!&ndash;          <forkCount>3</forkCount>&ndash;&gt;-->
           <!--          &lt;!&ndash;          <reuseForks>true</reuseForks>&ndash;&gt;-->
           <!--          &lt;!&ndash;          <argLine>-Xmx1024m -XX:MaxMetaspaceSize=256m</argLine>&ndash;&gt;-->
-          <suiteXmlFiles>$(Build.SourcesDirectory)/testng.xml</suiteXmlFiles>
+          <suiteXmlFiles>main/resources/testng.xml</suiteXmlFiles>
         </configuration>
       </plugin>
 
