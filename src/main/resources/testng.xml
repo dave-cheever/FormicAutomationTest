@@ -5,7 +5,7 @@
         <parameter name="browser" value="chrome"/>
 
         <classes>
-            <class name="src.test.java.testcases.FormContentTest" />
+            <class name="Formic.FormContentTest" />
         </classes>
     </test>
 

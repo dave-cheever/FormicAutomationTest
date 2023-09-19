@@ -1,4 +1,4 @@
-package Formic.testcases;
+package Formic;
 
 import com.Formic.OF2.test.BaseUiTest;
 import com.Formic.OF2.utils.CheckboxObject;
