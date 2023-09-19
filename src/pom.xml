@@ -217,6 +217,8 @@
       </testResource>
     </testResources>
 
+    <testSourceDirectory>target/test-classes</testSourceDirectory>
+
     <resources>
       <resource>
         <directory>src/main/java/com/Formic/OF2</directory>
