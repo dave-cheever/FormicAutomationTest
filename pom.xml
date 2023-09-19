@@ -136,8 +136,8 @@
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
-      <version>7.7.0</version>
-      <scope>test</scope>
+      <version>7.8.0</version>
+      <scope>compile</scope>
     </dependency>
 
   </dependencies>
@@ -151,9 +151,9 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.1.2</version>
         <configuration>
-          <forkCount>3</forkCount>
-          <reuseForks>true</reuseForks>
-          <argLine>-Xmx1024m -XX:MaxMetaspaceSize=256m</argLine>
+          <!--          <forkCount>3</forkCount>-->
+          <!--          <reuseForks>true</reuseForks>-->
+          <!--          <argLine>-Xmx1024m -XX:MaxMetaspaceSize=256m</argLine>-->
           <suiteXmlFiles>src/main/resources/testng.xml</suiteXmlFiles>
         </configuration>
       </plugin>
@@ -163,7 +163,7 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.11.0</version>
         <configuration>
-<!--          <compilerArgument>-proc:none</compilerArgument>-->
+          <!--          <compilerArgument>-proc:none</compilerArgument>-->
           <source>17</source> <!-- Specify the Java version you are targeting -->
           <target>17</target>
         </configuration>
@@ -177,7 +177,6 @@
           <encoding>UTF-8</encoding>
         </configuration>
       </plugin>
-
     </plugins>
 
     <testResources>
