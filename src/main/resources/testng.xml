@@ -16,6 +16,6 @@
     <suite-files>
         <!-- Other suite files if needed -->
     </suite-files>
-    <parameter name="outputDirectory" value="src/target/surefire-reportss"/> <!-- Specify the output directory -->
+    <parameter name="outputDirectory" value="src/target/surefire-reports/junitreports"/> <!-- Specify the output directory -->
 </suite>
 
