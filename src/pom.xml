@@ -212,7 +212,7 @@
 
     <testResources>
       <testResource>
-        <directory>test/java/Formic/testcases</directory>
+        <directory>test/java/Formic</directory>
         <filtering>true</filtering>
       </testResource>
     </testResources>
