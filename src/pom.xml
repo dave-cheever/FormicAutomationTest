@@ -190,11 +190,12 @@
     </testResources>
 
     <!--    <testSourceDirectory>src/main/java</testSourceDirectory>-->
+    <sourceDirectory>src/main/java/com/Formic/OF2</sourceDirectory>
 
     <resources>
       <resource>
         <directory>main/java/com/Formic/OF2</directory>
-        <filtering>false</filtering>
+        <filtering>true</filtering>
       </resource>
     </resources>
 
