@@ -170,14 +170,44 @@
         </configuration>
       </plugin>
 
+<!--      <plugin>-->
+<!--        <groupId>org.apache.maven.plugins</groupId>-->
+<!--        <artifactId>maven-resources-plugin</artifactId>-->
+<!--        <version>3.3.1</version>-->
+<!--        <configuration>-->
+<!--          <encoding>UTF-8</encoding>-->
+<!--        </configuration>-->
+<!--      </plugin>-->
+
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
         <version>3.3.1</version>
-        <configuration>
-          <encoding>UTF-8</encoding>
-        </configuration>
+        <executions>
+          <execution>
+            <id>copy-test-resources</id> <!-- Unique ID for this execution -->
+            <phase>test-compile</phase> <!-- Specify the desired phase -->
+            <goals>
+              <goal>copy-resources</goal>
+            </goals>
+            <configuration>
+              <outputDirectory>${project.build.directory}/custom-test-resources</outputDirectory>
+              <!-- Specify the path where test resources should be copied to -->
+              <resources>
+                <resource>
+                  <directory>src/test/resources</directory>
+                  <!-- Specify the source directory of your test resources -->
+                  <includes>
+                    <include>**/*.xml</include> <!-- Customize inclusion if needed -->
+                  </includes>
+                </resource>
+                <!-- You can add more <resource> elements for additional resource directories -->
+              </resources>
+            </configuration>
+          </execution>
+        </executions>
       </plugin>
+
     </plugins>
 
     <testResources>
