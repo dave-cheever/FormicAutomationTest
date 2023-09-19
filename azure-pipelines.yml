@@ -17,7 +17,7 @@ steps:
 
   - script: |
       # Run TestNG tests using a script
-      test -Dsurefire.suiteXmlFiles=$(Build.SourcesDirectory)/src/main/resources/testng.xml
+      test -Dsurefire.suiteXmlFiles=$(Build.SourcesDirectory)/testng.xml
     displayName: 'Run TestNG Tests'
 
   - script: |
