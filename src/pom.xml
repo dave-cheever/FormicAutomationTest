@@ -175,12 +175,12 @@
 
     <testResources>
       <testResource>
-        <directory>test/java/Formic</directory>
+        <directory>main/java/com/Formic/OF2</directory>
         <filtering>true</filtering>
       </testResource>
     </testResources>
 
-    <testSourceDirectory>src/main/java</testSourceDirectory>
+    <testSourceDirectory>src/test/java/Formic</testSourceDirectory>
     <!--   <sourceDirectory>src/main/java/com/Formic/OF2</sourceDirectory>-->
 
 
