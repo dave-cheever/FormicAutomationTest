@@ -42,11 +42,11 @@
       <scope>compile</scope>
     </dependency>
 
-<!--    <dependency>-->
-<!--      <groupId>ru.stqa.selenium</groupId>-->
-<!--      <artifactId>webdriver-factory</artifactId>-->
-<!--      <version>4.4</version>-->
-<!--    </dependency>-->
+    <!--    <dependency>-->
+    <!--      <groupId>ru.stqa.selenium</groupId>-->
+    <!--      <artifactId>webdriver-factory</artifactId>-->
+    <!--      <version>4.4</version>-->
+    <!--    </dependency>-->
 
     <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
     <dependency>
@@ -84,11 +84,11 @@
       <version>4.11.0</version>
     </dependency>
 
-<!--    <dependency>-->
-<!--      <groupId>com.googlecode.json-simple</groupId>-->
-<!--      <artifactId>json-simple</artifactId>-->
-<!--      <version>1.1.1</version>-->
-<!--    </dependency>-->
+    <!--    <dependency>-->
+    <!--      <groupId>com.googlecode.json-simple</groupId>-->
+    <!--      <artifactId>json-simple</artifactId>-->
+    <!--      <version>1.1.1</version>-->
+    <!--    </dependency>-->
 
     <dependency>
       <groupId>io.rest-assured</groupId>
@@ -150,7 +150,7 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.1.2</version>
         <configuration>
-          <suiteXmlFiles>src/main/resources/testng.xml</suiteXmlFiles>
+          <suiteXmlFiles>main/resources/testng.xml</suiteXmlFiles>
         </configuration>
       </plugin>
 
@@ -186,7 +186,7 @@
 
 
     <testSourceDirectory>src/test/java/Formic</testSourceDirectory>
-<!--   <sourceDirectory>src/main/java/com/Formic/OF2</sourceDirectory>-->
+    <!--   <sourceDirectory>src/main/java/com/Formic/OF2</sourceDirectory>-->
 
 
     <resources>
