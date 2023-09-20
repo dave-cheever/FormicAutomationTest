@@ -27,7 +27,7 @@ steps:
 
   - task: PublishTestResults@2
     inputs:
-      testResultsFiles: '**/src/target/surefire-reports/junitreports/*.xml'
+      testResultsFiles: '**/test-output/Suite/Form Content Test.xml'
       testResultsFormat: 'JUnit'
       condition: always()
     displayName: 'Publish TestNG Test Results'
