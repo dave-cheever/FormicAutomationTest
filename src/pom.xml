@@ -183,7 +183,7 @@
       </testResource>
     </testResources>
 
-    <!--    <sourceDirectory>src/main/java</sourceDirectory>-->
+    <sourceDirectory>src/test/java/Formic</sourceDirectory>
     <!--    <testSourceDirectory>src/test/java</testSourceDirectory>-->
 
     <testSourceDirectory>src/test/java/Formic</testSourceDirectory>
