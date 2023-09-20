@@ -149,6 +149,9 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.1.2</version>
+        <configuration>
+          <suiteXmlFiles>src/main/resources/testng.xml</suiteXmlFiles>
+        </configuration>
       </plugin>
 
       <plugin>
@@ -179,6 +182,8 @@
         <filtering>true</filtering>
       </testResource>
     </testResources>
+
+
 
     <testSourceDirectory>src/test/java/Formic</testSourceDirectory>
 <!--   <sourceDirectory>src/main/java/com/Formic/OF2</sourceDirectory>-->
