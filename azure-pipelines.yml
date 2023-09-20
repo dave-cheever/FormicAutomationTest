@@ -12,7 +12,7 @@ steps:
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: '17'
       jdkArchitectureOption: 'x64'
-      goals: 'clean install'  # Build the project and install dependencies
+      goals: 'clean compile'  # Build the project and install dependencies
       codeCoverageToolOption: 'None'
 
   - script: |
