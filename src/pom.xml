@@ -186,9 +186,7 @@
     <!--    <sourceDirectory>src/main/java</sourceDirectory>-->
     <!--    <testSourceDirectory>src/test/java</testSourceDirectory>-->
 
-    <!--    <testSourceDirectory>src/test/java/Formic</testSourceDirectory>-->
-    <!--    &lt;!&ndash;   <sourceDirectory>src/main/java/com/Formic/OF2</sourceDirectory>&ndash;&gt;-->
-
+    <testSourceDirectory>src/test/java/Formic</testSourceDirectory>
 
     <resources>
       <resource>
