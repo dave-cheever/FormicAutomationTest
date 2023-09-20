@@ -176,15 +176,15 @@
 
     </plugins>
 
-    <!--    <testResources>-->
-    <!--      <testResource>-->
-    <!--        <directory>src/main/java/com/Formic/OF2</directory>-->
-    <!--        <filtering>true</filtering>-->
-    <!--      </testResource>-->
-    <!--    </testResources>-->
+    <testResources>
+      <testResource>
+        <directory>src/main/java/com/Formic/OF2</directory>
+        <filtering>true</filtering>
+      </testResource>
+    </testResources>
 
-    <sourceDirectory>src/main/java</sourceDirectory>
-    <testSourceDirectory>src/test/java</testSourceDirectory>
+    <!--    <sourceDirectory>src/main/java</sourceDirectory>-->
+    <!--    <testSourceDirectory>src/test/java</testSourceDirectory>-->
 
     <!--    <testSourceDirectory>src/test/java/Formic</testSourceDirectory>-->
     <!--    &lt;!&ndash;   <sourceDirectory>src/main/java/com/Formic/OF2</sourceDirectory>&ndash;&gt;-->
@@ -192,7 +192,7 @@
 
     <resources>
       <resource>
-        <directory>src/main/java/com/Formic/OF2</directory>
+        <directory>main/java/com/Formic/OF2</directory>
         <filtering>true</filtering>
       </resource>
     </resources>
