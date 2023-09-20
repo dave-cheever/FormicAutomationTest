@@ -178,7 +178,7 @@
 
     <testResources>
       <testResource>
-        <directory>src/main/java/com/Formic/OF2</directory>
+        <directory>main/java/com/Formic/OF2</directory>
         <filtering>true</filtering>
       </testResource>
     </testResources>
@@ -192,7 +192,7 @@
 
     <resources>
       <resource>
-        <directory>main/java/com/Formic/OF2</directory>
+        <directory>test/java/Formic</directory>
         <filtering>true</filtering>
       </resource>
     </resources>
