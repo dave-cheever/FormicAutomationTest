@@ -180,8 +180,8 @@
       </testResource>
     </testResources>
 
-<!--    <testSourceDirectory>src/main/java</testSourceDirectory>-->
-   <sourceDirectory>src/main/java/com/Formic/OF2</sourceDirectory>
+    <testSourceDirectory>src/main/java</testSourceDirectory>
+<!--   <sourceDirectory>src/main/java/com/Formic/OF2</sourceDirectory>-->
 
 
     <resources>
