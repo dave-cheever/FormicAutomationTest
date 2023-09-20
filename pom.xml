@@ -149,24 +149,15 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.1.2</version>
-        <configuration>
-          <!--          &lt;!&ndash;          <forkCount>3</forkCount>&ndash;&gt;-->
-          <!--          &lt;!&ndash;          <reuseForks>true</reuseForks>&ndash;&gt;-->
-          <!--          &lt;!&ndash;          <argLine>-Xmx1024m -XX:MaxMetaspaceSize=256m</argLine>&ndash;&gt;-->
-          <!--          <suiteXmlFiles>main/resources/testng.xml</suiteXmlFiles>-->
-        </configuration>
       </plugin>
-
-
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.11.0</version>
         <configuration>
-
-          <!--          <compilerArgument>-proc:none</compilerArgument>-->
-          <source>17</source> <!-- Specify the Java version you are targeting -->
+          <compilerArgument>-proc:none</compilerArgument>
+          <source>17</source>
           <target>17</target>
         </configuration>
       </plugin>
@@ -192,9 +183,10 @@
 <!--    <testSourceDirectory>src/main/java</testSourceDirectory>-->
    <sourceDirectory>src/main/java/com/Formic/OF2</sourceDirectory>
 
+
     <resources>
       <resource>
-        <directory>main/java/com/Formic/OF2</directory>
+        <directory>src/main/java/com/Formic/OF2</directory>
         <filtering>true</filtering>
       </resource>
     </resources>
