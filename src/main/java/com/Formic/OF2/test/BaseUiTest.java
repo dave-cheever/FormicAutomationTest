@@ -58,7 +58,7 @@ public class BaseUiTest {
         screenshotHelper = PageFactory.initElements(getDriver(),ScreenshotHelper.class);
     }
 
-    public class ChromeOptionsUtil {
+    public static class ChromeOptionsUtil {
         public static ChromeOptions getHeadlessChromeOptions() {
             ChromeOptions options = new ChromeOptions();
             options.addArguments("--headless"); // Run in headless mode
