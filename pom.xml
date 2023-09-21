@@ -161,10 +161,10 @@
         <configuration>
           <source>17</source>
           <target>17</target>
-          <sources>
-            <testSource>src/test/java</testSource>
-            <source>src/main/java</source>
-          </sources>
+          <!--          <sources>-->
+          <!--            <source>src/main/java</source>-->
+          <!--            <testSource>src/test/java</testSource>-->
+          <!--          </sources>-->
         </configuration>
       </plugin>
 
@@ -179,12 +179,19 @@
 
     </plugins>
 
-    <testResources>
-      <testResource>
-        <directory>main/java/com/Formic/OF2</directory>
-        <filtering>true</filtering>
-      </testResource>
-    </testResources>
+    <directory>target</directory>
+    <outputDirectory>${project.build.directory}/classes</outputDirectory>
+    <testOutputDirectory>${project.build.directory}/test-classes</testOutputDirectory>
+    <sourceDirectory>src/main/java</sourceDirectory>
+    <scriptSourceDirectory>src/main/scripts</scriptSourceDirectory>
+    <testSourceDirectory>src/test/java</testSourceDirectory>
+
+    <!--    <testResources>-->
+    <!--      <testResource>-->
+    <!--        <directory>main/java/com/Formic/OF2</directory>-->
+    <!--        <filtering>true</filtering>-->
+    <!--      </testResource>-->
+    <!--    </testResources>-->
 
     <!--    <sourceDirectory>src/test/java/Formic</sourceDirectory>-->
     <!--    &lt;!&ndash;    <testSourceDirectory>src/test/java</testSourceDirectory>&ndash;&gt;-->
