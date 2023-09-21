@@ -223,24 +223,24 @@
     </plugins>
 
 
-    <!--    <testResources>-->
-    <!--      <testResource>-->
-    <!--        <directory>main/java/com/Formic/OF2</directory>-->
-    <!--        <filtering>true</filtering>-->
-    <!--      </testResource>-->
-    <!--    </testResources>-->
+        <testResources>
+          <testResource>
+            <directory>test/java/Formic</directory>
+            <filtering>true</filtering>
+          </testResource>
+        </testResources>
 
     <!--    <sourceDirectory>src/test/java/Formic</sourceDirectory>-->
     <!--    &lt;!&ndash;    <testSourceDirectory>src/test/java</testSourceDirectory>&ndash;&gt;-->
 
     <!--    <testSourceDirectory>src/test/java/Formic</testSourceDirectory>-->
 
-        <resources>
-          <resource>
-            <directory>test/java/Formic</directory>
-            <filtering>true</filtering>
-          </resource>
-        </resources>
+<!--        <resources>-->
+<!--          <resource>-->
+<!--            <directory>test/java/Formic</directory>-->
+<!--            <filtering>true</filtering>-->
+<!--          </resource>-->
+<!--        </resources>-->
 
   </build>
   <!-- profiles -->
