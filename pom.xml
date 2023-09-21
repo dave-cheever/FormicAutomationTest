@@ -156,7 +156,7 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.1.2</version>
         <configuration>
-          <suiteXmlFiles>testng.xml</suiteXmlFiles>
+          <testSourceDirectory>test/java/Formic/FormContentTest.java</testSourceDirectory>
         </configuration>
       </plugin>
 
