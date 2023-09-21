@@ -160,56 +160,55 @@
         </configuration>
       </plugin>
 
-      <!--      <plugin>-->
-      <!--        <groupId>org.apache.maven.plugins</groupId>-->
-      <!--        <artifactId>maven-compiler-plugin</artifactId>-->
-      <!--        <version>3.11.0</version>-->
-      <!--        <scope>test</scope>-->
-      <!--        <configuration>-->
-      <!--          <source>17</source>-->
-      <!--          <target>17</target>-->
-      <!--          <source>src/test/java</source>-->
-      <!--        </configuration>-->
-      <!--      </plugin>-->
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.8.1</version>
+        <version>3.11.0</version>
         <configuration>
-          <!-- Source and target Java version for main code -->
           <source>17</source>
           <target>17</target>
-          <!-- Source path for main code -->
-          <source>src/main/java</source>
+          <!--                <source>src/test/java</source>-->
         </configuration>
-
-        <executions>
-          <!-- Main source code compilation -->
-          <execution>
-            <id>main-compile</id>
-            <phase>compile</phase>
-            <goals>
-              <goal>compile</goal>
-            </goals>
-          </execution>
-          <!-- Test source code compilation -->
-          <execution>
-            <id>test-compile</id>
-            <phase>test-compile</phase>
-            <goals>
-              <goal>testCompile</goal>
-            </goals>
-            <configuration>
-              <!-- Source and target Java version for test code -->
-              <source>17</source>
-              <target>17</target>
-              <!-- Source path for test code -->
-              <source>src/test/java</source>
-            </configuration>
-          </execution>
-        </executions>
       </plugin>
+
+      <!--      <plugin>-->
+      <!--        <groupId>org.apache.maven.plugins</groupId>-->
+      <!--        <artifactId>maven-compiler-plugin</artifactId>-->
+      <!--        <version>3.8.1</version>-->
+      <!--        <configuration>-->
+      <!--          &lt;!&ndash; Source and target Java version for main code &ndash;&gt;-->
+      <!--          <source>17</source>-->
+      <!--          <target>17</target>-->
+      <!--          &lt;!&ndash; Source path for main code &ndash;&gt;-->
+      <!--          <source>src/main/java</source>-->
+      <!--        </configuration>-->
+
+      <!--        <executions>-->
+      <!--          &lt;!&ndash; Main source code compilation &ndash;&gt;-->
+      <!--          <execution>-->
+      <!--            <id>main-compile</id>-->
+      <!--            <phase>compile</phase>-->
+      <!--            <goals>-->
+      <!--              <goal>compile</goal>-->
+      <!--            </goals>-->
+      <!--          </execution>-->
+      <!--          &lt;!&ndash; Test source code compilation &ndash;&gt;-->
+      <!--          <execution>-->
+      <!--            <id>test-compile</id>-->
+      <!--            <phase>test-compile</phase>-->
+      <!--            <goals>-->
+      <!--              <goal>testCompile</goal>-->
+      <!--            </goals>-->
+      <!--            <configuration>-->
+      <!--              &lt;!&ndash; Source and target Java version for test code &ndash;&gt;-->
+      <!--              <source>17</source>-->
+      <!--              <target>17</target>-->
+      <!--              &lt;!&ndash; Source path for test code &ndash;&gt;-->
+      <!--              <source>src/test/java</source>-->
+      <!--            </configuration>-->
+      <!--          </execution>-->
+      <!--        </executions>-->
+      <!--      </plugin>-->
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -235,12 +234,14 @@
 
     <!--    <testSourceDirectory>src/test/java/Formic</testSourceDirectory>-->
 
-<!--    <resources>-->
-<!--      <resource>-->
-<!--        <directory>main/java</directory>-->
-<!--        <filtering>true</filtering>-->
-<!--      </resource>-->
-<!--    </resources>-->
+
+
+    <resources>
+      <resource>
+        <directory>main/java</directory>
+        <filtering>true</filtering>
+      </resource>
+    </resources>
 
   </build>
   <!-- profiles -->
