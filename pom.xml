@@ -158,7 +158,7 @@
         <configuration>
           <!--          <testSourceDirectory>test/java/Formic</testSourceDirectory>-->
           <!--          <test>FormContentTest.java</test>-->
-          <testClassesDirectory>src/test/java/Formic</testClassesDirectory>
+          <suiteXmlFiles>testng.xml</suiteXmlFiles>
         </configuration>
       </plugin>
 
