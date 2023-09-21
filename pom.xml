@@ -119,6 +119,7 @@
               <source>17</source>
               <target>17</target>
               <!-- Source path for test code -->
+              <source>src/test/java</source>
             </configuration>
           </execution>
         </executions>
