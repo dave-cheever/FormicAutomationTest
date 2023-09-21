@@ -20,7 +20,7 @@ public class RegistrationTest extends BaseUiTest{
     HomePage homePage;
 
 
-    @Ignore
+    @Test
     public void Verify_that_username_label_is_present_on_the_registration_page(){
         CheckboxObject.testCaseId = 2332;
         CheckboxObject.scenarioName = "Verify_that_username_label_is_present_on_the_registration_page";
@@ -33,7 +33,7 @@ public class RegistrationTest extends BaseUiTest{
 
     }
 
-    @Ignore
+    @Test
     public void Verify_that_username_text_box_is_present_on_the_registration_page(){
         CheckboxObject.testCaseId = 2333;
         CheckboxObject.scenarioName = "Verify that username text box is present on the registration page.";
@@ -45,7 +45,7 @@ public class RegistrationTest extends BaseUiTest{
         }
     }
 
-    @Ignore
+    @Test
     public void Verify_that_full_name_label_is_present_on_the_registration_page(){
         CheckboxObject.testCaseId = 2334;
         CheckboxObject.scenarioName = "Verify that full name label is present on the registration page.";
@@ -57,7 +57,7 @@ public class RegistrationTest extends BaseUiTest{
         }
     }
 
-    @Ignore
+    @Test
     public void Verify_that_full_name_text_box_is_present_on_the_registration_page(){
         CheckboxObject.testCaseId = 2335;
         CheckboxObject.scenarioName = "Verify that full name text box is present on the registration page.";
@@ -69,7 +69,7 @@ public class RegistrationTest extends BaseUiTest{
         }
     }
 
-    @Ignore
+    @Test
     public void Verify_that_email_label_is_present_on_the_registration_page(){
         CheckboxObject.testCaseId = 2336;
         CheckboxObject.scenarioName = "Verify that email label is present on the registration page.";
@@ -81,7 +81,7 @@ public class RegistrationTest extends BaseUiTest{
         }
     }
 
-    @Ignore
+    @Test
     public void Verify_that_email_text_box_is_present_on_the_registration_page(){
         CheckboxObject.testCaseId = 2337;
         CheckboxObject.scenarioName = "Verify that email text box is present on the registration page.";
@@ -93,7 +93,7 @@ public class RegistrationTest extends BaseUiTest{
         }
     }
 
-    @Ignore
+    @Test
     public void Verify_that_password_label_is_present_on_the_registration_page(){
         CheckboxObject.testCaseId = 2338;
         CheckboxObject.scenarioName = "Verify that password label is present on the registration page.";
@@ -105,7 +105,7 @@ public class RegistrationTest extends BaseUiTest{
         }
     }
 
-    @Ignore
+    @Test
     public void Verify_that_password_text_box_is_present_on_the_registration_page(){
         CheckboxObject.testCaseId = 2339;
         CheckboxObject.scenarioName = "Verify that password text box is present on the registration page.";
@@ -117,7 +117,7 @@ public class RegistrationTest extends BaseUiTest{
         }
     }
 
-    @Ignore
+    @Test
     public void Verify_that_confirm_password_label_is_present_on_the_registration_page(){
         CheckboxObject.testCaseId = 2340;
         CheckboxObject.scenarioName = "Verify that confirm password label is present on the registration page.";
@@ -129,7 +129,7 @@ public class RegistrationTest extends BaseUiTest{
         }
     }
 
-    @Ignore
+    @Test
     public void Verify_that_confirm_password_text_box_is_present_on_the_registration_page(){
         CheckboxObject.testCaseId = 2341;
         CheckboxObject.scenarioName = "Verify that confirm password text box is present on the registration page.";
@@ -141,7 +141,7 @@ public class RegistrationTest extends BaseUiTest{
         }
     }
 
-    @Ignore
+    @Test
     public void Verify_that_register_button_is_present_on_the_registration_page(){
         CheckboxObject.testCaseId = 2342;
         CheckboxObject.scenarioName = "Verify that register button is present on the registration page. ";
@@ -153,7 +153,7 @@ public class RegistrationTest extends BaseUiTest{
         }
     }
 
-    @Ignore
+    @Test
     public void Verify_that_cancel_button_is_present_on_the_registration_page(){
         CheckboxObject.testCaseId = 2343;
         CheckboxObject.scenarioName = "Verify that cancel button is present on the registration page.";
@@ -165,7 +165,7 @@ public class RegistrationTest extends BaseUiTest{
         }
     }
 
-    @Ignore
+    @Test
     public void Verify_that_username_is_a_required_field(){
         CheckboxObject.testCaseId = 2344;
         CheckboxObject.scenarioName = "Verify that username is a required field.";
@@ -178,7 +178,7 @@ public class RegistrationTest extends BaseUiTest{
         }
     }
 
-    @Ignore
+    @Test
     public void Verify_that_email_is_a_required_field(){
         CheckboxObject.testCaseId = 2345;
         CheckboxObject.scenarioName = "Verify that email is a required field.";
@@ -191,7 +191,7 @@ public class RegistrationTest extends BaseUiTest{
         }
     }
 
-    @Ignore
+    @Test
     public void Verify_that_password_is_a_required_field(){
         CheckboxObject.testCaseId = 2346;
         CheckboxObject.scenarioName = "Verify that password is a required field.";
@@ -204,7 +204,7 @@ public class RegistrationTest extends BaseUiTest{
         }
     }
 
-    @Ignore
+    @Test
     public void Verify_that_confirm_password_is_a_required_field(){
         CheckboxObject.testCaseId = 2347;
         CheckboxObject.scenarioName = "Verify that confirm password is a required field.";
@@ -217,7 +217,7 @@ public class RegistrationTest extends BaseUiTest{
         }
     }
 
-    @Ignore
+    @Test
     public void Verify_that_the_application_checks_for_existing_username(){
         CheckboxObject.testCaseId = 2348;
         CheckboxObject.scenarioName = "Verify that the application checks for existing username.";
@@ -230,7 +230,7 @@ public class RegistrationTest extends BaseUiTest{
         }
     }
 
-    @Ignore
+    @Test
     public void Verify_that_the_application_checks_for_existing_email(){
         CheckboxObject.testCaseId = 2349;
         CheckboxObject.scenarioName = "Verify that the application checks for existing email.";
@@ -243,7 +243,7 @@ public class RegistrationTest extends BaseUiTest{
         }
     }
 
-    @Ignore
+    @Test
     public void Verify_that_the_cancel_button_takes_the_user_back_to_the_previous_page(){
         CheckboxObject.testCaseId = 2350;
         CheckboxObject.scenarioName = "Verify that the cancel button takes the user back to the previous page.";
@@ -256,7 +256,7 @@ public class RegistrationTest extends BaseUiTest{
         }
     }
 
-    @Ignore
+    @Test
     public void Verify_that_the_password_and_confirm_password_fields_match(){
         CheckboxObject.testCaseId = 2351;
         CheckboxObject.scenarioName = "Verify that the password and confirm password fields match.";

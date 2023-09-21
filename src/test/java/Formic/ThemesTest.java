@@ -17,7 +17,7 @@ public class ThemesTest extends BaseUiTest {
     ThemesPopup themesPopup;
     HomePage homePage;
 
-    @Ignore
+    @Test
     public void ApplyDefaultThemes() throws Exception {
         headerNavigationBar.navigateToThemesPopup();
         themesPopup.clickDefaultThemeButton();
@@ -25,7 +25,7 @@ public class ThemesTest extends BaseUiTest {
         Assert.assertTrue(homePage.confirmMyProjectsIsVisible());
     }
 
-    @Ignore
+    @Test
     public void ApplyDefaultThemesWhileLoggedIn() throws Exception {
         headerNavigationBar.navigateToLoginPage();
         loginPage.loginUser("dcheever","Test123");
@@ -35,7 +35,7 @@ public class ThemesTest extends BaseUiTest {
         Assert.assertTrue(homePage.confirmMyProjectsIsVisible());
     }
 
-    @Ignore
+    @Test
     public void OpenThemesThenCloseThemes() throws Exception {
         headerNavigationBar.navigateToThemesPopup();
         themesPopup.clickDefaultThemeButton();

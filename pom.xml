@@ -22,40 +22,6 @@
 
   <dependencies>
 
-    <!-- https://mvnrepository.com/artifact/org.apache.maven.surefire/surefire-testng-utils -->
-    <dependency>
-      <groupId>org.apache.maven.surefire</groupId>
-      <artifactId>surefire-testng-utils</artifactId>
-      <version>3.1.2</version>
-    </dependency>
-
-    <!--    <dependency>-->
-    <!--      <groupId>org.apache.maven.surefire</groupId>-->
-    <!--      <artifactId>surefire-testng</artifactId>-->
-    <!--      <version>3.1.2</version>-->
-    <!--    </dependency>-->
-
-    <dependency>
-      <groupId>org.apache.maven.plugin-tools</groupId>
-      <artifactId>maven-plugin-annotations</artifactId>
-      <version>3.9.0</version>
-      <scope>compile</scope>
-    </dependency>
-
-    <!--    <dependency>-->
-    <!--      <groupId>ru.stqa.selenium</groupId>-->
-    <!--      <artifactId>webdriver-factory</artifactId>-->
-    <!--      <version>4.4</version>-->
-    <!--    </dependency>-->
-
-    <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-java -->
-    <dependency>
-      <groupId>org.seleniumhq.selenium</groupId>
-      <artifactId>selenium-java</artifactId>
-      <version>4.11.0</version>
-    </dependency>
-
-
     <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-support -->
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
@@ -84,11 +50,12 @@
       <version>4.11.0</version>
     </dependency>
 
-    <!--    <dependency>-->
-    <!--      <groupId>com.googlecode.json-simple</groupId>-->
-    <!--      <artifactId>json-simple</artifactId>-->
-    <!--      <version>1.1.1</version>-->
-    <!--    </dependency>-->
+<!--    used-->
+        <dependency>
+          <groupId>com.googlecode.json-simple</groupId>
+          <artifactId>json-simple</artifactId>
+          <version>1.1.1</version>
+        </dependency>
 
     <dependency>
       <groupId>io.rest-assured</groupId>
@@ -115,24 +82,6 @@
     </dependency>
 
     <dependency>
-      <groupId>org.webjars</groupId>
-      <artifactId>json-stringify-safe</artifactId>
-      <version>5.0.0</version>
-    </dependency>
-
-    <dependency>
-      <groupId>com.fasterxml.jackson.core</groupId>
-      <artifactId>jackson-databind</artifactId>
-      <version>2.13.4</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.yaml</groupId>
-      <artifactId>snakeyaml</artifactId>
-      <version>2.0</version>
-    </dependency>
-
-    <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
       <version>7.7.0</version>
@@ -143,12 +92,6 @@
 
   <build>
 
-    <directory>target</directory>
-    <outputDirectory>${project.build.directory}/classes</outputDirectory>
-    <testOutputDirectory>${project.build.directory}/test-classes</testOutputDirectory>
-    <sourceDirectory>src/main/java</sourceDirectory>
-    <testSourceDirectory>src/test/java</testSourceDirectory>
-
     <plugins>
 
       <plugin>
@@ -156,8 +99,6 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <version>3.1.2</version>
         <configuration>
-          <!--          <testSourceDirectory>test/java/Formic</testSourceDirectory>-->
-          <!--          <test>FormContentTest.java</test>-->
           <suiteXmlFiles>testng.xml</suiteXmlFiles>
         </configuration>
       </plugin>
@@ -169,48 +110,8 @@
         <configuration>
           <source>17</source>
           <target>17</target>
-          <!--                <source>src/test/java</source>-->
         </configuration>
       </plugin>
-
-      <!--      <plugin>-->
-      <!--        <groupId>org.apache.maven.plugins</groupId>-->
-      <!--        <artifactId>maven-compiler-plugin</artifactId>-->
-      <!--        <version>3.8.1</version>-->
-      <!--        <configuration>-->
-      <!--          &lt;!&ndash; Source and target Java version for main code &ndash;&gt;-->
-      <!--          <source>17</source>-->
-      <!--          <target>17</target>-->
-      <!--          &lt;!&ndash; Source path for main code &ndash;&gt;-->
-      <!--          <source>src/main/java</source>-->
-      <!--        </configuration>-->
-
-      <!--        <executions>-->
-      <!--          &lt;!&ndash; Main source code compilation &ndash;&gt;-->
-      <!--          <execution>-->
-      <!--            <id>main-compile</id>-->
-      <!--            <phase>compile</phase>-->
-      <!--            <goals>-->
-      <!--              <goal>compile</goal>-->
-      <!--            </goals>-->
-      <!--          </execution>-->
-      <!--          &lt;!&ndash; Test source code compilation &ndash;&gt;-->
-      <!--          <execution>-->
-      <!--            <id>test-compile</id>-->
-      <!--            <phase>test-compile</phase>-->
-      <!--            <goals>-->
-      <!--              <goal>testCompile</goal>-->
-      <!--            </goals>-->
-      <!--            <configuration>-->
-      <!--              &lt;!&ndash; Source and target Java version for test code &ndash;&gt;-->
-      <!--              <source>17</source>-->
-      <!--              <target>17</target>-->
-      <!--              &lt;!&ndash; Source path for test code &ndash;&gt;-->
-      <!--              <source>src/test/java</source>-->
-      <!--            </configuration>-->
-      <!--          </execution>-->
-      <!--        </executions>-->
-      <!--      </plugin>-->
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -223,24 +124,9 @@
 
     </plugins>
 
-
-    <!--    <testResources>-->
-    <!--      <testResource>-->
-    <!--        <directory>test/java/Formic</directory>-->
-    <!--        <filtering>true</filtering>-->
-    <!--      </testResource>-->
-    <!--    </testResources>-->
-
-    <!--    <sourceDirectory>src/test/java/Formic</sourceDirectory>-->
-    <!--    &lt;!&ndash;    <testSourceDirectory>src/test/java</testSourceDirectory>&ndash;&gt;-->
-
-    <!--    <testSourceDirectory>src/test/java/Formic</testSourceDirectory>-->
-
-
-
     <resources>
       <resource>
-        <directory>main/java</directory>
+        <directory>src/main/java</directory>
         <filtering>true</filtering>
       </resource>
     </resources>

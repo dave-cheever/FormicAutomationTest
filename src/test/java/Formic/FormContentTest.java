@@ -26,87 +26,87 @@ public class FormContentTest extends BaseUiTest {
 //    String projectName = "No validation Project"; //159
 
 
-    @Test()
+    @Test
     public void validateMandatoryFieldsWithoutInputs() throws Exception{
         homePage.selectProject(projectName);
         checkBoxPage.validateCheckboxMandatory();
     }
 
-    @Test()
+    @Test
     public void checkboxValidationEnableDisableFieldsCheckbox() throws Exception{
         homePage.selectProject(projectName);
         checkBoxPage.validateEnableDisableFieldsCheckbox();
     }
 
 
-    @Test()
+    @Test
     public void validateMinimumRequiredWhenSubmitButtonClicked() throws Exception{
         homePage.selectProject(projectName);
         checkBoxPage.validateCheckboxMinimumValidationUponSubmit();
     }
 
-    @Test()
+    @Test
     public void checkboxValidationBeyondMaximumInputs() throws Exception{
         homePage.selectProject(projectName);
         checkBoxPage.validateCheckboxBeyondMaximumInputsUponSubmit();
     }
 
-    @Test()
+    @Test
     public void checkboxValidationWithinMaximumInputs() throws Exception{
         homePage.selectProject(projectName);
         checkBoxPage.validateCheckboxMaximumInputsWithinLimitUponSubmit();
     }
 
-    @Test()
+    @Test
     public void checkboxValidationWithinMinimumInputs() throws Exception{
         homePage.selectProject(projectName);
         checkBoxPage.validateCheckboxWithinMinimumInputsUponSubmit();
     }
 
-    @Test()
+    @Test
     public void checkboxValidationLessThanMinimumInputs() throws Exception{
         homePage.selectProject(projectName);
         checkBoxPage.validateCheckboxLessThanMinimumInputsUponSubmit();
     }
 
-    @Test()
+    @Test
     public void hroFormatValidation() throws Exception{
         homePage.selectProject(projectName);
         checkBoxPage.hroFormatValidation();
     }
 
-    @Test()
+    @Test
     public void miaFormatValidation() throws Exception{
         homePage.selectProject(projectName);
         checkBoxPage.miaFormatValidation();
     }
 
-    @Test()
+    @Test
     public void hroMaximumInputsValidation() throws Exception{
         //hro validation message
         homePage.selectProject(projectName);
         checkBoxPage.hroMaximumInputsValidation();
     }
 
-    @Test()
+    @Test
     public void miaMandatoryValidation() throws Exception{
         homePage.selectProject(projectName);
         checkBoxPage.miaMandatoryValidation();
     }
 
-    @Test()
+    @Test
     public void miaPicklistLessThanMinimumInputs() throws Exception{
         homePage.selectProject(projectName);
         checkBoxPage.miaPicklistLessThanMinimumInputs();
     }
 
-    @Test()
+    @Test
     public void miaPicklistMoreThanMaximumInputs() throws Exception{
         homePage.selectProject(projectName);
         checkBoxPage.miaPicklistMoreThanMaximumInputs();
     }
 
-    @Test()
+    @Test
     public void miaPicklistWithinMinimumMaximumInputs() throws Exception{
         homePage.selectProject(projectName);
         checkBoxPage.miaPicklistWithinMinimumMaximumInputs();
@@ -114,13 +114,13 @@ public class FormContentTest extends BaseUiTest {
 
 
 
-    @Test()
+    @Test
     public void validateSubmittedInputsCheckbox() throws Exception {
         homePage.selectProject(projectName);
         checkBoxPage.validateSubmittedInputsCheckbox();
     }
 
-    @Test()
+    @Test
     public void validateSavedInputsCheckbox() throws Exception {
         homePage.selectProject(projectName);
         checkBoxPage.validateSavedInputsCheckbox();

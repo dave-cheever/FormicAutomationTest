@@ -18,7 +18,7 @@ public class LoginTest extends BaseUiTest{
     HomePage homePage;
     RegisterPage registerPage;
 
-    @Ignore
+    @Test
     public void Verify_that_the_page_displays_error_message_for_invalid_username_or_password() throws Exception{
         CheckboxObject.testCaseId = 2310;
         CheckboxObject.scenarioName = "Verify that the page displays error message for invalid username or password";
@@ -31,7 +31,7 @@ public class LoginTest extends BaseUiTest{
         }
     }
 
-    @Ignore
+    @Test
     public void Verify_that_the_page_displays_error_message_for_invalid_username_or_password_for_valid_username_and_invalid_password() throws Exception {
         CheckboxObject.testCaseId = 2316;
         CheckboxObject.scenarioName = "Verify that the page displays error message for invalid username or password for valid username and invalid password";
@@ -44,7 +44,7 @@ public class LoginTest extends BaseUiTest{
         }
     }
 
-    @Ignore
+    @Test
     public void Verify_that_the_page_displays_error_message_for_username_and_password_required() throws Exception {
         CheckboxObject.testCaseId = 2309;
         CheckboxObject.scenarioName = "Verify_that_the_page_displays_error_message_for_username_and_password_required";
@@ -58,7 +58,7 @@ public class LoginTest extends BaseUiTest{
         }
     }
 
-    @Ignore
+    @Test
     public void Verify_that_the_page_displays_Username_label() throws Exception {
         CheckboxObject.testCaseId = 2301;
         CheckboxObject.scenarioName = "Verify_that_the_page_displays_Username_label";
@@ -70,7 +70,7 @@ public class LoginTest extends BaseUiTest{
         }
     }
 
-    @Ignore
+    @Test
     public void Verify_that_the_page_displays_Username_textBox() throws Exception {
         CheckboxObject.testCaseId = 2302;
         CheckboxObject.scenarioName = "Verify_that_the_page_displays_Username_textBox";
@@ -82,7 +82,7 @@ public class LoginTest extends BaseUiTest{
         }
     }
 
-    @Ignore
+    @Test
     public void Verify_that_the_page_displays_Password_label() throws Exception {
         CheckboxObject.testCaseId = 2303;
         CheckboxObject.scenarioName = "Verify_that_the_page_displays_Password_label";
@@ -94,7 +94,7 @@ public class LoginTest extends BaseUiTest{
         }
     }
 
-    @Ignore
+    @Test
     public void Verify_that_the_page_displays_Password_textBox() throws Exception {
         CheckboxObject.testCaseId = 2304;
         CheckboxObject.scenarioName = "Verify_that_the_page_displays_Password_textBox";
@@ -106,7 +106,7 @@ public class LoginTest extends BaseUiTest{
         }
     }
 
-    @Ignore
+    @Test
     public void Verify_that_the_page_displays_remember_me_checkbox() throws Exception {
         CheckboxObject.testCaseId = 2305;
         CheckboxObject.scenarioName = "Verify_that_the_page_displays_remember_me_checkbox";
@@ -119,7 +119,7 @@ public class LoginTest extends BaseUiTest{
         }
     }
 
-    @Ignore
+    @Test
     public void Verify_that_the_page_displays_login_button() throws Exception {
         CheckboxObject.testCaseId = 2306;
         CheckboxObject.scenarioName = "Verify_that_the_page_displays_login_butto";
@@ -131,7 +131,7 @@ public class LoginTest extends BaseUiTest{
         }
     }
 
-    @Ignore
+    @Test
     public void Verify_that_the_page_displays_cancel_button() throws Exception {
         CheckboxObject.testCaseId = 2307;
         CheckboxObject.scenarioName = "Verify_that_the_page_displays_cancel_butto";
@@ -144,7 +144,7 @@ public class LoginTest extends BaseUiTest{
         }
     }
 
-    @Ignore
+    @Test
     public void Verify_that_the_page_displays_register_button() throws Exception {
         CheckboxObject.testCaseId = 2308;
         CheckboxObject.scenarioName = "Verify that the user is redirected to the correct page after clicking register button";
@@ -156,7 +156,7 @@ public class LoginTest extends BaseUiTest{
         }
     }
 
-    @Ignore
+    @Test
     public void Verify_that_the_user_is_redirected_to_the_correct_page_after_clicking_register_button() throws Exception {
         CheckboxObject.testCaseId = 2312;
         CheckboxObject.scenarioName = "Verify that the user is redirected to the correct page after clicking register button";
@@ -171,7 +171,7 @@ public class LoginTest extends BaseUiTest{
 
 
 
-    @Ignore
+    @Test
     public void Verify_that_remember_me_checkbox_in_login_page_works_as_intended() throws Exception {
         headerNavigationBar.navigateToLoginPage();
         loginPage.loginUserWithRememberMe("dcheever","Test123");
@@ -182,7 +182,7 @@ public class LoginTest extends BaseUiTest{
         Assert.assertTrue(loginPage.isRememberMeChecked());
     }
 
-    @Ignore
+    @Test
     public void Verify_that_the_user_is_redirected_to_the_correct_page_after_a_successful_login() throws Exception {
         CheckboxObject.testCaseId = 2311;
         CheckboxObject.scenarioName = "Verify that the user is redirected to the correct page after a successful login.";
