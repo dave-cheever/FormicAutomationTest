@@ -159,10 +159,10 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.1</version>
         <configuration>
-          <!--          <compilerArgument>-proc:none</compilerArgument>-->
-<!--          <source>17</source>-->
-<!--          <target>17</target>-->
-          <source>src/test/java</source>
+          <source>17</source>
+          <target>17</target>
+          <source>src/main/java</source>
+          <testSource>src/test/java</testSource>
         </configuration>
       </plugin>
 

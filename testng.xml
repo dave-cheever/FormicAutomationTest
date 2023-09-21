@@ -3,7 +3,7 @@
 
     <test name="Form Content Test">
         <classes>
-            <class name="src/test/java/Formic/FormContentTest" />
+            <class name="src.test.java.Formic.FormContentTest" />
         </classes>
     </test>
 
