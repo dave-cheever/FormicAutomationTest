@@ -160,17 +160,17 @@
         </configuration>
       </plugin>
 
-<!--      <plugin>-->
-<!--        <groupId>org.apache.maven.plugins</groupId>-->
-<!--        <artifactId>maven-compiler-plugin</artifactId>-->
-<!--        <version>3.11.0</version>-->
-<!--        <scope>test</scope>-->
-<!--        <configuration>-->
-<!--          <source>17</source>-->
-<!--          <target>17</target>-->
-<!--          <source>src/test/java</source>-->
-<!--        </configuration>-->
-<!--      </plugin>-->
+      <!--      <plugin>-->
+      <!--        <groupId>org.apache.maven.plugins</groupId>-->
+      <!--        <artifactId>maven-compiler-plugin</artifactId>-->
+      <!--        <version>3.11.0</version>-->
+      <!--        <scope>test</scope>-->
+      <!--        <configuration>-->
+      <!--          <source>17</source>-->
+      <!--          <target>17</target>-->
+      <!--          <source>src/test/java</source>-->
+      <!--        </configuration>-->
+      <!--      </plugin>-->
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -178,8 +178,10 @@
         <version>3.8.1</version>
         <configuration>
           <!-- Source and target Java version for main code -->
-          <source>1.8</source>
-          <target>1.8</target>
+          <source>17</source>
+          <target>17</target>
+          <!-- Source path for main code -->
+          <generatedSourcesDirectory>src/main/java</generatedSourcesDirectory>
         </configuration>
 
         <executions>
@@ -200,8 +202,10 @@
             </goals>
             <configuration>
               <!-- Source and target Java version for test code -->
-              <source>1.8</source>
-              <target>1.8</target>
+              <source>17</source>
+              <target>17</target>
+              <!-- Source path for test code -->
+              <generatedTestSourcesDirectory>src/test/java</generatedTestSourcesDirectory>
             </configuration>
           </execution>
         </executions>
@@ -231,12 +235,12 @@
 
     <!--    <testSourceDirectory>src/test/java/Formic</testSourceDirectory>-->
 
-    <!--    <resources>-->
-    <!--      <resource>-->
-    <!--        <directory>test/java/Formic</directory>-->
-    <!--        <filtering>true</filtering>-->
-    <!--      </resource>-->
-    <!--    </resources>-->
+        <resources>
+          <resource>
+            <directory>test/java/Formic</directory>
+            <filtering>true</filtering>
+          </resource>
+        </resources>
 
   </build>
   <!-- profiles -->
