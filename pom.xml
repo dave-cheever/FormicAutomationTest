@@ -159,7 +159,7 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.8.1</version>
         <configuration>
-          <compilerArgument>-proc:none</compilerArgument>
+          <!--          <compilerArgument>-proc:none</compilerArgument>-->
           <source>17</source>
           <target>17</target>
           <source>src/test/java</source>
@@ -184,17 +184,17 @@
       </testResource>
     </testResources>
 
-        <sourceDirectory>src/test/java/Formic</sourceDirectory>
-    <!--    <testSourceDirectory>src/test/java</testSourceDirectory>-->
+    <!--    <sourceDirectory>src/test/java/Formic</sourceDirectory>-->
+    <!--    &lt;!&ndash;    <testSourceDirectory>src/test/java</testSourceDirectory>&ndash;&gt;-->
 
-    <testSourceDirectory>src/test/java/Formic</testSourceDirectory>
+    <!--    <testSourceDirectory>src/test/java/Formic</testSourceDirectory>-->
 
-    <resources>
-      <resource>
-        <directory>test/java/Formic</directory>
-        <filtering>true</filtering>
-      </resource>
-    </resources>
+    <!--    <resources>-->
+    <!--      <resource>-->
+    <!--        <directory>test/java/Formic</directory>-->
+    <!--        <filtering>true</filtering>-->
+    <!--      </resource>-->
+    <!--    </resources>-->
 
   </build>
   <!-- profiles -->
