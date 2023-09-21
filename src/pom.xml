@@ -135,13 +135,19 @@
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
-      <version>7.8.0</version>
+      <version>7.7.0</version>
       <scope>compile</scope>
     </dependency>
 
   </dependencies>
 
   <build>
+
+    <directory>target</directory>
+    <outputDirectory>${project.build.directory}/classes</outputDirectory>
+    <testOutputDirectory>${project.build.directory}/test-classes</testOutputDirectory>
+    <sourceDirectory>src/main/java</sourceDirectory>
+    <testSourceDirectory>src/test/java</testSourceDirectory>
 
     <plugins>
 
@@ -161,10 +167,10 @@
         <configuration>
           <source>17</source>
           <target>17</target>
-<!--          <sources>-->
-<!--            <source>src/main/java</source>-->
-<!--            <testSource>src/test/java</testSource>-->
-<!--          </sources>-->
+          <!--          <sources>-->
+          <!--            <source>main/java/com/Formic/OF2</source>-->
+          <!--            <source>test/java/Formic</source>-->
+          <!--          </sources>-->
         </configuration>
       </plugin>
 
@@ -179,18 +185,13 @@
 
     </plugins>
 
-    <directory>target</directory>
-    <outputDirectory>${project.build.directory}/classes</outputDirectory>
-    <testOutputDirectory>${project.build.directory}/test-classes</testOutputDirectory>
-    <sourceDirectory>src/main/java</sourceDirectory>
-    <testSourceDirectory>src/test/java</testSourceDirectory>
 
-    <testResources>
-      <testResource>
-        <directory>main/java/com/Formic/OF2</directory>
-        <filtering>true</filtering>
-      </testResource>
-    </testResources>
+    <!--    <testResources>-->
+    <!--      <testResource>-->
+    <!--        <directory>main/java/com/Formic/OF2</directory>-->
+    <!--        <filtering>true</filtering>-->
+    <!--      </testResource>-->
+    <!--    </testResources>-->
 
     <!--    <sourceDirectory>src/test/java/Formic</sourceDirectory>-->
     <!--    &lt;!&ndash;    <testSourceDirectory>src/test/java</testSourceDirectory>&ndash;&gt;-->
