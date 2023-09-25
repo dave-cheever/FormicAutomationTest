@@ -1,33 +1,30 @@
-trigger:
-  - master
 
 pool:
-  vmImage: ubuntu-latest
+  name: Azure Pipelines
+  demands: maven
 
 steps:
   - task: Maven@3
+    displayName: 'Maven pom.xml'
     inputs:
-      mavenPomFile: '$(Build.SourcesDirectory)/src/pom.xml'
-      mavenOptions: '-Xmx3072m'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '17'
-      jdkArchitectureOption: 'x64'
-      goals: 'clean compile'  # Build the project and install dependencies
-      codeCoverageToolOption: 'None'
+      mavenPomFile: 'pom.xml'
+      goals: 'test compile'
+      testResultsFiles: '**/target/surefire-reports/junitreports/*.xml'
+      testRunTitle: 'Test Run sample'
+      allowBrokenSymlinks: false
+      jdkVersionOption: 1.17
 
-  - script: |
-      # Run TestNG tests using a script
-      test -Dsurefire.suiteXmlFiles=$(Build.SourcesDirectory)/main/resources/testng.xml
-    displayName: 'Run TestNG Tests'
-
-  - script: |
-      # Debugging: List the contents of the surefire-reports directory
-      ls -R $(Build.SourcesDirectory)
-    displayName: 'List the contents of the surefire-reports directory'
-
-  - task: PublishTestResults@2
+  - task: CopyFiles@2
+    displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
     inputs:
-      testResultsFiles: '**/test-output/Suite/Form Content Test.xml'
-      testResultsFormat: 'JUnit'
-      condition: always()
-    displayName: 'Publish TestNG Test Results'
+      SourceFolder: src
+      Contents: '**/*.jar'
+      TargetFolder: '$(build.artifactstagingdirectory)'
+      CleanTargetFolder: true
+    condition: succeededOrFailed()
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: drop'
+    inputs:
+      PathtoPublish: '$(build.artifactstagingdirectory)'
+    condition: succeededOrFailed()
