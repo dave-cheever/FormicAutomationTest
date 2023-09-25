@@ -93,7 +93,6 @@
   <build>
     <testSourceDirectory>src/test/java</testSourceDirectory>
     <plugins>
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
@@ -107,22 +106,6 @@
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.11.0</version>
-<!--        <executions>-->
-<!--          <execution>-->
-<!--            <id>test-compile</id>-->
-<!--            <phase>test-compile</phase>-->
-<!--            <goals>-->
-<!--              <goal>testCompile</goal>-->
-<!--            </goals>-->
-<!--            <configuration>-->
-<!--              &lt;!&ndash; Source and target Java version for test code &ndash;&gt;-->
-<!--              <source>17</source>-->
-<!--              <target>17</target>-->
-<!--              &lt;!&ndash; Source path for test code &ndash;&gt;-->
-<!--              <source>src/test/java</source>-->
-<!--            </configuration>-->
-<!--          </execution>-->
-<!--        </executions>-->
       </plugin>
 
       <plugin>
@@ -133,7 +116,6 @@
           <encoding>UTF-8</encoding>
         </configuration>
       </plugin>
-
     </plugins>
 
     <resources>
