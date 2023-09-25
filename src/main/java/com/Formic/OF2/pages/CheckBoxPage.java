@@ -289,7 +289,7 @@ public class CheckBoxPage extends BasePage {
         ) {
             CheckboxObject.lessThanMinimumInputs = true;
             CheckboxObject.strFieldId = fieldId;
-            String name = CheckboxObject.checkboxName;
+            String name = getFieldName(graphResponse,fieldId);
             Reporter.log("<b>Get rules for:</b> "+name);
             hro.getHroRules(graphResponse,fieldId);
             if(isFieldIdInRoutingRules(graphResponse,fieldId)){

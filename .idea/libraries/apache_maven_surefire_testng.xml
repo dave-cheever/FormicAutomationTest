@@ -1,0 +1,16 @@
+<component name="libraryTable">
+  <library name="apache.maven.surefire.testng" type="repository">
+    <properties maven-id="org.apache.maven.surefire:surefire-testng:3.0.0-M9" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/surefire-testng-3.0.0-M9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/common-java5-3.0.0-M9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/surefire-shared-utils-3.0.0-M9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/surefire-testng-utils-3.0.0-M9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/surefire-grouper-3.0.0-M9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/surefire-api-3.0.0-M9.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/surefire-logger-api-3.0.0-M9.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

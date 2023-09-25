@@ -41,13 +41,13 @@ public class BaseUiTest {
     public void setDriver() throws MalformedURLException {
         // Start driver
         ChromeOptions options = new ChromeOptions();
-        options.addArguments("--lang=en-GB");
+//        options.addArguments("--lang=en-GB");
         // Setting new download directory path
         Map<String, Object> prefs = new HashMap<String, Object>();
         // Use File.separator as it will work on any OS
         prefs.put("download.default_directory",
                 System.getProperty("user.dir") + File.separator + "downloadFiles");
-        options.setExperimentalOption("prefs", prefs);
+//        options.setExperimentalOption("prefs", prefs);
         // Test is running on docker, use the remote web driver
 
         driver.set(new ChromeDriver(ChromeOptionsUtil.getHeadlessChromeOptions()));
@@ -58,7 +58,7 @@ public class BaseUiTest {
         screenshotHelper = PageFactory.initElements(getDriver(),ScreenshotHelper.class);
     }
 
-    public class ChromeOptionsUtil {
+    public static class ChromeOptionsUtil {
         public static ChromeOptions getHeadlessChromeOptions() {
             ChromeOptions options = new ChromeOptions();
             options.addArguments("--headless"); // Run in headless mode

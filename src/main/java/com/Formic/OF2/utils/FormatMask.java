@@ -29,6 +29,7 @@ public class FormatMask {
         formatMap.put("hh:mm:ss", "HH:mm:ss");
         formatMap.put("hh:mm", "HH:mm");
         formatMap.put("mm:ss", "mm:ss");
+        formatMap.put("DD-MM-YYY", "dd-MM-yyyy");
 
         String javaFormat = formatMap.get(formatMask);
         if (javaFormat == null) {

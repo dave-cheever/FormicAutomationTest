@@ -1,8 +1,3 @@
-# Maven
-# Build your Java project and run tests with Apache Maven.
-# Add steps that analyze code, save build artifacts, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/java
-
 trigger:
   - master
 
@@ -12,31 +7,27 @@ pool:
 steps:
   - task: Maven@3
     inputs:
-      mavenPomFile: 'src/pom.xml'
+      mavenPomFile: '$(Build.SourcesDirectory)/src/pom.xml'
       mavenOptions: '-Xmx3072m'
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: '17'
       jdkArchitectureOption: 'x64'
-#      goals: 'clean test'  # Include 'clean' to ensure a clean build
-      codeCoverageToolOption: 'None'  # If you don't need code coverage reports
-
+      goals: 'clean compile'  # Build the project and install dependencies
+      codeCoverageToolOption: 'None'
 
   - script: |
-      # Navigate to the project directory where the pom.xml file is located
-      cd $(Build.SourcesDirectory)/src/pom.xml
+      # Run TestNG tests using a script
+      test -Dsurefire.suiteXmlFiles=$(Build.SourcesDirectory)/main/resources/testng.xml
+    displayName: 'Run TestNG Tests'
 
-      # Build the project and run the TestNG tests
-      mvn clean install test -Dtestng.config.path=src/testng.xml
-    displayName: 'Build and Run Tests'
+  - script: |
+      # Debugging: List the contents of the surefire-reports directory
+      ls -R $(Build.SourcesDirectory)
+    displayName: 'List the contents of the surefire-reports directory'
 
-#  - script: |
-#      # Download and install any required dependencies
-#      mvn clean install -U
-#      # Adjust the command based on your specific requirements
-#    displayName: 'Install Maven Dependencies'
-#
-#  - script: |
-#      # Run your TestNG test suites
-#      mvn -Dtestng.config.path=src/testng.xml
-#      # Adjust the command based on your build tool and test suite configuration
-#    displayName: 'Run TestNG tests'
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFiles: '**/test-output/Suite/Form Content Test.xml'
+      testResultsFormat: 'JUnit'
+      condition: always()
+    displayName: 'Publish TestNG Test Results'
