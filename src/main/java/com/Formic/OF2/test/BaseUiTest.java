@@ -1,9 +1,6 @@
 package com.Formic.OF2.test;
 
-import com.Formic.OF2.utils.APIException;
 import com.Formic.OF2.utils.ScreenshotHelper;
-import com.Formic.OF2.utils.TestRailManger;
-import com.Formic.OF2.utils.CheckboxObject;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -50,8 +47,8 @@ public class BaseUiTest {
 //        options.setExperimentalOption("prefs", prefs);
         // Test is running on docker, use the remote web driver
 
-        driver.set(new ChromeDriver(ChromeOptionsUtil.getHeadlessChromeOptions()));
-//        driver.set(new ChromeDriver(options));
+//        driver.set(new ChromeDriver(ChromeOptionsUtil.getHeadlessChromeOptions()));
+        driver.set(new ChromeDriver(options));
 
         //setDriver(new ChromeDriver(options));
         getDriver().manage().window().maximize();
@@ -69,14 +66,7 @@ public class BaseUiTest {
     }
 
     @AfterMethod
-    public void driverTearDown(ITestResult result) throws IOException, InterruptedException, APIException {
-        if(result.getStatus()==ITestResult.SUCCESS&&CheckboxObject.testCaseId!=0){
-            screenshotHelper.takeScreenshot(CheckboxObject.scenarioName);
-            TestRailManger.updateResult(CheckboxObject.testCaseId,TestRailManger.TEST_CASE_PASSED_STATUS,50);
-        } else if (result.getStatus()==ITestResult.FAILURE&&CheckboxObject.testCaseId!=0) {
-            screenshotHelper.takeScreenshot(CheckboxObject.scenarioName);
-            TestRailManger.updateResult(CheckboxObject.testCaseId,TestRailManger.TEST_CASE_FAILED_STATUS,50);
-        }
+    public void driverTearDown(ITestResult result) throws IOException {
         Process process = Runtime. getRuntime(). exec("taskkill /F /IM chromedriver.exe /T");
         process.destroy();
         getDriver().quit();

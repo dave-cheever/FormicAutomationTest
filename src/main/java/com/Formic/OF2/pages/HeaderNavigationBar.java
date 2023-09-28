@@ -31,6 +31,7 @@ public class HeaderNavigationBar extends BasePage {
     }
 
     public void navigateToLoginPage(){
+        visit("https://formic-onlineforms-test.azurewebsites.net/");
         click(loginButtonLocator);
     }
 
