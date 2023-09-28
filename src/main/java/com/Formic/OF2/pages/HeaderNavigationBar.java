@@ -40,6 +40,7 @@ public class HeaderNavigationBar extends BasePage {
     }
 
     public void navigateToRegisterPage(){
+        visit("https://formic-onlineforms-test.azurewebsites.net/");
         click(registerButtonLocator);
     }
 
