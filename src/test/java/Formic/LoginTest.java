@@ -1,6 +1,7 @@
 package Formic;
 
 import com.Formic.OF2.test.BaseUiTest;
+import com.Formic.OF2.utils.AzureDevOpsIntegration;
 import com.Formic.OF2.utils.CheckboxObject;
 import com.Formic.OF2.pages.*;
 import org.openqa.selenium.support.PageFactory;
@@ -24,11 +25,23 @@ public class LoginTest extends BaseUiTest{
         CheckboxObject.scenarioName = "Verify that the page displays error message for invalid username or password";
         headerNavigationBar.navigateToLoginPage();
         loginPage.loginUser("Test123","password");
+        boolean assertionResult;
+
         try {
-            assertEquals(loginPage.incorrectUsernameOrPasswordTextIsVisible(), "Invalid username or password", "The expected error message: "+loginPage.incorrectUsernameOrPasswordTextIsVisible() + " is not visible.");
+             assertionResult = loginPage.incorrectUsernameOrPasswordTextIsVisible()
+                    .equals("Invalid username or password");
+            if (!assertionResult) {
+                // Handle the assertion failure
+                throw new AssertionError("The expected error message is not visible.");
+            }
+            String outcome = assertionResult ? "Passed" : "Failed";
+            AzureDevOpsIntegration.updateTestCaseStatus(124, 1040373, outcome);
+//            assertEquals(loginPage.incorrectUsernameOrPasswordTextIsVisible(), "Invalid username or password", "The expected error message: "+loginPage.incorrectUsernameOrPasswordTextIsVisible() + " is not visible.");
         } catch (AssertionError e) {
             throw new AssertionError(CheckboxObject.errorMessage=" Test failed: " + e.getMessage());
         }
+
+
     }
 
     @Test
