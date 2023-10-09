@@ -1,9 +1,9 @@
 package Formic;
 
 import com.Formic.OF2.test.BaseUiTest;
-import com.Formic.OF2.utils.AzureDevOpsIntegration;
 import com.Formic.OF2.utils.CheckboxObject;
 import com.Formic.OF2.pages.*;
+import com.Formic.OF2.utils.UpdateTestCaseStatus;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 import org.testng.ITestContext;
@@ -34,8 +34,8 @@ public class LoginTest extends BaseUiTest{
                 // Handle the assertion failure
                 throw new AssertionError("The expected error message is not visible.");
             }
-            String outcome = assertionResult ? "Passed" : "Failed";
-            AzureDevOpsIntegration.updateTestCaseStatus(124, 1040373, outcome);
+            String outcome = assertionResult ? "Pass" : "Fail";
+            UpdateTestCaseStatus.updateTestCaseStatus("124",outcome);
 //            assertEquals(loginPage.incorrectUsernameOrPasswordTextIsVisible(), "Invalid username or password", "The expected error message: "+loginPage.incorrectUsernameOrPasswordTextIsVisible() + " is not visible.");
         } catch (AssertionError e) {
             throw new AssertionError(CheckboxObject.errorMessage=" Test failed: " + e.getMessage());
