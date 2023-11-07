@@ -8,12 +8,8 @@ import org.testng.ITestContext;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-
-
 public class FormContentTest extends BaseUiTest {
 
-    HeaderNavigationBar headerNavigationBar;
-    LoginPage loginPage;
     HomePage homePage;
     CheckBoxPage checkBoxPage;
     String projectName = "DMC Test Checkbox"; // 137
@@ -126,16 +122,14 @@ public class FormContentTest extends BaseUiTest {
         checkBoxPage.validateSavedInputsCheckbox();
     }
 
-//    @Test
-//    public void test() throws Exception {
-//        homePage.selectProject(projectName);
-//        checkBoxPage.test();
-//    }
+    @Test
+    public void test() throws Exception {
+        homePage.selectProject(projectName);
+        checkBoxPage.test();
+    }
 
     @BeforeMethod
     public void initialisePageElements(ITestContext iTestContext) {
-        headerNavigationBar = PageFactory.initElements(getDriver(), HeaderNavigationBar.class);
-        loginPage = PageFactory.initElements(getDriver(), LoginPage.class);
         homePage = PageFactory.initElements(getDriver(), HomePage.class);
         checkBoxPage = PageFactory.initElements(getDriver(), CheckBoxPage.class);
         CheckboxObject.fieldId.clear();

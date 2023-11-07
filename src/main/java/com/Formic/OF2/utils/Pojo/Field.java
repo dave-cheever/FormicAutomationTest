@@ -20,6 +20,7 @@ import java.util.List;
         "dataTypeNew",
         "fieldFormat",
         "validation",
+        "derivation",
         "userValidationErrorMessage",
         "formatRegex",
         "formatMask",
@@ -49,7 +50,7 @@ public class Field {
     @JsonProperty("fieldFormat")
     private List<Object> fieldFormat = null;
     @JsonProperty("validation")
-    private Object validation;
+    private String validation;
     @JsonProperty("userValidationErrorMessage")
     private Object userValidationErrorMessage;
     @JsonProperty("formatRegex")
@@ -58,6 +59,8 @@ public class Field {
     private String formatMask;
     @JsonProperty("fieldType")
     private String fieldType;
+    @JsonProperty("derivation")
+    private String derivation;
 
     @JsonProperty("guidId")
     public String getGuidId() {
@@ -114,6 +117,11 @@ public class Field {
         return typename;
     }
 
+    @JsonProperty("derivation")
+    public String getDerivation() {
+        return derivation;
+    }
+
     @JsonProperty("__typename")
     public void setTypename(String typename) {
         this.typename = typename;
@@ -160,12 +168,10 @@ public class Field {
     }
 
     @JsonProperty("validation")
-    public java.lang.Object getValidation() {
-        return validation;
-    }
+    public String getValidation() {return validation; }
 
     @JsonProperty("validation")
-    public void setValidation(Object validation) {
+    public void setValidation(String validation) {
         this.validation = validation;
     }
 
@@ -207,6 +213,11 @@ public class Field {
     @JsonProperty("fieldType")
     public void setFieldType(String fieldType) {
         this.fieldType = fieldType;
+    }
+
+    @JsonProperty("derivation")
+    public String setDerivation() {
+        return derivation;
     }
 
 }

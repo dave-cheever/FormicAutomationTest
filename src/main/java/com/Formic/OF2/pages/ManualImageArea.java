@@ -1,10 +1,6 @@
 package com.Formic.OF2.pages;
 
-import com.Formic.OF2.utils.DataFormatting;
-import com.Formic.OF2.utils.FormatMask;
-import com.Formic.OF2.utils.FormatRegex;
-import com.Formic.OF2.utils.InputLimitExtractor;
-import com.Formic.OF2.utils.CheckboxObject;
+import com.Formic.OF2.utils.*;
 import com.Formic.OF2.utils.Pojo.FormContentPojo;
 import com.Formic.OF2.test.BasePage;
 import org.openqa.selenium.By;
@@ -25,7 +21,7 @@ public class ManualImageArea extends BasePage {
     String miaSinglePickListInputLocator = "//div[@data-object-id='$TEXT']/div/div/div/input";
     String miaMultiPickListInputLocator = "//div[@data-object-id='$TEXT']/div/div/div/div";
 
-    String miaInputLocator = "//div[@data-object-id='$TEXT']/textarea";
+    static String miaInputLocator = "//div[@data-object-id='$TEXT']/textarea";
     String miaTextAreaLocator = "//div[@data-object-id='$TEXT']/div/textarea";
     String miaValidationMessageLocator = "//div[@data-object-id='$TEXT']/div/div[1]";
     String miaValidationMessageMandatoryLocator = "//div[@data-object-id='$TEXT']/div/div/div";
@@ -38,6 +34,8 @@ public class ManualImageArea extends BasePage {
 
 
     CompletionErrors comErrors = new CompletionErrors(driver);
+
+    Config config = new Config(driver);
     public ManualImageArea(WebDriver driver) {
         super(driver);
     }
@@ -54,7 +52,7 @@ public class ManualImageArea extends BasePage {
         return element.getText();
     }
 
-    public void setTextToMia(com.Formic.OF2.utils.Pojo.FormContentPojo pojo, String strFieldId, String strText){
+    public static void setTextToMia(com.Formic.OF2.utils.Pojo.FormContentPojo pojo, String strFieldId, String strText){
         String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(miaInputLocator,elementId);
         WebElement element = stringToWebElement(elem);
@@ -138,23 +136,7 @@ public class ManualImageArea extends BasePage {
         setTextToMia(pojo,strFieldId,randomDateTime);
     }
 
-    public boolean isFieldIdPickList(com.Formic.OF2.utils.Pojo.FormContentPojo pojo, String strFieldId){
-        boolean result = false;
-        for (var pages : pojo.data.project.getPages()
-             ) {
-            for (var object : pages.getObjects()
-                 ) {
-                if(object.getFieldId()!=null&&object.getFieldId().equalsIgnoreCase(strFieldId)){
-                    if(object.getTypename().equalsIgnoreCase("picklist")){
-                        result = true;
-                    }else{
-                        result = false;
-                    }
-                }
-            }
-        }
-        return result;
-    }
+
 
     public void clickPicklistDropdownButton(com.Formic.OF2.utils.Pojo.FormContentPojo pojo,String strFieldId){
         String elementId = getObjectIdFromFieldId(pojo,strFieldId);
@@ -208,7 +190,7 @@ public class ManualImageArea extends BasePage {
         String fieldName = getFieldName(pojo,strFieldId);
         lookForTheField(pojo,strFieldId);
         if(CheckboxObject.mandatory){
-            if(isFieldIdPickList(pojo,strFieldId)){
+            if(config.isFieldIdPickList(pojo,strFieldId)){
                 if(isMiaPicklistEmpty(pojo,strFieldId)){
                     assertMiaPickListRequiredField(pojo,strFieldId);
                 }else{
@@ -419,50 +401,7 @@ public class ManualImageArea extends BasePage {
         comErrors.validateCompletionErrorMessageHidden(fieldName);
     }
 
-    public  boolean isFieldIdMia(com.Formic.OF2.utils.Pojo.FormContentPojo pojo, String strFieldId){
-        boolean result = false;
-        outerLoop:
-        for (com.Formic.OF2.utils.Pojo.Page page: pojo.data.project.getPages()
-        ) {
-            for (com.Formic.OF2.utils.Pojo.Object object: page.getObjects()
-            ) {
-                if(object.getTypename()!=null&&object.getTypename().equalsIgnoreCase("ManualImageAreaText")){
-                    if(object.getFieldId().equalsIgnoreCase(strFieldId)){
-                        result=true;
-                        break outerLoop;
-                    }
-                }
-            }
-        }
-        return result;
-    }
 
-    public boolean getMiaRules(com.Formic.OF2.utils.Pojo.FormContentPojo pojo, String strFieldId){
-        for (com.Formic.OF2.utils.Pojo.Field fields: pojo.data.project.getFields()
-        ) {
-            if(fields.getGuidId().equalsIgnoreCase(strFieldId)&&(isFieldIdPickList(pojo,strFieldId)||isFieldIdMia(pojo,strFieldId))){
-                CheckboxObject.mandatory = fields.getMandatory();
-                CheckboxObject.checkboxName = fields.getName();
-                CheckboxObject.strFormatMask = fields.getFormatMask();
-                CheckboxObject.strFormatRegex = fields.getFormatRegex();
-                CheckboxObject.strDataTypeNew = fields.getDataTypeNew();
-                if(fields.getResponses()!=null){
-                    CheckboxObject.isMultiResponse = fields.getResponses().getIsMultiResponse();
-                    CheckboxObject.minimum = fields.getResponses().getMinimum();
-                    CheckboxObject.maximum = fields.getResponses().getMaximum();
-                }
-                Reporter.log("<b>Mandatory: </b>"+CheckboxObject.mandatory);
-                Reporter.log("<b>Field Name: </b>"+CheckboxObject.checkboxName);
-                Reporter.log("<b>Format Mask: </b>"+CheckboxObject.strFormatMask);
-                Reporter.log("<b>Format Regex: </b>"+ CheckboxObject.strFormatRegex);
-                Reporter.log("<b>Data Type New: </b>"+CheckboxObject.strDataTypeNew);
-                Reporter.log("<b>Minimum: </b>"+CheckboxObject.minimum);
-                Reporter.log("<b>Maximum: </b>"+CheckboxObject.maximum);
-                return true;
-            }
-        }
-        return false;
-    }
 
     public void processNumericDataType(FormContentPojo graphResponse,  String strFieldId) {
         String inputs = alphaInputs(graphResponse, strFieldId, InputLimitExtractor.extractInputLimit(CheckboxObject.strFormatRegex));

@@ -21,8 +21,6 @@ public class LoginTest extends BaseUiTest{
 
     @Test
     public void Verify_that_the_page_displays_error_message_for_invalid_username_or_password() throws Exception{
-        CheckboxObject.testCaseId = 2310;
-        CheckboxObject.scenarioName = "Verify that the page displays error message for invalid username or password";
         headerNavigationBar.navigateToLoginPage();
         loginPage.loginUser("Test123","password");
         boolean assertionResult;
@@ -34,9 +32,6 @@ public class LoginTest extends BaseUiTest{
                 // Handle the assertion failure
                 throw new AssertionError("The expected error message is not visible.");
             }
-            String outcome = assertionResult ? "Pass" : "Fail";
-            UpdateTestCaseStatus.updateTestCaseStatus("124",outcome);
-//            assertEquals(loginPage.incorrectUsernameOrPasswordTextIsVisible(), "Invalid username or password", "The expected error message: "+loginPage.incorrectUsernameOrPasswordTextIsVisible() + " is not visible.");
         } catch (AssertionError e) {
             throw new AssertionError(CheckboxObject.errorMessage=" Test failed: " + e.getMessage());
         }
@@ -46,8 +41,6 @@ public class LoginTest extends BaseUiTest{
 
     @Test
     public void Verify_that_the_page_displays_error_message_for_invalid_username_or_password_for_valid_username_and_invalid_password() throws Exception {
-        CheckboxObject.testCaseId = 2316;
-        CheckboxObject.scenarioName = "Verify that the page displays error message for invalid username or password for valid username and invalid password";
         headerNavigationBar.navigateToLoginPage();
         loginPage.loginUser("dcheever1","password123");
         try {
@@ -59,8 +52,6 @@ public class LoginTest extends BaseUiTest{
 
     @Test
     public void Verify_that_the_page_displays_error_message_for_username_and_password_required() throws Exception {
-        CheckboxObject.testCaseId = 2309;
-        CheckboxObject.scenarioName = "Verify_that_the_page_displays_error_message_for_username_and_password_required";
         headerNavigationBar.navigateToLoginPage();
         loginPage.loginUser("","");
         try {
@@ -73,8 +64,6 @@ public class LoginTest extends BaseUiTest{
 
     @Test
     public void Verify_that_the_page_displays_Username_label() throws Exception {
-        CheckboxObject.testCaseId = 2301;
-        CheckboxObject.scenarioName = "Verify_that_the_page_displays_Username_label";
         headerNavigationBar.navigateToLoginPage();
         try {
             Assert.assertTrue(loginPage.userNameLabelVisible()," The username label is not visible. ");
@@ -85,8 +74,6 @@ public class LoginTest extends BaseUiTest{
 
     @Test
     public void Verify_that_the_page_displays_Username_textBox() throws Exception {
-        CheckboxObject.testCaseId = 2302;
-        CheckboxObject.scenarioName = "Verify_that_the_page_displays_Username_textBox";
         headerNavigationBar.navigateToLoginPage();
         try {
             Assert.assertTrue(loginPage.userNameTextBoxVisible()," The username text box is not visible. ");
@@ -97,8 +84,6 @@ public class LoginTest extends BaseUiTest{
 
     @Test
     public void Verify_that_the_page_displays_Password_label() throws Exception {
-        CheckboxObject.testCaseId = 2303;
-        CheckboxObject.scenarioName = "Verify_that_the_page_displays_Password_label";
         headerNavigationBar.navigateToLoginPage();
         try {
             Assert.assertTrue(loginPage.passwordLabelVisible()," The password label is not visible. ");
@@ -109,8 +94,6 @@ public class LoginTest extends BaseUiTest{
 
     @Test
     public void Verify_that_the_page_displays_Password_textBox() throws Exception {
-        CheckboxObject.testCaseId = 2304;
-        CheckboxObject.scenarioName = "Verify_that_the_page_displays_Password_textBox";
         headerNavigationBar.navigateToLoginPage();
         try {
             Assert.assertTrue(loginPage.passwordTextBoxVisible()," The password text box is not visible. ");
@@ -121,8 +104,6 @@ public class LoginTest extends BaseUiTest{
 
     @Test
     public void Verify_that_the_page_displays_remember_me_checkbox() throws Exception {
-        CheckboxObject.testCaseId = 2305;
-        CheckboxObject.scenarioName = "Verify_that_the_page_displays_remember_me_checkbox";
         headerNavigationBar.navigateToLoginPage();
         loginPage.rememberMeCheckBoxVisible();
         try {
@@ -134,8 +115,6 @@ public class LoginTest extends BaseUiTest{
 
     @Test
     public void Verify_that_the_page_displays_login_button() throws Exception {
-        CheckboxObject.testCaseId = 2306;
-        CheckboxObject.scenarioName = "Verify_that_the_page_displays_login_butto";
         headerNavigationBar.navigateToLoginPage();
         try {
             Assert.assertTrue(loginPage.loginButtonVisible()," The login button is not visible. ");
@@ -174,6 +153,7 @@ public class LoginTest extends BaseUiTest{
         CheckboxObject.testCaseId = 2312;
         CheckboxObject.scenarioName = "Verify that the user is redirected to the correct page after clicking register button";
         headerNavigationBar.navigateToLoginPage();
+        Thread.sleep(1000);
         loginPage.clickRegisterButton();
         try {
             Assert.assertTrue(registerPage.isRegisterTextVisible(),"Page is not in register page.");

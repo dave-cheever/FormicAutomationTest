@@ -88,6 +88,8 @@ public class RulesGraphql {
         queryBuilder.append("                    id");
         queryBuilder.append("                    name");
         queryBuilder.append("                    mandatory");
+        queryBuilder.append("                    validation");
+        queryBuilder.append("                    derivation");
         queryBuilder.append("                    dataTypeNew");
         queryBuilder.append("                    formatRegex");
         queryBuilder.append("                    formatMask");
