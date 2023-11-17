@@ -4,7 +4,6 @@ import com.Formic.OF2.pages.HandwritingRecognitionObject;
 import com.Formic.OF2.test.BasePage;
 import com.Formic.OF2.utils.CheckboxObject;
 import com.Formic.OF2.pages.CheckBoxPage;
-import com.Formic.OF2.utils.Config;
 import com.Formic.OF2.utils.Pojo.FormContentPojo;
 import com.Formic.OF2.utils.Pojo.RulesGraphql;
 import org.openqa.selenium.By;
@@ -26,13 +25,13 @@ public class DataValidation extends BasePage {
     public void Positive_HRO_Verify_that_the_Equal_To_operator_correctly_identifies_when_the_input_value_is_equal_to_the_configured_value() throws Exception {
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
-        Config.getFieldIdValidationEqualByTypeName(graphResponse,"HandwritingRecognitionObject");
+        com.Formic.OF2.utils.DataValidation.getFieldIdValidationEqualByTypeName(graphResponse,"HandwritingRecognitionObject");
         for (String fieldId: CheckboxObject.fieldId
         ) {
-            if(Config.getHroRules(graphResponse, fieldId)&&
+            if(com.Formic.OF2.utils.FieldMetaData.getHroRules(graphResponse, fieldId)&&
                     !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
-                int validationNumber = Config.getValidationNumber(graphResponse,fieldId);
+                int validationNumber = com.Formic.OF2.utils.DataValidation.getValidationNumber(graphResponse,fieldId);
                 HandwritingRecognitionObject.setTextToHro(graphResponse,fieldId,Integer.toString(validationNumber));
             }
             String objectId = getObjectIdFromFieldId(graphResponse,fieldId);
@@ -44,13 +43,13 @@ public class DataValidation extends BasePage {
     public void Positive_HRO_Verify_that_the_Not_Equal_To_operator_correctly_identifies_when_the_input_value_is_not_equal_to_the_configured_value() throws Exception {
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
-        Config.getFieldIdValidationNotEqualByTypeName(graphResponse,"HandwritingRecognitionObject");
+        com.Formic.OF2.utils.DataValidation.getFieldIdValidationNotEqualByTypeName(graphResponse,"HandwritingRecognitionObject");
         for (String fieldId: CheckboxObject.fieldId
         ) {
-            if(Config.getHroRules(graphResponse, fieldId)&&
+            if(com.Formic.OF2.utils.FieldMetaData.getHroRules(graphResponse, fieldId)&&
                     !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
-                int validationNumber = Config.getValidationNumber(graphResponse,fieldId);
+                int validationNumber = com.Formic.OF2.utils.DataValidation.getValidationNumber(graphResponse,fieldId);
                 HandwritingRecognitionObject.setTextToHro(graphResponse,fieldId,Integer.toString(validationNumber+1));
             }
             String objectId = getObjectIdFromFieldId(graphResponse,fieldId);
@@ -62,13 +61,13 @@ public class DataValidation extends BasePage {
     public void Positive_HRO_Verify_that_the_Greater_Than_operator_correctly_identifies_when_the_input_value_is_greater_than_the_configured_value() throws Exception {
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
-        Config.getFieldIdValidationGreaterThanByTypeName(graphResponse,"HandwritingRecognitionObject");
+        com.Formic.OF2.utils.DataValidation.getFieldIdValidationGreaterThanByTypeName(graphResponse,"HandwritingRecognitionObject");
         for (String fieldId: CheckboxObject.fieldId
         ) {
-            if(Config.getHroRules(graphResponse, fieldId)&&
+            if(com.Formic.OF2.utils.FieldMetaData.getHroRules(graphResponse, fieldId)&&
                     !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
-                int validationNumber = Config.getValidationNumber(graphResponse,fieldId);
+                int validationNumber = com.Formic.OF2.utils.DataValidation.getValidationNumber(graphResponse,fieldId);
                 HandwritingRecognitionObject.setTextToHro(graphResponse,fieldId,Integer.toString(validationNumber+1));
             }
             String objectId = getObjectIdFromFieldId(graphResponse,fieldId);
@@ -80,13 +79,13 @@ public class DataValidation extends BasePage {
     public void Positive_HRO_Verify_that_the_Greater_Than_or_Equal_To_operator_correctly_identifies_when_the_input_value_is_greater_than_or_equal_to_the_configured_value() throws Exception {
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
-        Config.getFieldIdValidationGreaterThanOrEqualToByTypeName(graphResponse,"HandwritingRecognitionObject");
+        com.Formic.OF2.utils.DataValidation.getFieldIdValidationGreaterThanOrEqualToByTypeName(graphResponse,"HandwritingRecognitionObject");
         for (String fieldId: CheckboxObject.fieldId
         ) {
-            if(Config.getHroRules(graphResponse, fieldId)&&
+            if(com.Formic.OF2.utils.FieldMetaData.getHroRules(graphResponse, fieldId)&&
                     !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
-                int validationNumber = Config.getValidationNumber(graphResponse,fieldId);
+                int validationNumber = com.Formic.OF2.utils.DataValidation.getValidationNumber(graphResponse,fieldId);
                 HandwritingRecognitionObject.setTextToHro(graphResponse,fieldId,Integer.toString(validationNumber));
             }
             String objectId = getObjectIdFromFieldId(graphResponse,fieldId);
@@ -98,13 +97,13 @@ public class DataValidation extends BasePage {
     public void Positive_HRO_Verify_that_the_Less_Than_operator_correctly_identifies_when_the_input_value_is_greater_than_or_equal_to_the_configured_value() throws Exception {
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
-        Config.getFieldIdValidationLessThanByTypeName(graphResponse,"HandwritingRecognitionObject");
+        com.Formic.OF2.utils.DataValidation.getFieldIdValidationLessThanByTypeName(graphResponse,"HandwritingRecognitionObject");
         for (String fieldId: CheckboxObject.fieldId
         ) {
-            if(Config.getHroRules(graphResponse, fieldId)&&
+            if(com.Formic.OF2.utils.FieldMetaData.getHroRules(graphResponse, fieldId)&&
                     !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
-                int validationNumber = Config.getValidationNumber(graphResponse,fieldId);
+                int validationNumber = com.Formic.OF2.utils.DataValidation.getValidationNumber(graphResponse,fieldId);
                 HandwritingRecognitionObject.setTextToHro(graphResponse,fieldId,Integer.toString(validationNumber-1));
             }
             String objectId = getObjectIdFromFieldId(graphResponse,fieldId);
@@ -116,13 +115,13 @@ public class DataValidation extends BasePage {
     public void Positive_HRO_Verify_that_the_Less_Than_or_Equal_To_operator_correctly_identifies_when_the_input_value_is_greater_than_or_equal_to_the_configured_value() throws Exception {
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
-        Config.getFieldIdValidationLessThanOrEqualToByTypeName(graphResponse,"HandwritingRecognitionObject");
+        com.Formic.OF2.utils.DataValidation.getFieldIdValidationLessThanOrEqualToByTypeName(graphResponse,"HandwritingRecognitionObject");
         for (String fieldId: CheckboxObject.fieldId
         ) {
-            if(Config.getHroRules(graphResponse, fieldId)&&
+            if(com.Formic.OF2.utils.FieldMetaData.getHroRules(graphResponse, fieldId)&&
                     !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
-                int validationNumber = Config.getValidationNumber(graphResponse,fieldId);
+                int validationNumber = com.Formic.OF2.utils.DataValidation.getValidationNumber(graphResponse,fieldId);
                 HandwritingRecognitionObject.setTextToHro(graphResponse,fieldId,Integer.toString(validationNumber));
             }
             String objectId = getObjectIdFromFieldId(graphResponse,fieldId);
@@ -134,13 +133,13 @@ public class DataValidation extends BasePage {
     public void Negative_HRO_Verify_that_the_Equal_To_operator_correctly_identifies_when_the_input_value_is_equal_to_the_configured_value() throws Exception {
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
-        Config.getFieldIdValidationEqualByTypeName(graphResponse,"HandwritingRecognitionObject");
+        com.Formic.OF2.utils.DataValidation.getFieldIdValidationEqualByTypeName(graphResponse,"HandwritingRecognitionObject");
         for (String fieldId: CheckboxObject.fieldId
         ) {
-            if(Config.getHroRules(graphResponse, fieldId)&&
+            if(com.Formic.OF2.utils.FieldMetaData.getHroRules(graphResponse, fieldId)&&
                     !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
-                int validationNumber = Config.getValidationNumber(graphResponse,fieldId);
+                int validationNumber = com.Formic.OF2.utils.DataValidation.getValidationNumber(graphResponse,fieldId);
                 HandwritingRecognitionObject.setTextToHro(graphResponse,fieldId,Integer.toString(validationNumber+1));
             }
             String objectId = getObjectIdFromFieldId(graphResponse,fieldId);
@@ -154,13 +153,13 @@ public class DataValidation extends BasePage {
     public void Negative_HRO_Verify_that_the_Not_Equal_To_operator_correctly_identifies_when_the_input_value_is_not_equal_to_the_configured_value() throws Exception {
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
-        Config.getFieldIdValidationNotEqualByTypeName(graphResponse,"HandwritingRecognitionObject");
+        com.Formic.OF2.utils.DataValidation.getFieldIdValidationNotEqualByTypeName(graphResponse,"HandwritingRecognitionObject");
         for (String fieldId: CheckboxObject.fieldId
         ) {
-            if(Config.getHroRules(graphResponse, fieldId)&&
+            if(com.Formic.OF2.utils.FieldMetaData.getHroRules(graphResponse, fieldId)&&
                     !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
-                int validationNumber = Config.getValidationNumber(graphResponse,fieldId);
+                int validationNumber = com.Formic.OF2.utils.DataValidation.getValidationNumber(graphResponse,fieldId);
                 HandwritingRecognitionObject.setTextToHro(graphResponse,fieldId,Integer.toString(validationNumber));
             }
             String objectId = getObjectIdFromFieldId(graphResponse,fieldId);
@@ -174,13 +173,13 @@ public class DataValidation extends BasePage {
     public void Negative_HRO_Verify_that_the_Greater_Than_operator_correctly_identifies_when_the_input_value_is_greater_than_the_configured_value() throws Exception {
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
-        Config.getFieldIdValidationGreaterThanByTypeName(graphResponse,"HandwritingRecognitionObject");
+        com.Formic.OF2.utils.DataValidation.getFieldIdValidationGreaterThanByTypeName(graphResponse,"HandwritingRecognitionObject");
         for (String fieldId: CheckboxObject.fieldId
         ) {
-            if(Config.getHroRules(graphResponse, fieldId)&&
+            if(com.Formic.OF2.utils.FieldMetaData.getHroRules(graphResponse, fieldId)&&
                     !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
-                int validationNumber = Config.getValidationNumber(graphResponse,fieldId);
+                int validationNumber = com.Formic.OF2.utils.DataValidation.getValidationNumber(graphResponse,fieldId);
                 HandwritingRecognitionObject.setTextToHro(graphResponse,fieldId,Integer.toString(validationNumber));
             }
             String objectId = getObjectIdFromFieldId(graphResponse,fieldId);
@@ -194,13 +193,13 @@ public class DataValidation extends BasePage {
     public void Negative_HRO_Verify_that_the_Greater_Than_or_Equal_To_operator_correctly_identifies_when_the_input_value_is_greater_than_or_equal_to_the_configured_value() throws Exception {
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
-        Config.getFieldIdValidationGreaterThanOrEqualToByTypeName(graphResponse,"HandwritingRecognitionObject");
+        com.Formic.OF2.utils.DataValidation.getFieldIdValidationGreaterThanOrEqualToByTypeName(graphResponse,"HandwritingRecognitionObject");
         for (String fieldId: CheckboxObject.fieldId
         ) {
-            if(Config.getHroRules(graphResponse, fieldId)&&
+            if(com.Formic.OF2.utils.FieldMetaData.getHroRules(graphResponse, fieldId)&&
                     !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
-                int validationNumber = Config.getValidationNumber(graphResponse,fieldId);
+                int validationNumber = com.Formic.OF2.utils.DataValidation.getValidationNumber(graphResponse,fieldId);
                 HandwritingRecognitionObject.setTextToHro(graphResponse,fieldId,Integer.toString(validationNumber-1));
             }
             String objectId = getObjectIdFromFieldId(graphResponse,fieldId);
@@ -214,13 +213,13 @@ public class DataValidation extends BasePage {
     public void Negative_HRO_Verify_that_the_Less_Than_operator_correctly_identifies_when_the_input_value_is_greater_than_or_equal_to_the_configured_value() throws Exception {
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
-        Config.getFieldIdValidationLessThanByTypeName(graphResponse,"HandwritingRecognitionObject");
+        com.Formic.OF2.utils.DataValidation.getFieldIdValidationLessThanByTypeName(graphResponse,"HandwritingRecognitionObject");
         for (String fieldId: CheckboxObject.fieldId
         ) {
-            if(Config.getHroRules(graphResponse, fieldId)&&
+            if(com.Formic.OF2.utils.FieldMetaData.getHroRules(graphResponse, fieldId)&&
                     !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
-                int validationNumber = Config.getValidationNumber(graphResponse,fieldId);
+                int validationNumber = com.Formic.OF2.utils.DataValidation.getValidationNumber(graphResponse,fieldId);
                 HandwritingRecognitionObject.setTextToHro(graphResponse,fieldId,Integer.toString(validationNumber+1));
             }
             String objectId = getObjectIdFromFieldId(graphResponse,fieldId);
@@ -234,13 +233,13 @@ public class DataValidation extends BasePage {
     public void Negative_HRO_Verify_that_the_Less_Than_or_Equal_To_operator_correctly_identifies_when_the_input_value_is_greater_than_or_equal_to_the_configured_value() throws Exception {
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
-        Config.getFieldIdValidationLessThanOrEqualToByTypeName(graphResponse,"HandwritingRecognitionObject");
+        com.Formic.OF2.utils.DataValidation.getFieldIdValidationLessThanOrEqualToByTypeName(graphResponse,"HandwritingRecognitionObject");
         for (String fieldId: CheckboxObject.fieldId
         ) {
-            if(Config.getHroRules(graphResponse, fieldId)&&
+            if(com.Formic.OF2.utils.FieldMetaData.getHroRules(graphResponse, fieldId)&&
                     !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
-                int validationNumber = Config.getValidationNumber(graphResponse,fieldId);
+                int validationNumber = com.Formic.OF2.utils.DataValidation.getValidationNumber(graphResponse,fieldId);
                 HandwritingRecognitionObject.setTextToHro(graphResponse,fieldId,Integer.toString(validationNumber+1));
             }
             String objectId = getObjectIdFromFieldId(graphResponse,fieldId);

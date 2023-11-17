@@ -827,5 +827,4 @@ public class BasePage {
             return generatedNumber;
         }
     }
-
 }

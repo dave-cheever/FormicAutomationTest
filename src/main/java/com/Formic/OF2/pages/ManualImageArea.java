@@ -1,6 +1,7 @@
 package com.Formic.OF2.pages;
 
 import com.Formic.OF2.utils.*;
+import com.Formic.OF2.utils.DataValidation;
 import com.Formic.OF2.utils.Pojo.FormContentPojo;
 import com.Formic.OF2.test.BasePage;
 import org.openqa.selenium.By;
@@ -35,7 +36,7 @@ public class ManualImageArea extends BasePage {
 
     CompletionErrors comErrors = new CompletionErrors(driver);
 
-    Config config = new Config(driver);
+    DataValidation dataValidation = new DataValidation(driver);
     public ManualImageArea(WebDriver driver) {
         super(driver);
     }
@@ -190,7 +191,7 @@ public class ManualImageArea extends BasePage {
         String fieldName = getFieldName(pojo,strFieldId);
         lookForTheField(pojo,strFieldId);
         if(CheckboxObject.mandatory){
-            if(config.isFieldIdPickList(pojo,strFieldId)){
+            if(dataValidation.isFieldIdPickList(pojo,strFieldId)){
                 if(isMiaPicklistEmpty(pojo,strFieldId)){
                     assertMiaPickListRequiredField(pojo,strFieldId);
                 }else{

@@ -122,11 +122,11 @@ public class FormContentTest extends BaseUiTest {
         checkBoxPage.validateSavedInputsCheckbox();
     }
 
-    @Test
-    public void test() throws Exception {
-        homePage.selectProject(projectName);
-        checkBoxPage.test();
-    }
+//    @Test
+//    public void test() throws Exception {
+//        homePage.selectProject(projectName);
+//        checkBoxPage.test();
+//    }
 
     @BeforeMethod
     public void initialisePageElements(ITestContext iTestContext) {
