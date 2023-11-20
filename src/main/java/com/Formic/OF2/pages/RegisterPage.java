@@ -1,5 +1,6 @@
 package com.Formic.OF2.pages;
 import com.Formic.OF2.test.BasePage;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -129,6 +130,7 @@ public class RegisterPage extends BasePage {
     }
 
     public boolean isRegisterTextVisible(){
+        driverWait.until(ExpectedConditions.visibilityOf(registerText));
         return isElementVisible(driver,driverWait.until(ExpectedConditions.visibilityOf(registerText)));
     }
 

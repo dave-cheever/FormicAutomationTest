@@ -20,6 +20,8 @@ public class CheckboxObject {
     //checkbox caption
     public static String checkboxName;
 
+    public static String fieldName;
+
     public static String completionErrorName;
 
     public static boolean isSubmitButtonClicked;
@@ -52,6 +54,10 @@ public class CheckboxObject {
 
     public static String strFieldId;
 
+    public static String strValidation;
+
+    public static String strDerivation;
+
     public static ArrayList<String> fieldId = new ArrayList<>();
     public static ArrayList<String> checkboxInputs = new ArrayList<>();
     public static ArrayList<String> hasValueList = new ArrayList<>();
@@ -74,6 +80,9 @@ public class CheckboxObject {
     public static String errorMessage;
 
     public static void checkboxObjectDefaultValue(){
+        fieldName="";
+        strValidation="";
+        strDerivation="";
         isMultiResponse = false;
         picklistOptionsCtr=1;
         errorMessage="";

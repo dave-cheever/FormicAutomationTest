@@ -29,7 +29,7 @@ public class HandwritingRecognitionObject extends BasePage {
     static String hroValidationMessageMandatoryLocator = "//div[@data-object-id='$TEXT']/div/div[1]";
     static CompletionErrors comp = new CompletionErrors(driver);
 
-    public void setTextToHro(FormContentPojo pojo, String strFieldId, String strText){
+    public static void setTextToHro(FormContentPojo pojo, String strFieldId, String strText){
         String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(hroInputLocator,elementId);
         WebElement element = stringToWebElement(elem);
@@ -212,45 +212,6 @@ public class HandwritingRecognitionObject extends BasePage {
                 "The HRO "+ CheckboxObject.checkboxName+" has a validation message of "+element.getText()+" instead of - This field must match the following format: (A"+getNumberOfUnderscore()+").");
     }
 
-
-
-    public boolean getHroRules(FormContentPojo pojo, String strFieldId){
-        for (com.Formic.OF2.utils.Pojo.Field fields: pojo.data.project.getFields()
-        ) {
-            if(fields.getGuidId().equalsIgnoreCase(strFieldId)&&isFieldIdHro(pojo,strFieldId)){
-                CheckboxObject.mandatory = fields.getMandatory();
-                CheckboxObject.checkboxName = fields.getName();
-                CheckboxObject.strFormatMask = fields.getFormatMask();
-                CheckboxObject.strFormatRegex = fields.getFormatRegex();
-                CheckboxObject.strDataTypeNew = fields.getDataTypeNew();
-                Reporter.log("<b>Mandatory: </b>"+CheckboxObject.mandatory);
-                Reporter.log("<b>Field Name: </b>"+CheckboxObject.checkboxName);
-                Reporter.log("<b>Format Mask: </b>"+CheckboxObject.strFormatMask);
-                Reporter.log("<b>Format Regex: </b>"+ CheckboxObject.strFormatRegex);
-                Reporter.log("<b>Data Type New: </b>"+CheckboxObject.strDataTypeNew);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    public static boolean isFieldIdHro(FormContentPojo pojo, String strFieldId){
-        boolean result = false;
-        outerLoop:
-        for (com.Formic.OF2.utils.Pojo.Page page: pojo.data.project.getPages()
-        ) {
-            for (com.Formic.OF2.utils.Pojo.Object object: page.getObjects()
-            ) {
-                if(object.getTypename()!=null&&object.getTypename().equalsIgnoreCase("HandwritingRecognitionObject")){
-                    if(object.getFieldId().equalsIgnoreCase(strFieldId)){
-                        result=true;
-                        break outerLoop;
-                    }
-                }
-            }
-        }
-        return result;
-    }
 
     public int enterWithinMaximumInput(FormContentPojo pojo,int maxInput,String strFieldId,int elementCountInACheckbox){
         String elem;

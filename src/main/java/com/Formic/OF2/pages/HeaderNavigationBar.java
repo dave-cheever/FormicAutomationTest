@@ -30,7 +30,12 @@ public class HeaderNavigationBar extends BasePage {
         super(browserDriver);
     }
 
+    public void navigateToTestWebsite(){
+        visit("https://formic-onlineforms-test.azurewebsites.net/");
+    }
+
     public void navigateToLoginPage(){
+        navigateToTestWebsite();
         click(loginButtonLocator);
     }
 
@@ -39,10 +44,12 @@ public class HeaderNavigationBar extends BasePage {
     }
 
     public void navigateToRegisterPage(){
+        navigateToTestWebsite();
         click(registerButtonLocator);
     }
 
     public void navigateToThemesPopup(){
+        navigateToTestWebsite();
         click(themesButtonLocator);
     }
 

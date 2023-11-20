@@ -57,7 +57,7 @@ public class BasePage {
         }
     }
 
-    public void enterText(WebElement element, String textToEnter){
+    public static void enterText(WebElement element, String textToEnter){
         driverWait.until(ExpectedConditions.visibilityOf(element));
         element.sendKeys(textToEnter);
     }
@@ -791,4 +791,40 @@ public class BasePage {
         return false;
     }
 
+    public static int generateRandomNumberNotEqualTo(int givenNumber, String formatMask) {
+        Random random = new Random();
+
+        if (formatMask == null) {
+            // If formatMask is null, generate an integer in the full int range
+            int generatedNumber;
+            do {
+                generatedNumber = random.nextInt();
+            } while (generatedNumber == givenNumber);
+            return generatedNumber;
+        } else {
+            // Determine the range based on the formatMask
+            int minRange = 1;
+            int maxRange = 0;
+
+            for (int i = 0; i < formatMask.length(); i++) {
+                if (formatMask.charAt(i) == '#') {
+                    maxRange = maxRange * 10 + 9;
+                } else {
+                    throw new IllegalArgumentException("Invalid format mask. Use only '#' for digits.");
+                }
+            }
+
+            if (maxRange == 0) {
+                throw new IllegalArgumentException("Invalid format mask. Must contain at least one '#'.");
+            }
+
+            // Generate a random number within the specified range
+            int generatedNumber;
+            do {
+                generatedNumber = minRange + random.nextInt(maxRange - minRange + 1);
+            } while (generatedNumber == givenNumber);
+
+            return generatedNumber;
+        }
+    }
 }
