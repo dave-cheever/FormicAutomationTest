@@ -170,15 +170,6 @@ public class DataValidationTest extends BaseUiTest {
         dataValidationMia.Negative_MIA_Verify_that_the_Less_Than_or_Equal_To_operator_correctly_identifies_when_the_input_value_is_greater_than_or_equal_to_the_configured_value();
     }
 
-
-
-
-
-
-
-
-
-
     @BeforeMethod
     public void initialisePageElements(ITestContext iTestContext) {
         homePage = PageFactory.initElements(getDriver(), HomePage.class);

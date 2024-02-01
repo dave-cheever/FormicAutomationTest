@@ -234,10 +234,10 @@ public class BasePage {
         return elementOne;
     }
 
-    public static WebElement convertByToWebElement(String element){
+    public static WebElement convertToWebElement(String element){
         By elem = By.xpath(element);
 //        scrollElementIntoView(driver,driver.findElement(elem));
-        WebElement webElem = driverWait.until(ExpectedConditions.presenceOfElementLocated(elem));
+        WebElement webElem = driverWait.until(ExpectedConditions.elementToBeClickable(elem));
         return webElem;
     }
 
@@ -295,7 +295,7 @@ public class BasePage {
 
     public static WebElement stringReplaceAndConvertToWebElement(String elem, String stringToReplace){
         elem = stringReplace(elem,stringToReplace);
-        WebElement element = convertByToWebElement(elem);
+        WebElement element = convertToWebElement(elem);
         return element;
     }
 

@@ -65,11 +65,11 @@ public class FormContentTest extends BaseUiTest {
         checkBoxPage.validateCheckboxLessThanMinimumInputsUponSubmit();
     }
 //TODO: fix issue with this scneario
-//    @Test
-//    public void hroFormatValidation() throws Exception{
-//        homePage.selectProject(projectName);
-//        checkBoxPage.hroFormatValidation();
-//    }
+    @Test
+    public void hroFormatValidation() throws Exception{
+        homePage.selectProject(projectName);
+        checkBoxPage.hroFormatValidation();
+    }
 
     @Test
     public void miaFormatValidation() throws Exception{
@@ -108,8 +108,6 @@ public class FormContentTest extends BaseUiTest {
         checkBoxPage.miaPicklistWithinMinimumMaximumInputs();
     }
 
-
-
     @Test
     public void validateSubmittedInputsCheckbox() throws Exception {
         homePage.selectProject(projectName);
@@ -121,6 +119,7 @@ public class FormContentTest extends BaseUiTest {
         homePage.selectProject(projectName);
         checkBoxPage.validateSavedInputsCheckbox();
     }
+
 
 //    @Test
 //    public void test() throws Exception {
