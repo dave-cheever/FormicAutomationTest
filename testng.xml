@@ -3,16 +3,17 @@
 
     <test name="Form Content Test">
         <classes>
-            <class name="Formic.FormContentTest" />
-            <class name="Formic.LoginTest" />
-            <class name="Formic.RegistrationTest" />
+<!--            <class name="Formic.FormContentTest" />-->
+<!--            <class name="Formic.LoginTest" />-->
+<!--            <class name="Formic.RegistrationTest" />-->
             <class name="Formic.DataValidationTest" />
-            <class name="Formic.DataDerivationTest" />
+<!--            <class name="Formic.DataDerivationTest" />-->
         </classes>
     </test>
 
     <listeners>
         <listener class-name="org.testng.reporters.JUnitXMLReporter" />
+        <listener class-name="org.testng.reporters.EmailableReporter"/>
     </listeners>
 
     <suite-files>

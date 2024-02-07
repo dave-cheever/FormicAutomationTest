@@ -6,11 +6,15 @@ import com.Formic.OF2.utils.CheckboxObject;
 import com.Formic.OF2.pages.CheckBoxPage;
 import com.Formic.OF2.utils.Pojo.FormContentPojo;
 import com.Formic.OF2.utils.Pojo.RulesGraphql;
+import com.Formic.OF2.utils.ScreenshotHelper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
+import org.testng.Reporter;
+
+import java.io.File;
 
 
 public class DataValidation extends BasePage {
@@ -166,7 +170,17 @@ public class DataValidation extends BasePage {
             String elem = stringReplace(hroValidationMessageLocator,objectId);
             WebElement element = stringToWebElement(elem);
             driverWait.until(ExpectedConditions.visibilityOf(element));
-            Assert.assertFalse(driver.findElements(By.xpath(elem)).isEmpty());
+
+            try{
+                Assert.assertTrue(driver.findElements(By.xpath(elem)).isEmpty());
+            }catch (AssertionError assertionError){
+                ScreenshotHelper screenshotHelper = new ScreenshotHelper(driver);
+                screenshotHelper.takeScreenshot("Negative_HRO_Test");
+                // Rethrow the exception to mark the test as failed
+                String pathName = screenshotHelper.getScreenshotPath("Negative_HRO_Test");
+                Reporter.log("<br><b>Failed test screenshot:</b> <a href='" + pathName + "'>Screenshot</a><br>");
+                throw assertionError;
+            }
         }
     }
 

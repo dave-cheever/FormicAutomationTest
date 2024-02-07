@@ -30,21 +30,25 @@ public class ScreenshotHelper extends BasePage {
         }
     }
 
-    public static String getScreenshotNames() {
-        String screenshotNames = "";
+    public static String getScreenshotPath(String scenarioName) {
         File folder = new File(SCREENSHOT_FOLDER);
+
         if (folder.isDirectory()) {
             File[] files = folder.listFiles();
-            for (File file : files) {
-                if (file.isFile() && file.getName().endsWith(".png")) {
-                    screenshotNames = file.getName();
-                    break;
+
+            if (files != null) {
+                for (File file : files) {
+                    if (file.isFile() && file.getName().endsWith(".png") && file.getName().contains(scenarioName)) {
+                        return file.getAbsolutePath();
+                    }
                 }
             }
         } else {
             System.out.println(SCREENSHOT_FOLDER + " is not a directory.");
         }
-        return screenshotNames;
+
+        // Return null if no matching screenshot is found
+        return null;
     }
 
     public static void deleteAllScreenshots() {

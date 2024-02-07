@@ -2,6 +2,7 @@ package com.Formic.OF2.test;
 
 import com.Formic.OF2.utils.CheckboxObject;
 import com.Formic.OF2.utils.Pojo.FormContentPojo;
+import com.Formic.OF2.utils.ScreenshotHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.PageFactory;
@@ -29,6 +30,7 @@ public class BasePage {
         this.driver = driver;
         driverWait = new WebDriverWait(driver,Duration.ofSeconds(15));
         PageFactory.initElements(driver, this);
+        ScreenshotHelper.deleteAllScreenshots();
     }
 
     public void visit(String url) {
