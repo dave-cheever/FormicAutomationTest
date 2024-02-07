@@ -43,3 +43,26 @@ steps:
       ArtifactName: 'Screenshots'
       publishLocation: 'Container'
     condition: succeededOrFailed()
+
+  - task: PowerShell@2
+    displayName: 'Attach Screenshots to Failed Tests'
+    inputs:
+      targetType: 'inline'
+      script: |
+        $testResults = Get-Content $(System.DefaultWorkingDirectory)/TestResults/*.xml
+        $screenshots = Get-ChildItem $(System.DefaultWorkingDirectory)/.screenShots/*.png -ErrorAction SilentlyContinue
+        
+        if ($testResults -and $screenshots) {
+            $testResults | ForEach-Object {
+                $result = $_
+                $testName = [xml]$result | Select-Xml "//UnitTestResult" | ForEach-Object { $_.Node.SelectSingleNode('@testName').Value }
+        
+                if ($result -match '<Outcome>Failed</Outcome>' -and $testName) {
+                    $screenshot = $screenshots | Where-Object { $_.BaseName -eq $testName }
+                    if ($screenshot) {
+                        Write-Host "##vso[task.addattachment type=png;name=$($screenshot.Name);]$($screenshot.FullName)"
+                    }
+                }
+            }
+        }
+    condition: failed()
