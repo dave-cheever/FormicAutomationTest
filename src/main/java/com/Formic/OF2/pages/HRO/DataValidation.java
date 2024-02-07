@@ -172,7 +172,7 @@ public class DataValidation extends BasePage {
             driverWait.until(ExpectedConditions.visibilityOf(element));
 
             try{
-                Assert.assertTrue(driver.findElements(By.xpath(elem)).isEmpty());
+                Assert.assertFalse(driver.findElements(By.xpath(elem)).isEmpty());
             }catch (AssertionError assertionError){
                 ScreenshotHelper screenshotHelper = new ScreenshotHelper(driver);
                 screenshotHelper.takeScreenshot("Negative_HRO_Test");
