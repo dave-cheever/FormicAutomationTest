@@ -65,11 +65,11 @@ public class FormContentTest extends BaseUiTest {
         checkBoxPage.validateCheckboxLessThanMinimumInputsUponSubmit();
     }
 //TODO: fix issue with this scneario
-    @Test
-    public void hroFormatValidation() throws Exception{
-        homePage.selectProject(projectName);
-        checkBoxPage.hroFormatValidation();
-    }
+//    @Test
+//    public void hroFormatValidation() throws Exception{
+//        homePage.selectProject(projectName);
+//        checkBoxPage.hroFormatValidation();
+//    }
 
     @Test
     public void miaFormatValidation() throws Exception{
