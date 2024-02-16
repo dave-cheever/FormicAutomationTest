@@ -19,12 +19,12 @@ import java.util.NoSuchElementException;
 import java.util.Random;
 
 public class ManualImageArea extends BasePage {
-    String miaSinglePickListInputLocator = "//div[@data-object-id='$TEXT']/div/div/div/input";
-    String miaMultiPickListInputLocator = "//div[@data-object-id='$TEXT']/div/div/div/div";
+    String miaSinglePickListInputLocator = "//div[@data-object-id='$TEXT']/div/div/input";
+    String miaMultiPickListInputLocator = "//div[@data-object-id='$TEXT']/div/div/div";
 
     static String miaInputLocator = "//div[@data-object-id='$TEXT']/textarea";
     String miaTextAreaLocator = "//div[@data-object-id='$TEXT']/div/textarea";
-    String miaValidationMessageLocator = "//div[@data-object-id='$TEXT']/div/div[1]";
+    String miaValidationMessageLocator = "//div[@data-object-id='$TEXT']/div/div/div[1]";
     String miaValidationMessageMandatoryLocator = "//div[@data-object-id='$TEXT']/div/div/div";
     String miaValidationMessageMinimumMaximumLocator = "(//div[@data-object-id='$TEXT']/div/div)[2]";
     String validationMessageUponSubmitSideBar = "//h1[contains(text(),'Completion Errors')]//following-sibling::ul/li/button/div/div[contains(text(),'$TEXT')]//following::div[1]";
