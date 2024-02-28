@@ -26,61 +26,61 @@ public class DataDerivationTest extends BaseUiTest {
     @Test
     public void Calculate_Sum_of_Two_Fields_and_Display_Result_HRO() throws Exception{
         homePage.selectProject(projectName);
-        dataDerivationHro.Addition();
+        dataDerivationHro.Calculate_Sum_of_Two_Fields_and_Display_Result_HRO();
     }
 
     @Test
     public void Divide_Two_Fields_and_Display_Result_HRO() throws Exception{
         homePage.selectProject(projectName);
-        dataDerivationHro.Division();
+        dataDerivationHro.Divide_Two_Fields_and_Display_Result_HRO();
     }
 
     @Test
     public void Multiply_Two_Fields_and_Display_Result_HRO() throws Exception{
         homePage.selectProject(projectName);
-        dataDerivationHro.Multiplication();
+        dataDerivationHro.Multiply_Two_Fields_and_Display_Result_HRO();
     }
 
     @Test
     public void Subtract_Two_Fields_and_Display_Result_HRO() throws Exception{
         homePage.selectProject(projectName);
-        dataDerivationHro.Subtraction();
+        dataDerivationHro.Subtract_Two_Fields_and_Display_Result_HRO();
     }
 
     @Test
     public void Value_Propagation_Between_Fields_HRO() throws Exception{
         homePage.selectProject(projectName);
-        dataDerivationHro.EqualToAnotherFieldHro();
+        dataDerivationHro.Value_Propagation_Between_Fields_HRO();
     }
 
     @Test
     public void Calculate_Sum_of_Two_Fields_and_Display_Result_MIA() throws Exception{
         homePage.selectProject(projectName);
-        dataDerivationMia.Addition();
+        dataDerivationMia.Calculate_Sum_of_Two_Fields_and_Display_Result_MIA();
     }
 
     @Test
     public void Divide_Two_Fields_and_Display_Result_MIA() throws Exception{
         homePage.selectProject(projectName);
-        dataDerivationMia.Division();
+        dataDerivationMia.Divide_Two_Fields_and_Display_Result_MIA();
     }
 
     @Test
     public void Multiply_Two_Fields_and_Display_Result_MIA() throws Exception{
         homePage.selectProject(projectName);
-        dataDerivationMia.Multiplication();
+        dataDerivationMia.Multiply_Two_Fields_and_Display_Result_MIA();
     }
 
     @Test
     public void Subtract_Two_Fields_and_Display_Result_MIA() throws Exception{
         homePage.selectProject(projectName);
-        dataDerivationMia.Subtraction();
+        dataDerivationMia.Subtract_Two_Fields_and_Display_Result_MIA();
     }
 
     @Test
     public void Value_Propagation_Between_Fields_MIA() throws Exception{
         homePage.selectProject(projectName);
-        dataDerivationMia.EqualToAnotherFieldMia();
+        dataDerivationMia.Value_Propagation_Between_Fields_MIA();
     }
 
 

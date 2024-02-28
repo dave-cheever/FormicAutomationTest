@@ -27,147 +27,147 @@ public class DataValidationTest extends BaseUiTest {
     String projectName = "TEST Data Validation";
 
     @Test
-    public void Positive_HRO_ValidateEqualTo() throws Exception{
+    public void Positive_HRO_Equal_To_Test() throws Exception{
         homePage.selectProject(projectName);
-        dataValidationHro.Positive_HRO_Verify_that_the_Equal_To_operator_correctly_identifies_when_the_input_value_is_equal_to_the_configured_value();
+        dataValidationHro.Positive_HRO_Equal_To_Test();
     }
 
     @Test
-    public void Positive_HRO_ValidateNotEqualTo() throws Exception{
+    public void Positive_HRO_Not_Equal_To_Test() throws Exception{
         homePage.selectProject(projectName);
-        dataValidationHro.Positive_HRO_Verify_that_the_Not_Equal_To_operator_correctly_identifies_when_the_input_value_is_not_equal_to_the_configured_value();
+        dataValidationHro.Positive_HRO_Not_Equal_To_Test();
     }
 
     @Test
-    public void Positive_HRO_ValidateGreaterThan() throws Exception{
+    public void Positive_HRO_Greater_Than_Test() throws Exception{
         homePage.selectProject(projectName);
-        dataValidationHro.Positive_HRO_Verify_that_the_Greater_Than_operator_correctly_identifies_when_the_input_value_is_greater_than_the_configured_value();
+        dataValidationHro.Positive_HRO_Greater_Than_Test();
     }
 
     @Test
-    public void Positive_HRO_ValidateGreaterThanOrEqualTo() throws Exception{
+    public void Positive_HRO_Greater_Than_Equal_To_Test() throws Exception{
         homePage.selectProject(projectName);
-        dataValidationHro.Positive_HRO_Verify_that_the_Greater_Than_or_Equal_To_operator_correctly_identifies_when_the_input_value_is_greater_than_or_equal_to_the_configured_value();
+        dataValidationHro.Positive_HRO_Greater_Than_Equal_To_Test();
     }
 
     @Test
-    public void Positive_HRO_ValidateLessThan() throws Exception{
+    public void Positive_HRO_Less_Than_Test() throws Exception{
         homePage.selectProject(projectName);
-        dataValidationHro.Positive_HRO_Verify_that_the_Less_Than_operator_correctly_identifies_when_the_input_value_is_greater_than_or_equal_to_the_configured_value();
+        dataValidationHro.Positive_HRO_Less_Than_Test();
     }
 
     @Test
-    public void Positive_HRO_ValidateLessThanOrEqualTo() throws Exception{
+    public void Positive_HRO_Less_Than_Or_Equal_To_Test() throws Exception{
         homePage.selectProject(projectName);
-        dataValidationHro.Positive_HRO_Verify_that_the_Less_Than_or_Equal_To_operator_correctly_identifies_when_the_input_value_is_greater_than_or_equal_to_the_configured_value();
+        dataValidationHro.Positive_HRO_Less_Than_Or_Equal_To_Test();
     }
 
     @Test
-    public void Negative_HRO_ValidateEqualTo() throws Exception{
+    public void Negative_HRO_Equal_To_Test() throws Exception{
         homePage.selectProject(projectName);
-        dataValidationHro.Negative_HRO_Verify_that_the_Equal_To_operator_correctly_identifies_when_the_input_value_is_equal_to_the_configured_value();
+        dataValidationHro.Negative_HRO_Equal_To_Test();
     }
 
     @Test
-    public void Negative_HRO_ValidateNotEqualTo() throws Exception{
+    public void Negative_HRO_Not_Equal_To_Test() throws Exception{
         homePage.selectProject(projectName);
-        dataValidationHro.Negative_HRO_Verify_that_the_Not_Equal_To_operator_correctly_identifies_when_the_input_value_is_not_equal_to_the_configured_value();
+        dataValidationHro.Negative_HRO_Not_Equal_To_Test();
     }
 
     @Test
-    public void Negative_HRO_ValidateGreaterThan() throws Exception{
+    public void Negative_HRO_Greater_Than_Test() throws Exception{
         homePage.selectProject(projectName);
-        dataValidationHro.Negative_HRO_Verify_that_the_Greater_Than_operator_correctly_identifies_when_the_input_value_is_greater_than_the_configured_value();
+        dataValidationHro.Negative_HRO_Greater_Than_Test();
     }
 
     @Test
-    public void Negative_HRO_ValidateGreaterThanOrEqualTo() throws Exception{
+    public void Negative_HRO_Greater_Than_Equal_To_Test() throws Exception{
         homePage.selectProject(projectName);
-        dataValidationHro.Negative_HRO_Verify_that_the_Greater_Than_or_Equal_To_operator_correctly_identifies_when_the_input_value_is_greater_than_or_equal_to_the_configured_value();
+        dataValidationHro.Negative_HRO_Greater_Than_Equal_To_Test();
     }
 
     @Test
-    public void Negative_HRO_ValidateLessThan() throws Exception{
+    public void Negative_HRO_Less_Than_Test() throws Exception{
         homePage.selectProject(projectName);
-        dataValidationHro.Negative_HRO_Verify_that_the_Less_Than_operator_correctly_identifies_when_the_input_value_is_greater_than_or_equal_to_the_configured_value();
+        dataValidationHro.Negative_HRO_Less_Than_Test();
     }
 
     @Test
-    public void Negative_HRO_ValidateLessThanOrEqualTo() throws Exception{
+    public void Negative_HRO_Less_Than_Or_Equal_To_Test() throws Exception{
         homePage.selectProject(projectName);
-        dataValidationHro.Negative_HRO_Verify_that_the_Less_Than_or_Equal_To_operator_correctly_identifies_when_the_input_value_is_greater_than_or_equal_to_the_configured_value();
+        dataValidationHro.Negative_HRO_Less_Than_Or_Equal_To_Test();
     }
 
     @Test
-    public void Positive_MIA_ValidateEqualTo() throws Exception{
+    public void Positive_MIA_Equal_To_Test() throws Exception{
         homePage.selectProject(projectName);
-        dataValidationMia.Positive_MIA_Verify_that_the_Equal_To_operator_correctly_identifies_when_the_input_value_is_equal_to_the_configured_value();
+        dataValidationMia.Positive_MIA_Equal_To_Test();
     }
 
     @Test
-    public void Positive_MIA_ValidateNotEqualTo() throws Exception{
+    public void Positive_MIA_Not_Equal_To_Test() throws Exception{
         homePage.selectProject(projectName);
-        dataValidationMia.Positive_MIA_Verify_that_the_Not_Equal_To_operator_correctly_identifies_when_the_input_value_is_not_equal_to_the_configured_value();
+        dataValidationMia.Positive_MIA_Not_Equal_To_Test();
     }
 
     @Test
-    public void Positive_MIA_ValidateGreaterThan() throws Exception{
+    public void Positive_MIA_Greater_Than_Test() throws Exception{
         homePage.selectProject(projectName);
-        dataValidationMia.Positive_MIA_Verify_that_the_Greater_Than_operator_correctly_identifies_when_the_input_value_is_greater_than_the_configured_value();
+        dataValidationMia.Positive_MIA_Greater_Than_Test();
     }
 
     @Test
-    public void Positive_MIA_ValidateGreaterThanOrEqualTo() throws Exception{
+    public void Positive_MIA_Greater_Than_Equal_To_Test() throws Exception{
         homePage.selectProject(projectName);
-        dataValidationMia.Positive_MIA_Verify_that_the_Greater_Than_or_Equal_To_operator_correctly_identifies_when_the_input_value_is_greater_than_or_equal_to_the_configured_value();
+        dataValidationMia.Positive_MIA_Greater_Than_Equal_To_Test();
     }
 
     @Test
-    public void Positive_MIA_ValidateLessThan() throws Exception{
+    public void Positive_MIA_Less_Than_Test() throws Exception{
         homePage.selectProject(projectName);
-        dataValidationMia.Positive_MIA_Verify_that_the_Less_Than_operator_correctly_identifies_when_the_input_value_is_greater_than_or_equal_to_the_configured_value();
+        dataValidationMia.Positive_MIA_Less_Than_Test();
     }
 
     @Test
-    public void Positive_MIA_ValidateLessThanOrEqualTo() throws Exception{
+    public void Positive_MIA_Less_Than_Or_Equal_To_Test() throws Exception{
         homePage.selectProject(projectName);
-        dataValidationMia.Positive_MIA_Verify_that_the_Less_Than_or_Equal_To_operator_correctly_identifies_when_the_input_value_is_greater_than_or_equal_to_the_configured_value();
+        dataValidationMia.Positive_MIA_Less_Than_Or_Equal_To_Test();
     }
 
     @Test
-    public void Negative_MIA_ValidateEqualTo() throws Exception{
+    public void Negative_MIA_Equal_To_Test() throws Exception{
         homePage.selectProject(projectName);
-        dataValidationMia.Negative_MIA_Verify_that_the_Equal_To_operator_correctly_identifies_when_the_input_value_is_equal_to_the_configured_value();
+        dataValidationMia.Negative_MIA_Equal_To_Test();
     }
 
     @Test
-    public void Negative_MIA_ValidateNotEqualTo() throws Exception{
+    public void Negative_MIA_Not_Equal_To_Test() throws Exception{
         homePage.selectProject(projectName);
-        dataValidationMia.Negative_MIA_Verify_that_the_Not_Equal_To_operator_correctly_identifies_when_the_input_value_is_not_equal_to_the_configured_value();
+        dataValidationMia.Negative_MIA_Not_Equal_To_Test();
     }
 
     @Test
-    public void Negative_MIA_ValidateGreaterThan() throws Exception{
+    public void Negative_MIA_Greater_Than_Test() throws Exception{
         homePage.selectProject(projectName);
-        dataValidationMia.Negative_MIA_Verify_that_the_Greater_Than_operator_correctly_identifies_when_the_input_value_is_greater_than_the_configured_value();
+        dataValidationMia.Negative_MIA_Greater_Than_Test();
     }
 
     @Test
-    public void Negative_MIA_ValidateGreaterThanOrEqualTo() throws Exception{
+    public void Negative_MIA_Greater_Than_Equal_To_Test() throws Exception{
         homePage.selectProject(projectName);
-        dataValidationMia.Negative_MIA_Verify_that_the_Greater_Than_or_Equal_To_operator_correctly_identifies_when_the_input_value_is_greater_than_or_equal_to_the_configured_value();
+        dataValidationMia.Negative_MIA_Greater_Than_Equal_To_Test();
     }
 
     @Test
-    public void Negative_MIA_ValidateLessThan() throws Exception{
+    public void Negative_MIA_Less_Than_Test() throws Exception{
         homePage.selectProject(projectName);
-        dataValidationMia.Negative_MIA_Verify_that_the_Less_Than_operator_correctly_identifies_when_the_input_value_is_greater_than_or_equal_to_the_configured_value();
+        dataValidationMia.Negative_MIA_Less_Than_Test();
     }
 
     @Test
-    public void Negative_MIA_ValidateLessThanOrEqualTo() throws Exception{
+    public void Negative_MIA_Less_Than_Or_Equal_To_Test() throws Exception{
         homePage.selectProject(projectName);
-        dataValidationMia.Negative_MIA_Verify_that_the_Less_Than_or_Equal_To_operator_correctly_identifies_when_the_input_value_is_greater_than_or_equal_to_the_configured_value();
+        dataValidationMia.Negative_MIA_Less_Than_Or_Equal_To_Test();
     }
 
     @BeforeMethod

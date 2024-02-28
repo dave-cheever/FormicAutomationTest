@@ -23,7 +23,7 @@ public class DataDerivation extends BasePage {
 
     int projectId = 233;
 
-    public void Addition() throws Exception {
+    public void Calculate_Sum_of_Two_Fields_and_Display_Result_HRO() throws Exception {
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
         com.Formic.OF2.utils.DataDerivation.getFieldIdDerivationByTypeNameAndOperator(graphResponse,"HandwritingRecognitionObject","+");
@@ -38,7 +38,7 @@ public class DataDerivation extends BasePage {
         }
     }
 
-    public void Multiplication() throws Exception {
+    public void Multiply_Two_Fields_and_Display_Result_HRO() throws Exception {
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
         com.Formic.OF2.utils.DataDerivation.getFieldIdDerivationByTypeNameAndOperator(graphResponse,"HandwritingRecognitionObject","*");
@@ -53,7 +53,7 @@ public class DataDerivation extends BasePage {
         }
     }
 
-    public void Division() throws Exception {
+    public void Divide_Two_Fields_and_Display_Result_HRO() throws Exception {
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
         com.Formic.OF2.utils.DataDerivation.getFieldIdDerivationByTypeNameAndOperator(graphResponse,"HandwritingRecognitionObject","/");
@@ -68,7 +68,7 @@ public class DataDerivation extends BasePage {
         }
     }
 
-    public void Subtraction() throws Exception {
+    public void Subtract_Two_Fields_and_Display_Result_HRO() throws Exception {
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
         com.Formic.OF2.utils.DataDerivation.getFieldIdDerivationByTypeNameAndOperator(graphResponse,"HandwritingRecognitionObject","-");
@@ -83,7 +83,7 @@ public class DataDerivation extends BasePage {
         }
     }
 
-    public void EqualToAnotherFieldHro() throws Exception {
+    public void Value_Propagation_Between_Fields_HRO() throws Exception {
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
         com.Formic.OF2.utils.DataDerivation.getFieldIdDerivationByTypeNameAndNoOperator(graphResponse,"HandwritingRecognitionObject");

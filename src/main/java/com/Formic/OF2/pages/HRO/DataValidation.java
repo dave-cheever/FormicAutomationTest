@@ -26,7 +26,8 @@ public class DataValidation extends BasePage {
 
     int projectId = 233;
 
-    public void Positive_HRO_Verify_that_the_Equal_To_operator_correctly_identifies_when_the_input_value_is_equal_to_the_configured_value() throws Exception {
+    public void Positive_HRO_Equal_To_Test() throws Exception {
+        String scenarioName = "Positive_HRO_Equal_To_Test";
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
         com.Formic.OF2.utils.DataValidation.getFieldIdValidationEqualByTypeName(graphResponse,"HandwritingRecognitionObject");
@@ -40,11 +41,21 @@ public class DataValidation extends BasePage {
             }
             String objectId = getObjectIdFromFieldId(graphResponse,fieldId);
             String elem = stringReplace(hroValidationMessageLocator,objectId);
-            Assert.assertTrue(driver.findElements(By.xpath(elem)).isEmpty());
+            try{
+                Assert.assertTrue(driver.findElements(By.xpath(elem)).isEmpty());
+            }catch (AssertionError assertionError){
+                ScreenshotHelper screenshotHelper = new ScreenshotHelper(driver);
+                screenshotHelper.takeScreenshot(scenarioName);
+                // Rethrow the exception to mark the test as failed
+                String pathName = screenshotHelper.getScreenshotPath(scenarioName);
+                Reporter.log("<br><b>Failed test screenshot:</b> <a href='" + pathName + "'>Screenshot</a><br>");
+                throw assertionError;
+            }
         }
     }
 
-    public void Positive_HRO_Verify_that_the_Not_Equal_To_operator_correctly_identifies_when_the_input_value_is_not_equal_to_the_configured_value() throws Exception {
+    public void Positive_HRO_Not_Equal_To_Test() throws Exception {
+        String scenarioName = "Positive_HRO_Not_Equal_To_Test";
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
         com.Formic.OF2.utils.DataValidation.getFieldIdValidationNotEqualByTypeName(graphResponse,"HandwritingRecognitionObject");
@@ -58,11 +69,21 @@ public class DataValidation extends BasePage {
             }
             String objectId = getObjectIdFromFieldId(graphResponse,fieldId);
             String elem = stringReplace(hroValidationMessageLocator,objectId);
-            Assert.assertTrue(driver.findElements(By.xpath(elem)).isEmpty());
+            try{
+                Assert.assertTrue(driver.findElements(By.xpath(elem)).isEmpty());
+            }catch (AssertionError assertionError){
+                ScreenshotHelper screenshotHelper = new ScreenshotHelper(driver);
+                screenshotHelper.takeScreenshot(scenarioName);
+                // Rethrow the exception to mark the test as failed
+                String pathName = screenshotHelper.getScreenshotPath(scenarioName);
+                Reporter.log("<br><b>Failed test screenshot:</b> <a href='" + pathName + "'>Screenshot</a><br>");
+                throw assertionError;
+            }
         }
     }
 
-    public void Positive_HRO_Verify_that_the_Greater_Than_operator_correctly_identifies_when_the_input_value_is_greater_than_the_configured_value() throws Exception {
+    public void Positive_HRO_Greater_Than_Test() throws Exception {
+        String scenarioName = "Positive_HRO_Greater_Than_Test";
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
         com.Formic.OF2.utils.DataValidation.getFieldIdValidationGreaterThanByTypeName(graphResponse,"HandwritingRecognitionObject");
@@ -76,11 +97,22 @@ public class DataValidation extends BasePage {
             }
             String objectId = getObjectIdFromFieldId(graphResponse,fieldId);
             String elem = stringReplace(hroValidationMessageLocator,objectId);
-            Assert.assertTrue(driver.findElements(By.xpath(elem)).isEmpty());
+
+            try{
+                Assert.assertTrue(driver.findElements(By.xpath(elem)).isEmpty());
+            }catch (AssertionError assertionError){
+                ScreenshotHelper screenshotHelper = new ScreenshotHelper(driver);
+                screenshotHelper.takeScreenshot(scenarioName);
+                // Rethrow the exception to mark the test as failed
+                String pathName = screenshotHelper.getScreenshotPath(scenarioName);
+                Reporter.log("<br><b>Failed test screenshot:</b> <a href='" + pathName + "'>Screenshot</a><br>");
+                throw assertionError;
+            }
         }
     }
 
-    public void Positive_HRO_Verify_that_the_Greater_Than_or_Equal_To_operator_correctly_identifies_when_the_input_value_is_greater_than_or_equal_to_the_configured_value() throws Exception {
+    public void Positive_HRO_Greater_Than_Equal_To_Test() throws Exception {
+        String scenarioName = "Positive_HRO_Greater_Than_Equal_To_Test";
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
         com.Formic.OF2.utils.DataValidation.getFieldIdValidationGreaterThanOrEqualToByTypeName(graphResponse,"HandwritingRecognitionObject");
@@ -94,11 +126,22 @@ public class DataValidation extends BasePage {
             }
             String objectId = getObjectIdFromFieldId(graphResponse,fieldId);
             String elem = stringReplace(hroValidationMessageLocator,objectId);
-            Assert.assertTrue(driver.findElements(By.xpath(elem)).isEmpty());
+
+            try{
+                Assert.assertTrue(driver.findElements(By.xpath(elem)).isEmpty());
+            }catch (AssertionError assertionError){
+                ScreenshotHelper screenshotHelper = new ScreenshotHelper(driver);
+                screenshotHelper.takeScreenshot(scenarioName);
+                // Rethrow the exception to mark the test as failed
+                String pathName = screenshotHelper.getScreenshotPath(scenarioName);
+                Reporter.log("<br><b>Failed test screenshot:</b> <a href='" + pathName + "'>Screenshot</a><br>");
+                throw assertionError;
+            }
         }
     }
 
-    public void Positive_HRO_Verify_that_the_Less_Than_operator_correctly_identifies_when_the_input_value_is_greater_than_or_equal_to_the_configured_value() throws Exception {
+    public void Positive_HRO_Less_Than_Test() throws Exception {
+        String scenarioName = "Positive_HRO_Less_Than_Test";
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
         com.Formic.OF2.utils.DataValidation.getFieldIdValidationLessThanByTypeName(graphResponse,"HandwritingRecognitionObject");
@@ -112,11 +155,22 @@ public class DataValidation extends BasePage {
             }
             String objectId = getObjectIdFromFieldId(graphResponse,fieldId);
             String elem = stringReplace(hroValidationMessageLocator,objectId);
-            Assert.assertTrue(driver.findElements(By.xpath(elem)).isEmpty());
+
+            try{
+                Assert.assertTrue(driver.findElements(By.xpath(elem)).isEmpty());
+            }catch (AssertionError assertionError){
+                ScreenshotHelper screenshotHelper = new ScreenshotHelper(driver);
+                screenshotHelper.takeScreenshot(scenarioName);
+                // Rethrow the exception to mark the test as failed
+                String pathName = screenshotHelper.getScreenshotPath(scenarioName);
+                Reporter.log("<br><b>Failed test screenshot:</b> <a href='" + pathName + "'>Screenshot</a><br>");
+                throw assertionError;
+            }
         }
     }
 
-    public void Positive_HRO_Verify_that_the_Less_Than_or_Equal_To_operator_correctly_identifies_when_the_input_value_is_greater_than_or_equal_to_the_configured_value() throws Exception {
+    public void Positive_HRO_Less_Than_Or_Equal_To_Test() throws Exception {
+        String scenarioName = "Positive_HRO_Less_Than_Or_Equal_To_Test";
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
         com.Formic.OF2.utils.DataValidation.getFieldIdValidationLessThanOrEqualToByTypeName(graphResponse,"HandwritingRecognitionObject");
@@ -130,11 +184,22 @@ public class DataValidation extends BasePage {
             }
             String objectId = getObjectIdFromFieldId(graphResponse,fieldId);
             String elem = stringReplace(hroValidationMessageLocator,objectId);
-            Assert.assertTrue(driver.findElements(By.xpath(elem)).isEmpty());
+
+            try{
+                Assert.assertTrue(driver.findElements(By.xpath(elem)).isEmpty());
+            }catch (AssertionError assertionError){
+                ScreenshotHelper screenshotHelper = new ScreenshotHelper(driver);
+                screenshotHelper.takeScreenshot(scenarioName);
+                // Rethrow the exception to mark the test as failed
+                String pathName = screenshotHelper.getScreenshotPath(scenarioName);
+                Reporter.log("<br><b>Failed test screenshot:</b> <a href='" + pathName + "'>Screenshot</a><br>");
+                throw assertionError;
+            }
         }
     }
 
-    public void Negative_HRO_Verify_that_the_Equal_To_operator_correctly_identifies_when_the_input_value_is_equal_to_the_configured_value() throws Exception {
+    public void Negative_HRO_Equal_To_Test() throws Exception {
+        String scenarioName = "Negative_HRO_Equal_To_Test";
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
         com.Formic.OF2.utils.DataValidation.getFieldIdValidationEqualByTypeName(graphResponse,"HandwritingRecognitionObject");
@@ -150,11 +215,22 @@ public class DataValidation extends BasePage {
             String elem = stringReplace(hroValidationMessageLocator,objectId);
             WebElement element = stringToWebElement(elem);
             driverWait.until(ExpectedConditions.visibilityOf(element));
-            Assert.assertFalse(driver.findElements(By.xpath(elem)).isEmpty());
+
+            try{
+                Assert.assertFalse(driver.findElements(By.xpath(elem)).isEmpty());
+            }catch (AssertionError assertionError){
+                ScreenshotHelper screenshotHelper = new ScreenshotHelper(driver);
+                screenshotHelper.takeScreenshot(scenarioName);
+                // Rethrow the exception to mark the test as failed
+                String pathName = screenshotHelper.getScreenshotPath(scenarioName);
+                Reporter.log("<br><b>Failed test screenshot:</b> <a href='" + pathName + "'>Screenshot</a><br>");
+                throw assertionError;
+            }
         }
     }
 
-    public void Negative_HRO_Verify_that_the_Not_Equal_To_operator_correctly_identifies_when_the_input_value_is_not_equal_to_the_configured_value() throws Exception {
+    public void Negative_HRO_Not_Equal_To_Test() throws Exception {
+        String scenarioName = "Negative_HRO_Not_Equal_To_Test";
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
         com.Formic.OF2.utils.DataValidation.getFieldIdValidationNotEqualByTypeName(graphResponse,"HandwritingRecognitionObject");
@@ -175,16 +251,17 @@ public class DataValidation extends BasePage {
                 Assert.assertFalse(driver.findElements(By.xpath(elem)).isEmpty());
             }catch (AssertionError assertionError){
                 ScreenshotHelper screenshotHelper = new ScreenshotHelper(driver);
-                screenshotHelper.takeScreenshot("Negative_HRO_Test");
+                screenshotHelper.takeScreenshot(scenarioName);
                 // Rethrow the exception to mark the test as failed
-                String pathName = screenshotHelper.getScreenshotPath("Negative_HRO_Test");
+                String pathName = screenshotHelper.getScreenshotPath(scenarioName);
                 Reporter.log("<br><b>Failed test screenshot:</b> <a href='" + pathName + "'>Screenshot</a><br>");
                 throw assertionError;
             }
         }
     }
 
-    public void Negative_HRO_Verify_that_the_Greater_Than_operator_correctly_identifies_when_the_input_value_is_greater_than_the_configured_value() throws Exception {
+    public void Negative_HRO_Greater_Than_Test() throws Exception {
+        String scenarioName = "Negative_HRO_Greater_Than_Test";
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
         com.Formic.OF2.utils.DataValidation.getFieldIdValidationGreaterThanByTypeName(graphResponse,"HandwritingRecognitionObject");
@@ -200,11 +277,22 @@ public class DataValidation extends BasePage {
             String elem = stringReplace(hroValidationMessageLocator,objectId);
             WebElement element = stringToWebElement(elem);
             driverWait.until(ExpectedConditions.visibilityOf(element));
-            Assert.assertFalse(driver.findElements(By.xpath(elem)).isEmpty());
+
+            try{
+                Assert.assertFalse(driver.findElements(By.xpath(elem)).isEmpty());
+            }catch (AssertionError assertionError){
+                ScreenshotHelper screenshotHelper = new ScreenshotHelper(driver);
+                screenshotHelper.takeScreenshot(scenarioName);
+                // Rethrow the exception to mark the test as failed
+                String pathName = screenshotHelper.getScreenshotPath(scenarioName);
+                Reporter.log("<br><b>Failed test screenshot:</b> <a href='" + pathName + "'>Screenshot</a><br>");
+                throw assertionError;
+            }
         }
     }
 
-    public void Negative_HRO_Verify_that_the_Greater_Than_or_Equal_To_operator_correctly_identifies_when_the_input_value_is_greater_than_or_equal_to_the_configured_value() throws Exception {
+    public void Negative_HRO_Greater_Than_Equal_To_Test() throws Exception {
+        String scenarioName = "Negative_HRO_Greater_Than_Equal_To_Test";
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
         com.Formic.OF2.utils.DataValidation.getFieldIdValidationGreaterThanOrEqualToByTypeName(graphResponse,"HandwritingRecognitionObject");
@@ -220,11 +308,22 @@ public class DataValidation extends BasePage {
             String elem = stringReplace(hroValidationMessageLocator,objectId);
             WebElement element = stringToWebElement(elem);
             driverWait.until(ExpectedConditions.visibilityOf(element));
-            Assert.assertFalse(driver.findElements(By.xpath(elem)).isEmpty());
+
+            try{
+                Assert.assertFalse(driver.findElements(By.xpath(elem)).isEmpty());
+            }catch (AssertionError assertionError){
+                ScreenshotHelper screenshotHelper = new ScreenshotHelper(driver);
+                screenshotHelper.takeScreenshot(scenarioName);
+                // Rethrow the exception to mark the test as failed
+                String pathName = screenshotHelper.getScreenshotPath(scenarioName);
+                Reporter.log("<br><b>Failed test screenshot:</b> <a href='" + pathName + "'>Screenshot</a><br>");
+                throw assertionError;
+            }
         }
     }
 
-    public void Negative_HRO_Verify_that_the_Less_Than_operator_correctly_identifies_when_the_input_value_is_greater_than_or_equal_to_the_configured_value() throws Exception {
+    public void Negative_HRO_Less_Than_Test() throws Exception {
+        String scenarioName = "Negative_HRO_Less_Than_Test";
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
         com.Formic.OF2.utils.DataValidation.getFieldIdValidationLessThanByTypeName(graphResponse,"HandwritingRecognitionObject");
@@ -240,11 +339,22 @@ public class DataValidation extends BasePage {
             String elem = stringReplace(hroValidationMessageLocator,objectId);
             WebElement element = stringToWebElement(elem);
             driverWait.until(ExpectedConditions.visibilityOf(element));
-            Assert.assertFalse(driver.findElements(By.xpath(elem)).isEmpty());
+
+            try{
+                Assert.assertFalse(driver.findElements(By.xpath(elem)).isEmpty());
+            }catch (AssertionError assertionError){
+                ScreenshotHelper screenshotHelper = new ScreenshotHelper(driver);
+                screenshotHelper.takeScreenshot(scenarioName);
+                // Rethrow the exception to mark the test as failed
+                String pathName = screenshotHelper.getScreenshotPath(scenarioName);
+                Reporter.log("<br><b>Failed test screenshot:</b> <a href='" + pathName + "'>Screenshot</a><br>");
+                throw assertionError;
+            }
         }
     }
 
-    public void Negative_HRO_Verify_that_the_Less_Than_or_Equal_To_operator_correctly_identifies_when_the_input_value_is_greater_than_or_equal_to_the_configured_value() throws Exception {
+    public void Negative_HRO_Less_Than_Or_Equal_To_Test() throws Exception {
+        String scenarioName = "Negative_HRO_Less_Than_Or_Equal_To_Test";
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
         com.Formic.OF2.utils.DataValidation.getFieldIdValidationLessThanOrEqualToByTypeName(graphResponse,"HandwritingRecognitionObject");
@@ -260,7 +370,17 @@ public class DataValidation extends BasePage {
             String elem = stringReplace(hroValidationMessageLocator,objectId);
             WebElement element = stringToWebElement(elem);
             driverWait.until(ExpectedConditions.visibilityOf(element));
-            Assert.assertFalse(driver.findElements(By.xpath(elem)).isEmpty());
+
+            try{
+                Assert.assertFalse(driver.findElements(By.xpath(elem)).isEmpty());
+            }catch (AssertionError assertionError){
+                ScreenshotHelper screenshotHelper = new ScreenshotHelper(driver);
+                screenshotHelper.takeScreenshot(scenarioName);
+                // Rethrow the exception to mark the test as failed
+                String pathName = screenshotHelper.getScreenshotPath(scenarioName);
+                Reporter.log("<br><b>Failed test screenshot:</b> <a href='" + pathName + "'>Screenshot</a><br>");
+                throw assertionError;
+            }
         }
     }
 
