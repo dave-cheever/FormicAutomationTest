@@ -47,7 +47,7 @@ public class HomePage extends BasePage {
         visit("https://formic-onlineforms-test.azurewebsites.net/");
         WebElement projectElement = stringReplaceAndConvertToWebElement(projectNameLocator,project);
         scrollElementIntoView(driver,projectElement);
-        click(projectElement);
+        clickWithTries(projectElement,3);
         Reporter.log("Click project name: "+project,true);
     }
 

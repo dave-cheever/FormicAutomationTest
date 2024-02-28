@@ -50,8 +50,7 @@ public class BasePage {
         executeJavascript(element,"arguments[0].click();");
     }
 
-    public static void click(WebElement element) {
-        int maxRetries = 5;
+    public static void clickWithTries(WebElement element,int maxRetries) {
         for (int i = 0; i < maxRetries; i++) {
             try {
                 driverWait.until(ExpectedConditions.elementToBeClickable(element));
@@ -67,6 +66,16 @@ public class BasePage {
                 }
             }
         }
+    }
+
+    public static void click(WebElement element) {
+            try {
+                driverWait.until(ExpectedConditions.elementToBeClickable(element));
+                element.click();
+            } catch (Exception e) {
+
+                Reporter.log("Element not visible. ");
+            }
     }
 
     public static void enterText(WebElement element, String textToEnter){
