@@ -54,6 +54,7 @@ public class BasePage {
         for (int i = 0; i < maxRetries; i++) {
             try {
                 driverWait.until(ExpectedConditions.elementToBeClickable(element));
+                scrollElementIntoView(driver,element);
                 element.click();
                 break;
             } catch (Exception e) {
