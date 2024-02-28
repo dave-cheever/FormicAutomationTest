@@ -50,12 +50,22 @@ public class BasePage {
         executeJavascript(element,"arguments[0].click();");
     }
 
-    public static void click(WebElement element){
-        try{
-            driverWait.until(ExpectedConditions.elementToBeClickable(element));
-            element.click();
-        }catch (Exception e){
-            Reporter.log("Element not visible. ");
+    public static void click(WebElement element) {
+        int maxRetries = 5;
+        for (int i = 0; i < maxRetries; i++) {
+            try {
+                driverWait.until(ExpectedConditions.elementToBeClickable(element));
+                element.click();
+                break;
+            } catch (Exception e) {
+                // Print exception details (you might want to log this)
+                System.out.println("Attempt " + (i + 1) + " failed: " + e.getMessage());
+                // If this is the last attempt, throw the exception to fail the test
+                if (i == maxRetries - 1) {
+                    Reporter.log("Element not visible. ");
+                    throw e;
+                }
+            }
         }
     }
 
