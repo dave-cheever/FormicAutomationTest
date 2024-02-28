@@ -36,7 +36,7 @@ public class HomePage extends BasePage {
 
     public boolean confirmMyProjectsIsVisible(){
         try {
-            waitUntilElementIsPresent(projectHeadingLocator,5000);
+            waitUntilElementIsPresent(projectHeadingLocator,15000);
             return isElementPresent(projectHeadingLocator);
         }catch (InterruptedException e){
             return false;
@@ -46,6 +46,7 @@ public class HomePage extends BasePage {
     public void selectProject(String project){
         visit("https://formic-onlineforms-test.azurewebsites.net/");
         WebElement projectElement = stringReplaceAndConvertToWebElement(projectNameLocator,project);
+        waitForElementText(projectElement,15);
         scrollElementIntoView(driver,projectElement);
         click(projectElement);
         Reporter.log("Click project name: "+project,true);
