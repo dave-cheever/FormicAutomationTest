@@ -46,7 +46,6 @@ public class HomePage extends BasePage {
     public void selectProject(String project){
         visit("https://formic-onlineforms-test.azurewebsites.net/");
         WebElement projectElement = stringReplaceAndConvertToWebElement(projectNameLocator,project);
-        waitForElementText(projectElement,60);
         scrollElementIntoView(driver,projectElement);
         click(projectElement);
         Reporter.log("Click project name: "+project,true);
