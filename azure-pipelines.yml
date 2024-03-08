@@ -46,7 +46,7 @@ steps:
 
   - task: PublishBuildArtifacts@1
     inputs:
-      pathToPublish: '$(Build.SourcesDirectory)/screenshots'
+      pathToPublish: '$(Build.SourcesDirectory)/.screenshots'
       artifactName: 'screenshots'
 
   - task: PublishBuildArtifacts@1
