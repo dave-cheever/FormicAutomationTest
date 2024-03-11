@@ -46,11 +46,6 @@ steps:
 
   - task: PublishBuildArtifacts@1
     inputs:
-      pathToPublish: '$(Build.SourcesDirectory)/.screenShots'
-      artifactName: 'screenshots'
-
-  - task: PublishBuildArtifacts@1
-    inputs:
       pathToPublish: '$(Build.StagingDirectory)/test-reports'
       artifactName: 'test-reports'
 
