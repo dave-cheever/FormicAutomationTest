@@ -127,7 +127,7 @@ public class DataValidation extends BasePage {
             String elem = stringReplace(miaValidationMessageLocator,objectId);
 
             try{
-                Assert.assertFalse(driver.findElements(By.xpath(elem)).isEmpty());
+                Assert.assertTrue(driver.findElements(By.xpath(elem)).isEmpty());
             }catch (AssertionError assertionError){
                 ScreenshotHelper screenshotHelper = new ScreenshotHelper(driver);
                 screenshotHelper.takeScreenshot(scenarioName);
@@ -156,7 +156,7 @@ public class DataValidation extends BasePage {
             String elem = stringReplace(miaValidationMessageLocator,objectId);
 
             try{
-                Assert.assertFalse(driver.findElements(By.xpath(elem)).isEmpty());
+                Assert.assertTrue(driver.findElements(By.xpath(elem)).isEmpty());
             }catch (AssertionError assertionError){
                 ScreenshotHelper screenshotHelper = new ScreenshotHelper(driver);
                 screenshotHelper.takeScreenshot(scenarioName);

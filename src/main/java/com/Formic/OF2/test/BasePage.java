@@ -549,21 +549,24 @@ public class BasePage {
     }
 
     protected void waitUntilElementIsPresent(WebElement element, int millisecondsToStopWaiting) throws TimeoutException, InterruptedException {
-        long currentTime = System.currentTimeMillis();
-        long b = 0;
-        while(true) {
-            if(b == millisecondsToStopWaiting){
-                throw new TimeoutException("Element is still present");
-            }
+        long waitTimeInSeconds = Math.round(millisecondsToStopWaiting / 1000.0);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(waitTimeInSeconds));
+        wait.until(ExpectedConditions.visibilityOf(element));
 
-            Thread.sleep(500);   //sleep half a seconds
-            if (isElementVisible(driver,element)){
-                break;
-            }
-            else{
-                b+=500;
-            }
-        }
+//        long b = 0;
+//        while(true) {
+//            if(b == millisecondsToStopWaiting){
+//                throw new TimeoutException("Element is still present");
+//            }
+//
+//            Thread.sleep(500);   //sleep half a seconds
+//            if (isElementVisible(driver,element)){
+//                break;
+//            }
+//            else{
+//                b+=500;
+//            }
+//        }
     }
 
     public static String getFieldIdByObjectId(FormContentPojo pojo, String strObjectId){
