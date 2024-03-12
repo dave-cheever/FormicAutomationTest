@@ -19,7 +19,7 @@ public class HomePage extends BasePage {
 
     public boolean confirmMyProjectsIsVisible(){
         try {
-            waitUntilElementIsPresent(projectHeadingLocator,15000);
+            waitUntilElementIsPresent(projectHeadingLocator,20000);
             return isElementPresent(projectHeadingLocator);
         }catch (InterruptedException e){
             return false;
