@@ -318,7 +318,7 @@ public class BasePage {
     public static WebElement stringReplaceAndConvertToWebElement(String elem, String stringToReplace){
         elem = stringReplace(elem,stringToReplace);
         try{
-            waitUntilElementIsPresent(convertToWebElement(elem),15000);
+            waitUntilElementIsPresent(convertToWebElement(elem),60000);
             WebElement element = convertToWebElement(elem);
             return element;
         }catch (Exception e){
