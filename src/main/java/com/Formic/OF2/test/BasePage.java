@@ -317,14 +317,8 @@ public class BasePage {
 
     public static WebElement stringReplaceAndConvertToWebElement(String elem, String stringToReplace){
         elem = stringReplace(elem,stringToReplace);
-        try{
-            waitUntilElementIsPresent(convertToWebElement(elem),60000);
-            WebElement element = convertToWebElement(elem);
-            return element;
-        }catch (Exception e){
-            e.printStackTrace();
-            return null;
-        }
+        WebElement element = convertToWebElement(elem);
+        return element;
     }
 
     public static boolean elementClickable(WebElement element){
@@ -554,7 +548,7 @@ public class BasePage {
         }
     }
 
-    protected static void waitUntilElementIsPresent(WebElement element, int millisecondsToStopWaiting) throws TimeoutException, InterruptedException {
+    protected void waitUntilElementIsPresent(WebElement element, int millisecondsToStopWaiting) throws TimeoutException, InterruptedException {
         long waitTimeInSeconds = Math.round(millisecondsToStopWaiting / 1000.0);
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(waitTimeInSeconds));
         wait.until(ExpectedConditions.visibilityOf(element));
