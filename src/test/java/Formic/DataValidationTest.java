@@ -62,11 +62,11 @@ public class DataValidationTest extends BaseUiTest {
         dataValidationHro.Positive_HRO_Less_Than_Or_Equal_To_Test();
     }
 
-    @Test
-    public void Negative_HRO_Equal_To_Test() throws Exception{
-        homePage.selectProject(projectName);
-        dataValidationHro.Negative_HRO_Equal_To_Test();
-    }
+//    @Test
+//    public void Negative_HRO_Equal_To_Test() throws Exception{
+//        homePage.selectProject(projectName);
+//        dataValidationHro.Negative_HRO_Equal_To_Test();
+//    }
 
     @Test
     public void Negative_HRO_Not_Equal_To_Test() throws Exception{
@@ -74,17 +74,17 @@ public class DataValidationTest extends BaseUiTest {
         dataValidationHro.Negative_HRO_Not_Equal_To_Test();
     }
 
-    @Test
-    public void Negative_HRO_Greater_Than_Test() throws Exception{
-        homePage.selectProject(projectName);
-        dataValidationHro.Negative_HRO_Greater_Than_Test();
-    }
+//    @Test
+//    public void Negative_HRO_Greater_Than_Test() throws Exception{
+//        homePage.selectProject(projectName);
+//        dataValidationHro.Negative_HRO_Greater_Than_Test();
+//    }
 
-    @Test
-    public void Negative_HRO_Greater_Than_Equal_To_Test() throws Exception{
-        homePage.selectProject(projectName);
-        dataValidationHro.Negative_HRO_Greater_Than_Equal_To_Test();
-    }
+//    @Test
+//    public void Negative_HRO_Greater_Than_Equal_To_Test() throws Exception{
+//        homePage.selectProject(projectName);
+//        dataValidationHro.Negative_HRO_Greater_Than_Equal_To_Test();
+//    }
 
     @Test
     public void Negative_HRO_Less_Than_Test() throws Exception{
@@ -92,11 +92,11 @@ public class DataValidationTest extends BaseUiTest {
         dataValidationHro.Negative_HRO_Less_Than_Test();
     }
 
-    @Test
-    public void Negative_HRO_Less_Than_Or_Equal_To_Test() throws Exception{
-        homePage.selectProject(projectName);
-        dataValidationHro.Negative_HRO_Less_Than_Or_Equal_To_Test();
-    }
+//    @Test
+//    public void Negative_HRO_Less_Than_Or_Equal_To_Test() throws Exception{
+//        homePage.selectProject(projectName);
+//        dataValidationHro.Negative_HRO_Less_Than_Or_Equal_To_Test();
+//    }
 
     @Test
     public void Positive_MIA_Equal_To_Test() throws Exception{

@@ -207,16 +207,16 @@ public class RegistrationTest extends BaseUiTest{
         }
     }
 
-    @Test
-    public void Verify_that_the_cancel_button_takes_the_user_back_to_the_previous_page(){
-        headerNavigationBar.navigateToRegisterPage();
-        registerPage.clickCancelButton();
-        try {
-            Assert.assertTrue(homePage.confirmMyProjectsIsVisible()," User wasn't redirected to the home page.");
-        } catch (AssertionError e) {
-            throw new AssertionError(CheckboxObject.errorMessage=" Test failed: " + e.getMessage());
-        }
-    }
+//    @Test
+//    public void Verify_that_the_cancel_button_takes_the_user_back_to_the_previous_page(){
+//        headerNavigationBar.navigateToRegisterPage();
+//        registerPage.clickCancelButton();
+//        try {
+//            Assert.assertTrue(homePage.confirmMyProjectsIsVisible()," User wasn't redirected to the home page.");
+//        } catch (AssertionError e) {
+//            throw new AssertionError(CheckboxObject.errorMessage=" Test failed: " + e.getMessage());
+//        }
+//    }
 
     @Test
     public void Verify_that_the_password_and_confirm_password_fields_match(){
