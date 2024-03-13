@@ -259,7 +259,7 @@ public class BasePage {
     public static WebElement convertToWebElement(String element){
         By elem = By.xpath(element);
 //        scrollElementIntoView(driver,driver.findElement(elem));
-        WebElement webElem = driverWait.until(ExpectedConditions.elementToBeClickable(elem));
+        WebElement webElem = driverWait.until(ExpectedConditions.visibilityOfElementLocated(elem));
         return webElem;
     }
 
