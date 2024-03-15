@@ -2,6 +2,7 @@ package com.Formic.OF2.test;
 
 import com.Formic.OF2.utils.ScreenshotHelper;
 import org.openqa.selenium.By;
+import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -38,6 +39,7 @@ public class BaseUiTest {
     public void setDriver() throws MalformedURLException {
         // Start driver
         ChromeOptions options = new ChromeOptions();
+        options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
 //        options.addArguments("--lang=en-GB");
         // Setting new download directory path
         Map<String, Object> prefs = new HashMap<String, Object>();

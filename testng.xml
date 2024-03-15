@@ -7,7 +7,7 @@
             <class name="Formic.LoginTest" />
             <class name="Formic.RegistrationTest" />
             <class name="Formic.DataDerivationTest" />
-<!--            <class name="Formic.DataValidationTest" />-->
+            <class name="Formic.DataValidationTest" />
 
         </classes>
     </test>
