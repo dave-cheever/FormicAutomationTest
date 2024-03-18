@@ -27,7 +27,7 @@ steps:
     inputs:
       SourceFolder: 'src/test/java/screenShots'
       Contents: '**'
-      TargetFolder: '$(build.artifactstagingdirectory)/screenshots'
+      TargetFolder: '$(build.artifactstagingdirectory)/.screenShots'
       CleanTargetFolder: true
     condition: succeededOrFailed()
 
