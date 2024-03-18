@@ -22,6 +22,15 @@ steps:
       CleanTargetFolder: true
     condition: succeededOrFailed()
 
+  - task: CopyFiles@2
+    displayName: 'Copy Screenshots to: $(build.artifactstagingdirectory)/screenshots'
+    inputs:
+      SourceFolder: 'src/test/java/screenShots'
+      Contents: '**'
+      TargetFolder: '$(build.artifactstagingdirectory)/screenshots'
+      CleanTargetFolder: true
+    condition: succeededOrFailed()
+
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: drop'
     inputs:
@@ -36,26 +45,13 @@ steps:
       mergeTestResults: false
       testRunTitle: 'Your Test Run Title'
 
-  - task: PublishBuildArtifacts@1
-    displayName: 'Publish Screenshots'
-    inputs:
-      PathtoPublish: '$(System.DefaultWorkingDirectory)/src/test/java/screenShots'
-      ArtifactName: 'Screenshots'
-      publishLocation: 'Container'
-    condition: succeededOrFailed()
-
-  - task: PublishBuildArtifacts@1
-    inputs:
-      pathToPublish: '$(Build.StagingDirectory)/test-reports'
-      artifactName: 'test-reports'
-
   - task: PowerShell@2
     displayName: 'Attach Screenshots to Failed Tests'
     inputs:
       targetType: 'inline'
       script: |
         $testResults = Get-Content $(System.DefaultWorkingDirectory)/TestResults/*.xml
-        $screenshots = Get-ChildItem $(System.DefaultWorkingDirectory)/.screenShots/*.png -ErrorAction SilentlyContinue
+        $screenshots = Get-ChildItem $(System.DefaultWorkingDirectory)/screenshots/*.png -ErrorAction SilentlyContinue
         
         if ($testResults -and $screenshots) {
             $testResults | ForEach-Object {
