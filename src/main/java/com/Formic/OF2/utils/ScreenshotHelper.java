@@ -13,7 +13,7 @@ import java.util.Date;
 
 public class ScreenshotHelper extends BasePage {
 
-    private static final String SCREENSHOT_FOLDER = "./src/test/java/screenShots/";
+    private static final String SCREENSHOT_FOLDER = "./src/test/java/Formic/screenShots/";
 
     public ScreenshotHelper(WebDriver driver) {
         super(driver);
