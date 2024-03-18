@@ -39,7 +39,7 @@ steps:
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Screenshots'
     inputs:
-      PathtoPublish: '$(System.DefaultWorkingDirectory)/.screenShots'
+      PathtoPublish: '$(System.DefaultWorkingDirectory)/src/test/java/screenShots'
       ArtifactName: 'Screenshots'
       publishLocation: 'Container'
     condition: succeededOrFailed()

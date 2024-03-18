@@ -30,7 +30,6 @@ public class BasePage {
         this.driver = driver;
         driverWait = new WebDriverWait(driver,Duration.ofSeconds(15));
         PageFactory.initElements(driver, this);
-        ScreenshotHelper.deleteAllScreenshots();
     }
 
     public void visit(String url) {

@@ -42,7 +42,7 @@ public class DataValidation extends BasePage {
             String objectId = getObjectIdFromFieldId(graphResponse,fieldId);
             String elem = stringReplace(hroValidationMessageLocator,objectId);
             try{
-                Assert.assertTrue(driver.findElements(By.xpath(elem)).isEmpty());
+                Assert.assertFalse(driver.findElements(By.xpath(elem)).isEmpty());
             }catch (AssertionError assertionError){
                 ScreenshotHelper screenshotHelper = new ScreenshotHelper(driver);
                 screenshotHelper.takeScreenshot(scenarioName);
@@ -70,7 +70,7 @@ public class DataValidation extends BasePage {
             String objectId = getObjectIdFromFieldId(graphResponse,fieldId);
             String elem = stringReplace(hroValidationMessageLocator,objectId);
             try{
-                Assert.assertTrue(driver.findElements(By.xpath(elem)).isEmpty());
+                Assert.assertFalse(driver.findElements(By.xpath(elem)).isEmpty());
             }catch (AssertionError assertionError){
                 ScreenshotHelper screenshotHelper = new ScreenshotHelper(driver);
                 screenshotHelper.takeScreenshot(scenarioName);
