@@ -23,11 +23,11 @@ steps:
     condition: succeededOrFailed()
 
   - task: CopyFiles@2
-    displayName: 'Copy Screenshots to: $(build.artifactstagingdirectory)/screenshots'
+    displayName: 'Copy Screenshots to: $(build.artifactstagingdirectory)/screenShots'
     inputs:
       SourceFolder: 'src/test/java/screenShots'
       Contents: '**'
-      TargetFolder: '$(build.artifactstagingdirectory)/.screenShots'
+      TargetFolder: '$(build.artifactstagingdirectory)/screenShots'
       CleanTargetFolder: true
     condition: succeededOrFailed()
 
@@ -39,7 +39,7 @@ steps:
 
   - task: PublishBuildArtifacts@1
     inputs:
-      PathtoPublish: '$(System.DefaultWorkingDirectory)/.screenShots'
+      PathtoPublish: '$(System.DefaultWorkingDirectory)/screenShots'
       artifactName: 'Screenshots'
     condition: succeededOrFailed()
 
@@ -57,15 +57,15 @@ steps:
       targetType: 'inline'
       script: |
         $testResults = Get-Content $(System.DefaultWorkingDirectory)/TestResults/*.xml
-        $screenshots = Get-ChildItem $(System.DefaultWorkingDirectory)/screenshots/*.png -ErrorAction SilentlyContinue
+        $screenshots = Get-ChildItem $(System.DefaultWorkingDirectory)/screenShots/*.png -ErrorAction SilentlyContinue
         
-        if ($testResults -and $screenshots) {
+        if ($testResults -and $screenShots) {
             $testResults | ForEach-Object {
                 $result = $_
                 $testName = [xml]$result | Select-Xml "//UnitTestResult" | ForEach-Object { $_.Node.SelectSingleNode('@testName').Value }
         
                 if ($result -match '<Outcome>Failed</Outcome>' -and $testName) {
-                    $screenshot = $screenshots | Where-Object { $_.BaseName -eq $testName }
+                    $screenshot = $screenShots | Where-Object { $_.BaseName -eq $testName }
                     if ($screenshot) {
                         Write-Host "##vso[task.addattachment type=png;name=$($screenshot.Name);]$($screenshot.FullName)"
                     }
