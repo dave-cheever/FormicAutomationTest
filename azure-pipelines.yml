@@ -42,7 +42,7 @@ steps:
     displayName: 'List Screenshots'
     condition: succeededOrFailed()
 
-  - task: PublishBuildArtifacts@1
+  - task: PublishBuildArtifacts@2
     inputs:
       PathtoPublish: '$(build.artifactstagingdirectory)/screenShots'
       artifactName: 'Screenshots'
