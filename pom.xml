@@ -108,6 +108,9 @@
         <version>3.1.2</version>
         <configuration>
           <suiteXmlFiles>testng.xml</suiteXmlFiles>
+          <systemPropertyVariables>
+            <screenshot.dir>${project.basedir}/.screenShots</screenshot.dir>
+          </systemPropertyVariables>
         </configuration>
       </plugin>
 

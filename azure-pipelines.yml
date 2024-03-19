@@ -37,6 +37,11 @@ steps:
       PathtoPublish: '$(build.artifactstagingdirectory)'
     condition: succeededOrFailed()
 
+  - task: PublishBuildArtifacts@1
+    inputs:
+      PathtoPublish: '$(System.DefaultWorkingDirectory)/.screenShots'
+      artifactName: 'Screenshots'
+
   - task: PublishTestResults@2
     displayName: 'Publish Test Results'
     inputs:
