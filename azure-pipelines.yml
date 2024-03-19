@@ -37,6 +37,11 @@ steps:
       PathtoPublish: '$(build.artifactstagingdirectory)'
     condition: succeededOrFailed()
 
+  - script: |
+      ls $(build.artifactstagingdirectory)/screenShots
+    displayName: 'List Screenshots'
+    condition: succeededOrFailed()
+
   - task: PublishBuildArtifacts@1
     inputs:
       PathtoPublish: '$(build.artifactstagingdirectory)/screenShots'
@@ -57,7 +62,7 @@ steps:
       targetType: 'inline'
       script: |
         $testResults = Get-Content $(System.DefaultWorkingDirectory)/TestResults/*.xml
-        $screenshots = Get-ChildItem $(System.DefaultWorkingDirectory)/screenShots/*.png -ErrorAction SilentlyContinue
+        $screenshots = Get-ChildItem $(build.artifactstagingdirectory)/screenShots/*.png -ErrorAction SilentlyContinue
         
         if ($testResults -and $screenShots) {
             $testResults | ForEach-Object {
