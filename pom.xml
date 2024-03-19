@@ -109,7 +109,7 @@
         <configuration>
           <suiteXmlFiles>testng.xml</suiteXmlFiles>
           <systemPropertyVariables>
-            <screenshot.dir>.screenShots/</screenshot.dir>
+            <screenshot.dir>./screenShots/</screenshot.dir>
           </systemPropertyVariables>
         </configuration>
       </plugin>
