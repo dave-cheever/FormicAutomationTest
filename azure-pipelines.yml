@@ -25,7 +25,7 @@ steps:
   - task: CopyFiles@2
     displayName: 'Copy Screenshots to: $(build.artifactstagingdirectory)/screenShots'
     inputs:
-      SourceFolder: 'src/test/java/screenShots'
+      SourceFolder: './screenShots'
       Contents: '**'
       TargetFolder: '$(build.artifactstagingdirectory)/screenShots'
       CleanTargetFolder: true
