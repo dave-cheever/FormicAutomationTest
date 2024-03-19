@@ -14,38 +14,33 @@ steps:
       jdkVersionOption: 1.17
 
   - task: CopyFiles@2
-    displayName: 'Copy Screenshots to: $(build.artifactstagingdirectory)/screenShots'
+    displayName: 'Copy Screenshots to: $(Build.ArtifactStagingDirectory)/screenShots'
     inputs:
-      SourceFolder: './screenShots'
-      Contents: '**'
-      TargetFolder: '$(build.artifactstagingdirectory)/screenShots'
+      SourceFolder: '$(Build.SourcesDirectory)/screenShots'
+      Contents: '*'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)'
       CleanTargetFolder: true
     condition: succeededOrFailed()
 
+  - task: PublishBuildArtifacts@2
+    inputs:
+      pathToPublish: '$(Build.ArtifactStagingDirectory)/screenShots'
+      artifactName: 'Screenshots'
+    condition: succeededOrFailed()
+
   - task: CopyFiles@2
-    displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
+    displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
     inputs:
       SourceFolder: src
       Contents: '**/*.jar'
-      TargetFolder: '$(build.artifactstagingdirectory)'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)'
       CleanTargetFolder: true
     condition: succeededOrFailed()
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: drop'
     inputs:
-      PathtoPublish: '$(build.artifactstagingdirectory)'
-    condition: succeededOrFailed()
-
-  - script: |
-      ls $(build.artifactstagingdirectory)/screenShots
-    displayName: 'List Screenshots'
-    condition: succeededOrFailed()
-
-  - task: PublishBuildArtifacts@2
-    inputs:
-      PathtoPublish: '$(build.artifactstagingdirectory)/screenShots'
-      artifactName: 'Screenshots'
+      pathToPublish: '$(Build.ArtifactStagingDirectory)'
     condition: succeededOrFailed()
 
   - task: PublishTestResults@2
@@ -62,7 +57,7 @@ steps:
       targetType: 'inline'
       script: |
         $testResults = Get-Content $(System.DefaultWorkingDirectory)/TestResults/*.xml
-        $screenshots = Get-ChildItem $(build.artifactstagingdirectory)/screenShots/*.png -ErrorAction SilentlyContinue
+        $screenshots = Get-ChildItem $(Build.ArtifactStagingDirectory)/screenShots/*.png -ErrorAction SilentlyContinue
         
         if ($testResults -and $screenShots) {
             $testResults | ForEach-Object {
