@@ -16,7 +16,7 @@ steps:
   - task: CopyFiles@2
     displayName: 'Copy Screenshots to: $(Build.ArtifactStagingDirectory)/screenShots'
     inputs:
-      SourceFolder: '$(Build.SourcesDirectory)/screenShots'
+      SourceFolder: screenShots
       Contents: '*'
       TargetFolder: '$(Build.ArtifactStagingDirectory)'
       CleanTargetFolder: true
