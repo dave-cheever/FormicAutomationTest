@@ -25,6 +25,7 @@ public class ScreenshotHelper extends BasePage {
         String screenshotName = scenario + "_" + timestamp + ".png";
         try {
             FileHandler.copy(screenshotFile, new File(SCREENSHOT_FOLDER + screenshotName));
+            System.out.println("screenshot taken: "+ screenshotName);
         } catch (IOException e) {
             e.printStackTrace();
         }
