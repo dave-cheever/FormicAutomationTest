@@ -1,0 +1,51 @@
+#Multi-configuration and multi-agent job options are not exported to YAML. Configure these options using documentation guidance: https://docs.microsoft.com/vsts/pipelines/process/phases
+
+pool:
+  name: Azure Pipelines
+  demands: maven
+
+variables:
+  mavenPOMFile: 'pom.xml'
+
+steps:
+  - task: Maven@3
+    displayName: 'Maven pom.xml'
+    inputs:
+      mavenPomFile: '$(Parameters.mavenPOMFile)'
+      goals: 'test compile'
+      testResultsFiles: '**/target/surefire-reports/junitreports/*.xml'
+      testRunTitle: 'Test Run sample'
+      allowBrokenSymlinks: false
+      jdkVersionOption: 1.17
+
+  - task: CopyFiles@2
+    displayName: 'Copy Files to: $(build.artifactstagingdirectory)/target'
+    inputs:
+      SourceFolder: src
+      Contents: '**/*.jar'
+      TargetFolder: '$(build.artifactstagingdirectory)/target'
+      CleanTargetFolder: true
+    condition: succeededOrFailed()
+
+  - task: CopyFiles@2
+    displayName: 'Copy Files to screenshot: $(build.artifactstagingdirectory)/screenShots'
+    inputs:
+      SourceFolder: screenShots
+      TargetFolder: '$(build.artifactstagingdirectory)/screenShots'
+      CleanTargetFolder: true
+    condition: always()
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: drop'
+    inputs:
+      PathtoPublish: target
+    condition: succeededOrFailed()
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: drop'
+    inputs:
+      PathtoPublish: '$(build.artifactstagingdirectory)/screenShots'
+      ArtifactName: 'drop'
+      PublishLocation: 'Container'
+      TargetPath: 'screenShotImages'
+    condition: always()
