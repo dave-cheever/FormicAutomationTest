@@ -1,5 +1,6 @@
 pool:
   name: Azure Pipelines
+  vmImage: 'windows-latest'
   demands: maven
 
 steps:
@@ -14,33 +15,18 @@ steps:
       jdkVersionOption: 1.17
 
   - task: CopyFiles@2
-    displayName: 'Copy Screenshots to: $(Build.ArtifactStagingDirectory)/screenShots'
-    inputs:
-      SourceFolder: screenShots
-      Contents: '*'
-      TargetFolder: '$(Build.ArtifactStagingDirectory)'
-      CleanTargetFolder: true
-    condition: succeededOrFailed()
-
-  - task: PublishBuildArtifacts@2
-    inputs:
-      pathToPublish: '$(Build.ArtifactStagingDirectory)/screenShots'
-      artifactName: 'Screenshots'
-    condition: succeededOrFailed()
-
-  - task: CopyFiles@2
-    displayName: 'Copy Files to: $(Build.ArtifactStagingDirectory)'
+    displayName: 'Copy Files to: $(Build.Artifactstagingdirectory)/target'
     inputs:
       SourceFolder: src
       Contents: '**/*.jar'
-      TargetFolder: '$(Build.ArtifactStagingDirectory)'
+      TargetFolder: '$(build.DefaultWorkingDirectory)/target'
       CleanTargetFolder: true
     condition: succeededOrFailed()
 
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: drop'
     inputs:
-      pathToPublish: '$(Build.ArtifactStagingDirectory)'
+      pathToPublish: 'target'
     condition: succeededOrFailed()
 
   - task: PublishTestResults@2
@@ -49,7 +35,25 @@ steps:
       testResultsFiles: '**/TEST-*.xml'
       failTaskOnFailedTests: true
       mergeTestResults: false
-      testRunTitle: 'Your Test Run Title'
+      testRunTitle: 'Regression Test'
+    condition: succeededOrFailed()
+
+  - task: CopyFiles@2
+    displayName: 'Copy Screenshots to: $(Build.ArtifactStagingDirectory)/screenShots'
+    inputs:
+      SourceFolder: screenShots
+      Contents: '*'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)/screenShots'
+      CleanTargetFolder: true
+    condition: succeededOrFailed()
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathToPublish: '$(Build.ArtifactStagingDirectory)/screenShots'
+      ArtifactName: 'drop'
+      PublishLocation: 'Container'
+      TargetPath: 'screenShotImages'
+    condition: always()
 
   - task: PowerShell@2
     displayName: 'Attach Screenshots to Failed Tests'

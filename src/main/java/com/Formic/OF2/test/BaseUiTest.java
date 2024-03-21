@@ -38,7 +38,6 @@ public class BaseUiTest {
     @BeforeMethod
     public void setDriver() throws MalformedURLException {
         // Start driver
-        setUpSuite();
         ChromeOptions options = new ChromeOptions();
         options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
 //        options.addArguments("--lang=en-GB");
