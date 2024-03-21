@@ -38,6 +38,7 @@ public class BaseUiTest {
     @BeforeMethod
     public void setDriver() throws MalformedURLException {
         // Start driver
+        setUpSuite();
         ChromeOptions options = new ChromeOptions();
         options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
 //        options.addArguments("--lang=en-GB");
@@ -51,7 +52,6 @@ public class BaseUiTest {
 
 //        driver.set(new ChromeDriver(ChromeOptionsUtil.getHeadlessChromeOptions()));
 //        driver.set(new ChromeDriver(options));
-
         setDriver(new ChromeDriver(options));
         getDriver().manage().window().maximize();
         screenshotHelper = PageFactory.initElements(getDriver(),ScreenshotHelper.class);
