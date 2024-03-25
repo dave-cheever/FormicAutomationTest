@@ -55,25 +55,3 @@ steps:
       TargetPath: 'screenShotImages'
     condition: always()
 
-  - task: PowerShell@2
-    displayName: 'Attach Screenshots to Failed Tests'
-    inputs:
-      targetType: 'inline'
-      script: |
-        $testResults = Get-Content $(System.DefaultWorkingDirectory)/TestResults/*.xml
-        $screenshots = Get-ChildItem $(Build.ArtifactStagingDirectory)/screenShots/*.png -ErrorAction SilentlyContinue
-        
-        if ($testResults -and $screenShots) {
-            $testResults | ForEach-Object {
-                $result = $_
-                $testName = [xml]$result | Select-Xml "//UnitTestResult" | ForEach-Object { $_.Node.SelectSingleNode('@testName').Value }
-        
-                if ($result -match '<Outcome>Failed</Outcome>' -and $testName) {
-                    $screenshot = $screenShots | Where-Object { $_.BaseName -eq $testName }
-                    if ($screenshot) {
-                        Write-Host "##vso[task.addattachment type=png;name=$($screenshot.Name);]$($screenshot.FullName)"
-                    }
-                }
-            }
-        }
-    condition: failed()
