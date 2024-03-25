@@ -28,7 +28,7 @@ public class BasePage {
 
     public BasePage(WebDriver driver){
         this.driver = driver;
-        driverWait = new WebDriverWait(driver,Duration.ofSeconds(15));
+        driverWait = new WebDriverWait(driver,Duration.ofSeconds(60));
         PageFactory.initElements(driver, this);
     }
 
