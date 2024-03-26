@@ -27,10 +27,12 @@ public class HomePage extends BasePage {
     }
 
     public void selectProject(String project){
+        Reporter.log("<b>Navigating to test website.<b/>");
         visit("https://formic-onlineforms-test.azurewebsites.net/");
         WebElement projectElement = stringReplaceAndConvertToWebElement(projectNameLocator,project);
         scrollElementIntoView(driver,projectElement);
+        Reporter.log("<b>Scroll through the project list to find the project: <b/>"+project);
         clickWithTries(projectElement,3);
-        Reporter.log("Click project name: "+project,true);
+        Reporter.log("<b>Click project name: <b/>"+project,true);
     }
 }

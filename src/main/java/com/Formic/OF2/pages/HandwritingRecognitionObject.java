@@ -34,8 +34,7 @@ public class HandwritingRecognitionObject extends BasePage {
         String elem = stringReplace(hroInputLocator,elementId);
         WebElement element = stringToWebElement(elem);
         scrollElementIntoView(driver,element);
-        System.out.println("Enter text for HRO: "+CheckboxObject.checkboxName+" Input: "+ strText);
-        Reporter.log("<b>Enter text for HRO: <b/>"+CheckboxObject.checkboxName+"<b> Input: <b/>"+ strText);
+        Reporter.log("<b>Enter text for HRO: <b/>"+getFieldName(pojo,strFieldId)+"<b> Input: <b/>"+ strText);
         enterText(element,strText);
         recordInputsFromHro(elementId,strText);
     }

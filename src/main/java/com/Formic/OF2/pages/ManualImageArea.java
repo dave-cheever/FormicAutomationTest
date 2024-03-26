@@ -58,7 +58,7 @@ public class ManualImageArea extends BasePage {
         String elem = stringReplace(miaInputLocator,elementId);
         WebElement element = stringToWebElement(elem);
         scrollElementIntoView(driver,element);
-        System.out.println("Enter text for MIA: "+CheckboxObject.checkboxName+" Inputs: "+ strText);
+        Reporter.log("Enter text for MIA: "+getFieldName(pojo,strFieldId)+" Inputs: "+ strText);
         enterText(element,strText);
         recordInputsFromMia(strFieldId,strText);
     }
