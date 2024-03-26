@@ -28,145 +28,169 @@ public class DataValidationTest extends BaseUiTest {
 
     @Test
     public void Positive_HRO_Equal_To_Test() throws Exception{
-        homePage.selectProject(projectName);
+        String scenarioName = "Positive_HRO_Equal_To_Test";
+        homePage.selectProject(projectName,scenarioName);
         dataValidationHro.Positive_HRO_Equal_To_Test();
     }
 
     @Test
     public void Positive_HRO_Not_Equal_To_Test() throws Exception{
-        homePage.selectProject(projectName);
+        String scenarioName = "Positive_HRO_Not_Equal_To_Test";
+        homePage.selectProject(projectName,scenarioName);
         dataValidationHro.Positive_HRO_Not_Equal_To_Test();
     }
 
     @Test
     public void Positive_HRO_Greater_Than_Test() throws Exception{
-        homePage.selectProject(projectName);
+        String scenarioName = "Positive_HRO_Greater_Than_Test";
+        homePage.selectProject(projectName,scenarioName);
         dataValidationHro.Positive_HRO_Greater_Than_Test();
     }
 
     @Test
     public void Positive_HRO_Greater_Than_Equal_To_Test() throws Exception{
-        homePage.selectProject(projectName);
+        String scenarioName = "Positive_HRO_Greater_Than_Equal_To_Test";
+        homePage.selectProject(projectName,scenarioName);
         dataValidationHro.Positive_HRO_Greater_Than_Equal_To_Test();
     }
 
     @Test
     public void Positive_HRO_Less_Than_Test() throws Exception{
-        homePage.selectProject(projectName);
+        String scenarioName = "Positive_HRO_Less_Than_Test";
+        homePage.selectProject(projectName,scenarioName);
         dataValidationHro.Positive_HRO_Less_Than_Test();
     }
 
     @Test
     public void Positive_HRO_Less_Than_Or_Equal_To_Test() throws Exception{
-        homePage.selectProject(projectName);
+        String scenarioName = "Positive_HRO_Less_Than_Or_Equal_To_Test";
+        homePage.selectProject(projectName,scenarioName);
         dataValidationHro.Positive_HRO_Less_Than_Or_Equal_To_Test();
     }
 
     @Test
     public void Negative_HRO_Equal_To_Test() throws Exception{
-        homePage.selectProject(projectName);
+        String scenarioName = "Negative_HRO_Equal_To_Test";
+        homePage.selectProject(projectName,scenarioName);
         dataValidationHro.Negative_HRO_Equal_To_Test();
     }
 
     @Test
     public void Negative_HRO_Not_Equal_To_Test() throws Exception{
-        homePage.selectProject(projectName);
+        String scenarioName = "Negative_HRO_Not_Equal_To_Test";
+        homePage.selectProject(projectName,scenarioName);
         dataValidationHro.Negative_HRO_Not_Equal_To_Test();
     }
 
     @Test
     public void Negative_HRO_Greater_Than_Test() throws Exception{
-        homePage.selectProject(projectName);
+        String scenarioName = "Negative_HRO_Greater_Than_Test";
+        homePage.selectProject(projectName,scenarioName);
         dataValidationHro.Negative_HRO_Greater_Than_Test();
     }
 
     @Test
     public void Negative_HRO_Greater_Than_Equal_To_Test() throws Exception{
-        homePage.selectProject(projectName);
+        String scenarioName = "Negative_HRO_Greater_Than_Equal_To_Test";
+        homePage.selectProject(projectName,scenarioName);
         dataValidationHro.Negative_HRO_Greater_Than_Equal_To_Test();
     }
 
     @Test
     public void Negative_HRO_Less_Than_Test() throws Exception{
-        homePage.selectProject(projectName);
+        String scenarioName = "Negative_HRO_Less_Than_Test";
+        homePage.selectProject(projectName,scenarioName);
         dataValidationHro.Negative_HRO_Less_Than_Test();
     }
 
     @Test
     public void Negative_HRO_Less_Than_Or_Equal_To_Test() throws Exception{
-        homePage.selectProject(projectName);
+        String scenarioName = "Negative_HRO_Less_Than_Or_Equal_To_Test";
+        homePage.selectProject(projectName,scenarioName);
         dataValidationHro.Negative_HRO_Less_Than_Or_Equal_To_Test();
     }
 
     @Test
     public void Positive_MIA_Equal_To_Test() throws Exception{
-        homePage.selectProject(projectName);
+        String scenarioName = "Positive_MIA_Equal_To_Test";
+        homePage.selectProject(projectName,scenarioName);
         dataValidationMia.Positive_MIA_Equal_To_Test();
     }
 
     @Test
     public void Positive_MIA_Not_Equal_To_Test() throws Exception{
-        homePage.selectProject(projectName);
+        String scenarioName = "Positive_MIA_Not_Equal_To_Test";
+        homePage.selectProject(projectName,scenarioName);
         dataValidationMia.Positive_MIA_Not_Equal_To_Test();
     }
 
     @Test
     public void Positive_MIA_Greater_Than_Test() throws Exception{
-        homePage.selectProject(projectName);
+        String scenarioName = "Positive_MIA_Greater_Than_Test";
+        homePage.selectProject(projectName,scenarioName);
         dataValidationMia.Positive_MIA_Greater_Than_Test();
     }
 
     @Test
     public void Positive_MIA_Greater_Than_Equal_To_Test() throws Exception{
-        homePage.selectProject(projectName);
+        String scenarioName = "Positive_MIA_Greater_Than_Equal_To_Test";
+        homePage.selectProject(projectName,scenarioName);
         dataValidationMia.Positive_MIA_Greater_Than_Equal_To_Test();
     }
 
     @Test
     public void Positive_MIA_Less_Than_Test() throws Exception{
-        homePage.selectProject(projectName);
+        String scenarioName = "Positive_MIA_Less_Than_Test";
+        homePage.selectProject(projectName,scenarioName);
         dataValidationMia.Positive_MIA_Less_Than_Test();
     }
 
     @Test
     public void Positive_MIA_Less_Than_Or_Equal_To_Test() throws Exception{
-        homePage.selectProject(projectName);
+        String scenarioName = "Positive_MIA_Less_Than_Or_Equal_To_Test";
+        homePage.selectProject(projectName,scenarioName);
         dataValidationMia.Positive_MIA_Less_Than_Or_Equal_To_Test();
     }
 
     @Test
     public void Negative_MIA_Equal_To_Test() throws Exception{
-        homePage.selectProject(projectName);
+        String scenarioName = "Negative_MIA_Equal_To_Test";
+        homePage.selectProject(projectName,scenarioName);
         dataValidationMia.Negative_MIA_Equal_To_Test();
     }
 
     @Test
     public void Negative_MIA_Not_Equal_To_Test() throws Exception{
-        homePage.selectProject(projectName);
+        String scenarioName = "Negative_MIA_Not_Equal_To_Test";
+        homePage.selectProject(projectName,scenarioName);
         dataValidationMia.Negative_MIA_Not_Equal_To_Test();
     }
 
     @Test
     public void Negative_MIA_Greater_Than_Test() throws Exception{
-        homePage.selectProject(projectName);
+        String scenarioName = "Negative_MIA_Greater_Than_Test";
+        homePage.selectProject(projectName,scenarioName);
         dataValidationMia.Negative_MIA_Greater_Than_Test();
     }
 
     @Test
     public void Negative_MIA_Greater_Than_Equal_To_Test() throws Exception{
-        homePage.selectProject(projectName);
+        String scenarioName = "Negative_MIA_Greater_Than_Equal_To_Test";
+        homePage.selectProject(projectName,scenarioName);
         dataValidationMia.Negative_MIA_Greater_Than_Equal_To_Test();
     }
 
     @Test
     public void Negative_MIA_Less_Than_Test() throws Exception{
-        homePage.selectProject(projectName);
+        String scenarioName = "Negative_MIA_Less_Than_Test";
+        homePage.selectProject(projectName,scenarioName);
         dataValidationMia.Negative_MIA_Less_Than_Test();
     }
 
     @Test
     public void Negative_MIA_Less_Than_Or_Equal_To_Test() throws Exception{
-        homePage.selectProject(projectName);
+        String scenarioName = "Negative_MIA_Less_Than_Or_Equal_To_Test";
+        homePage.selectProject(projectName,scenarioName);
         dataValidationMia.Negative_MIA_Less_Than_Or_Equal_To_Test();
     }
 

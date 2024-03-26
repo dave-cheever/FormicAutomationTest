@@ -25,8 +25,7 @@ public class DataDerivation extends BasePage {
 
     int projectId = 233;
 
-    public void Calculate_Sum_of_Two_Fields_and_Display_Result_HRO() throws Exception {
-        String scenarioName = "Calculate_Sum_of_Two_Fields_and_Display_Result_HRO";
+    public void Calculate_Sum_of_Two_Fields_and_Display_Result_HRO(String scenarioName) throws Exception {
         int firstValue = 5;
         int secondValue = 5;
         String operation = "+";
