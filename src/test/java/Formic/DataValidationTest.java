@@ -38,137 +38,137 @@ public class DataValidationTest extends BaseUiTest {
         dataValidationHro.Positive_HRO_Not_Equal_To_Test();
     }
 
-//    @Test
-//    public void Positive_HRO_Greater_Than_Test() throws Exception{
-//        homePage.selectProject(projectName);
-//        dataValidationHro.Positive_HRO_Greater_Than_Test();
-//    }
-//
-//    @Test
-//    public void Positive_HRO_Greater_Than_Equal_To_Test() throws Exception{
-//        homePage.selectProject(projectName);
-//        dataValidationHro.Positive_HRO_Greater_Than_Equal_To_Test();
-//    }
-//
-//    @Test
-//    public void Positive_HRO_Less_Than_Test() throws Exception{
-//        homePage.selectProject(projectName);
-//        dataValidationHro.Positive_HRO_Less_Than_Test();
-//    }
-//
-//    @Test
-//    public void Positive_HRO_Less_Than_Or_Equal_To_Test() throws Exception{
-//        homePage.selectProject(projectName);
-//        dataValidationHro.Positive_HRO_Less_Than_Or_Equal_To_Test();
-//    }
-//
-//    @Test
-//    public void Negative_HRO_Equal_To_Test() throws Exception{
-//        homePage.selectProject(projectName);
-//        dataValidationHro.Negative_HRO_Equal_To_Test();
-//    }
-//
-//    @Test
-//    public void Negative_HRO_Not_Equal_To_Test() throws Exception{
-//        homePage.selectProject(projectName);
-//        dataValidationHro.Negative_HRO_Not_Equal_To_Test();
-//    }
-//
-//    @Test
-//    public void Negative_HRO_Greater_Than_Test() throws Exception{
-//        homePage.selectProject(projectName);
-//        dataValidationHro.Negative_HRO_Greater_Than_Test();
-//    }
-//
-//    @Test
-//    public void Negative_HRO_Greater_Than_Equal_To_Test() throws Exception{
-//        homePage.selectProject(projectName);
-//        dataValidationHro.Negative_HRO_Greater_Than_Equal_To_Test();
-//    }
-//
-//    @Test
-//    public void Negative_HRO_Less_Than_Test() throws Exception{
-//        homePage.selectProject(projectName);
-//        dataValidationHro.Negative_HRO_Less_Than_Test();
-//    }
-//
-//    @Test
-//    public void Negative_HRO_Less_Than_Or_Equal_To_Test() throws Exception{
-//        homePage.selectProject(projectName);
-//        dataValidationHro.Negative_HRO_Less_Than_Or_Equal_To_Test();
-//    }
-//
-//    @Test
-//    public void Positive_MIA_Equal_To_Test() throws Exception{
-//        homePage.selectProject(projectName);
-//        dataValidationMia.Positive_MIA_Equal_To_Test();
-//    }
-//
-//    @Test
-//    public void Positive_MIA_Not_Equal_To_Test() throws Exception{
-//        homePage.selectProject(projectName);
-//        dataValidationMia.Positive_MIA_Not_Equal_To_Test();
-//    }
-//
-//    @Test
-//    public void Positive_MIA_Greater_Than_Test() throws Exception{
-//        homePage.selectProject(projectName);
-//        dataValidationMia.Positive_MIA_Greater_Than_Test();
-//    }
-//
-//    @Test
-//    public void Positive_MIA_Greater_Than_Equal_To_Test() throws Exception{
-//        homePage.selectProject(projectName);
-//        dataValidationMia.Positive_MIA_Greater_Than_Equal_To_Test();
-//    }
-//
-//    @Test
-//    public void Positive_MIA_Less_Than_Test() throws Exception{
-//        homePage.selectProject(projectName);
-//        dataValidationMia.Positive_MIA_Less_Than_Test();
-//    }
-//
-//    @Test
-//    public void Positive_MIA_Less_Than_Or_Equal_To_Test() throws Exception{
-//        homePage.selectProject(projectName);
-//        dataValidationMia.Positive_MIA_Less_Than_Or_Equal_To_Test();
-//    }
-//
-//    @Test
-//    public void Negative_MIA_Equal_To_Test() throws Exception{
-//        homePage.selectProject(projectName);
-//        dataValidationMia.Negative_MIA_Equal_To_Test();
-//    }
-//
-//    @Test
-//    public void Negative_MIA_Not_Equal_To_Test() throws Exception{
-//        homePage.selectProject(projectName);
-//        dataValidationMia.Negative_MIA_Not_Equal_To_Test();
-//    }
-//
-//    @Test
-//    public void Negative_MIA_Greater_Than_Test() throws Exception{
-//        homePage.selectProject(projectName);
-//        dataValidationMia.Negative_MIA_Greater_Than_Test();
-//    }
-//
-//    @Test
-//    public void Negative_MIA_Greater_Than_Equal_To_Test() throws Exception{
-//        homePage.selectProject(projectName);
-//        dataValidationMia.Negative_MIA_Greater_Than_Equal_To_Test();
-//    }
-//
-//    @Test
-//    public void Negative_MIA_Less_Than_Test() throws Exception{
-//        homePage.selectProject(projectName);
-//        dataValidationMia.Negative_MIA_Less_Than_Test();
-//    }
-//
-//    @Test
-//    public void Negative_MIA_Less_Than_Or_Equal_To_Test() throws Exception{
-//        homePage.selectProject(projectName);
-//        dataValidationMia.Negative_MIA_Less_Than_Or_Equal_To_Test();
-//    }
+    @Test
+    public void Positive_HRO_Greater_Than_Test() throws Exception{
+        homePage.selectProject(projectName);
+        dataValidationHro.Positive_HRO_Greater_Than_Test();
+    }
+
+    @Test
+    public void Positive_HRO_Greater_Than_Equal_To_Test() throws Exception{
+        homePage.selectProject(projectName);
+        dataValidationHro.Positive_HRO_Greater_Than_Equal_To_Test();
+    }
+
+    @Test
+    public void Positive_HRO_Less_Than_Test() throws Exception{
+        homePage.selectProject(projectName);
+        dataValidationHro.Positive_HRO_Less_Than_Test();
+    }
+
+    @Test
+    public void Positive_HRO_Less_Than_Or_Equal_To_Test() throws Exception{
+        homePage.selectProject(projectName);
+        dataValidationHro.Positive_HRO_Less_Than_Or_Equal_To_Test();
+    }
+
+    @Test
+    public void Negative_HRO_Equal_To_Test() throws Exception{
+        homePage.selectProject(projectName);
+        dataValidationHro.Negative_HRO_Equal_To_Test();
+    }
+
+    @Test
+    public void Negative_HRO_Not_Equal_To_Test() throws Exception{
+        homePage.selectProject(projectName);
+        dataValidationHro.Negative_HRO_Not_Equal_To_Test();
+    }
+
+    @Test
+    public void Negative_HRO_Greater_Than_Test() throws Exception{
+        homePage.selectProject(projectName);
+        dataValidationHro.Negative_HRO_Greater_Than_Test();
+    }
+
+    @Test
+    public void Negative_HRO_Greater_Than_Equal_To_Test() throws Exception{
+        homePage.selectProject(projectName);
+        dataValidationHro.Negative_HRO_Greater_Than_Equal_To_Test();
+    }
+
+    @Test
+    public void Negative_HRO_Less_Than_Test() throws Exception{
+        homePage.selectProject(projectName);
+        dataValidationHro.Negative_HRO_Less_Than_Test();
+    }
+
+    @Test
+    public void Negative_HRO_Less_Than_Or_Equal_To_Test() throws Exception{
+        homePage.selectProject(projectName);
+        dataValidationHro.Negative_HRO_Less_Than_Or_Equal_To_Test();
+    }
+
+    @Test
+    public void Positive_MIA_Equal_To_Test() throws Exception{
+        homePage.selectProject(projectName);
+        dataValidationMia.Positive_MIA_Equal_To_Test();
+    }
+
+    @Test
+    public void Positive_MIA_Not_Equal_To_Test() throws Exception{
+        homePage.selectProject(projectName);
+        dataValidationMia.Positive_MIA_Not_Equal_To_Test();
+    }
+
+    @Test
+    public void Positive_MIA_Greater_Than_Test() throws Exception{
+        homePage.selectProject(projectName);
+        dataValidationMia.Positive_MIA_Greater_Than_Test();
+    }
+
+    @Test
+    public void Positive_MIA_Greater_Than_Equal_To_Test() throws Exception{
+        homePage.selectProject(projectName);
+        dataValidationMia.Positive_MIA_Greater_Than_Equal_To_Test();
+    }
+
+    @Test
+    public void Positive_MIA_Less_Than_Test() throws Exception{
+        homePage.selectProject(projectName);
+        dataValidationMia.Positive_MIA_Less_Than_Test();
+    }
+
+    @Test
+    public void Positive_MIA_Less_Than_Or_Equal_To_Test() throws Exception{
+        homePage.selectProject(projectName);
+        dataValidationMia.Positive_MIA_Less_Than_Or_Equal_To_Test();
+    }
+
+    @Test
+    public void Negative_MIA_Equal_To_Test() throws Exception{
+        homePage.selectProject(projectName);
+        dataValidationMia.Negative_MIA_Equal_To_Test();
+    }
+
+    @Test
+    public void Negative_MIA_Not_Equal_To_Test() throws Exception{
+        homePage.selectProject(projectName);
+        dataValidationMia.Negative_MIA_Not_Equal_To_Test();
+    }
+
+    @Test
+    public void Negative_MIA_Greater_Than_Test() throws Exception{
+        homePage.selectProject(projectName);
+        dataValidationMia.Negative_MIA_Greater_Than_Test();
+    }
+
+    @Test
+    public void Negative_MIA_Greater_Than_Equal_To_Test() throws Exception{
+        homePage.selectProject(projectName);
+        dataValidationMia.Negative_MIA_Greater_Than_Equal_To_Test();
+    }
+
+    @Test
+    public void Negative_MIA_Less_Than_Test() throws Exception{
+        homePage.selectProject(projectName);
+        dataValidationMia.Negative_MIA_Less_Than_Test();
+    }
+
+    @Test
+    public void Negative_MIA_Less_Than_Or_Equal_To_Test() throws Exception{
+        homePage.selectProject(projectName);
+        dataValidationMia.Negative_MIA_Less_Than_Or_Equal_To_Test();
+    }
 
     @BeforeMethod
     public void initialisePageElements(ITestContext iTestContext) {
