@@ -1,10 +1,14 @@
 package com.Formic.OF2.pages;
 import com.Formic.OF2.test.BasePage;
+import com.Formic.OF2.utils.CheckboxObject;
+import com.Formic.OF2.utils.ScreenshotHelper;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.testng.Assert;
+import org.testng.Reporter;
 
 public class RegisterPage extends BasePage {
 
@@ -72,54 +76,6 @@ public class RegisterPage extends BasePage {
         super(browserDriver);
     }
 
-    public boolean userNameLabelVisible(){
-        return isElementVisible(driver,driverWait.until(ExpectedConditions.visibilityOf(usernameLabelLocator)));
-    }
-
-    public boolean fullNameLabelVisible(){
-        return isElementVisible(driver,driverWait.until(ExpectedConditions.visibilityOf(fullNameLabelLocator)));
-    }
-
-    public boolean emailLabelVisible(){
-        return isElementVisible(driver,driverWait.until(ExpectedConditions.visibilityOf(emailLabelLocator)));
-    }
-
-    public boolean passwordLabelVisible(){
-        return isElementVisible(driver,driverWait.until(ExpectedConditions.visibilityOf(passwordLabelLocator)));
-    }
-
-    public boolean confirmPasswordLabelVisible(){
-        return isElementVisible(driver,driverWait.until(ExpectedConditions.visibilityOf(confirmPasswordLabelLocator)));
-    }
-
-    public boolean registerButtonVisible(){
-        return isElementVisible(driver,driverWait.until(ExpectedConditions.visibilityOf(registerButtonLocator)));
-    }
-
-    public boolean cancelButtonVisible(){
-        return isElementVisible(driver,driverWait.until(ExpectedConditions.visibilityOf(cancelButtonLocator)));
-    }
-
-    public boolean userNameTextBoxVisible(){
-        return isElementVisible(driver,driverWait.until(ExpectedConditions.visibilityOf(usernameTextBoxLocator)));
-    }
-
-    public boolean fullNameTextBoxVisible(){
-        return isElementVisible(driver,driverWait.until(ExpectedConditions.visibilityOf(fullNameTextBoxLocator)));
-    }
-
-    public boolean emailTextBoxVisible(){
-        return isElementVisible(driver,driverWait.until(ExpectedConditions.visibilityOf(emailAddressTextBoxLocator)));
-    }
-
-    public boolean passwordTextBoxVisible(){
-        return isElementVisible(driver,driverWait.until(ExpectedConditions.visibilityOf(passwordTextBoxLocator)));
-    }
-
-    public boolean confirmPasswordTextBoxVisible(){
-        return isElementVisible(driver,driverWait.until(ExpectedConditions.visibilityOf(confirmPasswordTextBoxLocator)));
-    }
-
     public void registerNewUser(String username, String fullName, String email, String password, String confirmPassword){
         setUsername(username);
         setFullName(fullName);
@@ -154,15 +110,6 @@ public class RegisterPage extends BasePage {
         enterText(confirmPasswordTextBoxLocator,confirmPassword);
     }
 
-    public boolean usernameAlreadyTakenVisible(String userName){
-        WebElement element = stringReplaceAndConvertToWebElement(usernameDuplicateErrorMessageLocator,userName);
-        return isElementVisible(driver,driverWait.until(ExpectedConditions.visibilityOf(element)));
-    }
-
-    public boolean emailAlreadyTakenVisible(){
-        return isElementVisible(driver,driverWait.until(ExpectedConditions.visibilityOf(emailDuplicateErrorMessageLocator)));
-    }
-
     private void clickRegisterButton(){
         click(registerButtonLocator);
     }
@@ -171,24 +118,106 @@ public class RegisterPage extends BasePage {
         click(cancelButtonLocator);
     }
 
-    public boolean usernameErrorMessageVisible(){
-        return isElementPresent(usernameErrorMessageLocator);
+    public void assertUserNameLabelVisible(String scenarioName){
+        validateRegisterField(scenarioName,usernameLabelLocator);
     }
 
-    public boolean emailErrorMessageVisible(){
-        return isElementPresent(emailErrorMessageLocator);
+    public void assertUserNameTextBoxVisible(String scenarioName){
+        validateRegisterField(scenarioName,usernameTextBoxLocator);
     }
 
-    public boolean passwordErrorMessageVisible(){
-        return isElementPresent(passwordErrorMessageLocator);
+    public void assertFullNameLabelVisible(String scenarioName){
+        validateRegisterField(scenarioName,fullNameLabelLocator);
     }
 
-    public boolean confirmPasswordErrorMessageVisible(){
-        return isElementPresent(confirmPasswordErrorMessageLocator);
+    public void assertFullNameTextBoxVisible(String scenarioName){
+        validateRegisterField(scenarioName,fullNameTextBoxLocator);
     }
 
-    public boolean passwordDoesNotMatchErrorMessageVisible(){
-        return isElementPresent(passwordDoNotMatchErrorMessageLocator);
+    public void assertEmailLabelVisible(String scenarioName){
+        validateRegisterField(scenarioName,emailLabelLocator);
     }
 
+    public void assertEmailTextBoxVisible(String scenarioName){
+        validateRegisterField(scenarioName,emailAddressTextBoxLocator);
+    }
+
+    public void assertPasswordLabelVisible(String scenarioName){
+        validateRegisterField(scenarioName,passwordLabelLocator);
+    }
+
+    public void assertPasswordTextBoxVisible(String scenarioName){
+        validateRegisterField(scenarioName,passwordTextBoxLocator);
+    }
+
+    public void assertConfirmPasswordLabelBoxVisible(String scenarioName){
+        validateRegisterField(scenarioName,confirmPasswordLabelLocator);
+    }
+
+    public void assertConfirmPasswordTextBoxVisible(String scenarioName){
+        validateRegisterField(scenarioName,confirmPasswordTextBoxLocator);
+    }
+
+    public void assertRegisterButtonVisible(String scenarioName){
+        validateRegisterField(scenarioName,registerButtonLocator);
+    }
+
+    public void assertCancelButtonVisible(String scenarioName){
+        validateRegisterField(scenarioName,cancelButtonLocator);
+    }
+
+    public void assertUserNameErrorMessageVisible(String scenarioName){
+        validateRegisterField(scenarioName,usernameErrorMessageLocator);
+    }
+
+    public void assertEmailErrorMessageVisible(String scenarioName){
+        validateRegisterField(scenarioName,emailErrorMessageLocator);
+    }
+
+    public void assertPasswordErrorMessageVisible(String scenarioName){
+        validateRegisterField(scenarioName,passwordErrorMessageLocator);
+    }
+
+    public void assertConfirmPasswordErrorMessageVisible(String scenarioName){
+        validateRegisterField(scenarioName,confirmPasswordErrorMessageLocator);
+    }
+
+    public void assertUserNameAlreadyTakenMessageVisible(String scenarioName,String username){
+        validateRegisterField(scenarioName,username,usernameDuplicateErrorMessageLocator);
+    }
+
+    public void assertEmailAlreadyTakenMessageVisible(String scenarioName){
+        validateRegisterField(scenarioName,emailDuplicateErrorMessageLocator);
+    }
+
+    public void assertPasswordDoesNotMatchMessageVisible(String scenarioName){
+        validateRegisterField(scenarioName,passwordDoNotMatchErrorMessageLocator);
+    }
+
+    public void validateRegisterField(String scenarioName,WebElement elem) {
+        try {
+            isElementVisible(driver, driverWait.until(ExpectedConditions.visibilityOf(elem)));
+        } catch (AssertionError assertionError) {
+            ScreenshotHelper screenshotHelper = new ScreenshotHelper(driver);
+            screenshotHelper.takeScreenshot(scenarioName);
+            // Rethrow the exception to mark the test as failed
+            String pathName = screenshotHelper.getScreenshotPath(scenarioName);
+            Reporter.log("<br><b>Failed test screenshot:</b> <a href='" + pathName + "'>Screenshot</a><br>");
+            throw assertionError;
+        }
+    }
+
+    public void validateRegisterField(String scenarioName,String text, String elem) {
+        WebElement element = stringReplaceAndConvertToWebElement(elem,text);
+        try {
+            isElementVisible(driver, driverWait.until(ExpectedConditions.visibilityOf(element)));
+        } catch (AssertionError assertionError) {
+            ScreenshotHelper screenshotHelper = new ScreenshotHelper(driver);
+            screenshotHelper.takeScreenshot(scenarioName);
+            // Rethrow the exception to mark the test as failed
+            String pathName = screenshotHelper.getScreenshotPath(scenarioName);
+            Reporter.log("<br><b>Failed test screenshot:</b> <a href='" + pathName + "'>Screenshot</a><br>");
+            throw assertionError;
+        }
+    }
 }
