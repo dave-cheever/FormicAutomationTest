@@ -306,7 +306,7 @@ public class CheckBoxPage extends BasePage {
         }
     }
 
-    public void AssertMiaFormatValidation(com.Formic.OF2.utils.Pojo.FormContentPojo graphResponse,String fieldId){
+    public void AssertMiaFormatValidation(com.Formic.OF2.utils.Pojo.FormContentPojo graphResponse,String fieldId,String scenarioName){
         lookForTheField(graphResponse,fieldId);
         if(CheckboxObject.strFormatRegex!=null&&CheckboxObject.strFormatRegex.equalsIgnoreCase(emailRegEx)){
             String email = emailAddressInputs();
@@ -319,7 +319,7 @@ public class CheckBoxPage extends BasePage {
                 inputs = FormatRegex.generateFormattedString(CheckboxObject.strFormatRegex);
                 if (!inputs.equalsIgnoreCase("")) {
                     mia.setTextToMia(graphResponse, fieldId, "!@#");
-                    mia.assertFormatMaskValidation(graphResponse,fieldId);
+                    mia.assertFormatMaskValidation(graphResponse,fieldId,scenarioName);
                     flag = true;
                 }
             }
@@ -328,11 +328,11 @@ public class CheckBoxPage extends BasePage {
                 inputs = FormatMask.formatDateTime(CheckboxObject.strFormatMask);
                 if(inputs!=null){
                     mia.setTextToMia(graphResponse,fieldId,"test");
-                    mia.assertDateTimeFormat(graphResponse,fieldId);
+                    mia.assertDateTimeFormat(graphResponse,fieldId,scenarioName);
                     flag = true;
                 }
             }
-            mia.processMiaInputsForValidation(graphResponse,fieldId,flag);
+            mia.processMiaInputsForValidation(graphResponse,fieldId,flag,"");
         }
     }
 
@@ -357,7 +357,7 @@ public class CheckBoxPage extends BasePage {
                 inputs = FormatMask.formatDateTime(CheckboxObject.strFormatMask);
                 if(inputs!=null){
                     hro.setTextToHro(graphResponse, fieldId, "test");
-                    hro.assertDateTimeFormat(graphResponse,fieldId);
+                    hro.assertDateTimeFormat(graphResponse,fieldId,"");
                     flag = true;
                 }
             }
@@ -393,9 +393,9 @@ public class CheckBoxPage extends BasePage {
                 //meaning this fieldId maybe disabled, and we need to enable it.
                 System.out.println(name+ " Needs to check if it's disabled");
                 checkListOfConditions(graphResponse,fieldId);
-                AssertMiaFormatValidation(graphResponse,fieldId);
+                AssertMiaFormatValidation(graphResponse,fieldId,"");
             }else if(!isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId)){
-                AssertMiaFormatValidation(graphResponse,fieldId);
+                AssertMiaFormatValidation(graphResponse,fieldId,"");
             }
         }
     }
@@ -504,11 +504,11 @@ public class CheckBoxPage extends BasePage {
                     checkListOfConditions(graphResponse,fieldId);
                     lookForTheField(graphResponse,fieldId);
                     System.out.println(CheckboxObject.checkboxName+ " Is enabled");
-                    mia.assertMiaMandatoryField(graphResponse,fieldId);
+                    mia.assertMiaMandatoryField(graphResponse,fieldId,"");
                 }else {
                     lookForTheField(graphResponse,fieldId);
                     System.out.println(CheckboxObject.checkboxName+ " Is enabled");
-                    mia.assertMiaMandatoryField(graphResponse,fieldId);
+                    mia.assertMiaMandatoryField(graphResponse,fieldId,"");
                 }
             }
         }
@@ -669,64 +669,64 @@ public class CheckBoxPage extends BasePage {
         validateInputsAreCorrect(graphResponse);
     }
 
-    public void test() throws Exception {
-        RulesGraphql rules = new RulesGraphql();
-        FormContentPojo graphResponse =  rules.getRules(projectId);
-        getAllFieldId(graphResponse);
-        String strListFieldName;
-        for (String fieldId: CheckboxObject.fieldId
-        ) {
-            strListFieldName = getFieldName(graphResponse,fieldId);
-            String strElementId = getElementIdByFieldName(graphResponse,strListFieldName);
-            CheckboxObject.singleFieldId = getFieldIdByObjectId(graphResponse,strElementId);
-            String strTypeName = getTypeNameByFieldId(graphResponse,CheckboxObject.singleFieldId);
-            lookForTheField(graphResponse,fieldId);
-            if(strTypeName!=null){
-                if(strTypeName.equalsIgnoreCase("HandwritingRecognitionObject")){
-                    FieldMetaData.getHroRules(graphResponse,CheckboxObject.singleFieldId);
-                    lookForTheField(graphResponse,CheckboxObject.singleFieldId);
-                    if(CheckboxObject.strFormatRegex!=null&&CheckboxObject.strFormatRegex.equalsIgnoreCase(emailRegEx)){
-                        String email = emailAddressInputs();
-                        hro.setTextToHro(graphResponse,CheckboxObject.singleFieldId,email);
-                    }else {
-                        hroInputs(graphResponse,CheckboxObject.singleFieldId);
-                    }
-                }else if(strTypeName.equalsIgnoreCase("TickboxGroup")){
-                    if(CheckboxMatrix.isFieldIdCheckBoxMatrix(graphResponse,CheckboxObject.singleFieldId)){
-                        getCheckboxRulesForMinimumAndMaximumInputs(graphResponse,CheckboxObject.singleFieldId);
-                        ArrayList<String> numberOfOptions = CheckboxMatrix.checkboxMatrixOptionsCount(graphResponse,CheckboxObject.singleFieldId);
-                        int numberOfItems = CheckboxMatrix.countNumberOfResponses(strElementId,numberOfOptions.size());
-                        CheckboxMatrix.clickWithinMinimumMaximumInput(graphResponse,CheckboxObject.minimum,CheckboxObject.maximum,numberOfOptions,numberOfItems);
-                    }else{
-                        getCheckboxRulesForMinimumAndMaximumInputs(graphResponse,CheckboxObject.singleFieldId);
-                        int numberOfItems = countCheckboxItems(strElementId);
-                        clickWithinMinimumMaximumInput(graphResponse,CheckboxObject.minimum,CheckboxObject.maximum,strElementId,numberOfItems);
-                    }
-                }else if(strTypeName.equalsIgnoreCase("ManualImageAreaText")){
-                    FieldMetaData.getMiaRules(graphResponse,CheckboxObject.singleFieldId);
-                    lookForTheField(graphResponse,CheckboxObject.singleFieldId);
-                    if(CheckboxObject.strFormatRegex!=null&&CheckboxObject.strFormatRegex.equalsIgnoreCase(emailRegEx)){
-                        String email = emailAddressInputs();
-                        mia.setTextToMia(graphResponse,CheckboxObject.singleFieldId,email);
-                    }else {
-                        miaInputs(graphResponse,CheckboxObject.singleFieldId);
-                    }
-                }else if(strTypeName.equalsIgnoreCase("PickList")){
-                    FieldMetaData.getMiaRules(graphResponse,CheckboxObject.singleFieldId);
-                    picklistInputs(graphResponse,CheckboxObject.singleFieldId);
-                }
-            }
-        }
-        sideMenuNavigation.clickSubmitButton();
-        String receipt = getProjectReceipt();
-        clickContinueButton();
-        clickSavedFormsButton();
-        Reporter.log("<b>Receipt code:<b/> "+receipt);
-        enterReceiptNumber(receipt);
-        clickGoButton();
-        System.out.println(receipt);
-        validateInputsAreCorrect(graphResponse);
-    }
+//    public void test() throws Exception {
+//        RulesGraphql rules = new RulesGraphql();
+//        FormContentPojo graphResponse =  rules.getRules(projectId);
+//        getAllFieldId(graphResponse);
+//        String strListFieldName;
+//        for (String fieldId: CheckboxObject.fieldId
+//        ) {
+//            strListFieldName = getFieldName(graphResponse,fieldId);
+//            String strElementId = getElementIdByFieldName(graphResponse,strListFieldName);
+//            CheckboxObject.singleFieldId = getFieldIdByObjectId(graphResponse,strElementId);
+//            String strTypeName = getTypeNameByFieldId(graphResponse,CheckboxObject.singleFieldId);
+//            lookForTheField(graphResponse,fieldId);
+//            if(strTypeName!=null){
+//                if(strTypeName.equalsIgnoreCase("HandwritingRecognitionObject")){
+//                    FieldMetaData.getHroRules(graphResponse,CheckboxObject.singleFieldId);
+//                    lookForTheField(graphResponse,CheckboxObject.singleFieldId);
+//                    if(CheckboxObject.strFormatRegex!=null&&CheckboxObject.strFormatRegex.equalsIgnoreCase(emailRegEx)){
+//                        String email = emailAddressInputs();
+//                        hro.setTextToHro(graphResponse,CheckboxObject.singleFieldId,email);
+//                    }else {
+//                        hroInputs(graphResponse,CheckboxObject.singleFieldId);
+//                    }
+//                }else if(strTypeName.equalsIgnoreCase("TickboxGroup")){
+//                    if(CheckboxMatrix.isFieldIdCheckBoxMatrix(graphResponse,CheckboxObject.singleFieldId)){
+//                        getCheckboxRulesForMinimumAndMaximumInputs(graphResponse,CheckboxObject.singleFieldId);
+//                        ArrayList<String> numberOfOptions = CheckboxMatrix.checkboxMatrixOptionsCount(graphResponse,CheckboxObject.singleFieldId);
+//                        int numberOfItems = CheckboxMatrix.countNumberOfResponses(strElementId,numberOfOptions.size());
+//                        CheckboxMatrix.clickWithinMinimumMaximumInput(graphResponse,CheckboxObject.minimum,CheckboxObject.maximum,numberOfOptions,numberOfItems);
+//                    }else{
+//                        getCheckboxRulesForMinimumAndMaximumInputs(graphResponse,CheckboxObject.singleFieldId);
+//                        int numberOfItems = countCheckboxItems(strElementId);
+//                        clickWithinMinimumMaximumInput(graphResponse,CheckboxObject.minimum,CheckboxObject.maximum,strElementId,numberOfItems);
+//                    }
+//                }else if(strTypeName.equalsIgnoreCase("ManualImageAreaText")){
+//                    FieldMetaData.getMiaRules(graphResponse,CheckboxObject.singleFieldId);
+//                    lookForTheField(graphResponse,CheckboxObject.singleFieldId);
+//                    if(CheckboxObject.strFormatRegex!=null&&CheckboxObject.strFormatRegex.equalsIgnoreCase(emailRegEx)){
+//                        String email = emailAddressInputs();
+//                        mia.setTextToMia(graphResponse,CheckboxObject.singleFieldId,email);
+//                    }else {
+//                        miaInputs(graphResponse,CheckboxObject.singleFieldId);
+//                    }
+//                }else if(strTypeName.equalsIgnoreCase("PickList")){
+//                    FieldMetaData.getMiaRules(graphResponse,CheckboxObject.singleFieldId);
+//                    picklistInputs(graphResponse,CheckboxObject.singleFieldId);
+//                }
+//            }
+//        }
+//        sideMenuNavigation.clickSubmitButton();
+//        String receipt = getProjectReceipt();
+//        clickContinueButton();
+//        clickSavedFormsButton();
+//        Reporter.log("<b>Receipt code:<b/> "+receipt);
+//        enterReceiptNumber(receipt);
+//        clickGoButton();
+//        System.out.println(receipt);
+//        validateInputsAreCorrect(graphResponse);
+//    }
 
     public void validateSavedInputsCheckbox() throws Exception {
         RulesGraphql rules = new RulesGraphql();
@@ -2110,7 +2110,7 @@ public class CheckBoxPage extends BasePage {
         lookForTheField(pojo,strFieldId);
         if(dataValidation.isFieldIdPickList(pojo,strFieldId)|| fieldValidation.isFieldIdMia(pojo,strFieldId)){
             if(CheckboxObject.minimum==1||CheckboxObject.minimum==0){
-                mia.assertMiaMandatoryField(pojo,strFieldId);
+                mia.assertMiaMandatoryField(pojo,strFieldId,"");
             }
         }else if (isFieldIdCheckBox(pojo,strFieldId)){
             if(CheckboxObject.minimum==1||CheckboxObject.minimum==0) {
@@ -2378,4 +2378,26 @@ public class CheckBoxPage extends BasePage {
         }
     }
     //#endregion
+
+    public void validateCheckboxMandatoryV2() throws Exception {
+        RulesGraphql rules = new RulesGraphql();
+        FormContentPojo graphResponse =  rules.getRules(projectId);
+        getAllFieldId(graphResponse);
+        sideMenuNavigation.clickSubmitButton();
+        for (String fieldId: CheckboxObject.fieldId
+        ) {
+            CheckboxObject.strFieldId = fieldId;
+            CheckboxObject.isMandatoryFieldTest = true;
+            if(getFieldItemRules(graphResponse, fieldId)&&!isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
+            {
+                if(isFieldIdInRoutingRules(graphResponse,fieldId)){
+                    System.out.println(CheckboxObject.checkboxName+ " Needs to check if it's disabled");
+                    checkListOfConditionsWithNoInputs(graphResponse,fieldId);
+                }else {
+                    System.out.println(CheckboxObject.checkboxName+ " Is enabled");
+                    AssertMandatoryFieldsWithoutInputs(graphResponse,fieldId);
+                }
+            }
+        }
+    }
 }

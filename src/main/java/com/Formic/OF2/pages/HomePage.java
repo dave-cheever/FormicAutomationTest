@@ -30,20 +30,20 @@ public class HomePage extends BasePage {
     }
 
     public void selectProject(String project, String scenarioName){
-        Reporter.log("<b>Navigating to test website.<b/>");
+        Reporter.log("<b>Navigating to test website.</b>");
         visit("https://formic-onlineforms-test.azurewebsites.net/");
         WebElement projectElement = stringReplaceAndConvertToWebElement(projectNameLocator,project);
-        Reporter.log("<b>Scroll through the project list to find the project: <b/>"+project);
+        Reporter.log("Scroll through the project list to find the project: "+project);
         scrollElementIntoView(driver,projectElement);
         try{
             clickWithTries(projectElement,5);
-            Reporter.log("<b>Click project name: <b/>"+project,true);
+            Reporter.log("Click project name: "+project,true);
         }catch (AssertionError assertionError){
             ScreenshotHelper screenshotHelper = new ScreenshotHelper(driver);
             screenshotHelper.takeScreenshot(scenarioName);
             // Rethrow the exception to mark the test as failed
             String pathName = screenshotHelper.getScreenshotPath(scenarioName);
-            Reporter.log("<br><b>Failed test screenshot:</b> <a href='" + pathName + "'>Screenshot</a><br>");
+            Reporter.log("Failed test screenshot: <a href='" + pathName + "'>Screenshot</a>");
             throw assertionError;
         }
     }

@@ -59,6 +59,7 @@ public class CheckboxObject {
     public static String strDerivation;
 
     public static ArrayList<String> fieldId = new ArrayList<>();
+    public static ArrayList<String> CheckBoxFieldIdMandatory = new ArrayList<>();
     public static ArrayList<String> checkboxInputs = new ArrayList<>();
     public static ArrayList<String> hasValueList = new ArrayList<>();
     public static boolean isMandatoryFieldTest;

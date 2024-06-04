@@ -1,10 +1,9 @@
 package com.Formic.OF2.pages;
 
-import com.Formic.OF2.utils.FormatMask;
-import com.Formic.OF2.utils.InputLimitExtractor;
-import com.Formic.OF2.utils.CheckboxObject;
+import com.Formic.OF2.utils.*;
 import com.Formic.OF2.utils.Pojo.FormContentPojo;
 import com.Formic.OF2.test.BasePage;
+import com.Formic.OF2.utils.Pojo.RulesGraphql;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -23,7 +22,10 @@ public class HandwritingRecognitionObject extends BasePage {
     }
 
 //    CheckBoxPage chk = new CheckBoxPage(1);
-
+    int projectId = 137;
+    private String strFormatMask;
+    String emailRegEx = "^[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.][a-zA-Z0-9]+$";
+    public SideMenuNavigation sideMenuNavigation = new SideMenuNavigation(driver);
     static String hroInputLocator = "//div[@data-object-id='$TEXT']/input";
     static String hroValidationMessageLocator = "//div[@data-object-id='$TEXT']/div/div[1]";
     static String hroValidationMessageMandatoryLocator = "//div[@data-object-id='$TEXT']/div/div[1]";
@@ -39,15 +41,41 @@ public class HandwritingRecognitionObject extends BasePage {
         recordInputsFromHro(elementId,strText);
     }
 
-    public void assertDateTimeFormat(FormContentPojo pojo, String strFieldId){
+    public void assertDateTimeFormat(FormContentPojo pojo, String strFieldId,String scenarioName){
         String elementId = getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(hroValidationMessageLocator,elementId);
         WebElement element = stringToWebElement(elem);
-        String format = CheckboxObject.strFormatMask.toUpperCase();
+        String format = strFormatMask.toUpperCase();
         format = format.replace("HH:MM:SS","HH:mm:ss");
         format = format.replace("HH:MM","HH:mm");
         format = format.replace("MM:SS","mm:ss");
-        Assert.assertEquals(element.getText(),"Please follow date format: ("+format+").");
+
+        try{
+            Assert.assertEquals(element.getText(),"Please follow date format: ("+format+").");
+        }catch (AssertionError assertionError){
+            ScreenshotHelper screenshotHelper = new ScreenshotHelper(driver);
+            screenshotHelper.takeScreenshot(scenarioName);
+            // Rethrow the exception to mark the test as failed
+            String pathName = screenshotHelper.getScreenshotPath(scenarioName);
+            Reporter.log("<br><b>Failed test screenshot:</b> <a href='" + pathName + "'>Screenshot</a><br>");
+            throw assertionError;
+        }
+    }
+
+    public void assertEmailFormat(FormContentPojo pojo, String strFieldId,String scenarioName){
+        String elementId = getObjectIdFromFieldId(pojo,strFieldId);
+        String elem = stringReplace(hroValidationMessageLocator,elementId);
+        WebElement element = stringToWebElement(elem);
+        try{
+            Assert.assertEquals(element.getText(),"this must be a valid email");
+        }catch (AssertionError assertionError){
+            ScreenshotHelper screenshotHelper = new ScreenshotHelper(driver);
+            screenshotHelper.takeScreenshot(scenarioName);
+            // Rethrow the exception to mark the test as failed
+            String pathName = screenshotHelper.getScreenshotPath(scenarioName);
+            Reporter.log("<br><b>Failed test screenshot:</b> <a href='" + pathName + "'>Screenshot</a><br>");
+            throw assertionError;
+        }
     }
 
     public void assertFormatMaskValidation(FormContentPojo pojo, String strFieldId){
@@ -62,21 +90,38 @@ public class HandwritingRecognitionObject extends BasePage {
         String inputs = alphaInputs(graphResponse, strFieldId, InputLimitExtractor.extractInputLimit(CheckboxObject.strFormatRegex));
         setTextToHro(graphResponse, strFieldId, inputs);
         if(CheckboxObject.strFormatMask!=null&&CheckboxObject.strFormatRegex!=null){
-            assertHroValidationMessageNumeric(graphResponse, strFieldId);
+            assertHroValidationMessageNumeric(graphResponse, strFieldId,"","");
         }else {
             assertNoValidationMessage(getObjectIdFromFieldId(graphResponse,strFieldId),getFieldName(graphResponse,strFieldId));
         }
+    }
+
+//    public void AssertNumericDataTypeInputs(FormContentPojo graphResponse,  String strFieldId) {
+//
+//        assertHroValidationMessageNumeric(graphResponse, strFieldId,"","");
+//
+//    }
+
+    public void invalidNumericInput(FormContentPojo graphResponse,  String strFieldId, int max) {
+        String inputs = alphaInputs(graphResponse, strFieldId, max);
+        setTextToHro(graphResponse, strFieldId, inputs);
     }
 
     public void processAlphaNumericDataType(FormContentPojo graphResponse,  String strFieldId) {
         String inputs = specialCharacterInputs(graphResponse, strFieldId);
         setTextToHro(graphResponse, strFieldId, inputs);
         if(CheckboxObject.strFormatMask!=null&&CheckboxObject.strFormatRegex!=null){
-            assertHroValidationMessageAlphaNumeric(graphResponse, strFieldId);
+            assertHroValidationMessageAlphaNumeric(graphResponse, strFieldId,"","");
         }else {
             assertNoValidationMessage(getObjectIdFromFieldId(graphResponse,strFieldId),getFieldName(graphResponse,strFieldId));
         }
     }
+
+    public void invalidAlphaNumericInput(FormContentPojo graphResponse,  String strFieldId) {
+        String inputs = specialCharacterInputs(graphResponse, strFieldId);
+        setTextToHro(graphResponse, strFieldId, inputs);
+    }
+
 
     public void processAlphaDataType(FormContentPojo graphResponse, String strFieldId) {
         String inputs = numericInputs(graphResponse, strFieldId, InputLimitExtractor.extractInputLimit(CheckboxObject.strFormatRegex));
@@ -101,7 +146,16 @@ public class HandwritingRecognitionObject extends BasePage {
     public void processDateTimeDataType(FormContentPojo graphResponse,String strFieldId) {
         String inputs =  FormatMask.formatDateTime(CheckboxObject.strFormatMask);
         setTextToHro(graphResponse, strFieldId, inputs);
-        //Create assert for date time
+    }
+
+    public void InvalidDateTimeInputs(FormContentPojo graphResponse,String strFieldId) {
+//        String inputs =  FormatMask.formatDateTime(strFormatMask);
+        setTextToHro(graphResponse, strFieldId, "!@#");
+    }
+
+    public void invalidEmailInputs(FormContentPojo graphResponse,String strFieldId){
+//        String email = emailAddressInputs();
+        setTextToHro(graphResponse, strFieldId, "email");
     }
 
     public static void recordInputsFromHro(String strElementId, String strHroInputs){
@@ -116,13 +170,23 @@ public class HandwritingRecognitionObject extends BasePage {
         return element.getAttribute("value");
     }
 
-    public void assertHroValidationMessageNumeric(FormContentPojo pojo, String strFieldId){
+    public void assertHroValidationMessageNumeric(FormContentPojo pojo, String strFieldId,String name, String scenarioName){
         String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(hroValidationMessageLocator,elementId);
         WebElement element = stringToWebElement(elem);
         scrollElementIntoView(driver,element);
         Reporter.log("<b>Confirm correct validation message should be:</b> This field must be a number.");
-        Assert.assertEquals(element.getText(),"This field must be a number.","The HRO "+ CheckboxObject.checkboxName+" has a validation message of "+element.getText()+" instead of - This field must be a number.");
+
+        try{
+            Assert.assertEquals(element.getText(),"This field must be a number.","The HRO "+ name+" has a validation message of "+element.getText()+" instead of - This field must be a number.");
+        }catch (AssertionError assertionError){
+            ScreenshotHelper screenshotHelper = new ScreenshotHelper(driver);
+            screenshotHelper.takeScreenshot(scenarioName);
+            // Rethrow the exception to mark the test as failed
+            String pathName = screenshotHelper.getScreenshotPath(scenarioName);
+            Reporter.log("<br><b>Failed test screenshot:</b> <a href='" + pathName + "'>Screenshot</a><br>");
+            throw assertionError;
+        }
     }
 
     public void assertHro(FormContentPojo pojo, String strFieldId){
@@ -187,10 +251,10 @@ public class HandwritingRecognitionObject extends BasePage {
         return result;
     }
 
-    public void assertHroValidationMessageAlphaNumeric(FormContentPojo pojo, String strFieldId){
+    public void assertHroValidationMessageAlphaNumeric(FormContentPojo pojo, String strFieldId,String name, String scenarioName){
         String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(hroValidationMessageLocator,elementId);
-        Reporter.log("<b>Confirm correct validation message should be:</b> This field must match the following format: ("+getNumberOfUnderscore()+").");
+        Reporter.log("<b>Confirm correct validation message should be:</b> This field must match the following format: ("+strFormatMask+").");
         WebElement element;
         try {
              Assert.assertTrue(isElementPresentBy(By.xpath(elem)),"Field: "+getFieldName(pojo, strFieldId)+" - Validation message not visible.");
@@ -198,8 +262,18 @@ public class HandwritingRecognitionObject extends BasePage {
             throw new Error("Element not found: " + e.getMessage());
         }
         element = stringToWebElement(elem);
-        Assert.assertEquals(element.getText(),"This field must match the following format: ("+getNumberOfUnderscore()+").",
-                "The HRO "+ CheckboxObject.checkboxName+" has a validation message of "+element.getText()+" instead of - This field must match the following format: (?"+getNumberOfUnderscore()+").");
+
+        try{
+            Assert.assertEquals(element.getText(),"This field must match the following format: ("+strFormatMask+").",
+                    "The HRO "+ name+" has a validation message of "+element.getText()+" instead of - This field must match the following format: (?"+strFormatMask+").");
+        }catch (AssertionError assertionError){
+            ScreenshotHelper screenshotHelper = new ScreenshotHelper(driver);
+            screenshotHelper.takeScreenshot(scenarioName);
+            // Rethrow the exception to mark the test as failed
+            String pathName = screenshotHelper.getScreenshotPath(scenarioName);
+            Reporter.log("<br><b>Failed test screenshot:</b> <a href='" + pathName + "'>Screenshot</a><br>");
+            throw assertionError;
+        }
     }
 
     public void assertHroValidationMessageAlphabet(FormContentPojo pojo, String strFieldId){
@@ -287,6 +361,200 @@ public class HandwritingRecognitionObject extends BasePage {
             }
             Reporter.log("<b>input number: </b>"+ num);
             setTextToHro(pojo,strFieldId,num);
+        }
+    }
+
+
+    //Create test for HRO Numeric *
+    //Create test for HRO AlphaNumeric *
+    //Create test for HRO Date Time *
+    //Create test for HRO email
+    //Create test for HRO String Format
+    //Create test for HRO Alpha
+    //Create test for HRO Mandatory Fields
+    //Create test for HRO Maximum inputs allowed
+
+    public void hroNumericInputsValidation(String fieldId, String mandatory, String name, String max, String scenarioName) throws Exception {
+        RulesGraphql rules = new RulesGraphql();
+        FormContentPojo graphResponse = rules.getRules(projectId);
+        sideMenuNavigation.clickSubmitButton();
+        RoutingRules.enableDisabledFieldByFieldId(graphResponse,fieldId);
+        lookForTheField(graphResponse,fieldId);
+        invalidNumericInput(graphResponse,fieldId, Integer.parseInt(max));
+        assertHroValidationMessageNumeric(graphResponse,fieldId,name,scenarioName);
+    }
+
+    public void hroAlphaNumericInputsValidation(String fieldId, String mandatory, String name, String max,String formatMask, String scenarioName) throws Exception {
+        RulesGraphql rules = new RulesGraphql();
+        strFormatMask = formatMask;
+        FormContentPojo graphResponse = rules.getRules(projectId);
+        sideMenuNavigation.clickSubmitButton();
+        RoutingRules.enableDisabledFieldByFieldId(graphResponse,fieldId);
+        lookForTheField(graphResponse,fieldId);
+        invalidAlphaNumericInput(graphResponse, fieldId);
+        assertHroValidationMessageAlphaNumeric(graphResponse,fieldId,name,scenarioName);
+    }
+
+    public void hroDateTimeInputsValidation(String fieldId, String mandatory, String name,String formatMask, String scenarioName) throws Exception {
+        RulesGraphql rules = new RulesGraphql();
+        strFormatMask = formatMask;
+        FormContentPojo graphResponse = rules.getRules(projectId);
+        sideMenuNavigation.clickSubmitButton();
+        RoutingRules.enableDisabledFieldByFieldId(graphResponse,fieldId);
+        lookForTheField(graphResponse,fieldId);
+        InvalidDateTimeInputs(graphResponse,fieldId);
+        assertDateTimeFormat(graphResponse,fieldId,scenarioName);
+    }
+
+    public void hroEmailFormatInputsValidation(String fieldId, String mandatory, String name, String scenarioName) throws Exception {
+        RulesGraphql rules = new RulesGraphql();
+        FormContentPojo graphResponse = rules.getRules(projectId);
+        sideMenuNavigation.clickSubmitButton();
+        RoutingRules.enableDisabledFieldByFieldId(graphResponse,fieldId);
+        lookForTheField(graphResponse, fieldId);
+        invalidEmailInputs(graphResponse,fieldId);
+        assertEmailFormat(graphResponse,fieldId,scenarioName);
+    }
+
+    public void hroStringFormatInputsValidation(String fieldId) throws Exception {
+        RulesGraphql rules = new RulesGraphql();
+        FormContentPojo graphResponse = rules.getRules(projectId);
+        sideMenuNavigation.clickSubmitButton();
+    }
+
+    public void hroAlphaInputsValidation(String fieldId) throws Exception {
+        RulesGraphql rules = new RulesGraphql();
+        FormContentPojo graphResponse = rules.getRules(projectId);
+        sideMenuNavigation.clickSubmitButton();
+        processAlphaDataType(graphResponse, fieldId);
+    }
+
+    public void hroMandatoryValidation(String fieldId) throws Exception {
+        RulesGraphql rules = new RulesGraphql();
+        FormContentPojo graphResponse = rules.getRules(projectId);
+        sideMenuNavigation.clickSubmitButton();
+        assertHro(graphResponse, fieldId);
+    }
+
+    public void hroMaximumInputsValidation(String fieldId) throws Exception {
+        RulesGraphql rules = new RulesGraphql();
+        FormContentPojo graphResponse = rules.getRules(projectId);
+        sideMenuNavigation.clickSubmitButton();
+    }
+
+    public void test(String fieldId) throws Exception {
+        RulesGraphql rules = new RulesGraphql();
+        FormContentPojo graphResponse = rules.getRules(projectId);
+        sideMenuNavigation.clickSubmitButton();
+        CheckboxObject.lessThanMinimumInputs = true;
+        CheckboxObject.strFieldId = fieldId;
+        String name = CheckboxObject.checkboxName;
+        FieldMetaData.getHroRules(graphResponse, fieldId);
+
+        if (CheckboxObject.strFormatRegex != null) {
+            //It will enter this if block if the fieldId is not an email
+            if (!CheckboxObject.strFormatRegex.equalsIgnoreCase(emailRegEx)) {
+                //meaning this fieldId maybe disabled, and we need to enable it.
+
+                lookForTheField(graphResponse, fieldId);
+                if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("NUMERIC")) {
+                    numericInputsBeyondTheMaximumAllowed(graphResponse, CheckboxObject.strFieldId, identifyMaximumInputsByFieldId());
+                } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("ALPHA_NUMERIC")) {
+                    FormatRegex.RegexType strDataType = FormatRegex.getRegexType(CheckboxObject.strFormatRegex);
+                    if (strDataType.equals(FormatRegex.RegexType.ONLY_LETTERS)) {
+                        alphaInputsBeyondTheMaximumAllowed(graphResponse, CheckboxObject.strFieldId, identifyMaximumInputsByFieldId());
+                    } else {
+                        numericInputsBeyondTheMaximumAllowed(graphResponse, CheckboxObject.strFieldId, identifyMaximumInputsByFieldId());
+                    }
+                } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("DATE_TIME")) {
+
+                }
+                if (CheckboxObject.strFormatRegex != null && CheckboxObject.strFormatMask != null) {
+                    assertHro(graphResponse, fieldId);
+                } else {
+                    AssertHroFormatValidation(graphResponse, fieldId);
+                }
+            } else if (CheckboxObject.strFormatRegex.equalsIgnoreCase(emailRegEx)) {
+                //This is where the email inputs started
+            } else {
+                //Formatted String
+                String inputs;
+                boolean flag = false;
+                if (CheckboxObject.strFormatRegex != null) {
+                    inputs = FormatRegex.generateFormattedString(CheckboxObject.strFormatRegex);
+                    if (!inputs.equalsIgnoreCase("")) {
+                        setTextToHro(graphResponse, fieldId, inputs);
+                        flag = true;
+                    }
+                }
+
+                //Date Time
+                if (!flag) {
+                    inputs = FormatMask.formatDateTime(CheckboxObject.strFormatMask);
+                    if (inputs != null) {
+                        setTextToHro(graphResponse, fieldId, inputs);
+                        flag = true;
+                    }
+                }
+
+                if (!flag) {
+                    if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("NUMERIC")) {
+                        numericInputsBeyondTheMaximumAllowed(graphResponse, CheckboxObject.strFieldId, identifyMaximumInputsByFieldId());
+                    } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("ALPHA_NUMERIC")) {
+                        FormatRegex.RegexType strDataType = FormatRegex.getRegexType(CheckboxObject.strFormatRegex);
+                        if (strDataType.equals(FormatRegex.RegexType.ONLY_LETTERS)) {
+                            alphaInputsBeyondTheMaximumAllowed(graphResponse, CheckboxObject.strFieldId, identifyMaximumInputsByFieldId());
+                        } else {
+                            numericInputsBeyondTheMaximumAllowed(graphResponse, CheckboxObject.strFieldId, identifyMaximumInputsByFieldId());
+                        }
+                    }
+                    if (CheckboxObject.strFormatRegex != null && CheckboxObject.strFormatMask != null) {
+                        assertHro(graphResponse, fieldId);
+                    } else {
+                        AssertHroFormatValidation(graphResponse, fieldId);
+                    }
+                }
+            }
+        }
+    }
+
+    public void AssertHroFormatValidation(FormContentPojo graphResponse, String fieldId){
+        lookForTheField(graphResponse,fieldId);
+        if(CheckboxObject.strFormatRegex!=null&&CheckboxObject.strFormatRegex.equalsIgnoreCase(emailRegEx)){
+            String email = emailAddressInputs();
+            setTextToHro(graphResponse,fieldId,email);
+        }else {
+            String inputs;
+            boolean flag = false;
+            if (CheckboxObject.strFormatRegex != null) {
+                inputs = FormatRegex.generateFormattedString(CheckboxObject.strFormatRegex);
+                if (!inputs.equalsIgnoreCase("")) {
+                    setTextToHro(graphResponse, fieldId, "!@#");
+                    assertFormatMaskValidation(graphResponse,fieldId);
+                    flag = true;
+                }
+            }
+
+            if (CheckboxObject.strFormatMask!=null&&!flag){
+                inputs = FormatMask.formatDateTime(CheckboxObject.strFormatMask);
+                if(inputs!=null){
+                    setTextToHro(graphResponse, fieldId, "test");
+                    assertDateTimeFormat(graphResponse,fieldId,"");
+                    flag = true;
+                }
+            }
+
+            if (CheckboxObject.strDataTypeNew != null&&!flag) {
+                if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("NUMERIC")) {
+                    processNumericDataType(graphResponse, fieldId);
+                } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("ALPHA_NUMERIC")) {
+                    processAlphaNumericDataType(graphResponse, fieldId);
+                } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("ALPHA")) {
+                    processAlphaDataType(graphResponse, fieldId);
+                } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("DATE_TIME")) {
+                    processDateTimeDataType(graphResponse,fieldId);
+                }
+            }
         }
     }
 }

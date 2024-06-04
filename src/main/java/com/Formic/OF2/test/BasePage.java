@@ -1,5 +1,6 @@
 package com.Formic.OF2.test;
 
+import com.Formic.OF2.pages.CheckBoxPageV2;
 import com.Formic.OF2.utils.CheckboxObject;
 import com.Formic.OF2.utils.Pojo.FormContentPojo;
 import com.Formic.OF2.utils.ScreenshotHelper;
@@ -28,7 +29,7 @@ public class BasePage {
 
     public BasePage(WebDriver driver){
         this.driver = driver;
-        driverWait = new WebDriverWait(driver,Duration.ofSeconds(60));
+        driverWait = new WebDriverWait(driver,Duration.ofSeconds(15));
         PageFactory.initElements(driver, this);
     }
 
@@ -105,6 +106,19 @@ public class BasePage {
             return null;
         }
     }
+
+    public static void waitForPageToLoad(){
+        String test = "//a[@id='maincontent']//following-sibling::div/div/div";
+        boolean flag = false;
+        while(flag!=true){
+            int num = driver.findElements(By.xpath(test)).size();
+            if(num>1){
+                break;
+            }
+        }
+        sleep(2000);
+    }
+
     public static void lookForTheField(FormContentPojo contentPojo, String strFieldId) {
         Integer currentPage = getCurrentPage();
         int pageCounter = 0;
@@ -133,6 +147,7 @@ public class BasePage {
                     }
                 }
             }
+            CheckBoxPageV2.waitForPageToLoad();
             if(currentPage < pageCounter){
                 int nextPageCounter = pageCounter - currentPage;
                 for(int x = 1; x<=nextPageCounter; ++x){
@@ -181,6 +196,7 @@ public class BasePage {
         }
         return fieldName;
     }
+
 
     public void enterTextWithDelay(WebElement element, String textToEnter, int milliseconds){
         driverWait.until(ExpectedConditions.visibilityOf(element));
@@ -393,7 +409,7 @@ public class BasePage {
         System.out.println("element removed");
     }
 
-    protected void sleep(int milliseconds){
+    protected static void sleep(int milliseconds){
         try{
             Thread.sleep(milliseconds);
         }catch (InterruptedException e){
@@ -407,6 +423,16 @@ public class BasePage {
     protected static void scrollElementIntoView(WebDriver driver, WebElement element) {
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("arguments[0].scrollIntoView({block: 'center'});", element);
+    }
+
+    protected static void scrollElementIntoView(WebDriver driver, By locator) {
+        try {
+            WebElement element = driverWait.until(ExpectedConditions.presenceOfElementLocated(locator));
+            JavascriptExecutor js = (JavascriptExecutor) driver;
+            js.executeScript("arguments[0].scrollIntoView({block: 'center'});", element);
+        } catch (Exception e) {
+            System.out.println("Error scrolling to element: " + e.getMessage());
+        }
     }
 
     // Check for element's visibility
