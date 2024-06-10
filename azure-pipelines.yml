@@ -1,34 +1,57 @@
-#Multi-configuration and multi-agent job options are not exported to YAML. Configure these options using documentation guidance: https://docs.microsoft.com/vsts/pipelines/process/phases
-
 pool:
   name: Azure Pipelines
+  vmImage: 'windows-latest'
   demands: maven
 
-#Your build pipeline references an undefined variable named ‘Parameters.mavenPOMFile’. Create or edit the build pipeline for this YAML file, define the variable on the Variables tab. See https://go.microsoft.com/fwlink/?linkid=865972
-
 steps:
-- task: Maven@3
-  displayName: 'Maven pom.xml'
-  inputs:
-    mavenPomFile: 'pom.xml'
-    goals: 'test compile'
-    testResultsFiles: '**/target/surefire-reports/junitreports/*.xml'
-    testRunTitle: 'Test Run sample'
-    allowBrokenSymlinks: false
-    jdkVersionOption: 1.17
+  - task: Maven@3
+    displayName: 'Maven pom.xml'
+    inputs:
+      mavenPomFile: 'pom.xml'
+      goals: 'test compile'
+      testResultsFiles: '**/target/surefire-reports/junitreports/*.xml'
+      testRunTitle: 'Test Run sample'
+      allowBrokenSymlinks: false
+      jdkVersionOption: 1.17
 
-- task: CopyFiles@2
-  displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
-  inputs:
-    SourceFolder: src
-    Contents: '**/*.jar'
-    TargetFolder: '$(build.artifactstagingdirectory)'
-    CleanTargetFolder: true
-  condition: succeededOrFailed()
+  - task: CopyFiles@2
+    displayName: 'Copy Files to: $(Build.Artifactstagingdirectory)/target'
+    inputs:
+      SourceFolder: src
+      Contents: '**/*.jar'
+      TargetFolder: '$(build.DefaultWorkingDirectory)/target'
+      CleanTargetFolder: true
+    condition: succeededOrFailed()
 
-- task: PublishBuildArtifacts@1
-  displayName: 'Publish Artifact: drop'
-  inputs:
-    PathtoPublish: '$(build.artifactstagingdirectory)'
-  condition: succeededOrFailed()
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: drop'
+    inputs:
+      pathToPublish: 'target'
+    condition: succeededOrFailed()
+
+  - task: PublishTestResults@2
+    displayName: 'Publish Test Results'
+    inputs:
+      testResultsFiles: '**/TEST-*.xml'
+      failTaskOnFailedTests: true
+      mergeTestResults: false
+      testRunTitle: 'Regression Test'
+    condition: succeededOrFailed()
+
+  - task: CopyFiles@2
+    displayName: 'Copy Screenshots to: $(Build.ArtifactStagingDirectory)/screenShots'
+    inputs:
+      SourceFolder: screenShots
+      Contents: '*'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)/screenShots'
+      CleanTargetFolder: true
+    condition: succeededOrFailed()
+
+  - task: PublishBuildArtifacts@1
+    inputs:
+      pathToPublish: '$(Build.ArtifactStagingDirectory)/screenShots'
+      ArtifactName: 'drop'
+      PublishLocation: 'Container'
+      TargetPath: 'screenShotImages'
+    condition: always()
 

@@ -4,7 +4,7 @@ import java.util.regex.Pattern;
 
 public class InputLimitExtractor {
     public static int extractInputLimit(String formatRegex) {
-        if(formatRegex!=null&&formatRegex!=""){
+        if(formatRegex!=null&&!formatRegex.isEmpty()){
             Pattern pattern = Pattern.compile("\\{\\d+,\\d+\\}");
             Matcher matcher = pattern.matcher(formatRegex);
 

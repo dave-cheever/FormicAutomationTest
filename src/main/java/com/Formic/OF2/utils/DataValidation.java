@@ -224,8 +224,6 @@ public class DataValidation extends BasePage {
                 if(object.getFieldId()!=null&&object.getFieldId().equalsIgnoreCase(strFieldId)){
                     if(object.getTypename().equalsIgnoreCase("picklist")){
                         result = true;
-                    }else{
-                        result = false;
                     }
                 }
             }

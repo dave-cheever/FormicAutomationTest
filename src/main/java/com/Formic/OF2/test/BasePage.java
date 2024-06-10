@@ -1,7 +1,9 @@
 package com.Formic.OF2.test;
 
+import com.Formic.OF2.pages.CheckBoxPageV2;
 import com.Formic.OF2.utils.CheckboxObject;
 import com.Formic.OF2.utils.Pojo.FormContentPojo;
+import com.Formic.OF2.utils.ScreenshotHelper;
 import org.apache.commons.lang3.StringUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.PageFactory;
@@ -48,13 +50,33 @@ public class BasePage {
         executeJavascript(element,"arguments[0].click();");
     }
 
-    public static void click(WebElement element){
-        try{
-            driverWait.until(ExpectedConditions.elementToBeClickable(element));
-            element.click();
-        }catch (Exception e){
-            Reporter.log("Element not visible. ");
+    public static void clickWithTries(WebElement element,int maxRetries) {
+        for (int i = 0; i < maxRetries; i++) {
+            try {
+                driverWait.until(ExpectedConditions.elementToBeClickable(element));
+                scrollElementIntoView(driver,element);
+                element.click();
+                break;
+            } catch (Exception e) {
+                // Print exception details (you might want to log this)
+                System.out.println("Attempt " + (i + 1) + " failed: " + e.getMessage());
+                // If this is the last attempt, throw the exception to fail the test
+                if (i == maxRetries - 1) {
+                    Reporter.log("Element not visible. ");
+                    throw e;
+                }
+            }
         }
+    }
+
+    public static void click(WebElement element) {
+            try {
+                driverWait.until(ExpectedConditions.elementToBeClickable(element));
+                element.click();
+            } catch (Exception e) {
+
+                Reporter.log("Element not visible. ");
+            }
     }
 
     public static void enterText(WebElement element, String textToEnter){
@@ -84,6 +106,19 @@ public class BasePage {
             return null;
         }
     }
+
+    public static void waitForPageToLoad(){
+        String test = "//a[@id='maincontent']//following-sibling::div/div/div";
+        boolean flag = false;
+        while(flag!=true){
+            int num = driver.findElements(By.xpath(test)).size();
+            if(num>1){
+                break;
+            }
+        }
+        sleep(2000);
+    }
+
     public static void lookForTheField(FormContentPojo contentPojo, String strFieldId) {
         Integer currentPage = getCurrentPage();
         int pageCounter = 0;
@@ -112,6 +147,7 @@ public class BasePage {
                     }
                 }
             }
+            CheckBoxPageV2.waitForPageToLoad();
             if(currentPage < pageCounter){
                 int nextPageCounter = pageCounter - currentPage;
                 for(int x = 1; x<=nextPageCounter; ++x){
@@ -160,6 +196,7 @@ public class BasePage {
         }
         return fieldName;
     }
+
 
     public void enterTextWithDelay(WebElement element, String textToEnter, int milliseconds){
         driverWait.until(ExpectedConditions.visibilityOf(element));
@@ -234,10 +271,10 @@ public class BasePage {
         return elementOne;
     }
 
-    public static WebElement convertByToWebElement(String element){
+    public static WebElement convertToWebElement(String element){
         By elem = By.xpath(element);
 //        scrollElementIntoView(driver,driver.findElement(elem));
-        WebElement webElem = driverWait.until(ExpectedConditions.presenceOfElementLocated(elem));
+        WebElement webElem = driverWait.until(ExpectedConditions.visibilityOfElementLocated(elem));
         return webElem;
     }
 
@@ -295,7 +332,7 @@ public class BasePage {
 
     public static WebElement stringReplaceAndConvertToWebElement(String elem, String stringToReplace){
         elem = stringReplace(elem,stringToReplace);
-        WebElement element = convertByToWebElement(elem);
+        WebElement element = convertToWebElement(elem);
         return element;
     }
 
@@ -372,7 +409,7 @@ public class BasePage {
         System.out.println("element removed");
     }
 
-    protected void sleep(int milliseconds){
+    protected static void sleep(int milliseconds){
         try{
             Thread.sleep(milliseconds);
         }catch (InterruptedException e){
@@ -386,6 +423,16 @@ public class BasePage {
     protected static void scrollElementIntoView(WebDriver driver, WebElement element) {
         JavascriptExecutor js = (JavascriptExecutor) driver;
         js.executeScript("arguments[0].scrollIntoView({block: 'center'});", element);
+    }
+
+    protected static void scrollElementIntoView(WebDriver driver, By locator) {
+        try {
+            WebElement element = driverWait.until(ExpectedConditions.presenceOfElementLocated(locator));
+            JavascriptExecutor js = (JavascriptExecutor) driver;
+            js.executeScript("arguments[0].scrollIntoView({block: 'center'});", element);
+        } catch (Exception e) {
+            System.out.println("Error scrolling to element: " + e.getMessage());
+        }
     }
 
     // Check for element's visibility
@@ -527,21 +574,24 @@ public class BasePage {
     }
 
     protected void waitUntilElementIsPresent(WebElement element, int millisecondsToStopWaiting) throws TimeoutException, InterruptedException {
-        long currentTime = System.currentTimeMillis();
-        long b = 0;
-        while(true) {
-            if(b == millisecondsToStopWaiting){
-                throw new TimeoutException("Element is still present");
-            }
+        long waitTimeInSeconds = Math.round(millisecondsToStopWaiting / 1000.0);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(waitTimeInSeconds));
+        wait.until(ExpectedConditions.visibilityOf(element));
 
-            Thread.sleep(500);   //sleep half a seconds
-            if (isElementVisible(driver,element)){
-                break;
-            }
-            else{
-                b+=500;
-            }
-        }
+//        long b = 0;
+//        while(true) {
+//            if(b == millisecondsToStopWaiting){
+//                throw new TimeoutException("Element is still present");
+//            }
+//
+//            Thread.sleep(500);   //sleep half a seconds
+//            if (isElementVisible(driver,element)){
+//                break;
+//            }
+//            else{
+//                b+=500;
+//            }
+//        }
     }
 
     public static String getFieldIdByObjectId(FormContentPojo pojo, String strObjectId){

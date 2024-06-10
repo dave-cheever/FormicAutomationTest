@@ -29,7 +29,7 @@ public class FieldMetaData extends BasePage {
                     CheckboxObject.maximum = fields.getResponses().getMaximum();
                 }
                 Reporter.log("<b>Mandatory: </b>"+CheckboxObject.mandatory);
-                Reporter.log("<b>Field Name: </b>"+CheckboxObject.checkboxName);
+                Reporter.log("<b>Field Name: </b>"+getFieldName(pojo,strFieldId));
                 Reporter.log("<b>Format Mask: </b>"+CheckboxObject.strFormatMask);
                 Reporter.log("<b>Format Regex: </b>"+ CheckboxObject.strFormatRegex);
                 Reporter.log("<b>Data Type New: </b>"+CheckboxObject.strDataTypeNew);

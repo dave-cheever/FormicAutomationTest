@@ -4,6 +4,7 @@ import com.Formic.OF2.utils.*;
 import com.Formic.OF2.utils.DataValidation;
 import com.Formic.OF2.utils.Pojo.FormContentPojo;
 import com.Formic.OF2.test.BasePage;
+import com.Formic.OF2.utils.Pojo.RulesGraphql;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
@@ -19,12 +20,14 @@ import java.util.NoSuchElementException;
 import java.util.Random;
 
 public class ManualImageArea extends BasePage {
-    String miaSinglePickListInputLocator = "//div[@data-object-id='$TEXT']/div/div/div/input";
-    String miaMultiPickListInputLocator = "//div[@data-object-id='$TEXT']/div/div/div/div";
+    int projectId = 137;
+    String emailRegEx = "^[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.][a-zA-Z0-9]+$";
+    String miaSinglePickListInputLocator = "//div[@data-object-id='$TEXT']/div/div/input";
+    String miaMultiPickListInputLocator = "//div[@data-object-id='$TEXT']/div/div/div";
 
     static String miaInputLocator = "//div[@data-object-id='$TEXT']/textarea";
     String miaTextAreaLocator = "//div[@data-object-id='$TEXT']/div/textarea";
-    String miaValidationMessageLocator = "//div[@data-object-id='$TEXT']/div/div[1]";
+    String miaValidationMessageLocator = "//div[@data-object-id='$TEXT']/div/div/div[1]";
     String miaValidationMessageMandatoryLocator = "//div[@data-object-id='$TEXT']/div/div/div";
     String miaValidationMessageMinimumMaximumLocator = "(//div[@data-object-id='$TEXT']/div/div)[2]";
     String validationMessageUponSubmitSideBar = "//h1[contains(text(),'Completion Errors')]//following-sibling::ul/li/button/div/div[contains(text(),'$TEXT')]//following::div[1]";
@@ -40,6 +43,19 @@ public class ManualImageArea extends BasePage {
     public ManualImageArea(WebDriver driver) {
         super(driver);
     }
+    public SideMenuNavigation sideMenuNavigation = new SideMenuNavigation(driver);
+
+    private static boolean isMandatory;
+    private static String strName;
+    private static String strFormatMask;
+    private static String strFormatRegex;
+    private static String strDataType;
+    private static String strDerivation;
+    private static String strValidation;
+    private static boolean isMultiResponse;
+    private static String strMaximum;
+    private static String strMinimum;
+
 
     public int getNumberOfOptionsSelected(com.Formic.OF2.utils.Pojo.FormContentPojo pojo,String strFieldId){
         String elementId = getObjectIdFromFieldId(pojo,strFieldId);
@@ -58,61 +74,79 @@ public class ManualImageArea extends BasePage {
         String elem = stringReplace(miaInputLocator,elementId);
         WebElement element = stringToWebElement(elem);
         scrollElementIntoView(driver,element);
-        System.out.println("Enter text for MIA: "+CheckboxObject.checkboxName+" Inputs: "+ strText);
+        Reporter.log("Enter text for MIA: "+getFieldName(pojo,strFieldId)+" Inputs: "+ strText);
         enterText(element,strText);
         recordInputsFromMia(strFieldId,strText);
     }
 
-    public void assertDateTimeFormat(com.Formic.OF2.utils.Pojo.FormContentPojo pojo, String strFieldId){
+    public void assertDateTimeFormat(com.Formic.OF2.utils.Pojo.FormContentPojo pojo, String strFieldId,String scenarioName){
         String elementId = getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(miaValidationMessageLocator,elementId);
         WebElement element = stringToWebElement(elem);
-        String format = CheckboxObject.strFormatMask.toUpperCase();
+        String format = strFormatMask.toUpperCase();
         format = format.replace("HH:MM:SS","HH:mm:ss");
         format = format.replace("HH:MM","HH:mm");
         format = format.replace("MM:SS","mm:ss");
-        Assert.assertEquals(element.getText(),"Please follow date format: ("+format+").");
+        try{
+            Assert.assertEquals(element.getText(),"Please follow date format: ("+format+").");
+        }catch (AssertionError assertionError){
+            ScreenshotHelper screenshotHelper = new ScreenshotHelper(driver);
+            screenshotHelper.takeScreenshot(scenarioName);
+            // Rethrow the exception to mark the test as failed
+            String pathName = screenshotHelper.getScreenshotPath(scenarioName);
+            Reporter.log("<br><b>Failed test screenshot:</b> <a href='" + pathName + "'>Screenshot</a><br>");
+            throw assertionError;
+        }
     }
 
-    public void processMiaInputsForValidation(com.Formic.OF2.utils.Pojo.FormContentPojo graphResponse,String fieldId,boolean flag){
-        if (CheckboxObject.strDataTypeNew != null&&flag!=true) {
-            if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("NUMERIC")) {
-              processNumericDataType(graphResponse, fieldId);
-            } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("ALPHA_NUMERIC")) {
-               processAlphaNumericDataType(graphResponse, fieldId);
-            } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("ALPHA")) {
-               processAlphaDataType(graphResponse, fieldId);
-            } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("DATE_TIME")) {
+    public void processMiaInputsForValidation(com.Formic.OF2.utils.Pojo.FormContentPojo graphResponse,String fieldId,boolean flag,String scenarioName){
+        if (strDataType != null&&flag!=true) {
+            if (strDataType.equalsIgnoreCase("NUMERIC")) {
+              processNumericDataType(graphResponse, fieldId,scenarioName);
+            } else if (strDataType.equalsIgnoreCase("ALPHA_NUMERIC")) {
+               processAlphaNumericDataType(graphResponse, fieldId,scenarioName);
+            } else if (strDataType.equalsIgnoreCase("ALPHA")) {
+               processAlphaDataType(graphResponse, fieldId,scenarioName);
+            } else if (strDataType.equalsIgnoreCase("DATE_TIME")) {
                 processDateTimeDataType(graphResponse,fieldId);
             }
         }
     }
 
-    public void processMiaInputsForSubmitSave(com.Formic.OF2.utils.Pojo.FormContentPojo graphResponse,String fieldId){
-        if (CheckboxObject.strDataTypeNew != null&&CheckboxObject.strFormatRegex!=null) {
-            if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("NUMERIC")) {
-                processNumericInputForSubmitSave(graphResponse, fieldId);
-            } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("ALPHA_NUMERIC")) {
-                processAlphaNumericDataType(graphResponse, fieldId);
-            } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("ALPHA")) {
-                processAlphaDataType(graphResponse, fieldId);
-            } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("DATE_TIME")) {
+    public void processMiaInputsForSubmitSave(com.Formic.OF2.utils.Pojo.FormContentPojo graphResponse,String fieldId,String scenarioName){
+        if (strDataType != null&&strFormatRegex!=null) {
+            if (strDataType.equalsIgnoreCase("NUMERIC")) {
+                processNumericInputForSubmitSave(graphResponse, fieldId,scenarioName);
+            } else if (strDataType.equalsIgnoreCase("ALPHA_NUMERIC")) {
+                processAlphaNumericDataType(graphResponse, fieldId,scenarioName);
+            } else if (strDataType.equalsIgnoreCase("ALPHA")) {
+                processAlphaDataType(graphResponse, fieldId,scenarioName);
+            } else if (strDataType.equalsIgnoreCase("DATE_TIME")) {
                 processDateTimeDataType(graphResponse,fieldId);
             }
         }
     }
 
-    public void assertFormatMaskValidation(com.Formic.OF2.utils.Pojo.FormContentPojo pojo, String strFieldId){
+    public void assertFormatMaskValidation(com.Formic.OF2.utils.Pojo.FormContentPojo pojo, String strFieldId,String scenarioName){
         String elementId = getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(miaValidationMessageLocator,elementId);
         WebElement element = stringToWebElement(elem);
-        String format = CheckboxObject.strFormatMask.toUpperCase();
-        Assert.assertEquals(element.getText(),"This field must match the following format: ("+format+").");
+        String format = strFormatMask.toUpperCase();
+        try{
+            Assert.assertEquals(element.getText(),"This field must match the following format: ("+format+").");
+        }catch (AssertionError assertionError){
+            ScreenshotHelper screenshotHelper = new ScreenshotHelper(driver);
+            screenshotHelper.takeScreenshot(scenarioName);
+            // Rethrow the exception to mark the test as failed
+            String pathName = screenshotHelper.getScreenshotPath(scenarioName);
+            Reporter.log("<br><b>Failed test screenshot:</b> <a href='" + pathName + "'>Screenshot</a><br>");
+            throw assertionError;
+        }
     }
 
     public  String miaDataType(){
-        if(CheckboxObject.strFormatRegex!=null&&CheckboxObject.strFormatMask!=null){
-            String[]  str = CheckboxObject.strFormatRegex.split("]");
+        if(strFormatRegex!=null&&strFormatMask!=null){
+            String[]  str = strFormatRegex.split("]");
             if(str[0].contains("^[a-zA-Z0-9")){
                 return "ALPHA_NUMERIC";
             } else if (str[0].contains("^[0-9")) {
@@ -121,17 +155,17 @@ public class ManualImageArea extends BasePage {
             else if (str[0].contains("^[a-zA-Z")) {
                 return "ALPHA";
             }else {
-               return DataFormatting.dataFormat(CheckboxObject.strFormatMask);
+               return DataFormatting.dataFormat(strFormatMask);
             }
         }else{
-            return CheckboxObject.strDataTypeNew;
+            return strDataType;
         }
     }
 
 
     public void dateTimeInputs(com.Formic.OF2.utils.Pojo.FormContentPojo pojo, String strFieldId) throws ParseException {
         SimpleDateFormat dateFormat;
-        dateFormat = new SimpleDateFormat(CheckboxObject.strFormatMask.replace("-","/").replace("mm","MM").replace("m","M").replace("DD","dd").replace("hh","HH"));
+        dateFormat = new SimpleDateFormat(strFormatMask.replace("-","/").replace("mm","MM").replace("m","M").replace("DD","dd").replace("hh","HH"));
         Date randomDate = new Date((long)(Math.random() * (System.currentTimeMillis() + 1)));
         String randomDateTime = dateFormat.format(randomDate);
         setTextToMia(pojo,strFieldId,randomDateTime);
@@ -166,7 +200,7 @@ public class ManualImageArea extends BasePage {
         String elementId = getObjectIdFromFieldId(pojo,strFieldId);
         String element;
         WebElement elem;
-        if(CheckboxObject.isMultiResponse){
+        if(isMultiResponse){
              element = stringReplace(miaMultiPickListInputLocator,elementId);
              elem = stringToWebElement(element);
              scrollElementIntoView(driver,elem);
@@ -185,12 +219,12 @@ public class ManualImageArea extends BasePage {
         return result;
     }
 
-    public void assertMiaMandatoryField(com.Formic.OF2.utils.Pojo.FormContentPojo pojo, String strFieldId){
+    public void assertMiaMandatoryField(com.Formic.OF2.utils.Pojo.FormContentPojo pojo, String strFieldId, String scenarioName){
         JavascriptExecutor js = (JavascriptExecutor) driver;
         String elementId = getObjectIdFromFieldId(pojo,strFieldId);
         String fieldName = getFieldName(pojo,strFieldId);
         lookForTheField(pojo,strFieldId);
-        if(CheckboxObject.mandatory){
+        if(isMandatory){
             if(dataValidation.isFieldIdPickList(pojo,strFieldId)){
                 if(isMiaPicklistEmpty(pojo,strFieldId)){
                     assertMiaPickListRequiredField(pojo,strFieldId);
@@ -205,26 +239,12 @@ public class ManualImageArea extends BasePage {
                 }
             }
         }else {
-            assertNoValidationMessage(elementId,fieldName);
+            assertNoValidationMessage(elementId,fieldName,scenarioName);
         }
         CheckboxObject.checkboxObjectDefaultValue();
     }
 
-    public void assertNoValidationMessage(String elementId, String fieldName) {
-        String elementForValidation = stringReplace(miaValidationMessageLocator,elementId);
-        String elementForTextArea = stringReplace(miaInputLocator,elementId);
-        WebElement webElementTextArea = stringToWebElement(elementForTextArea);
-        scrollElementIntoView(driver,webElementTextArea);
-        Reporter.log("<b>No validation message should be displayed.</b>" );
-        if(driver.findElements(By.xpath(elementForValidation)).size()!=0){
-            WebElement webElementValidation = stringToWebElement(elementForValidation);
-            Assert.assertTrue(webElementValidation.getText().equalsIgnoreCase("This field is mandatory."));
-        }
-        else{
-            Assert.assertTrue(driver.findElements(By.xpath(elementForValidation)).size()==0,"No validation message should be displayed for "+ fieldName +".");
 
-        }
-    }
 
 
 
@@ -276,28 +296,27 @@ public class ManualImageArea extends BasePage {
         CheckboxObject.checkboxInputs.add(strMiaInputs);
     }
 
-    public void assertMiaValidationMessageNumeric(com.Formic.OF2.utils.Pojo.FormContentPojo pojo, String strFieldId){
-        String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
-        String elem = stringReplace(miaValidationMessageLocator,elementId);
-        WebElement element = stringToWebElement(elem);
-        scrollElementIntoView(driver,element);
-        Reporter.log("<b>Confirm correct validation message should be:</b> This field must be a number.");
-        Assert.assertEquals(element.getText(),"This field must be a number.","The HRO "+ CheckboxObject.checkboxName+" has a validation message of "+element.getText()+" instead of - This field must be a number.");
-    }
 
-    public void assertMiaValidationMessageAlphaNumeric(com.Formic.OF2.utils.Pojo.FormContentPojo pojo, String strFieldId){
+
+    public void assertMiaValidationMessageAlphaNumeric(com.Formic.OF2.utils.Pojo.FormContentPojo pojo, String strFieldId,String scenarioName){
         String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(miaValidationMessageLocator,elementId);
         Reporter.log("<b>Confirm correct validation message should be:</b> This field must match the following format: (?"+getNumberOfUnderscore()+").");
         WebElement element;
-        try {
+        try{
             Assert.assertTrue(isElementPresentBy(By.xpath(elem)),"Validation message not visible.");
-        } catch (NoSuchElementException e) {
-            throw new Error("Element not found: " + e.getMessage());
+            element = stringToWebElement(elem);
+            Assert.assertEquals(element.getText(),"This field must match the following format: ("+getNumberOfUnderscore()+").",
+                    "The HRO "+ strName+" has a validation message of "+element.getText()+" instead of - This field must match the following format: (?"+getNumberOfUnderscore()+").");
+        }catch (AssertionError assertionError){
+            ScreenshotHelper screenshotHelper = new ScreenshotHelper(driver);
+            screenshotHelper.takeScreenshot(scenarioName);
+            // Rethrow the exception to mark the test as failed
+            String pathName = screenshotHelper.getScreenshotPath(scenarioName);
+            Reporter.log("<br><b>Failed test screenshot:</b> <a href='" + pathName + "'>Screenshot</a><br>");
+            throw assertionError;
         }
-        element = stringToWebElement(elem);
-        Assert.assertEquals(element.getText(),"This field must match the following format: ("+getNumberOfUnderscore()+").",
-                "The HRO "+ CheckboxObject.checkboxName+" has a validation message of "+element.getText()+" instead of - This field must match the following format: (?"+getNumberOfUnderscore()+").");
+
     }
 
     public void assertMiaValidationMessageAlphabet(com.Formic.OF2.utils.Pojo.FormContentPojo pojo, String strFieldId){
@@ -306,7 +325,7 @@ public class ManualImageArea extends BasePage {
         WebElement element = stringToWebElement(elem);
         Reporter.log("<b>Confirm correct validation message should be:</b> This field must match the following format: ("+getNumberOfUnderscore()+").");
         Assert.assertEquals(element.getText(),"This field must match the following format: ("+getNumberOfUnderscore()+").",
-                "The HRO "+ CheckboxObject.checkboxName+" has a validation message of "+element.getText()+" instead of - This field must match the following format: (A"+getNumberOfUnderscore()+").");
+                "The HRO "+ strName+" has a validation message of "+element.getText()+" instead of - This field must match the following format: (A"+getNumberOfUnderscore()+").");
     }
 
     public static void recordInputsFromPicklist(String strElementId, ArrayList<String> strPicklistInputs){
@@ -352,7 +371,7 @@ public class ManualImageArea extends BasePage {
         WebElement element = stringToWebElement(elem);
         int num = 0;
         if (minimum == 0) {
-            num = CheckboxObject.maximum;
+            num = Integer.parseInt(strMaximum);
         }
         else {
             num = minimum;
@@ -404,57 +423,97 @@ public class ManualImageArea extends BasePage {
 
 
 
-    public void processNumericDataType(FormContentPojo graphResponse,  String strFieldId) {
-        String inputs = alphaInputs(graphResponse, strFieldId, InputLimitExtractor.extractInputLimit(CheckboxObject.strFormatRegex));
+    public void processNumericDataType(FormContentPojo graphResponse,  String strFieldId,String scenarioName) {
+        String inputs = alphaInputs(graphResponse, strFieldId, InputLimitExtractor.extractInputLimit(strFormatRegex));
         setTextToMia(graphResponse, strFieldId, inputs);
-        if(CheckboxObject.strFormatMask!=null&&CheckboxObject.strFormatRegex!=null||CheckboxObject.strDataTypeNew.equalsIgnoreCase("NUMERIC")){
-            assertMiaValidationMessageNumeric(graphResponse, strFieldId);
+        if(strFormatMask!=null&&strFormatRegex!=null||strDataType.equalsIgnoreCase("NUMERIC")){
+            assertMiaValidationMessageNumeric(graphResponse, strFieldId,scenarioName);
         }else {
-            assertNoValidationMessage(getObjectIdFromFieldId(graphResponse,strFieldId),getFieldName(graphResponse,strFieldId));
+            assertNoValidationMessage(getObjectIdFromFieldId(graphResponse,strFieldId),getFieldName(graphResponse,strFieldId),scenarioName);
         }
     }
 
-    public void processNumericInputForSubmitSave(FormContentPojo graphResponse,  String strFieldId) {
-        String inputs = FormatRegex.generateFormattedString(CheckboxObject.strFormatRegex);
+    public void assertNoValidationMessage(String elementId, String fieldName,String scenarioName) {
+        String elementForValidation = stringReplace(miaValidationMessageLocator,elementId);
+        String elementForTextArea = stringReplace(miaInputLocator,elementId);
+        WebElement webElementTextArea = stringToWebElement(elementForTextArea);
+        scrollElementIntoView(driver,webElementTextArea);
+        Reporter.log("<b>No validation message should be displayed.</b>" );
+        try{
+            if(driver.findElements(By.xpath(elementForValidation)).size()!=0){
+                WebElement webElementValidation = stringToWebElement(elementForValidation);
+                Assert.assertTrue(webElementValidation.getText().equalsIgnoreCase("This field is mandatory."));
+            }
+            else{
+                Assert.assertTrue(driver.findElements(By.xpath(elementForValidation)).size()==0,"No validation message should be displayed for "+ fieldName +".");
+            }
+        }catch (AssertionError assertionError){
+            ScreenshotHelper screenshotHelper = new ScreenshotHelper(driver);
+            screenshotHelper.takeScreenshot(scenarioName);
+            // Rethrow the exception to mark the test as failed
+            String pathName = screenshotHelper.getScreenshotPath(scenarioName);
+            Reporter.log("<br><b>Failed test screenshot:</b> <a href='" + pathName + "'>Screenshot</a><br>");
+            throw assertionError;
+        }
+    }
+
+    public void assertMiaValidationMessageNumeric(com.Formic.OF2.utils.Pojo.FormContentPojo pojo, String strFieldId,String scenarioName){
+        String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
+        String elem = stringReplace(miaValidationMessageLocator,elementId);
+        WebElement element = stringToWebElement(elem);
+        scrollElementIntoView(driver,element);
+        Reporter.log("<b>Confirm correct validation message should be:</b> This field must be a number.");
+        try{
+            Assert.assertEquals(element.getText(),"This field must be a number.","The HRO "+ strName+" has a validation message of "+element.getText()+" instead of - This field must be a number.");
+        }catch (AssertionError assertionError){
+            ScreenshotHelper screenshotHelper = new ScreenshotHelper(driver);
+            screenshotHelper.takeScreenshot(scenarioName);
+            // Rethrow the exception to mark the test as failed
+            String pathName = screenshotHelper.getScreenshotPath(scenarioName);
+            Reporter.log("<br><b>Failed test screenshot:</b> <a href='" + pathName + "'>Screenshot</a><br>");
+            throw assertionError;
+        }
+    }
+
+    public void processNumericInputForSubmitSave(FormContentPojo graphResponse,  String strFieldId, String scenarioName) {
+        String inputs = FormatRegex.generateFormattedString(strFormatRegex);
         if(inputs!=""){
             setTextToMia(graphResponse, strFieldId, inputs);
         }
-
-
-        assertNoValidationMessage(getObjectIdFromFieldId(graphResponse,strFieldId),getFieldName(graphResponse,strFieldId));
-
+        assertNoValidationMessage(getObjectIdFromFieldId(graphResponse,strFieldId),getFieldName(graphResponse,strFieldId),scenarioName);
     }
 
-    public void processAlphaNumericDataType(FormContentPojo graphResponse,  String strFieldId) {
+    public void processAlphaNumericDataType(FormContentPojo graphResponse,  String strFieldId,String scenarioName) {
         String inputs = specialCharacterInputs(graphResponse, strFieldId);
         setTextToMia(graphResponse, strFieldId, inputs);
-        if(CheckboxObject.strFormatMask!=null&&CheckboxObject.strFormatRegex!=null){
-            assertMiaValidationMessageAlphaNumeric(graphResponse, strFieldId);
+        if(strFormatMask!=null&&strFormatRegex!=null){
+            assertMiaValidationMessageAlphaNumeric(graphResponse, strFieldId,scenarioName);
         }else {
-            assertNoValidationMessage(getObjectIdFromFieldId(graphResponse,strFieldId),getFieldName(graphResponse,strFieldId));
+            assertNoValidationMessage(getObjectIdFromFieldId(graphResponse,strFieldId),getFieldName(graphResponse,strFieldId),scenarioName);
         }
+
     }
 
-    public void processAlphaDataType(FormContentPojo graphResponse, String strFieldId) {
-        String inputs = numericInputs(graphResponse, strFieldId, InputLimitExtractor.extractInputLimit(CheckboxObject.strFormatRegex));
+    public void processAlphaDataType(FormContentPojo graphResponse, String strFieldId, String scenarioName) {
+        String inputs = numericInputs(graphResponse, strFieldId, InputLimitExtractor.extractInputLimit(strFormatRegex));
         setTextToMia(graphResponse, strFieldId, inputs);
-        if(CheckboxObject.strFormatMask!=null&&CheckboxObject.strFormatRegex!=null){
+        if(strFormatMask!=null&&strFormatRegex!=null){
             assertMiaValidationMessageAlphabet(graphResponse, strFieldId);
         }else {
-            assertNoValidationMessage(getObjectIdFromFieldId(graphResponse,strFieldId),getFieldName(graphResponse,strFieldId));
+            assertNoValidationMessage(getObjectIdFromFieldId(graphResponse,strFieldId),getFieldName(graphResponse,strFieldId),scenarioName);
         }
 
     }
 
     public void processDateTimeDataType(FormContentPojo graphResponse,String strFieldId) {
-       String inputs =  FormatMask.formatDateTime(CheckboxObject.strFormatMask);
+       String inputs =  FormatMask.formatDateTime(strFormatMask);
        setTextToMia(graphResponse, strFieldId, inputs);
        //Create assert for date time
     }
 
     public boolean isMinimumMaximumNotEmpty(){
         boolean result = false;
-        if(CheckboxObject.minimum!=0&&CheckboxObject.maximum!=0){
+        if(Integer.parseInt(strMinimum)!=0&&Integer.parseInt(strMaximum)!=0){
             result = true;
         }
         return result;
@@ -477,8 +536,8 @@ public class ManualImageArea extends BasePage {
         int max = 9;
         String num ="";
         int maxNumber = 3;
-        if(CheckboxObject.strFormatMask!=null){
-            maxNumber = CheckboxObject.strFormatMask.length();
+        if(strFormatMask!=null){
+            maxNumber = strFormatMask.length();
         }
         for (int x = 0; x<maxNumber;x++){
             num = num + (rnd.nextInt(max-min));
@@ -497,5 +556,53 @@ public class ManualImageArea extends BasePage {
         }
         Reporter.log("<b>input text: </b>"+ output);
         setTextToMia(pojo,strFieldId,output);
+    }
+
+    public void miaFormatValidation(String fieldId,String mandatory,String name, String formatMask, String formatRegex, String dataType, String derivation, String validation, String multiResponse, String max, String min, String scenarioName) throws Exception {
+        RulesGraphql rules = new RulesGraphql();
+        FormContentPojo graphResponse =  rules.getRules(projectId);
+        Reporter.log("Click submit button to show all required field validation message.");
+        sideMenuNavigation.clickSubmitButton();
+        isMandatory = Boolean.parseBoolean(mandatory);
+        strName = name;
+        strFormatMask = formatMask;
+        strFormatRegex = formatRegex;
+        strDataType = dataType;
+        strDerivation = derivation;
+        strValidation = validation;
+        isMultiResponse = isMultiResponse;
+        strMaximum = max;
+        strMinimum = min;
+        RoutingRules.enableDisabledFieldByFieldId(graphResponse,fieldId);
+        AssertMiaFormatValidation(graphResponse,fieldId,formatMask,formatRegex,scenarioName);
+    }
+
+    public void AssertMiaFormatValidation(com.Formic.OF2.utils.Pojo.FormContentPojo graphResponse,String fieldId, String formatMask, String formatRegex, String scenarioName){
+        lookForTheField(graphResponse,fieldId);
+        if(formatRegex!=null&&formatRegex.equalsIgnoreCase(emailRegEx)){
+            String email = emailAddressInputs();
+            setTextToMia(graphResponse,fieldId,email);
+        }else {
+            String inputs;
+            boolean flag = false;
+            if (formatRegex != null) {
+                inputs = FormatRegex.generateFormattedString(formatRegex);
+                if (!inputs.equalsIgnoreCase("")) {
+                    setTextToMia(graphResponse, fieldId, "!@#");
+                    assertFormatMaskValidation(graphResponse,fieldId,scenarioName);
+                    flag = true;
+                }
+            }
+                //Date Time
+            if (formatMask!=null&&!flag){
+                inputs = FormatMask.formatDateTime(formatMask);
+                if(inputs!=null){
+                    setTextToMia(graphResponse,fieldId,"test");
+                    assertDateTimeFormat(graphResponse,fieldId,scenarioName);
+                    flag = true;
+                }
+            }
+            processMiaInputsForValidation(graphResponse,fieldId,flag,scenarioName);
+        }
     }
 }

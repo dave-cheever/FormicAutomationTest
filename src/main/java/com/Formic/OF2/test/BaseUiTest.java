@@ -1,7 +1,13 @@
 package com.Formic.OF2.test;
 
+import com.Formic.OF2.utils.DataDrivenTest;
+import com.Formic.OF2.utils.FieldManager;
+import com.Formic.OF2.utils.Pojo.FormContentPojo;
+import com.Formic.OF2.utils.Pojo.RulesGraphql;
 import com.Formic.OF2.utils.ScreenshotHelper;
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.openqa.selenium.By;
+import org.openqa.selenium.PageLoadStrategy;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -16,6 +22,8 @@ import org.testng.annotations.BeforeSuite;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.sql.Array;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,6 +46,7 @@ public class BaseUiTest {
     public void setDriver() throws MalformedURLException {
         // Start driver
         ChromeOptions options = new ChromeOptions();
+        options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
 //        options.addArguments("--lang=en-GB");
         // Setting new download directory path
         Map<String, Object> prefs = new HashMap<String, Object>();
@@ -48,11 +57,55 @@ public class BaseUiTest {
         // Test is running on docker, use the remote web driver
 
 //        driver.set(new ChromeDriver(ChromeOptionsUtil.getHeadlessChromeOptions()));
-        driver.set(new ChromeDriver(options));
-
-        //setDriver(new ChromeDriver(options));
+//        driver.set(new ChromeDriver(options));
+        setDriver(new ChromeDriver(options));
         getDriver().manage().window().maximize();
         screenshotHelper = PageFactory.initElements(getDriver(),ScreenshotHelper.class);
+    }
+
+    @BeforeSuite
+    public void writeOnWorkBook() throws IOException, InvalidFormatException {
+        RulesGraphql rules = new RulesGraphql();
+        FormContentPojo graphResponse =  rules.getRules(137);
+        ArrayList<String> fieldId = new ArrayList<>();
+        ArrayList<String> fieldIdEnableDisable = new ArrayList<>();
+        ArrayList<String> fieldIdMinInputs = new ArrayList<>();
+        ArrayList<String> fieldIdMaxInputs = new ArrayList<>();
+        ArrayList<String> fieldIdMia = new ArrayList<>();
+        ArrayList<String> fieldIdHroNumeric = new ArrayList<>();
+        ArrayList<String> fieldIdHroDateTime = new ArrayList<>();
+        ArrayList<String> fieldIdHroEmail = new ArrayList<>();
+
+        ArrayList<String> fieldIdHroDataFormatting = new ArrayList<>();
+
+        ArrayList<String> fieldIdHroMandatory = new ArrayList<>();
+
+        fieldId = FieldManager.getAllCheckboxFieldIdWithMandatoryRules(graphResponse);
+        fieldIdEnableDisable = FieldManager.getRoutingFieldsEnableDisable(graphResponse);
+        fieldIdMinInputs = FieldManager.getCheckboxRulesForMinimumInputs(graphResponse);
+        fieldIdMaxInputs = FieldManager.getCheckboxRulesForMaximumInputs(graphResponse);
+        fieldIdMia = FieldManager.getCheckboxRulesForManualImageArea(graphResponse);
+        fieldIdHroNumeric = FieldManager.getHandWritingRecognitionObjectRulesNumeric(graphResponse);
+        fieldIdHroDateTime = FieldManager.getHandWritingRecognitionObjectRulesDateTime(graphResponse);
+        fieldIdHroEmail = FieldManager.getHandWritingRecognitionObjectRulesEmail(graphResponse);
+
+        fieldIdHroDataFormatting = FieldManager.getHandWritingRecognitionObjectRulesDataFormatting(graphResponse);
+
+        fieldIdHroMandatory = FieldManager.getHandWritingRecognitionObjectRulesMandatory(graphResponse);
+
+        DataDrivenTest.createExcelTestDataFile();
+        DataDrivenTest.writeToExcel(fieldId);
+        DataDrivenTest.writeToExcelEnableDisable(fieldIdEnableDisable,"Sheet2");
+        DataDrivenTest.writeToExcelCheckboxMinimumInputs(fieldIdMinInputs,"Sheet3");
+        DataDrivenTest.writeToExcelCheckboxMaximumInputs(fieldIdMaxInputs,"Sheet4");
+        DataDrivenTest.writeToExcelMiaAndHro(fieldIdMia,"Sheet5");
+        DataDrivenTest.writeToExcelHroNumeric(fieldIdHroNumeric,"Sheet6");
+        DataDrivenTest.writeToExcelHroDateTime(fieldIdHroDateTime,"Sheet7");
+        DataDrivenTest.writeToExcelHroEmail(fieldIdHroEmail,"Sheet8");
+
+        DataDrivenTest.writeToExcelHroDataFormatting(fieldIdHroDataFormatting,"Sheet9");
+
+        DataDrivenTest.writeToExcelHroMandatory(fieldIdHroMandatory,"Sheet10");
     }
 
     public static class ChromeOptionsUtil {
