@@ -85,36 +85,65 @@ public class FormContentV2Test extends BaseUiTest {
 
 
     @Test(dataProvider = "testDataHroNumeric", dataProviderClass = DataDrivenTest.class)
-    public void hroNumericInputsValidation(String fieldId, String mandatory, String name, String max) throws Exception{
-        //hro validation message
+    public void hroNumericInvalidInputsValidation(String fieldId, String mandatory, String name, String max) throws Exception{
+        String scenarioName = "hroNumericInvalidInputsValidation";
+        homePage.selectProject(projectName,scenarioName);
+        hro.hroNumericInvalidInputsValidation(fieldId,mandatory,name,max,scenarioName);
+    }
+
+    @Test(dataProvider = "testDataHroNumeric", dataProviderClass = DataDrivenTest.class)
+    public void hroNumericValidInputsValidation(String fieldId, String mandatory, String name, String max) throws Exception{
         String scenarioName = "hroNumericInputsValidation";
         homePage.selectProject(projectName,scenarioName);
         hro.hroNumericInputsValidation(fieldId,mandatory,name,max,scenarioName);
     }
 
-    @Test(dataProvider = "testDataHroAlphaNumeric", dataProviderClass = DataDrivenTest.class)
-    public void hroAlphaNumericInputsValidation(String fieldId, String mandatory, String name, String max,String formatMask) throws Exception{
-        //hro validation message
-        String scenarioName = "hroAlphaNumericInputsValidation";
+    @Test(dataProvider = "testDataHroEmail", dataProviderClass = DataDrivenTest.class)
+    public void hroEmailInvalidInputsValidation(String fieldId, String mandatory, String name) throws Exception{
+        String scenarioName = "hroEmailInvalidInputsValidation";
         homePage.selectProject(projectName,scenarioName);
-        hro.hroAlphaNumericInputsValidation(fieldId,mandatory,name,max,formatMask,scenarioName);
-    }
-
-    @Test(dataProvider = "testDataHroDateTime", dataProviderClass = DataDrivenTest.class)
-    public void hroDateTimeInputsValidation(String fieldId, String mandatory, String name,String formatMask) throws Exception{
-        //hro validation message
-        String scenarioName = "hroDateTimeInputsValidation";
-        homePage.selectProject(projectName,scenarioName);
-        hro.hroDateTimeInputsValidation(fieldId,mandatory,name,formatMask,scenarioName);
+        hro.hroEmailFormatInvalidInputsValidation(fieldId,mandatory,name,scenarioName);
     }
 
     @Test(dataProvider = "testDataHroEmail", dataProviderClass = DataDrivenTest.class)
     public void hroEmailInputsValidation(String fieldId, String mandatory, String name) throws Exception{
-        //hro validation message
         String scenarioName = "hroEmailInputsValidation";
         homePage.selectProject(projectName,scenarioName);
         hro.hroEmailFormatInputsValidation(fieldId,mandatory,name,scenarioName);
     }
+
+    @Test(dataProvider = "testDataHroDateTime", dataProviderClass = DataDrivenTest.class)
+    public void hroDateTimeInvalidInputsValidation(String fieldId, String mandatory, String name,String formatMask) throws Exception{
+        String scenarioName = "hroDateTimeInvalidInputsValidation";
+        homePage.selectProject(projectName,scenarioName);
+        hro.hroDateTimeInvalidInputsValidation(fieldId,mandatory,name,formatMask,scenarioName);
+    }
+
+    @Test(dataProvider = "testDataHroDateTime", dataProviderClass = DataDrivenTest.class)
+    public void hroDateTimeValidInputsValidation(String fieldId, String mandatory, String name,String formatMask) throws Exception{
+        String scenarioName = "hroDateTimeValidInputsValidation";
+        homePage.selectProject(projectName,scenarioName);
+        hro.hroDateTimeValidInputsValidation(fieldId,mandatory,name,formatMask,scenarioName);
+    }
+
+
+    @Test(dataProvider = "testDataHroDataFormatting", dataProviderClass = DataDrivenTest.class)
+    public void hroDataFormattingInputsValidation(String fieldId, String mandatory, String name,String formatMask) throws Exception{
+        //hro validation message
+        String scenarioName = "hroDataFormattingInputsValidation";
+        homePage.selectProject(projectName,scenarioName);
+        hro.hroDataFormatInputsValidation(fieldId,mandatory,name,formatMask,scenarioName);
+    }
+
+    @Test(dataProvider = "testDataHroMandatory", dataProviderClass = DataDrivenTest.class)
+    public void hroMandatoryInputsValidation(String fieldId) throws Exception{
+        //hro validation message
+        String scenarioName = "hroMandatoryInputsValidation";
+        homePage.selectProject(projectName,scenarioName);
+        hro.hroMandatoryValidation(fieldId,scenarioName);
+    }
+
+
 
 
 

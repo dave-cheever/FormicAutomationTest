@@ -357,7 +357,7 @@ public class CheckBoxPage extends BasePage {
                 inputs = FormatMask.formatDateTime(CheckboxObject.strFormatMask);
                 if(inputs!=null){
                     hro.setTextToHro(graphResponse, fieldId, "test");
-                    hro.assertDateTimeFormat(graphResponse,fieldId,"");
+                    hro.assertInvalidDateTimeFormat(graphResponse,fieldId,"");
                     flag = true;
                 }
             }

@@ -215,6 +215,7 @@ public class CheckBoxPageV2 extends BasePage {
     public static void assertRequiredField(String strObjectElementId, int minValue,String scenarioName){
         WebElement validationMessageUnderCheckbox = stringReplaceAndConvertToWebElement(validationMessageLocator,strObjectElementId);
         scrollElementIntoView(driver,validationMessageUnderCheckbox);
+        sleep(2000);
         try{
             if(minValue==0||minValue==1){
                 Assert.assertEquals(validationMessageUnderCheckbox.getText(),"Required field.","The expected value is : Required field. "+validationMessageUnderCheckbox.getText());

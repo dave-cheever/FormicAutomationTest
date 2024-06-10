@@ -593,7 +593,7 @@ public class ManualImageArea extends BasePage {
                     flag = true;
                 }
             }
-
+                //Date Time
             if (formatMask!=null&&!flag){
                 inputs = FormatMask.formatDateTime(formatMask);
                 if(inputs!=null){

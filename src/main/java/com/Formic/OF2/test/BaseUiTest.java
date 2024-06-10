@@ -73,18 +73,26 @@ public class BaseUiTest {
         ArrayList<String> fieldIdMaxInputs = new ArrayList<>();
         ArrayList<String> fieldIdMia = new ArrayList<>();
         ArrayList<String> fieldIdHroNumeric = new ArrayList<>();
-        ArrayList<String> fieldIdHroAlphaNumeric = new ArrayList<>();
         ArrayList<String> fieldIdHroDateTime = new ArrayList<>();
         ArrayList<String> fieldIdHroEmail = new ArrayList<>();
+
+        ArrayList<String> fieldIdHroDataFormatting = new ArrayList<>();
+
+        ArrayList<String> fieldIdHroMandatory = new ArrayList<>();
+
         fieldId = FieldManager.getAllCheckboxFieldIdWithMandatoryRules(graphResponse);
         fieldIdEnableDisable = FieldManager.getRoutingFieldsEnableDisable(graphResponse);
         fieldIdMinInputs = FieldManager.getCheckboxRulesForMinimumInputs(graphResponse);
         fieldIdMaxInputs = FieldManager.getCheckboxRulesForMaximumInputs(graphResponse);
         fieldIdMia = FieldManager.getCheckboxRulesForManualImageArea(graphResponse);
         fieldIdHroNumeric = FieldManager.getHandWritingRecognitionObjectRulesNumeric(graphResponse);
-        fieldIdHroAlphaNumeric = FieldManager.getHandWritingRecognitionObjectRulesAlphaNumeric(graphResponse);
         fieldIdHroDateTime = FieldManager.getHandWritingRecognitionObjectRulesDateTime(graphResponse);
         fieldIdHroEmail = FieldManager.getHandWritingRecognitionObjectRulesEmail(graphResponse);
+
+        fieldIdHroDataFormatting = FieldManager.getHandWritingRecognitionObjectRulesDataFormatting(graphResponse);
+
+        fieldIdHroMandatory = FieldManager.getHandWritingRecognitionObjectRulesMandatory(graphResponse);
+
         DataDrivenTest.createExcelTestDataFile();
         DataDrivenTest.writeToExcel(fieldId);
         DataDrivenTest.writeToExcelEnableDisable(fieldIdEnableDisable,"Sheet2");
@@ -92,9 +100,12 @@ public class BaseUiTest {
         DataDrivenTest.writeToExcelCheckboxMaximumInputs(fieldIdMaxInputs,"Sheet4");
         DataDrivenTest.writeToExcelMiaAndHro(fieldIdMia,"Sheet5");
         DataDrivenTest.writeToExcelHroNumeric(fieldIdHroNumeric,"Sheet6");
-        DataDrivenTest.writeToExcelHroAlphaNumeric(fieldIdHroAlphaNumeric,"Sheet7");
-        DataDrivenTest.writeToExcelHroDateTime(fieldIdHroDateTime,"Sheet8");
-        DataDrivenTest.writeToExcelHroEmail(fieldIdHroEmail,"Sheet9");
+        DataDrivenTest.writeToExcelHroDateTime(fieldIdHroDateTime,"Sheet7");
+        DataDrivenTest.writeToExcelHroEmail(fieldIdHroEmail,"Sheet8");
+
+        DataDrivenTest.writeToExcelHroDataFormatting(fieldIdHroDataFormatting,"Sheet9");
+
+        DataDrivenTest.writeToExcelHroMandatory(fieldIdHroMandatory,"Sheet10");
     }
 
     public static class ChromeOptionsUtil {

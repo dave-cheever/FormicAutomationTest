@@ -10,6 +10,8 @@ import org.testng.Reporter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class FieldManager extends BasePage {
     public FieldManager(WebDriver driver) {
@@ -280,7 +282,7 @@ public class FieldManager extends BasePage {
         return result;
     }
 
-    public static ArrayList<String> getHandWritingRecognitionObjectRulesAlphaNumeric(com.Formic.OF2.utils.Pojo.FormContentPojo pojo){
+    public static ArrayList<String> getHandWritingRecognitionObjectRulesDataFormatting(com.Formic.OF2.utils.Pojo.FormContentPojo pojo){
         ArrayList<String> fieldIds = getFieldIdHro(pojo);
         ArrayList<String> result = new ArrayList<>();
         for(String fieldId: fieldIds){
@@ -288,13 +290,28 @@ public class FieldManager extends BasePage {
             ) {
                 if(fields.getGuidId().equalsIgnoreCase(fieldId)) {
                     if (fields.getDataTypeNew().equalsIgnoreCase("ALPHA_NUMERIC")){
-                        if (isAlphaNumericPatternViaFormatRegex(fields.getFormatRegex())) {
+                        if (fields.getFormatMask()!=null&&!fields.getFormatRegex().equalsIgnoreCase("^[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.][a-zA-Z0-9]+$")) {
                             result.add(fieldId);
                             result.add(fields.getMandatory().toString());
                             result.add(fields.getName());
-                            result.add(Integer.toString(getMaxLengthViaFormatRegex(fields.getFormatRegex())));
                             result.add(fields.getFormatMask());
                         }
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    public static ArrayList<String> getHandWritingRecognitionObjectRulesMandatory(com.Formic.OF2.utils.Pojo.FormContentPojo pojo){
+        ArrayList<String> fieldIds = getFieldIdHro(pojo);
+        ArrayList<String> result = new ArrayList<>();
+        for(String fieldId: fieldIds){
+            for (com.Formic.OF2.utils.Pojo.Field fields: pojo.data.project.getFields()
+            ) {
+                if(fields.getGuidId().equalsIgnoreCase(fieldId)) {
+                    if (fields.getMandatory().booleanValue()==true){
+                        result.add(fieldId);
                     }
                 }
             }
@@ -631,5 +648,16 @@ public class FieldManager extends BasePage {
 
         // Return -1 if the pattern is not valid
         return -1;
+    }
+
+    public static boolean validatePatternMatch(String formatRegex, String input) {
+        // Compile the provided format regex
+        Pattern pattern = Pattern.compile(formatRegex);
+
+        // Create a matcher for the input string
+        Matcher matcher = pattern.matcher(input);
+
+        // Return if the input string matches the format regex
+        return matcher.matches();
     }
 }
