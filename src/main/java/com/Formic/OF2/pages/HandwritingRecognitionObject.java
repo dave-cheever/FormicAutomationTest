@@ -23,6 +23,7 @@ public class HandwritingRecognitionObject extends BasePage {
 
 //    CheckBoxPage chk = new CheckBoxPage(1);
     int projectId = 137;
+    private String strFormatRegex;
     private String strFormatMask;
     private static boolean isMandatory = false;
     private static String strFieldName;
@@ -229,6 +230,11 @@ public class HandwritingRecognitionObject extends BasePage {
         setTextToHro(graphResponse, strFieldId, "!@#");
     }
 
+    public void validDataFormatInputs(FormContentPojo graphResponse,String strFieldId) {
+        String inputs =  FormatRegex.generateFormattedString(strFormatRegex);
+        setTextToHro(graphResponse, strFieldId, inputs);
+    }
+
     public void invalidEmailInputs(FormContentPojo graphResponse,String strFieldId){
         setTextToHro(graphResponse, strFieldId, "email");
     }
@@ -427,6 +433,29 @@ public class HandwritingRecognitionObject extends BasePage {
         }
     }
 
+    public void assertHroValidationMessageDataFormatValid(FormContentPojo pojo, String strFieldId,String name, String scenarioName){
+        String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
+        String elem = stringReplace(hroValidationMessageLocator,elementId);
+        Reporter.log("<b>Confirm correct validation message should be:</b> This field must match the following format: ("+strFormatMask+").");
+        try{
+            if(isMandatory){
+                WebElement element = stringToWebElement(elem);
+                Assert.assertEquals(element.getText(),"This field is mandatory.","The HRO "+ name+" has a validation message of "+element.getText()+" instead of - This field is mandatory.");
+            }else{
+                Assert.assertTrue(driver.findElements(By.xpath(elem)).size()==0,"No validation message should be displayed for "+ name +".");
+            }
+        }catch (AssertionError assertionError){
+            ScreenshotHelper screenshotHelper = new ScreenshotHelper(driver);
+            screenshotHelper.takeScreenshot(scenarioName);
+            // Rethrow the exception to mark the test as failed
+            String pathName = screenshotHelper.getScreenshotPath(scenarioName);
+            Reporter.log("<br><b>Failed test screenshot:</b> <a href='" + pathName + "'>Screenshot</a><br>");
+            throw assertionError;
+        }
+    }
+
+
+
     public void assertHroValidationMessageAlphabet(FormContentPojo pojo, String strFieldId){
         String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(hroValidationMessageLocator,elementId);
@@ -579,6 +608,17 @@ public class HandwritingRecognitionObject extends BasePage {
         lookForTheField(graphResponse,fieldId);
         InvalidDataFormatInputs(graphResponse,fieldId);
         assertHroValidationMessageDataFormat(graphResponse,fieldId,name,scenarioName);
+    }
+
+    public void hroDataFormatValidInputs(String fieldId, String mandatory, String name, String formatRegex, String scenarioName) throws Exception {
+        RulesGraphql rules = new RulesGraphql();
+        strFormatRegex = formatRegex;
+        FormContentPojo graphResponse = rules.getRules(projectId);
+        sideMenuNavigation.clickSubmitButton();
+        RoutingRules.enableDisabledFieldByFieldId(graphResponse,fieldId);
+        lookForTheField(graphResponse,fieldId);
+        validDataFormatInputs(graphResponse,fieldId);
+        assertHroValidationMessageDataFormatValid(graphResponse,fieldId,name,scenarioName);
     }
 
     public void hroEmailFormatInvalidInputsValidation(String fieldId, String mandatory, String name, String scenarioName) throws Exception {

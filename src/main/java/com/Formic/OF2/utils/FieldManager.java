@@ -303,6 +303,27 @@ public class FieldManager extends BasePage {
         return result;
     }
 
+    public static ArrayList<String> getHandWritingRecognitionObjectRulesDataFormattingValid(com.Formic.OF2.utils.Pojo.FormContentPojo pojo){
+        ArrayList<String> fieldIds = getFieldIdHro(pojo);
+        ArrayList<String> result = new ArrayList<>();
+        for(String fieldId: fieldIds){
+            for (com.Formic.OF2.utils.Pojo.Field fields: pojo.data.project.getFields()
+            ) {
+                if(fields.getGuidId().equalsIgnoreCase(fieldId)) {
+                    if (fields.getDataTypeNew().equalsIgnoreCase("ALPHA_NUMERIC")){
+                        if (fields.getFormatMask()!=null&&!fields.getFormatRegex().equalsIgnoreCase("^[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.][a-zA-Z0-9]+$")) {
+                            result.add(fieldId);
+                            result.add(fields.getMandatory().toString());
+                            result.add(fields.getName());
+                            result.add(fields.getFormatRegex());
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
     public static ArrayList<String> getHandWritingRecognitionObjectRulesMandatory(com.Formic.OF2.utils.Pojo.FormContentPojo pojo){
         ArrayList<String> fieldIds = getFieldIdHro(pojo);
         ArrayList<String> result = new ArrayList<>();

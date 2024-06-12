@@ -80,6 +80,8 @@ public class BaseUiTest {
 
         ArrayList<String> fieldIdHroMandatory = new ArrayList<>();
 
+        ArrayList<String> fieldIdHroDataFormattingValid = new ArrayList<>();
+
         fieldId = FieldManager.getAllCheckboxFieldIdWithMandatoryRules(graphResponse);
         fieldIdEnableDisable = FieldManager.getRoutingFieldsEnableDisable(graphResponse);
         fieldIdMinInputs = FieldManager.getCheckboxRulesForMinimumInputs(graphResponse);
@@ -92,6 +94,8 @@ public class BaseUiTest {
         fieldIdHroDataFormatting = FieldManager.getHandWritingRecognitionObjectRulesDataFormatting(graphResponse);
 
         fieldIdHroMandatory = FieldManager.getHandWritingRecognitionObjectRulesMandatory(graphResponse);
+
+        fieldIdHroDataFormattingValid = FieldManager.getHandWritingRecognitionObjectRulesDataFormattingValid(graphResponse);
 
         DataDrivenTest.createExcelTestDataFile();
         DataDrivenTest.writeToExcel(fieldId);
@@ -106,6 +110,7 @@ public class BaseUiTest {
         DataDrivenTest.writeToExcelHroDataFormatting(fieldIdHroDataFormatting,"Sheet9");
 
         DataDrivenTest.writeToExcelHroMandatory(fieldIdHroMandatory,"Sheet10");
+        DataDrivenTest.writeToExcelHroDataFormattingValid(fieldIdHroDataFormattingValid,"sheet11");
     }
 
     public static class ChromeOptionsUtil {

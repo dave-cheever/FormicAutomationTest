@@ -183,6 +183,31 @@ public class DataDrivenTest {
         return data;
     }
 
+    @DataProvider(name = "testDataHroDataFormattingValid")
+    public Object[][] testDataHroDataFormattingValid() throws IOException, InvalidFormatException {
+        // Path to your Excel file
+        String excelFilePath = "src/main/resources/Test_Data.xls";
+        Workbook workbook = WorkbookFactory.create(new File(excelFilePath));
+        Sheet sheet = workbook.getSheet("sheet11");
+        int rowCount = sheet.getLastRowNum();
+        int columnCount = sheet.getRow(0).getLastCellNum();
+        Object[][] data = new Object[rowCount][columnCount];
+        // Loop through rows and columns to read data
+        for (int i = 0; i < rowCount; i++) {
+            Row row = sheet.getRow(i + 1); // Start from 1 to skip header row
+            for (int j = 0; j < columnCount; j++) {
+                if (row.getCell(j) != null) {
+                    data[i][j] = row.getCell(j).getStringCellValue();
+                } else {
+                    data[i][j] = ""; // Handle null cells
+                }
+            }
+        }
+        workbook.close();
+        System.out.println("Your excel file has been generated!");
+        return data;
+    }
+
     @DataProvider(name = "testDataHroDateTime")
     public Object[][] testDataHroDateTime() throws IOException, InvalidFormatException {
         // Path to your Excel file
@@ -294,6 +319,7 @@ public class DataDrivenTest {
         HSSFSheet sheet8 = workbook.createSheet("sheet8");
         HSSFSheet sheet9 = workbook.createSheet("sheet9");
         HSSFSheet sheet10 = workbook.createSheet("sheet10");
+        HSSFSheet sheet11 = workbook.createSheet("sheet11");
 
         // Write workbook to a file
         FileOutputStream outputStream = new FileOutputStream(excelFilePath);
@@ -474,6 +500,36 @@ public class DataDrivenTest {
         rowHead.createCell(1).setCellValue("Mandatory");
         rowHead.createCell(2).setCellValue("Name");
         rowHead.createCell(3).setCellValue("FormatMask");
+
+        for (int i = 1;fieldIds.size()!=0; i++) {
+            rowHead = sheet.createRow(i);
+            rowHead.createCell(0).setCellValue(fieldIds.get(0));
+            fieldIds.remove(0);
+            rowHead.createCell(1).setCellValue(fieldIds.get(0));
+            fieldIds.remove(0);
+            rowHead.createCell(2).setCellValue(fieldIds.get(0));
+            fieldIds.remove(0);
+            rowHead.createCell(3).setCellValue(fieldIds.get(0));
+            fieldIds.remove(0);
+        }
+        // Write workbook to a file
+        FileOutputStream outputStream = new FileOutputStream(excelFilePath);
+        workbook.write(outputStream);
+        outputStream.close();
+        workbook.close();
+    }
+
+    public static void writeToExcelHroDataFormattingValid(ArrayList<String> fieldIds,String sheetNumber) throws IOException, InvalidFormatException {
+        // Create a new workbook
+        String excelFilePath = "src/main/resources/Test_Data.xls";
+        FileInputStream inputStream = new FileInputStream(excelFilePath);
+        HSSFWorkbook workbook = new HSSFWorkbook(inputStream);
+        HSSFSheet sheet = workbook.getSheet(sheetNumber);
+        HSSFRow rowHead = sheet.createRow((short)0);
+        rowHead.createCell(0).setCellValue("FieldId");
+        rowHead.createCell(1).setCellValue("Mandatory");
+        rowHead.createCell(2).setCellValue("Name");
+        rowHead.createCell(3).setCellValue("FormatRegex");
 
         for (int i = 1;fieldIds.size()!=0; i++) {
             rowHead = sheet.createRow(i);

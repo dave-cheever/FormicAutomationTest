@@ -126,14 +126,21 @@ public class FormContentV2Test extends BaseUiTest {
         hro.hroDateTimeValidInputsValidation(fieldId,mandatory,name,formatMask,scenarioName);
     }
 
+    @Test(dataProvider = "testDataHroDataFormattingValid", dataProviderClass = DataDrivenTest.class)
+    public void hroDataFormattingValidInputs(String fieldId, String mandatory, String name,String formatMask) throws Exception{
+        String scenarioName = "hroDataFormattingValidInputs";
+        homePage.selectProject(projectName,scenarioName);
+        hro.hroDataFormatValidInputs(fieldId,mandatory,name,formatMask,scenarioName);
+    }
+
 
     @Test(dataProvider = "testDataHroDataFormatting", dataProviderClass = DataDrivenTest.class)
-    public void hroDataFormattingInputsValidation(String fieldId, String mandatory, String name,String formatMask) throws Exception{
-        //hro validation message
+    public void hroDataFormattingInputsValidation(String fieldId, String mandatory, String name,String formatRegex) throws Exception{
         String scenarioName = "hroDataFormattingInputsValidation";
         homePage.selectProject(projectName,scenarioName);
-        hro.hroDataFormatInputsValidation(fieldId,mandatory,name,formatMask,scenarioName);
+        hro.hroDataFormatInputsValidation(fieldId,mandatory,name,formatRegex,scenarioName);
     }
+
 
     @Test(dataProvider = "testDataHroMandatory", dataProviderClass = DataDrivenTest.class)
     public void hroMandatoryInputsValidation(String fieldId) throws Exception{
@@ -142,6 +149,8 @@ public class FormContentV2Test extends BaseUiTest {
         homePage.selectProject(projectName,scenarioName);
         hro.hroMandatoryValidation(fieldId,scenarioName);
     }
+
+
 
 
 
