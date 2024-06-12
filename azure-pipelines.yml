@@ -9,15 +9,23 @@ steps:
       echo "Listing contents of src/main/resources/"
       dir "$(Build.SourcesDirectory)\src\main\resources"
     displayName: 'List contents of resources directory'
+    shell: cmd
 
   # Check if the Excel file is present and not empty
   - script: |
       echo "Checking Test_Data.xlsx in src/main/resources/"
-      if [ ! -s "$(Build.SourcesDirectory)\src\main\resources\Test_Data.xlsx" ]; then
-        echo "Error: Test_Data.xlsx is empty or does not exist."
-        exit 1
-      fi
+      if not exist "$(Build.SourcesDirectory)\src\main\resources\Test_Data.xlsx" (
+        echo "Error: Test_Data.xlsx does not exist."
+        exit /b 1
+      )
+      for %%A in ("$(Build.SourcesDirectory)\src\main\resources\Test_Data.xlsx") do (
+        if %%~zA == 0 (
+          echo "Error: Test_Data.xlsx is empty."
+          exit /b 1
+        )
+      )
     displayName: 'Verify Test_Data.xlsx presence'
+    shell: cmd
 
   # Copy the Excel file to the build directory
   - task: CopyFiles@2
@@ -32,6 +40,7 @@ steps:
       echo "Listing contents of $(Build.ArtifactStagingDirectory)/resources/"
       dir "$(Build.ArtifactStagingDirectory)\resources"
     displayName: 'List contents of target resources directory'
+    shell: cmd
 
   # Run Maven build and tests
   - task: Maven@3
