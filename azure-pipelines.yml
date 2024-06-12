@@ -45,9 +45,10 @@ steps:
     inputs:
       mavenPomFile: 'pom.xml'
       goals: 'test compile'
-      options: '-Dexcel.file.path=$(Build.ArtifactStagingDirectory)/resources/Test_Data.xlsx'
       testResultsFiles: '**/target/surefire-reports/*.xml'
       testRunTitle: 'Test Run'
+      allowBrokenSymlinks: false
+      jdkVersionOption: 1.17
 
   # Copy build artifacts
   - task: CopyFiles@2
