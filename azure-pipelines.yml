@@ -4,70 +4,88 @@ pool:
   demands: maven
 
 steps:
+  # List the contents of the source directory
   - script: |
       echo "Listing contents of src/main/resources/"
-      ls -l src/main/resources/
+      dir "$(Build.SourcesDirectory)\src\main\resources"
     displayName: 'List contents of resources directory'
 
+  # Check if the Excel file is present and not empty
+  - script: |
+      echo "Checking Test_Data.xlsx in src/main/resources/"
+      if [ ! -s "$(Build.SourcesDirectory)\src\main\resources\Test_Data.xlsx" ]; then
+        echo "Error: Test_Data.xlsx is empty or does not exist."
+        exit 1
+      fi
+    displayName: 'Verify Test_Data.xlsx presence'
+
+  # Copy the Excel file to the build directory
   - task: CopyFiles@2
     inputs:
       SourceFolder: '$(Build.SourcesDirectory)/src/main/resources'
       Contents: 'Test_Data.xlsx'
       TargetFolder: '$(Build.ArtifactStagingDirectory)/resources'
+    displayName: 'Copy Test_Data.xlsx to resources'
 
-  - task: PublishBuildArtifacts@1
-    inputs:
-      PathtoPublish: '$(Build.ArtifactStagingDirectory)/resources'
-      ArtifactName: 'resources'
+  # List the contents of the target directory
+  - script: |
+      echo "Listing contents of $(Build.ArtifactStagingDirectory)/resources/"
+      dir "$(Build.ArtifactStagingDirectory)\resources"
+    displayName: 'List contents of target resources directory'
 
+  # Run Maven build and tests
   - task: Maven@3
     displayName: 'Maven pom.xml'
     inputs:
       mavenPomFile: 'pom.xml'
       goals: 'test compile'
-      testResultsFiles: '**/target/surefire-reports/junitreports/*.xml'
-      testRunTitle: 'Test Run sample'
-      allowBrokenSymlinks: false
-      jdkVersionOption: 1.17
+      options: '-Dexcel.file.path=$(Build.ArtifactStagingDirectory)/resources/Test_Data.xlsx'
+      testResultsFiles: '**/target/surefire-reports/*.xml'
+      testRunTitle: 'Test Run'
 
+  # Copy build artifacts
   - task: CopyFiles@2
-    displayName: 'Copy Files to: $(Build.Artifactstagingdirectory)/target'
+    displayName: 'Copy JAR files to: $(Build.ArtifactStagingDirectory)/target'
     inputs:
-      SourceFolder: src
+      SourceFolder: '$(Build.SourcesDirectory)/target'
       Contents: '**/*.jar'
-      TargetFolder: '$(build.DefaultWorkingDirectory)/target'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)/target'
       CleanTargetFolder: true
     condition: succeededOrFailed()
 
+  # Publish build artifacts
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: drop'
     inputs:
-      pathToPublish: 'target'
+      pathToPublish: '$(Build.ArtifactStagingDirectory)/target'
+      artifactName: 'drop'
     condition: succeededOrFailed()
 
+  # Publish test results
   - task: PublishTestResults@2
     displayName: 'Publish Test Results'
     inputs:
-      testResultsFiles: '**/TEST-*.xml'
+      testResultsFiles: '**/target/surefire-reports/*.xml'
       failTaskOnFailedTests: true
       mergeTestResults: false
       testRunTitle: 'Regression Test'
     condition: succeededOrFailed()
 
+  # Copy screenshots
   - task: CopyFiles@2
     displayName: 'Copy Screenshots to: $(Build.ArtifactStagingDirectory)/screenShots'
     inputs:
-      SourceFolder: screenShots
+      SourceFolder: 'screenShots'
       Contents: '*'
       TargetFolder: '$(Build.ArtifactStagingDirectory)/screenShots'
       CleanTargetFolder: true
     condition: succeededOrFailed()
 
+  # Publish screenshots
   - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: screenshots'
     inputs:
       pathToPublish: '$(Build.ArtifactStagingDirectory)/screenShots'
-      ArtifactName: 'drop'
-      PublishLocation: 'Container'
-      TargetPath: 'screenShotImages'
+      artifactName: 'screenshots'
+      publishLocation: 'Container'
     condition: always()
-
