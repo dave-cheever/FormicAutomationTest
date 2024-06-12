@@ -4,6 +4,12 @@ pool:
   demands: maven
 
 steps:
+  - task: CopyFiles@2
+    inputs:
+      SourceFolder: '$(Build.SourcesDirectory)/src/main/resources'
+      Contents: 'Test_Data.xls'
+      TargetFolder: '$(Build.ArtifactStagingDirectory)/resources'
+
   - task: Maven@3
     displayName: 'Maven pom.xml'
     inputs:
