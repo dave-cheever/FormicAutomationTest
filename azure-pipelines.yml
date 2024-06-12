@@ -12,7 +12,7 @@ steps:
   - task: CopyFiles@2
     inputs:
       SourceFolder: '$(Build.SourcesDirectory)/src/main/resources'
-      Contents: 'Test_Data.xls'
+      Contents: 'Test_Data.xlsx'
       TargetFolder: '$(Build.ArtifactStagingDirectory)/resources'
 
   - task: PublishBuildArtifacts@1
