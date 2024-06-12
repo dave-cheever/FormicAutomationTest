@@ -4,6 +4,11 @@ pool:
   demands: maven
 
 steps:
+  - script: |
+      echo "Listing contents of src/main/resources/"
+      ls -l src/main/resources/
+    displayName: 'List contents of resources directory'
+
   - task: CopyFiles@2
     inputs:
       SourceFolder: '$(Build.SourcesDirectory)/src/main/resources'
