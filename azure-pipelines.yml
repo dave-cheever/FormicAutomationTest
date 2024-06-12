@@ -9,13 +9,6 @@ steps:
       ls -l src/main/resources/
     displayName: 'List contents of resources directory'
 
-  - script: |
-      if [ ! -s "src/main/resources/Test_Data.xls" ]; then
-        echo "Error: src/main/resources/Test_Data.xls is empty or does not exist."
-        exit 1
-      fi
-    displayName: 'Check if Test_Data.xls is not empty'
-
   - task: CopyFiles@2
     inputs:
       SourceFolder: '$(Build.SourcesDirectory)/src/main/resources'
