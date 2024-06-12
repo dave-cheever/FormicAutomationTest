@@ -11,11 +11,14 @@ import java.util.ArrayList;
 import org.testng.annotations.DataProvider;
 
 public class DataDrivenTest {
+    private static String testDataFilePath = "$(Build.SourcesDirectory)/src/main/resources/Test_Data.xls";
+//    private static String testDataFilePath = "src/main/resources/Test_Data.xls";
 
     @DataProvider(name = "testData")
     public Object[][] testData() throws IOException, InvalidFormatException {
         // Path to your Excel file
-        String excelFilePath = "src/main/resources/Test_Data.xls";
+        //        String excelFilePath = "src/main/resources/Test_Data.xls";
+        String excelFilePath = testDataFilePath;
         Workbook workbook = WorkbookFactory.create(new File(excelFilePath));
         Sheet sheet = workbook.getSheet("sheet1");
         int rowCount = sheet.getLastRowNum();
@@ -36,7 +39,7 @@ public class DataDrivenTest {
     @DataProvider(name = "testDataEnable")
     public Object[][] testDataEnable() throws IOException, InvalidFormatException {
         // Path to your Excel file
-        String excelFilePath = "src/main/resources/Test_Data.xls";
+        String excelFilePath = testDataFilePath;
         Workbook workbook = WorkbookFactory.create(new File(excelFilePath));
         Sheet sheet = workbook.getSheet("sheet2");
         int rowCount = sheet.getLastRowNum();
@@ -61,7 +64,7 @@ public class DataDrivenTest {
     @DataProvider(name = "testDataMinInputs")
     public Object[][] testDataMinInputs() throws IOException, InvalidFormatException {
         // Path to your Excel file
-        String excelFilePath = "src/main/resources/Test_Data.xls";
+        String excelFilePath = testDataFilePath;
         Workbook workbook = WorkbookFactory.create(new File(excelFilePath));
         Sheet sheet = workbook.getSheet("sheet3");
         int rowCount = sheet.getLastRowNum();
@@ -86,7 +89,7 @@ public class DataDrivenTest {
     @DataProvider(name = "testDataMaxInputs")
     public Object[][] testDataMaxInputs() throws IOException, InvalidFormatException {
         // Path to your Excel file
-        String excelFilePath = "src/main/resources/Test_Data.xls";
+        String excelFilePath = testDataFilePath;
         Workbook workbook = WorkbookFactory.create(new File(excelFilePath));
         Sheet sheet = workbook.getSheet("sheet4");
         int rowCount = sheet.getLastRowNum();
@@ -111,7 +114,7 @@ public class DataDrivenTest {
     @DataProvider(name = "testDataManualImageArea")
     public Object[][] testDataManualImageArea() throws IOException, InvalidFormatException {
         // Path to your Excel file
-        String excelFilePath = "src/main/resources/Test_Data.xls";
+        String excelFilePath = testDataFilePath;
         Workbook workbook = WorkbookFactory.create(new File(excelFilePath));
         Sheet sheet = workbook.getSheet("sheet5");
         int rowCount = sheet.getLastRowNum();
@@ -136,7 +139,7 @@ public class DataDrivenTest {
     @DataProvider(name = "testDataHroNumeric")
     public Object[][] testDataHroNumeric() throws IOException, InvalidFormatException {
         // Path to your Excel file
-        String excelFilePath = "src/main/resources/Test_Data.xls";
+        String excelFilePath = testDataFilePath;
         Workbook workbook = WorkbookFactory.create(new File(excelFilePath));
         Sheet sheet = workbook.getSheet("sheet6");
         int rowCount = sheet.getLastRowNum();
@@ -161,7 +164,7 @@ public class DataDrivenTest {
     @DataProvider(name = "testDataHroDataFormatting")
     public Object[][] testDataHroDataFormatting() throws IOException, InvalidFormatException {
         // Path to your Excel file
-        String excelFilePath = "src/main/resources/Test_Data.xls";
+        String excelFilePath = testDataFilePath;
         Workbook workbook = WorkbookFactory.create(new File(excelFilePath));
         Sheet sheet = workbook.getSheet("sheet9");
         int rowCount = sheet.getLastRowNum();
@@ -186,7 +189,7 @@ public class DataDrivenTest {
     @DataProvider(name = "testDataHroDataFormattingValid")
     public Object[][] testDataHroDataFormattingValid() throws IOException, InvalidFormatException {
         // Path to your Excel file
-        String excelFilePath = "src/main/resources/Test_Data.xls";
+        String excelFilePath = testDataFilePath;
         Workbook workbook = WorkbookFactory.create(new File(excelFilePath));
         Sheet sheet = workbook.getSheet("sheet11");
         int rowCount = sheet.getLastRowNum();
@@ -211,7 +214,7 @@ public class DataDrivenTest {
     @DataProvider(name = "testDataHroDateTime")
     public Object[][] testDataHroDateTime() throws IOException, InvalidFormatException {
         // Path to your Excel file
-        String excelFilePath = "src/main/resources/Test_Data.xls";
+        String excelFilePath = testDataFilePath;
         Workbook workbook = WorkbookFactory.create(new File(excelFilePath));
         Sheet sheet = workbook.getSheet("Sheet7");
         int rowCount = sheet.getLastRowNum();
@@ -236,7 +239,7 @@ public class DataDrivenTest {
     @DataProvider(name = "testDataHroEmail")
     public Object[][] testDataHroEmail() throws IOException, InvalidFormatException {
         // Path to your Excel file
-        String excelFilePath = "src/main/resources/Test_Data.xls";
+        String excelFilePath = testDataFilePath;
         Workbook workbook = WorkbookFactory.create(new File(excelFilePath));
         Sheet sheet = workbook.getSheet("Sheet8");
         int rowCount = sheet.getLastRowNum();
@@ -261,7 +264,7 @@ public class DataDrivenTest {
     @DataProvider(name = "testDataHroMandatory")
     public Object[][] testDataHroMandatory() throws IOException, InvalidFormatException {
         // Path to your Excel file
-        String excelFilePath = "src/main/resources/Test_Data.xls";
+        String excelFilePath = testDataFilePath;
         Workbook workbook = WorkbookFactory.create(new File(excelFilePath));
         Sheet sheet = workbook.getSheet("Sheet10");
         int rowCount = sheet.getLastRowNum();
@@ -286,7 +289,7 @@ public class DataDrivenTest {
 
     public static void writeToExcel(ArrayList<String> fieldIds) throws IOException, InvalidFormatException {
         // Create a new workbook
-        String excelFilePath = "src/main/resources/Test_Data.xls";
+        String excelFilePath = testDataFilePath;
         FileInputStream inputStream = new FileInputStream(excelFilePath);
         HSSFWorkbook workbook = new HSSFWorkbook(inputStream);
         HSSFSheet sheet = workbook.getSheet("sheet1");
@@ -307,7 +310,7 @@ public class DataDrivenTest {
 
     public static void createExcelTestDataFile() throws IOException, InvalidFormatException {
         // Create a new workbook
-        String excelFilePath = "src/main/resources/Test_Data.xls";
+        String excelFilePath = testDataFilePath;
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet1 = workbook.createSheet("sheet1");
         HSSFSheet sheet2 = workbook.createSheet("sheet2");
@@ -330,7 +333,7 @@ public class DataDrivenTest {
 
     public static void writeToExcelEnableDisable(ArrayList<String> fieldIds,String sheetNumber) throws IOException, InvalidFormatException {
         // Create a new workbook
-        String excelFilePath = "src/main/resources/Test_Data.xls";
+        String excelFilePath = testDataFilePath;
         FileInputStream inputStream = new FileInputStream(excelFilePath);
         HSSFWorkbook workbook = new HSSFWorkbook(inputStream);
         HSSFSheet sheet = workbook.getSheet(sheetNumber);
@@ -359,7 +362,7 @@ public class DataDrivenTest {
 
     public static void writeToExcelCheckboxMinimumInputs(ArrayList<String> fieldIds,String sheetNumber) throws IOException, InvalidFormatException {
         // Create a new workbook
-        String excelFilePath = "src/main/resources/Test_Data.xls";
+        String excelFilePath = testDataFilePath;
         FileInputStream inputStream = new FileInputStream(excelFilePath);
         HSSFWorkbook workbook = new HSSFWorkbook(inputStream);
         HSSFSheet sheet = workbook.getSheet(sheetNumber);
@@ -385,7 +388,7 @@ public class DataDrivenTest {
 
     public static void writeToExcelCheckboxMaximumInputs(ArrayList<String> fieldIds,String sheetNumber) throws IOException, InvalidFormatException {
         // Create a new workbook
-        String excelFilePath = "src/main/resources/Test_Data.xls";
+        String excelFilePath = testDataFilePath;
         FileInputStream inputStream = new FileInputStream(excelFilePath);
         HSSFWorkbook workbook = new HSSFWorkbook(inputStream);
         HSSFSheet sheet = workbook.getSheet(sheetNumber);
@@ -411,7 +414,7 @@ public class DataDrivenTest {
 
     public static void writeToExcelMiaAndHro(ArrayList<String> fieldIds,String sheetNumber) throws IOException, InvalidFormatException {
         // Create a new workbook
-        String excelFilePath = "src/main/resources/Test_Data.xls";
+        String excelFilePath = testDataFilePath;
         FileInputStream inputStream = new FileInputStream(excelFilePath);
         HSSFWorkbook workbook = new HSSFWorkbook(inputStream);
         HSSFSheet sheet = workbook.getSheet(sheetNumber);
@@ -461,7 +464,7 @@ public class DataDrivenTest {
 
     public static void writeToExcelHroNumeric(ArrayList<String> fieldIds,String sheetNumber) throws IOException, InvalidFormatException {
         // Create a new workbook
-        String excelFilePath = "src/main/resources/Test_Data.xls";
+        String excelFilePath = testDataFilePath;
         FileInputStream inputStream = new FileInputStream(excelFilePath);
         HSSFWorkbook workbook = new HSSFWorkbook(inputStream);
         HSSFSheet sheet = workbook.getSheet(sheetNumber);
@@ -491,7 +494,7 @@ public class DataDrivenTest {
 
     public static void writeToExcelHroDataFormatting(ArrayList<String> fieldIds,String sheetNumber) throws IOException, InvalidFormatException {
         // Create a new workbook
-        String excelFilePath = "src/main/resources/Test_Data.xls";
+        String excelFilePath = testDataFilePath;
         FileInputStream inputStream = new FileInputStream(excelFilePath);
         HSSFWorkbook workbook = new HSSFWorkbook(inputStream);
         HSSFSheet sheet = workbook.getSheet(sheetNumber);
@@ -521,7 +524,7 @@ public class DataDrivenTest {
 
     public static void writeToExcelHroDataFormattingValid(ArrayList<String> fieldIds,String sheetNumber) throws IOException, InvalidFormatException {
         // Create a new workbook
-        String excelFilePath = "src/main/resources/Test_Data.xls";
+        String excelFilePath = testDataFilePath;
         FileInputStream inputStream = new FileInputStream(excelFilePath);
         HSSFWorkbook workbook = new HSSFWorkbook(inputStream);
         HSSFSheet sheet = workbook.getSheet(sheetNumber);
@@ -551,7 +554,7 @@ public class DataDrivenTest {
 
     public static void writeToExcelHroMandatory(ArrayList<String> fieldIds,String sheetNumber) throws IOException, InvalidFormatException {
         // Create a new workbook
-        String excelFilePath = "src/main/resources/Test_Data.xls";
+        String excelFilePath = testDataFilePath;
         FileInputStream inputStream = new FileInputStream(excelFilePath);
         HSSFWorkbook workbook = new HSSFWorkbook(inputStream);
         HSSFSheet sheet = workbook.getSheet(sheetNumber);
@@ -572,7 +575,7 @@ public class DataDrivenTest {
 
     public static void writeToExcelHroDateTime(ArrayList<String> fieldIds,String sheetNumber) throws IOException, InvalidFormatException {
         // Create a new workbook
-        String excelFilePath = "src/main/resources/Test_Data.xls";
+        String excelFilePath = testDataFilePath;
         FileInputStream inputStream = new FileInputStream(excelFilePath);
         HSSFWorkbook workbook = new HSSFWorkbook(inputStream);
         HSSFSheet sheet = workbook.getSheet(sheetNumber);
@@ -602,7 +605,7 @@ public class DataDrivenTest {
 
     public static void writeToExcelHroEmail(ArrayList<String> fieldIds,String sheetNumber) throws IOException, InvalidFormatException {
         // Create a new workbook
-        String excelFilePath = "src/main/resources/Test_Data.xls";
+        String excelFilePath = testDataFilePath;
         FileInputStream inputStream = new FileInputStream(excelFilePath);
         HSSFWorkbook workbook = new HSSFWorkbook(inputStream);
         HSSFSheet sheet = workbook.getSheet(sheetNumber);
