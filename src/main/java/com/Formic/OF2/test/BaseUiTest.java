@@ -99,19 +99,29 @@ public class BaseUiTest {
         fieldIdHroDataFormattingValid = FieldManager.getHandWritingRecognitionObjectRulesDataFormattingValid(graphResponse);
         System.out.println("##[command] fieldId: "+fieldId.size());
         DataDrivenTest.createExcelTestDataFile();
+        System.out.println("##[command] writing to excel");
         DataDrivenTest.writeToExcel(fieldId);
+        System.out.println("##[command] writing to enable disable fields");
         DataDrivenTest.writeToExcelEnableDisable(fieldIdEnableDisable,"Sheet2");
+        System.out.println("##[command] writing to minimum inputs");
         DataDrivenTest.writeToExcelCheckboxMinimumInputs(fieldIdMinInputs,"Sheet3");
+        System.out.println("##[command] writing to maximum inputs");
         DataDrivenTest.writeToExcelCheckboxMaximumInputs(fieldIdMaxInputs,"Sheet4");
+        System.out.println("##[command] writing to Mia and Hro");
         DataDrivenTest.writeToExcelMiaAndHro(fieldIdMia,"Sheet5");
+        System.out.println("##[command] writing to HRO numeric");
         DataDrivenTest.writeToExcelHroNumeric(fieldIdHroNumeric,"Sheet6");
+        System.out.println("##[command] writing to HRO Date time");
         DataDrivenTest.writeToExcelHroDateTime(fieldIdHroDateTime,"Sheet7");
+        System.out.println("##[command] writing to HRO Email");
         DataDrivenTest.writeToExcelHroEmail(fieldIdHroEmail,"Sheet8");
-
+        System.out.println("##[command] writing to Data formatting");
         DataDrivenTest.writeToExcelHroDataFormatting(fieldIdHroDataFormatting,"Sheet9");
-
+        System.out.println("##[command] writing to HRO mandatory");
         DataDrivenTest.writeToExcelHroMandatory(fieldIdHroMandatory,"Sheet10");
+        System.out.println("##[command] writing to HRO data formatting valid");
         DataDrivenTest.writeToExcelHroDataFormattingValid(fieldIdHroDataFormattingValid,"sheet11");
+        System.out.println("##[command] writing to enable disable fields");
     }
 
     public static class ChromeOptionsUtil {

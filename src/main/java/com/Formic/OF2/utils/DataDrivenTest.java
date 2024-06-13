@@ -298,8 +298,10 @@ public class DataDrivenTest {
         rowHead.createCell(0).setCellValue("FieldId");
         int fieldSize = fieldIds.size()+1;
         for (int i = 1; i < fieldSize; i++) {
+            System.out.println("##[command] creating row: "+i);
             rowHead = sheet.createRow(i);
             rowHead.createCell(0).setCellValue(fieldIds.get(0));
+            System.out.println("##[command] value: "+fieldIds.get(0)+" set to row: "+ i);
             fieldIds.remove(0);
         }
         // Write workbook to a file
@@ -307,6 +309,7 @@ public class DataDrivenTest {
         workbook.write(outputStream);
         outputStream.close();
         workbook.close();
+        System.out.println("##[command] workbook close write to excel");
     }
 
     public static void createExcelTestDataFile() throws IOException, InvalidFormatException {
