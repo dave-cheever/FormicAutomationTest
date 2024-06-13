@@ -8,6 +8,7 @@ import org.apache.poi.ss.usermodel.*;
 import java.io.*;
 import java.util.ArrayList;
 
+import org.testng.Reporter;
 import org.testng.annotations.DataProvider;
 
 public class DataDrivenTest {
@@ -313,6 +314,7 @@ public class DataDrivenTest {
         String excelFilePath = testDataFilePath;
         HSSFWorkbook workbook = new HSSFWorkbook();
         HSSFSheet sheet1 = workbook.createSheet("sheet1");
+        Reporter.log("Sheet1 created");
         HSSFSheet sheet2 = workbook.createSheet("sheet2");
         HSSFSheet sheet3 = workbook.createSheet("sheet3");
         HSSFSheet sheet4 = workbook.createSheet("sheet4");
@@ -323,12 +325,14 @@ public class DataDrivenTest {
         HSSFSheet sheet9 = workbook.createSheet("sheet9");
         HSSFSheet sheet10 = workbook.createSheet("sheet10");
         HSSFSheet sheet11 = workbook.createSheet("sheet11");
+        Reporter.log("Sheet11 created");
 
         // Write workbook to a file
         FileOutputStream outputStream = new FileOutputStream(excelFilePath);
         workbook.write(outputStream);
         outputStream.close();
         workbook.close();
+        Reporter.log("workbook closed");
     }
 
     public static void writeToExcelEnableDisable(ArrayList<String> fieldIds,String sheetNumber) throws IOException, InvalidFormatException {
