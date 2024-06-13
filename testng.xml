@@ -13,7 +13,6 @@
     </test>
 
     <listeners>
-        <listener class-name="org.testng.reporters.EmailableReporter"/>
         <listener class-name="org.testng.reporters.EmailableReporter2"/>
     </listeners>
 
