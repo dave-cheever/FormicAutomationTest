@@ -98,7 +98,7 @@ public class BaseUiTest {
 
         fieldIdHroDataFormattingValid = FieldManager.getHandWritingRecognitionObjectRulesDataFormattingValid(graphResponse);
         System.out.println("##[command] fieldId: "+fieldId.size());
-        DataDrivenTest.createExcelTestDataFile();
+//        DataDrivenTest.createExcelTestDataFile();
         System.out.println("##[command] writing to excel");
         DataDrivenTest.writeToExcel(fieldId);
         System.out.println("##[command] writing to enable disable fields");

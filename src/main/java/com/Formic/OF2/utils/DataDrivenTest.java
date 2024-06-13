@@ -4,6 +4,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.*;
 import java.io.*;
 import java.util.ArrayList;
@@ -314,10 +315,15 @@ public class DataDrivenTest {
     }
 
     public static void createExcelTestDataFile() throws IOException, InvalidFormatException {
+        FileInputStream fileInputStream = null;
+        FileOutputStream fileOutputStream = null;
+        HSSFWorkbook workbook = null;
         try {
             // Create a new workbook
             String excelFilePath = testDataFilePath;
-            HSSFWorkbook workbook = new HSSFWorkbook();
+            fileInputStream = new FileInputStream(new File(excelFilePath));
+            workbook = new HSSFWorkbook(new POIFSFileSystem(fileInputStream));
+            System.out.println("##[command] Workbook opened successfully");
             HSSFSheet sheet1 = workbook.createSheet("sheet1");
             System.out.println("##[command] Sheet1 created");
             HSSFSheet sheet2 = workbook.createSheet("sheet2");
