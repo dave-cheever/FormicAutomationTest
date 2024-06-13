@@ -97,7 +97,7 @@ public class BaseUiTest {
         fieldIdHroMandatory = FieldManager.getHandWritingRecognitionObjectRulesMandatory(graphResponse);
 
         fieldIdHroDataFormattingValid = FieldManager.getHandWritingRecognitionObjectRulesDataFormattingValid(graphResponse);
-        Reporter.log("fieldId: "+fieldId.size());
+        System.out.println("##[command] fieldId: "+fieldId.size());
         DataDrivenTest.createExcelTestDataFile();
         DataDrivenTest.writeToExcel(fieldId);
         DataDrivenTest.writeToExcelEnableDisable(fieldIdEnableDisable,"Sheet2");
