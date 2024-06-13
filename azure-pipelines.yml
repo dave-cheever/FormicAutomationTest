@@ -29,14 +29,14 @@ steps:
       pathToPublish: 'target'
     condition: succeededOrFailed()
 
-  - task: PublishTestResults@2
-    displayName: 'Publish Test Results'
-    inputs:
-      testResultsFiles: '**/TEST-*.xml'
-      failTaskOnFailedTests: true
-      mergeTestResults: false
-      testRunTitle: 'Regression Test Publish'
-    condition: succeededOrFailed()
+#  - task: PublishTestResults@2
+#    displayName: 'Publish Test Results'
+#    inputs:
+#      testResultsFiles: '**/TEST-*.xml'
+#      failTaskOnFailedTests: true
+#      mergeTestResults: false
+#      testRunTitle: 'Regression Test Publish'
+#    condition: succeededOrFailed()
 
   - task: CopyFiles@2
     displayName: 'Copy Screenshots to: $(Build.ArtifactStagingDirectory)/screenShots'
