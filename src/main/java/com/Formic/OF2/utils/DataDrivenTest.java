@@ -8,6 +8,7 @@ import org.apache.poi.ss.usermodel.*;
 import java.io.*;
 import java.util.ArrayList;
 
+import org.checkerframework.checker.formatter.qual.InvalidFormat;
 import org.testng.Reporter;
 import org.testng.annotations.DataProvider;
 
@@ -313,34 +314,55 @@ public class DataDrivenTest {
     }
 
     public static void createExcelTestDataFile() throws IOException, InvalidFormatException {
-        // Create a new workbook
-        String excelFilePath = testDataFilePath;
-        HSSFWorkbook workbook = new HSSFWorkbook();
-        HSSFSheet sheet1 = workbook.createSheet("sheet1");
-        System.out.println("##[command] Sheet1 created");
-        HSSFSheet sheet2 = workbook.createSheet("sheet2");
-        HSSFSheet sheet3 = workbook.createSheet("sheet3");
-        HSSFSheet sheet4 = workbook.createSheet("sheet4");
-        HSSFSheet sheet5 = workbook.createSheet("sheet5");
-        HSSFSheet sheet6 = workbook.createSheet("sheet6");
-        HSSFSheet sheet7 = workbook.createSheet("sheet7");
-        HSSFSheet sheet8 = workbook.createSheet("sheet8");
-        HSSFSheet sheet9 = workbook.createSheet("sheet9");
-        HSSFSheet sheet10 = workbook.createSheet("sheet10");
-        HSSFSheet sheet11 = workbook.createSheet("sheet11");
-        System.out.println("##[command] Sheet11 created");
+        try {
+            // Create a new workbook
+            String excelFilePath = testDataFilePath;
+            HSSFWorkbook workbook = new HSSFWorkbook();
+            HSSFSheet sheet1 = workbook.createSheet("sheet1");
+            System.out.println("##[command] Sheet1 created");
+            HSSFSheet sheet2 = workbook.createSheet("sheet2");
+            HSSFSheet sheet3 = workbook.createSheet("sheet3");
+            HSSFSheet sheet4 = workbook.createSheet("sheet4");
+            HSSFSheet sheet5 = workbook.createSheet("sheet5");
+            HSSFSheet sheet6 = workbook.createSheet("sheet6");
+            HSSFSheet sheet7 = workbook.createSheet("sheet7");
+            HSSFSheet sheet8 = workbook.createSheet("sheet8");
+            HSSFSheet sheet9 = workbook.createSheet("sheet9");
+            HSSFSheet sheet10 = workbook.createSheet("sheet10");
+            HSSFSheet sheet11 = workbook.createSheet("sheet11");
+            System.out.println("##[command] Sheet11 created");
 
-        // Write workbook to a file
-        System.out.println("##[command] Write workbook to a file");
-        System.out.println("##[command]  FileOutputStream outputStream = new FileOutputStream(excelFilePath);");
-        FileOutputStream outputStream = new FileOutputStream(excelFilePath);
-        System.out.println("##[command]  workbook.write(outputStream);");
-        workbook.write(outputStream);
-        System.out.println("##[command]  outputStream.close();");
-        outputStream.close();
-        System.out.println("##[command]  workbook.close();");
-        workbook.close();
-        System.out.println("##[command] workbook is now closed");
+            // Write workbook to a file
+            System.out.println("##[command] Write workbook to a file");
+            System.out.println("##[command] FileOutputStream outputStream = new FileOutputStream(excelFilePath);");
+
+            File testFile = new File(excelFilePath);
+            if (testFile.createNewFile()) {
+                System.out.println("##[command] Test file created successfully at " + excelFilePath);
+            } else {
+                System.out.println("##[warning] Test file already exists at " + excelFilePath);
+            }
+
+            FileOutputStream outputStream = new FileOutputStream(excelFilePath);
+            System.out.println("##[command] Before workbook.write(outputStream);");
+            workbook.write(outputStream);
+            System.out.println("##[command] After workbook.write(outputStream);");
+
+            System.out.println("##[command] Before outputStream.close();");
+            outputStream.close();
+            System.out.println("##[command] After outputStream.close();");
+
+            System.out.println("##[command] Before workbook.close();");
+            workbook.close();
+            System.out.println("##[command] After workbook.close();");
+            System.out.println("##[command] Workbook is now closed");
+        } catch (IOException e) {
+            System.out.println("##[error] IOException occurred: " + e.getMessage());
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("##[error] An unexpected error occurred: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     public static void writeToExcelEnableDisable(ArrayList<String> fieldIds,String sheetNumber) throws IOException, InvalidFormatException {
