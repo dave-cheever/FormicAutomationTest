@@ -15,6 +15,7 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.Assert;
 import org.testng.ITestResult;
+import org.testng.Reporter;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
@@ -96,7 +97,7 @@ public class BaseUiTest {
         fieldIdHroMandatory = FieldManager.getHandWritingRecognitionObjectRulesMandatory(graphResponse);
 
         fieldIdHroDataFormattingValid = FieldManager.getHandWritingRecognitionObjectRulesDataFormattingValid(graphResponse);
-
+        Reporter.log("fieldId: "+fieldId.size());
         DataDrivenTest.createExcelTestDataFile();
         DataDrivenTest.writeToExcel(fieldId);
         DataDrivenTest.writeToExcelEnableDisable(fieldIdEnableDisable,"Sheet2");
