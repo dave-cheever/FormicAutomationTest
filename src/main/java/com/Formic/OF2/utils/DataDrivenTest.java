@@ -331,11 +331,16 @@ public class DataDrivenTest {
         System.out.println("##[command] Sheet11 created");
 
         // Write workbook to a file
+        System.out.println("##[command] Write workbook to a file");
+        System.out.println("##[command]  FileOutputStream outputStream = new FileOutputStream(excelFilePath);");
         FileOutputStream outputStream = new FileOutputStream(excelFilePath);
+        System.out.println("##[command]  workbook.write(outputStream);");
         workbook.write(outputStream);
+        System.out.println("##[command]  outputStream.close();");
         outputStream.close();
+        System.out.println("##[command]  workbook.close();");
         workbook.close();
-        System.out.println("##[command] workbook closed");
+        System.out.println("##[command] workbook is now closed");
     }
 
     public static void writeToExcelEnableDisable(ArrayList<String> fieldIds,String sheetNumber) throws IOException, InvalidFormatException {
