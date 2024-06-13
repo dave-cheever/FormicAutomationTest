@@ -13,8 +13,8 @@ import org.testng.Reporter;
 import org.testng.annotations.DataProvider;
 
 public class DataDrivenTest {
-    private static String testDataFilePath = "$(Build.SourcesDirectory)/src/main/resources/Test_Data.xlsx";
-//    private static String testDataFilePath = "src/main/resources/Test_Data.xlsx";
+//    private static String testDataFilePath = "$(Build.SourcesDirectory)/src/main/resources/Test_Data.xlsx";
+    private static String testDataFilePath = "src/main/resources/Test_Data.xlsx";
 
     @DataProvider(name = "testData")
     public Object[][] testData() throws IOException, InvalidFormatException {
