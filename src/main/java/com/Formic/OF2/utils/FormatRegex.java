@@ -24,6 +24,12 @@ public class FormatRegex {
         if (regex.equals("^[0-9]{4}[ ][0-9]{4}[ ][0-9]{4}[ ][0-9]{4}$")) {
             return "1234 5678 9012 3456";
         }
+        if(regex.equals("^[a-zA-Z0-9]{1,5}$")){
+            return "123Wa";
+        }
+        if(regex.equals("^[a-zA-Z0-9]{1,10}$")){
+            return "2123Wa1123";
+        }
         return "";
     }
 

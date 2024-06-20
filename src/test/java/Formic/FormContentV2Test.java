@@ -151,6 +151,23 @@ public class FormContentV2Test extends BaseUiTest {
     }
 
 
+//    TEST
+
+//    @Test
+//    public void Checkbox_Beyond_Maximum_Inputs_TEST() throws Exception{
+//        String scenarioName = "CheckboxBeyondMaximumInputs";
+//        homePage.selectProject(projectName,scenarioName);
+//        checkBoxPage.checkboxBeyondMaximumInputs("81736a5e-f905-42ea-b8e1-b52175479620","1",false,scenarioName);
+//    }
+
+    @Test
+    public void hroDataFormattingValidInputsTest() throws Exception{
+        String scenarioName = "hroDataFormattingValidInputs";
+        homePage.selectProject(projectName,scenarioName);
+        hro.hroDataFormatValidInputs("75e08e6e-3fcf-4506-a739-73d3a59dfb17","true","5Q","^[a-zA-Z0-9]{1,5}$",scenarioName);
+    }
+
+
 
 
 

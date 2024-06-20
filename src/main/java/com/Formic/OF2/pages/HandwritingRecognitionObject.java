@@ -612,6 +612,7 @@ public class HandwritingRecognitionObject extends BasePage {
 
     public void hroDataFormatValidInputs(String fieldId, String mandatory, String name, String formatRegex, String scenarioName) throws Exception {
         RulesGraphql rules = new RulesGraphql();
+        isMandatory = Boolean.parseBoolean(mandatory);
         strFormatRegex = formatRegex;
         FormContentPojo graphResponse = rules.getRules(projectId);
         sideMenuNavigation.clickSubmitButton();
@@ -623,6 +624,7 @@ public class HandwritingRecognitionObject extends BasePage {
 
     public void hroEmailFormatInvalidInputsValidation(String fieldId, String mandatory, String name, String scenarioName) throws Exception {
         RulesGraphql rules = new RulesGraphql();
+        isMandatory = Boolean.parseBoolean(mandatory);
         FormContentPojo graphResponse = rules.getRules(projectId);
         sideMenuNavigation.clickSubmitButton();
         RoutingRules.enableDisabledFieldByFieldId(graphResponse,fieldId);
