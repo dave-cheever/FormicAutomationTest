@@ -22,55 +22,55 @@ public class FormContentTest extends BaseUiTest {
 //    String projectName = "No validation Project"; //159
 
 
-    @Test
-    public void validateMandatoryFieldsWithoutInputs() throws Exception{
-        String scenarioName = "validateMandatoryFieldsWithoutInputs";
-        homePage.selectProject(projectName,scenarioName);
-        checkBoxPage.validateCheckboxMandatory();
-    }
-
-    @Test
-    public void checkboxValidationEnableDisableFieldsCheckbox() throws Exception{
-        String scenarioName = "checkboxValidationEnableDisableFieldsCheckbox";
-        homePage.selectProject(projectName,scenarioName);
-        checkBoxPage.validateEnableDisableFieldsCheckbox();
-    }
-
-
-    @Test
-    public void validateMinimumRequiredWhenSubmitButtonClicked() throws Exception{
-        String scenarioName = "validateMinimumRequiredWhenSubmitButtonClicked";
-        homePage.selectProject(projectName,scenarioName);
-        checkBoxPage.validateCheckboxMinimumValidationUponSubmit();
-    }
-
-    @Test
-    public void checkboxValidationBeyondMaximumInputs() throws Exception{
-        String scenarioName = "checkboxValidationBeyondMaximumInputs";
-        homePage.selectProject(projectName,scenarioName);
-        checkBoxPage.validateCheckboxBeyondMaximumInputsUponSubmit();
-    }
-
-    @Test
-    public void checkboxValidationWithinMaximumInputs() throws Exception{
-        String scenarioName = "checkboxValidationWithinMaximumInputs";
-        homePage.selectProject(projectName,scenarioName);
-        checkBoxPage.validateCheckboxMaximumInputsWithinLimitUponSubmit();
-    }
-
-    @Test
-    public void checkboxValidationWithinMinimumInputs() throws Exception{
-        String scenarioName = "checkboxValidationWithinMinimumInputs";
-        homePage.selectProject(projectName,scenarioName);
-        checkBoxPage.validateCheckboxWithinMinimumInputsUponSubmit();
-    }
-
-    @Test
-    public void checkboxValidationLessThanMinimumInputs() throws Exception{
-        String scenarioName = "checkboxValidationLessThanMinimumInputs";
-        homePage.selectProject(projectName,scenarioName);
-        checkBoxPage.validateCheckboxLessThanMinimumInputsUponSubmit();
-    }
+//    @Test
+//    public void validateMandatoryFieldsWithoutInputs() throws Exception{
+//        String scenarioName = "validateMandatoryFieldsWithoutInputs";
+//        homePage.selectProject(projectName,scenarioName);
+//        checkBoxPage.validateCheckboxMandatory();
+//    }
+//
+//    @Test
+//    public void checkboxValidationEnableDisableFieldsCheckbox() throws Exception{
+//        String scenarioName = "checkboxValidationEnableDisableFieldsCheckbox";
+//        homePage.selectProject(projectName,scenarioName);
+//        checkBoxPage.validateEnableDisableFieldsCheckbox();
+//    }
+//
+//
+//    @Test
+//    public void validateMinimumRequiredWhenSubmitButtonClicked() throws Exception{
+//        String scenarioName = "validateMinimumRequiredWhenSubmitButtonClicked";
+//        homePage.selectProject(projectName,scenarioName);
+//        checkBoxPage.validateCheckboxMinimumValidationUponSubmit();
+//    }
+//
+//    @Test
+//    public void checkboxValidationBeyondMaximumInputs() throws Exception{
+//        String scenarioName = "checkboxValidationBeyondMaximumInputs";
+//        homePage.selectProject(projectName,scenarioName);
+//        checkBoxPage.validateCheckboxBeyondMaximumInputsUponSubmit();
+//    }
+//
+//    @Test
+//    public void checkboxValidationWithinMaximumInputs() throws Exception{
+//        String scenarioName = "checkboxValidationWithinMaximumInputs";
+//        homePage.selectProject(projectName,scenarioName);
+//        checkBoxPage.validateCheckboxMaximumInputsWithinLimitUponSubmit();
+//    }
+//
+//    @Test
+//    public void checkboxValidationWithinMinimumInputs() throws Exception{
+//        String scenarioName = "checkboxValidationWithinMinimumInputs";
+//        homePage.selectProject(projectName,scenarioName);
+//        checkBoxPage.validateCheckboxWithinMinimumInputsUponSubmit();
+//    }
+//
+//    @Test
+//    public void checkboxValidationLessThanMinimumInputs() throws Exception{
+//        String scenarioName = "checkboxValidationLessThanMinimumInputs";
+//        homePage.selectProject(projectName,scenarioName);
+//        checkBoxPage.validateCheckboxLessThanMinimumInputsUponSubmit();
+//    }
 //TODO: fix issue with this scneario
 //    @Test
 //    public void hroFormatValidation() throws Exception{
@@ -78,19 +78,20 @@ public class FormContentTest extends BaseUiTest {
 //        checkBoxPage.hroFormatValidation();
 //    }
 
+
+//    @Test
+//    public void hroMaximumInputsValidation() throws Exception{
+//        //hro validation message
+//        String scenarioName = "hroMaximumInputsValidation";
+//        homePage.selectProject(projectName,scenarioName);
+//        checkBoxPage.hroMaximumInputsValidation();
+//    }
+
     @Test
     public void miaFormatValidation() throws Exception{
         String scenarioName = "miaFormatValidation";
         homePage.selectProject(projectName,scenarioName);
         checkBoxPage.miaFormatValidation();
-    }
-
-    @Test
-    public void hroMaximumInputsValidation() throws Exception{
-        //hro validation message
-        String scenarioName = "hroMaximumInputsValidation";
-        homePage.selectProject(projectName,scenarioName);
-        checkBoxPage.hroMaximumInputsValidation();
     }
 
     @Test

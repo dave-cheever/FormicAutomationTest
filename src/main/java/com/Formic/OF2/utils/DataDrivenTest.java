@@ -7,11 +7,13 @@ import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.poifs.filesystem.POIFSFileSystem;
 import org.apache.poi.ss.usermodel.*;
 import java.io.*;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import org.checkerframework.checker.formatter.qual.InvalidFormat;
 import org.testng.Reporter;
 import org.testng.annotations.DataProvider;
+import org.testng.annotations.Test;
 
 public class DataDrivenTest {
 //    private static String testDataFilePath = "$(Build.SourcesDirectory)/src/main/resources/Test_Data.xlsx";
@@ -114,87 +116,12 @@ public class DataDrivenTest {
         return data;
     }
 
-    @DataProvider(name = "testDataManualImageArea")
-    public Object[][] testDataManualImageArea() throws IOException, InvalidFormatException {
-        // Path to your Excel file
-        String excelFilePath = testDataFilePath;
-        Workbook workbook = WorkbookFactory.create(new File(excelFilePath));
-        Sheet sheet = workbook.getSheet("sheet5");
-        int rowCount = sheet.getLastRowNum();
-        int columnCount = sheet.getRow(0).getLastCellNum();
-        Object[][] data = new Object[rowCount][columnCount];
-        // Loop through rows and columns to read data
-        for (int i = 0; i < rowCount; i++) {
-            Row row = sheet.getRow(i + 1); // Start from 1 to skip header row
-            for (int j = 0; j < columnCount; j++) {
-                if (row.getCell(j) != null) {
-                    data[i][j] = row.getCell(j).getStringCellValue();
-                } else {
-                    data[i][j] = ""; // Handle null cells
-                }
-            }
-        }
-        workbook.close();
-        System.out.println("Your excel file has been generated!");
-        return data;
-    }
-
     @DataProvider(name = "testDataHroNumeric")
     public Object[][] testDataHroNumeric() throws IOException, InvalidFormatException {
         // Path to your Excel file
         String excelFilePath = testDataFilePath;
         Workbook workbook = WorkbookFactory.create(new File(excelFilePath));
-        Sheet sheet = workbook.getSheet("sheet6");
-        int rowCount = sheet.getLastRowNum();
-        int columnCount = sheet.getRow(0).getLastCellNum();
-        Object[][] data = new Object[rowCount][columnCount];
-        // Loop through rows and columns to read data
-        for (int i = 0; i < rowCount; i++) {
-            Row row = sheet.getRow(i + 1); // Start from 1 to skip header row
-            for (int j = 0; j < columnCount; j++) {
-                if (row.getCell(j) != null) {
-                    data[i][j] = row.getCell(j).getStringCellValue();
-                } else {
-                    data[i][j] = ""; // Handle null cells
-                }
-            }
-        }
-        workbook.close();
-        System.out.println("Your excel file has been generated!");
-        return data;
-    }
-
-    @DataProvider(name = "testDataHroDataFormatting")
-    public Object[][] testDataHroDataFormatting() throws IOException, InvalidFormatException {
-        // Path to your Excel file
-        String excelFilePath = testDataFilePath;
-        Workbook workbook = WorkbookFactory.create(new File(excelFilePath));
-        Sheet sheet = workbook.getSheet("sheet9");
-        int rowCount = sheet.getLastRowNum();
-        int columnCount = sheet.getRow(0).getLastCellNum();
-        Object[][] data = new Object[rowCount][columnCount];
-        // Loop through rows and columns to read data
-        for (int i = 0; i < rowCount; i++) {
-            Row row = sheet.getRow(i + 1); // Start from 1 to skip header row
-            for (int j = 0; j < columnCount; j++) {
-                if (row.getCell(j) != null) {
-                    data[i][j] = row.getCell(j).getStringCellValue();
-                } else {
-                    data[i][j] = ""; // Handle null cells
-                }
-            }
-        }
-        workbook.close();
-        System.out.println("Your excel file has been generated!");
-        return data;
-    }
-
-    @DataProvider(name = "testDataHroDataFormattingValid")
-    public Object[][] testDataHroDataFormattingValid() throws IOException, InvalidFormatException {
-        // Path to your Excel file
-        String excelFilePath = testDataFilePath;
-        Workbook workbook = WorkbookFactory.create(new File(excelFilePath));
-        Sheet sheet = workbook.getSheet("sheet11");
+        Sheet sheet = workbook.getSheet("sheet5");
         int rowCount = sheet.getLastRowNum();
         int columnCount = sheet.getRow(0).getLastCellNum();
         Object[][] data = new Object[rowCount][columnCount];
@@ -219,7 +146,7 @@ public class DataDrivenTest {
         // Path to your Excel file
         String excelFilePath = testDataFilePath;
         Workbook workbook = WorkbookFactory.create(new File(excelFilePath));
-        Sheet sheet = workbook.getSheet("Sheet7");
+        Sheet sheet = workbook.getSheet("Sheet6");
         int rowCount = sheet.getLastRowNum();
         int columnCount = sheet.getRow(0).getLastCellNum();
         Object[][] data = new Object[rowCount][columnCount];
@@ -244,7 +171,32 @@ public class DataDrivenTest {
         // Path to your Excel file
         String excelFilePath = testDataFilePath;
         Workbook workbook = WorkbookFactory.create(new File(excelFilePath));
-        Sheet sheet = workbook.getSheet("Sheet8");
+        Sheet sheet = workbook.getSheet("Sheet7");
+        int rowCount = sheet.getLastRowNum();
+        int columnCount = sheet.getRow(0).getLastCellNum();
+        Object[][] data = new Object[rowCount][columnCount];
+        // Loop through rows and columns to read data
+        for (int i = 0; i < rowCount; i++) {
+            Row row = sheet.getRow(i + 1); // Start from 1 to skip header row
+            for (int j = 0; j < columnCount; j++) {
+                if (row.getCell(j) != null) {
+                    data[i][j] = row.getCell(j).getStringCellValue();
+                } else {
+                    data[i][j] = ""; // Handle null cells
+                }
+            }
+        }
+        workbook.close();
+        System.out.println("Your excel file has been generated!");
+        return data;
+    }
+
+    @DataProvider(name = "testDataHroDataFormatting")
+    public Object[][] testDataHroDataFormatting() throws IOException, InvalidFormatException {
+        // Path to your Excel file
+        String excelFilePath = testDataFilePath;
+        Workbook workbook = WorkbookFactory.create(new File(excelFilePath));
+        Sheet sheet = workbook.getSheet("sheet8");
         int rowCount = sheet.getLastRowNum();
         int columnCount = sheet.getRow(0).getLastCellNum();
         Object[][] data = new Object[rowCount][columnCount];
@@ -269,7 +221,157 @@ public class DataDrivenTest {
         // Path to your Excel file
         String excelFilePath = testDataFilePath;
         Workbook workbook = WorkbookFactory.create(new File(excelFilePath));
-        Sheet sheet = workbook.getSheet("Sheet10");
+        Sheet sheet = workbook.getSheet("Sheet9");
+        int rowCount = sheet.getLastRowNum();
+        int columnCount = sheet.getRow(0).getLastCellNum();
+        Object[][] data = new Object[rowCount][columnCount];
+        // Loop through rows and columns to read data
+        for (int i = 0; i < rowCount; i++) {
+            Row row = sheet.getRow(i + 1); // Start from 1 to skip header row
+            for (int j = 0; j < columnCount; j++) {
+                if (row.getCell(j) != null) {
+                    data[i][j] = row.getCell(j).getStringCellValue();
+                } else {
+                    data[i][j] = ""; // Handle null cells
+                }
+            }
+        }
+        workbook.close();
+        System.out.println("Your excel file has been generated!");
+        return data;
+    }
+
+    @DataProvider(name = "testDataManualImageAreaEmail")
+    public Object[][] testDataManualImageAreaEmail() throws IOException, InvalidFormatException {
+        // Path to your Excel file
+        String excelFilePath = testDataFilePath;
+        Workbook workbook = WorkbookFactory.create(new File(excelFilePath));
+        Sheet sheet = workbook.getSheet("sheet10");
+        int rowCount = sheet.getLastRowNum();
+        int columnCount = sheet.getRow(0).getLastCellNum();
+        Object[][] data = new Object[rowCount][columnCount];
+        // Loop through rows and columns to read data
+        for (int i = 0; i < rowCount; i++) {
+            Row row = sheet.getRow(i + 1); // Start from 1 to skip header row
+            for (int j = 0; j < columnCount; j++) {
+                if (row.getCell(j) != null) {
+                    data[i][j] = row.getCell(j).getStringCellValue();
+                } else {
+                    data[i][j] = ""; // Handle null cells
+                }
+            }
+        }
+        workbook.close();
+        System.out.println("Your excel file has been generated!");
+        return data;
+    }
+
+    @DataProvider(name = "testDataManualImageAreaDateTime")
+    public Object[][] testDataManualImageAreaDateTime() throws IOException, InvalidFormatException {
+        // Path to your Excel file
+        String excelFilePath = testDataFilePath;
+        Workbook workbook = WorkbookFactory.create(new File(excelFilePath));
+        Sheet sheet = workbook.getSheet("sheet11");
+        int rowCount = sheet.getLastRowNum();
+        int columnCount = sheet.getRow(0).getLastCellNum();
+        Object[][] data = new Object[rowCount][columnCount];
+        // Loop through rows and columns to read data
+        for (int i = 0; i < rowCount; i++) {
+            Row row = sheet.getRow(i + 1); // Start from 1 to skip header row
+            for (int j = 0; j < columnCount; j++) {
+                if (row.getCell(j) != null) {
+                    data[i][j] = row.getCell(j).getStringCellValue();
+                } else {
+                    data[i][j] = ""; // Handle null cells
+                }
+            }
+        }
+        workbook.close();
+        System.out.println("Your excel file has been generated!");
+        return data;
+    }
+
+    @DataProvider(name = "testDataManualImageAreaNumeric")
+    public Object[][] testDataManualImageAreaNumeric() throws IOException, InvalidFormatException {
+        // Path to your Excel file
+        String excelFilePath = testDataFilePath;
+        Workbook workbook = WorkbookFactory.create(new File(excelFilePath));
+        Sheet sheet = workbook.getSheet("sheet12");
+        int rowCount = sheet.getLastRowNum();
+        int columnCount = sheet.getRow(0).getLastCellNum();
+        Object[][] data = new Object[rowCount][columnCount];
+        // Loop through rows and columns to read data
+        for (int i = 0; i < rowCount; i++) {
+            Row row = sheet.getRow(i + 1); // Start from 1 to skip header row
+            for (int j = 0; j < columnCount; j++) {
+                if (row.getCell(j) != null) {
+                    data[i][j] = row.getCell(j).getStringCellValue();
+                } else {
+                    data[i][j] = ""; // Handle null cells
+                }
+            }
+        }
+        workbook.close();
+        System.out.println("Your excel file has been generated!");
+        return data;
+    }
+
+    @DataProvider(name = "testDataManualImageAreaDataFormatting")
+    public Object[][] testDataManualImageAreaDataFormatting() throws IOException, InvalidFormatException {
+        // Path to your Excel file
+        String excelFilePath = testDataFilePath;
+        Workbook workbook = WorkbookFactory.create(new File(excelFilePath));
+        Sheet sheet = workbook.getSheet("sheet13");
+        int rowCount = sheet.getLastRowNum();
+        int columnCount = sheet.getRow(0).getLastCellNum();
+        Object[][] data = new Object[rowCount][columnCount];
+        // Loop through rows and columns to read data
+        for (int i = 0; i < rowCount; i++) {
+            Row row = sheet.getRow(i + 1); // Start from 1 to skip header row
+            for (int j = 0; j < columnCount; j++) {
+                if (row.getCell(j) != null) {
+                    data[i][j] = row.getCell(j).getStringCellValue();
+                } else {
+                    data[i][j] = ""; // Handle null cells
+                }
+            }
+        }
+        workbook.close();
+        System.out.println("Your excel file has been generated!");
+        return data;
+    }
+
+    @DataProvider(name = "testDataMiaMandatory")
+    public Object[][] testDataMiaMandatory() throws IOException, InvalidFormatException {
+        // Path to your Excel file
+        String excelFilePath = testDataFilePath;
+        Workbook workbook = WorkbookFactory.create(new File(excelFilePath));
+        Sheet sheet = workbook.getSheet("Sheet14");
+        int rowCount = sheet.getLastRowNum();
+        int columnCount = sheet.getRow(0).getLastCellNum();
+        Object[][] data = new Object[rowCount][columnCount];
+        // Loop through rows and columns to read data
+        for (int i = 0; i < rowCount; i++) {
+            Row row = sheet.getRow(i + 1); // Start from 1 to skip header row
+            for (int j = 0; j < columnCount; j++) {
+                if (row.getCell(j) != null) {
+                    data[i][j] = row.getCell(j).getStringCellValue();
+                } else {
+                    data[i][j] = ""; // Handle null cells
+                }
+            }
+        }
+        workbook.close();
+        System.out.println("Your excel file has been generated!");
+        return data;
+    }
+
+    @DataProvider(name = "testDataMiaPickList")
+    public Object[][] testDataMiaPickList() throws IOException, InvalidFormatException {
+        // Path to your Excel file
+        String excelFilePath = testDataFilePath;
+        Workbook workbook = WorkbookFactory.create(new File(excelFilePath));
+        Sheet sheet = workbook.getSheet("Sheet15");
         int rowCount = sheet.getLastRowNum();
         int columnCount = sheet.getRow(0).getLastCellNum();
         Object[][] data = new Object[rowCount][columnCount];
@@ -307,10 +409,10 @@ public class DataDrivenTest {
             fieldIds.remove(0);
         }
         // Write workbook to a file
-//        FileOutputStream outputStream = new FileOutputStream(excelFilePath);
-//        workbook.write(outputStream);
-//        outputStream.close();
-//        workbook.close();
+        FileOutputStream outputStream = new FileOutputStream(excelFilePath);
+        workbook.write(outputStream);
+        outputStream.close();
+        workbook.close();
         System.out.println("##[command] workbook close write to excel");
     }
 
@@ -321,8 +423,9 @@ public class DataDrivenTest {
         try {
             // Create a new workbook
             String excelFilePath = testDataFilePath;
-            fileInputStream = new FileInputStream(new File(excelFilePath));
-            workbook = new HSSFWorkbook(new POIFSFileSystem(fileInputStream));
+//            fileInputStream = new FileInputStream(new File(excelFilePath));
+//            workbook = new HSSFWorkbook(new POIFSFileSystem(fileInputStream));
+            workbook = new HSSFWorkbook();
             System.out.println("##[command] Workbook opened successfully");
             HSSFSheet sheet1 = workbook.createSheet("sheet1");
             System.out.println("##[command] Sheet1 created");
@@ -336,7 +439,16 @@ public class DataDrivenTest {
             HSSFSheet sheet9 = workbook.createSheet("sheet9");
             HSSFSheet sheet10 = workbook.createSheet("sheet10");
             HSSFSheet sheet11 = workbook.createSheet("sheet11");
-            System.out.println("##[command] Sheet11 created");
+            HSSFSheet sheet12 = workbook.createSheet("sheet12");
+            HSSFSheet sheet13 = workbook.createSheet("sheet13");
+            HSSFSheet sheet14 = workbook.createSheet("sheet14");
+            HSSFSheet sheet15 = workbook.createSheet("sheet15");
+            HSSFSheet sheet16 = workbook.createSheet("sheet16");
+            HSSFSheet sheet17 = workbook.createSheet("sheet17");
+            HSSFSheet sheet18 = workbook.createSheet("sheet18");
+            HSSFSheet sheet19 = workbook.createSheet("sheet19");
+            HSSFSheet sheet20 = workbook.createSheet("sheet20");
+            System.out.println("##[command] Sheet20 created");
 
             // Write workbook to a file
             System.out.println("##[command] Write workbook to a file");
@@ -394,10 +506,10 @@ public class DataDrivenTest {
             fieldIds.remove(0);
         }
         // Write workbook to a file
-//        FileOutputStream outputStream = new FileOutputStream(excelFilePath);
-//        workbook.write(outputStream);
-//        outputStream.close();
-//        workbook.close();
+        FileOutputStream outputStream = new FileOutputStream(excelFilePath);
+        workbook.write(outputStream);
+        outputStream.close();
+        workbook.close();
     }
 
     public static void writeToExcelCheckboxMinimumInputs(ArrayList<String> fieldIds,String sheetNumber) throws IOException, InvalidFormatException {
@@ -420,10 +532,10 @@ public class DataDrivenTest {
             fieldIds.remove(0);
         }
         // Write workbook to a file
-//        FileOutputStream outputStream = new FileOutputStream(excelFilePath);
-//        workbook.write(outputStream);
-//        outputStream.close();
-//        workbook.close();
+        FileOutputStream outputStream = new FileOutputStream(excelFilePath);
+        workbook.write(outputStream);
+        outputStream.close();
+        workbook.close();
     }
 
     public static void writeToExcelCheckboxMaximumInputs(ArrayList<String> fieldIds,String sheetNumber) throws IOException, InvalidFormatException {
@@ -446,13 +558,13 @@ public class DataDrivenTest {
             fieldIds.remove(0);
         }
         // Write workbook to a file
-//        FileOutputStream outputStream = new FileOutputStream(excelFilePath);
-//        workbook.write(outputStream);
-//        outputStream.close();
-//        workbook.close();
+        FileOutputStream outputStream = new FileOutputStream(excelFilePath);
+        workbook.write(outputStream);
+        outputStream.close();
+        workbook.close();
     }
 
-    public static void writeToExcelMiaAndHro(ArrayList<String> fieldIds,String sheetNumber) throws IOException, InvalidFormatException {
+    public static void writeToExcelMiaEmail(ArrayList<String> fieldIds,String sheetNumber) throws IOException, InvalidFormatException {
         // Create a new workbook
         String excelFilePath = testDataFilePath;
         FileInputStream inputStream = new FileInputStream(excelFilePath);
@@ -462,14 +574,6 @@ public class DataDrivenTest {
         rowHead.createCell(0).setCellValue("FieldId");
         rowHead.createCell(1).setCellValue("Mandatory");
         rowHead.createCell(2).setCellValue("Name");
-        rowHead.createCell(3).setCellValue("FormatMask");
-        rowHead.createCell(4).setCellValue("FormatRegex");
-        rowHead.createCell(5).setCellValue("DataType");
-        rowHead.createCell(6).setCellValue("Derivation");
-        rowHead.createCell(7).setCellValue("Validation");
-        rowHead.createCell(8).setCellValue("IsMultiResponse");
-        rowHead.createCell(9).setCellValue("Maximum");
-        rowHead.createCell(10).setCellValue("Minimum");
         for (int i = 1;fieldIds.size()!=0; i++) {
             rowHead = sheet.createRow(i);
             rowHead.createCell(0).setCellValue(fieldIds.get(0));
@@ -478,28 +582,12 @@ public class DataDrivenTest {
             fieldIds.remove(0);
             rowHead.createCell(2).setCellValue(fieldIds.get(0));
             fieldIds.remove(0);
-            rowHead.createCell(3).setCellValue(fieldIds.get(0));
-            fieldIds.remove(0);
-            rowHead.createCell(4).setCellValue(fieldIds.get(0));
-            fieldIds.remove(0);
-            rowHead.createCell(5).setCellValue(fieldIds.get(0));
-            fieldIds.remove(0);
-            rowHead.createCell(6).setCellValue(fieldIds.get(0));
-            fieldIds.remove(0);
-            rowHead.createCell(7).setCellValue(fieldIds.get(0));
-            fieldIds.remove(0);
-            rowHead.createCell(8).setCellValue(fieldIds.get(0));
-            fieldIds.remove(0);
-            rowHead.createCell(9).setCellValue(fieldIds.get(0));
-            fieldIds.remove(0);
-            rowHead.createCell(10).setCellValue(fieldIds.get(0));
-            fieldIds.remove(0);
         }
         // Write workbook to a file
-//        FileOutputStream outputStream = new FileOutputStream(excelFilePath);
-//        workbook.write(outputStream);
-//        outputStream.close();
-//        workbook.close();
+        FileOutputStream outputStream = new FileOutputStream(excelFilePath);
+        workbook.write(outputStream);
+        outputStream.close();
+        workbook.close();
     }
 
     public static void writeToExcelHroNumeric(ArrayList<String> fieldIds,String sheetNumber) throws IOException, InvalidFormatException {
@@ -526,10 +614,76 @@ public class DataDrivenTest {
             fieldIds.remove(0);
         }
         // Write workbook to a file
-//        FileOutputStream outputStream = new FileOutputStream(excelFilePath);
-//        workbook.write(outputStream);
-//        outputStream.close();
-//        workbook.close();
+        FileOutputStream outputStream = new FileOutputStream(excelFilePath);
+        workbook.write(outputStream);
+        outputStream.close();
+        workbook.close();
+    }
+
+    public static void writeToExcelMiaNumeric(ArrayList<String> fieldIds,String sheetNumber) throws IOException, InvalidFormatException {
+        // Create a new workbook
+        String excelFilePath = testDataFilePath;
+        FileInputStream inputStream = new FileInputStream(excelFilePath);
+        HSSFWorkbook workbook = new HSSFWorkbook(inputStream);
+        HSSFSheet sheet = workbook.getSheet(sheetNumber);
+        HSSFRow rowHead = sheet.createRow((short)0);
+        rowHead.createCell(0).setCellValue("FieldId");
+        rowHead.createCell(1).setCellValue("Mandatory");
+        rowHead.createCell(2).setCellValue("Name");
+        rowHead.createCell(3).setCellValue("Maximum");
+        rowHead.createCell(4).setCellValue("FormatMask");
+
+        for (int i = 1;fieldIds.size()!=0; i++) {
+            rowHead = sheet.createRow(i);
+            rowHead.createCell(0).setCellValue(fieldIds.get(0));
+            fieldIds.remove(0);
+            rowHead.createCell(1).setCellValue(fieldIds.get(0));
+            fieldIds.remove(0);
+            rowHead.createCell(2).setCellValue(fieldIds.get(0));
+            fieldIds.remove(0);
+            rowHead.createCell(3).setCellValue(fieldIds.get(0));
+            fieldIds.remove(0);
+            rowHead.createCell(4).setCellValue(fieldIds.get(0));
+            fieldIds.remove(0);
+        }
+        // Write workbook to a file
+        FileOutputStream outputStream = new FileOutputStream(excelFilePath);
+        workbook.write(outputStream);
+        outputStream.close();
+        workbook.close();
+    }
+
+    public static void writeToExcelMiaDataFormatting(ArrayList<String> fieldIds,String sheetNumber) throws IOException, InvalidFormatException {
+        // Create a new workbook
+        String excelFilePath = testDataFilePath;
+        FileInputStream inputStream = new FileInputStream(excelFilePath);
+        HSSFWorkbook workbook = new HSSFWorkbook(inputStream);
+        HSSFSheet sheet = workbook.getSheet(sheetNumber);
+        HSSFRow rowHead = sheet.createRow((short)0);
+        rowHead.createCell(0).setCellValue("FieldId");
+        rowHead.createCell(1).setCellValue("Mandatory");
+        rowHead.createCell(2).setCellValue("Name");
+        rowHead.createCell(3).setCellValue("FormatMask");
+        rowHead.createCell(4).setCellValue("FormatRegEx");
+
+        for (int i = 1;fieldIds.size()!=0; i++) {
+            rowHead = sheet.createRow(i);
+            rowHead.createCell(0).setCellValue(fieldIds.get(0));
+            fieldIds.remove(0);
+            rowHead.createCell(1).setCellValue(fieldIds.get(0));
+            fieldIds.remove(0);
+            rowHead.createCell(2).setCellValue(fieldIds.get(0));
+            fieldIds.remove(0);
+            rowHead.createCell(3).setCellValue(fieldIds.get(0));
+            fieldIds.remove(0);
+            rowHead.createCell(4).setCellValue(fieldIds.get(0));
+            fieldIds.remove(0);
+        }
+        // Write workbook to a file
+        FileOutputStream outputStream = new FileOutputStream(excelFilePath);
+        workbook.write(outputStream);
+        outputStream.close();
+        workbook.close();
     }
 
     public static void writeToExcelHroDataFormatting(ArrayList<String> fieldIds,String sheetNumber) throws IOException, InvalidFormatException {
@@ -542,7 +696,8 @@ public class DataDrivenTest {
         rowHead.createCell(0).setCellValue("FieldId");
         rowHead.createCell(1).setCellValue("Mandatory");
         rowHead.createCell(2).setCellValue("Name");
-        rowHead.createCell(3).setCellValue("FormatMask");
+        rowHead.createCell(3).setCellValue("FormatRegEx");
+        rowHead.createCell(4).setCellValue("FormatMask");
 
         for (int i = 1;fieldIds.size()!=0; i++) {
             rowHead = sheet.createRow(i);
@@ -554,12 +709,14 @@ public class DataDrivenTest {
             fieldIds.remove(0);
             rowHead.createCell(3).setCellValue(fieldIds.get(0));
             fieldIds.remove(0);
+            rowHead.createCell(4).setCellValue(fieldIds.get(0));
+            fieldIds.remove(0);
         }
         // Write workbook to a file
-//        FileOutputStream outputStream = new FileOutputStream(excelFilePath);
-//        workbook.write(outputStream);
-//        outputStream.close();
-//        workbook.close();
+        FileOutputStream outputStream = new FileOutputStream(excelFilePath);
+        workbook.write(outputStream);
+        outputStream.close();
+        workbook.close();
     }
 
     public static void writeToExcelHroDataFormattingValid(ArrayList<String> fieldIds,String sheetNumber) throws IOException, InvalidFormatException {
@@ -586,10 +743,10 @@ public class DataDrivenTest {
             fieldIds.remove(0);
         }
         // Write workbook to a file
-//        FileOutputStream outputStream = new FileOutputStream(excelFilePath);
-//        workbook.write(outputStream);
-//        outputStream.close();
-//        workbook.close();
+        FileOutputStream outputStream = new FileOutputStream(excelFilePath);
+        workbook.write(outputStream);
+        outputStream.close();
+        workbook.close();
     }
 
     public static void writeToExcelHroMandatory(ArrayList<String> fieldIds,String sheetNumber) throws IOException, InvalidFormatException {
@@ -607,10 +764,43 @@ public class DataDrivenTest {
             fieldIds.remove(0);
         }
         // Write workbook to a file
-//        FileOutputStream outputStream = new FileOutputStream(excelFilePath);
-//        workbook.write(outputStream);
-//        outputStream.close();
-//        workbook.close();
+        FileOutputStream outputStream = new FileOutputStream(excelFilePath);
+        workbook.write(outputStream);
+        outputStream.close();
+        workbook.close();
+    }
+
+    public static void writeToExcelMiaPickList(ArrayList<String> fieldIds,String sheetNumber) throws IOException, InvalidFormatException {
+        // Create a new workbook
+        String excelFilePath = testDataFilePath;
+        FileInputStream inputStream = new FileInputStream(excelFilePath);
+        HSSFWorkbook workbook = new HSSFWorkbook(inputStream);
+        HSSFSheet sheet = workbook.getSheet(sheetNumber);
+        HSSFRow rowHead = sheet.createRow((short)0);
+        rowHead.createCell(0).setCellValue("FieldId");
+        rowHead.createCell(1).setCellValue("Mandatory");
+        rowHead.createCell(2).setCellValue("Name");
+        rowHead.createCell(3).setCellValue("Min");
+        rowHead.createCell(4).setCellValue("Max");
+
+        for (int i = 1;fieldIds.size()!=0; i++) {
+            rowHead = sheet.createRow(i);
+            rowHead.createCell(0).setCellValue(fieldIds.get(0));
+            fieldIds.remove(0);
+            rowHead.createCell(1).setCellValue(fieldIds.get(0));
+            fieldIds.remove(0);
+            rowHead.createCell(2).setCellValue(fieldIds.get(0));
+            fieldIds.remove(0);
+            rowHead.createCell(3).setCellValue(fieldIds.get(0));
+            fieldIds.remove(0);
+            rowHead.createCell(4).setCellValue(fieldIds.get(0));
+            fieldIds.remove(0);
+        }
+        // Write workbook to a file
+        FileOutputStream outputStream = new FileOutputStream(excelFilePath);
+        workbook.write(outputStream);
+        outputStream.close();
+        workbook.close();
     }
 
     public static void writeToExcelHroDateTime(ArrayList<String> fieldIds,String sheetNumber) throws IOException, InvalidFormatException {
@@ -637,11 +827,12 @@ public class DataDrivenTest {
             fieldIds.remove(0);
         }
         // Write workbook to a file
-//        FileOutputStream outputStream = new FileOutputStream(excelFilePath);
-//        workbook.write(outputStream);
-//        outputStream.close();
-//        workbook.close();
+        FileOutputStream outputStream = new FileOutputStream(excelFilePath);
+        workbook.write(outputStream);
+        outputStream.close();
+        workbook.close();
     }
+
 
     public static void writeToExcelHroEmail(ArrayList<String> fieldIds,String sheetNumber) throws IOException, InvalidFormatException {
         // Create a new workbook
@@ -664,10 +855,10 @@ public class DataDrivenTest {
             fieldIds.remove(0);
         }
         // Write workbook to a file
-//        FileOutputStream outputStream = new FileOutputStream(excelFilePath);
-//        workbook.write(outputStream);
-//        outputStream.close();
-//        workbook.close();
+        FileOutputStream outputStream = new FileOutputStream(excelFilePath);
+        workbook.write(outputStream);
+        outputStream.close();
+        workbook.close();
     }
 
     public static void deleteWorkbook() {

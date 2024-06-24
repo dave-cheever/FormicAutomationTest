@@ -6,15 +6,14 @@ import com.Formic.OF2.utils.Pojo.FormContentPojo;
 import com.Formic.OF2.utils.Pojo.RulesGraphql;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.Reporter;
 
-import java.util.ArrayList;
-import java.util.LinkedHashSet;
-import java.util.Random;
-import java.util.Set;
+import java.text.ParseException;
+import java.util.*;
 
 import static com.Formic.OF2.pages.CheckboxMatrix.clickCloseButton;
 import static com.Formic.OF2.pages.CheckboxMatrixV2.getValidationMessageByOptionName;
@@ -47,6 +46,8 @@ public class CheckBoxPageV2 extends BasePage {
     private static boolean checkboxMandatory;
 
     public static DataValidation dataValidation = new DataValidation(driver);
+    public static HandwritingRecognitionObject hro = new HandwritingRecognitionObject(driver);
+    public static ManualImageArea mia = new ManualImageArea(driver);
     public static FieldValidation fieldValidation = new FieldValidation(driver);
     public SideMenuNavigation sideMenuNavigation = new SideMenuNavigation(driver);
     public static CompletionErrors comp = new CompletionErrors(driver);
@@ -555,6 +556,561 @@ public class CheckBoxPageV2 extends BasePage {
             String pathName = screenshotHelper.getScreenshotPath(scenarioName);
             Reporter.log("<br><b>Failed test screenshot:</b> <a href='" + pathName + "'>Screenshot</a><br>");
             throw assertionError;
+        }
+    }
+
+    public void validateSubmittedInputsCheckbox() throws Exception {
+        RulesGraphql rules = new RulesGraphql();
+        FormContentPojo graphResponse =  rules.getRules(projectId);
+        sideMenuNavigation.clickSubmitButton();
+        String strListFieldName;
+        String fieldId;
+        String strTypeName;
+        String strElementId;
+        do{
+            strListFieldName = getListFieldNameByCompletionErrors();
+            strElementId = getElementIdByFieldName(graphResponse,strListFieldName);
+            fieldId = getFieldIdByObjectId(graphResponse,strElementId);
+            strTypeName = getTypeNameByFieldId(graphResponse,fieldId);
+            clickFieldNameInCompletionErrors(strListFieldName);
+
+            if(strTypeName.equalsIgnoreCase("HandwritingRecognitionObject")){
+
+                FieldMetaData.getHroRules(graphResponse,fieldId);
+                lookForTheField(graphResponse,fieldId);
+                hroInputs(graphResponse,fieldId);
+
+            }else if(strTypeName.equalsIgnoreCase("TickboxGroup")){
+                //Checkbox Matrix
+                if(CheckboxMatrix.isFieldIdCheckBoxMatrix(graphResponse,fieldId)){
+                    getCheckboxRulesForMinimumAndMaximumInputs(graphResponse,fieldId);
+                    ArrayList<String> numberOfOptions = CheckboxMatrix.checkboxMatrixOptionsCount(graphResponse,fieldId);
+                    int numberOfItems = CheckboxMatrix.countNumberOfResponses(strElementId,numberOfOptions.size());
+                    CheckboxMatrix.clickWithinMinimumMaximumInput(graphResponse,CheckboxObject.minimum,CheckboxObject.maximum,numberOfOptions,numberOfItems);
+
+                }else{
+                 //Checkbox
+                    getCheckboxRulesForMinimumAndMaximumInputs(graphResponse,fieldId);
+                    int numberOfItems = countCheckboxItems(strElementId);
+                    clickWithinMinimumMaximumInput(graphResponse,CheckboxObject.minimum,CheckboxObject.maximum,strElementId,numberOfItems);
+                }
+
+            }else if(strTypeName.equalsIgnoreCase("ManualImageAreaText")){
+
+                FieldMetaData.getMiaRules(graphResponse,fieldId);
+                lookForTheField(graphResponse,fieldId);
+                miaInputs(graphResponse,fieldId);
+
+            }else if(strTypeName.equalsIgnoreCase("PickList")){
+
+                FieldMetaData.getMiaRules(graphResponse,fieldId);
+                picklistInputs(graphResponse,fieldId);
+
+            }
+            sleep(1000);
+        }while (!getListFieldNameByCompletionErrors().isEmpty());
+        sideMenuNavigation.clickSubmitButton();
+        String receipt = getProjectReceipt();
+        clickContinueButton();
+        clickSavedFormsButton();
+        Reporter.log("<b>Receipt code:<b/> "+receipt);
+        enterReceiptNumber(receipt);
+        clickGoButton();
+        System.out.println(receipt);
+        validateInputsAreCorrect(graphResponse);
+    }
+
+    public void clickContinueButton(){
+        try{
+            String continueBtn = "//button[text()='Continue']";
+            WebElement element = stringToWebElement(continueBtn);
+            click(element);
+        }catch(Exception e){
+            Reporter.log("Continue button missing. "+e);
+        }
+    }
+
+    public void clickSavedFormsButton(){
+        try{
+            String continueBtn = "//span[text()='Saved Forms']";
+            WebElement element = stringToWebElement(continueBtn);
+            click(element);
+        }catch (NoSuchElementException e){
+            Reporter.log("Save forms button not visible.");
+        }
+
+    }
+
+    public void enterReceiptNumber(String strReceipt){
+        String strReceiptNumber = "//input[@id='receipt-entry-input']";
+        WebElement element = stringToWebElement(strReceiptNumber);
+        enterText(element,strReceipt);
+    }
+
+    public void clickGoButton(){
+        String strGoButton = "//button[text()='Go']";
+        try{
+            WebElement element = stringToWebElement(strGoButton);
+            click(element);
+        }catch (NoSuchElementException e){
+            Reporter.log("Go button not visible. " + e);
+        }
+    }
+
+    public String getProjectReceipt(){
+        try{
+            String test = "//h2[contains(text(),'Complete')]/ancestor::main/p[contains(text(),'You can use the following receipt to recall this particular form at a later date.')]";
+            WebElement elem = stringToWebElement(test);
+            String text = elem.getText();
+            String [] strReceipt;
+            strReceipt = text.split(". ");
+            return strReceipt[15];
+        }catch (NoSuchElementException e){
+            Reporter.log("Receipt not visible. "+e);
+            return "";
+        }
+    }
+
+    public void picklistInputs(com.Formic.OF2.utils.Pojo.FormContentPojo pojo,String strFieldId) throws ParseException {
+        mia.addWithinMinimumMaximumOptions(pojo,CheckboxObject.minimum,strFieldId);
+        int numberOfOptionsSelected = mia.getNumberOfOptionsSelected(pojo,strFieldId);
+        ArrayList<String> optionsName = new ArrayList<>();
+        String elementId = getObjectIdFromFieldId(pojo,strFieldId);
+        for(int x = 0; x<numberOfOptionsSelected;x++){
+            optionsName.add(mia.getPicklistSelectedOptionsName(elementId,x+1));
+        }
+        mia.recordInputsFromPicklist(elementId,optionsName);
+    }
+
+    public void miaInputs(com.Formic.OF2.utils.Pojo.FormContentPojo pojo,String strFieldId) throws ParseException {
+        lookForTheField(pojo, strFieldId);
+        if (CheckboxObject.strFormatRegex != null && CheckboxObject.strFormatRegex.equalsIgnoreCase(emailRegEx)) {
+            String email = emailAddressInputs();
+            mia.setTextToMia(pojo, strFieldId, email);
+        } else {
+
+            String inputs = "";
+            boolean flag = false;
+            if (CheckboxObject.strFormatRegex != null) {
+                inputs = FormatRegex.generateFormattedString(CheckboxObject.strFormatRegex);
+                if (!inputs.equalsIgnoreCase("")) {
+                    mia.setTextToMia(pojo, strFieldId, inputs);
+                    flag = true;
+                }
+            }
+
+            if (CheckboxObject.strFormatMask != null && flag != true) {
+                inputs = FormatMask.formatDateTime(CheckboxObject.strFormatMask);
+                if (inputs != null) {
+                    mia.setTextToMia(pojo, strFieldId, inputs);
+                    flag = true;
+                }
+            }
+            if(flag!=true){
+                if(mia.miaDataType().equalsIgnoreCase("NUMERIC")){
+                    mia.numericInputs(pojo,strFieldId);
+                } else if (mia.miaDataType().equalsIgnoreCase("ALPHA_NUMERIC")) {
+                    mia.alphaNumericInputs(pojo,strFieldId);
+                }else if (mia.miaDataType().equalsIgnoreCase("ALPHA")) {
+                    mia.alphaInputs(pojo,strFieldId);
+                }
+            }
+        }
+    }
+
+    public String getListFieldNameByCompletionErrors(){
+        String fieldNames = "";
+        try{
+            int numberOfElements = driver.findElements(By.xpath(completionErrorsFieldNameList)).size();
+            for(int x = 1; x <= numberOfElements; x++){
+                String elem = stringReplace(completionErrorsFieldName,Integer.toString(x));
+                WebElement element = stringToWebElement(elem);
+                scrollElementIntoView(driver,element);
+                fieldNames = element.getText();
+                break;
+            }
+            return fieldNames;
+        }catch (Exception e){
+            Reporter.log("No more items in Completion errors.");
+            return null;
+        }
+    }
+
+    public void clickFieldNameInCompletionErrors(String strFieldName){
+        String elem = stringReplace(completionErrorsFieldNameButton,strFieldName);
+        WebElement element = stringToWebElement(elem);
+        element.click();
+    }
+
+    public void hroInputs(com.Formic.OF2.utils.Pojo.FormContentPojo pojo,String strFieldId) throws ParseException {
+        lookForTheField(pojo, strFieldId);
+        if (CheckboxObject.strFormatRegex != null && CheckboxObject.strFormatRegex.equalsIgnoreCase(emailRegEx)) {
+            String email = emailAddressInputs();
+            hro.setTextToHro(pojo, strFieldId, email);
+        } else {
+
+            String inputs = "";
+            boolean flag = false;
+            if (CheckboxObject.strFormatRegex != null) {
+                inputs = FormatRegex.generateFormattedString(CheckboxObject.strFormatRegex);
+                if (!inputs.equalsIgnoreCase("")) {
+                    hro.setTextToHro(pojo, strFieldId, inputs);
+                    flag = true;
+                }
+            }
+
+            if (CheckboxObject.strFormatMask != null && flag != true) {
+                inputs = FormatMask.formatDateTime(CheckboxObject.strFormatMask);
+                if (inputs != null) {
+                    hro.setTextToHro(pojo, strFieldId, inputs);
+                    flag = true;
+                }
+            }
+            if(flag!=true&&CheckboxObject.strFormatRegex!=null){
+                FormatRegex.RegexType regex = FormatRegex.getRegexType(CheckboxObject.strFormatRegex);
+                if(regex.equals(FormatRegex.RegexType.ONLY_NUMBERS)){
+                    inputs = hro.numericInputs(pojo,strFieldId, InputLimitExtractor.extractInputLimit(CheckboxObject.strFormatRegex));
+                    hro.setTextToHro(pojo, strFieldId, inputs);
+                } else if (regex.equals(FormatRegex.RegexType.ALPHANUMERIC)) {
+                    inputs = hro.alphaNumericInputs(pojo,strFieldId,InputLimitExtractor.extractInputLimit(CheckboxObject.strFormatRegex));
+                    hro.setTextToHro(pojo, strFieldId, inputs);
+                }else if (regex.equals(FormatRegex.RegexType.ONLY_LETTERS)) {
+                    inputs =  hro.alphaInputs(pojo,strFieldId,InputLimitExtractor.extractInputLimit(CheckboxObject.strFormatRegex));
+                    hro.setTextToHro(pojo, strFieldId, inputs);
+                }
+            }else if(flag!=true){
+                if(CheckboxObject.strDataTypeNew.equalsIgnoreCase("NUMERIC")){
+                    inputs = hro.numericInputs(pojo,strFieldId,3);
+                    hro.setTextToHro(pojo, strFieldId, inputs);
+                } else if (CheckboxObject.strDataTypeNew.equalsIgnoreCase("ALPHA_NUMERIC")) {
+                    inputs = hro.alphaNumericInputs(pojo,strFieldId,3);
+                    hro.setTextToHro(pojo, strFieldId, inputs);
+                }
+            }
+        }
+    }
+
+    public boolean getCheckboxRulesForMinimumAndMaximumInputs(com.Formic.OF2.utils.Pojo.FormContentPojo pojo, String strFieldId){
+        for (com.Formic.OF2.utils.Pojo.Field fields: pojo.data.project.getFields()
+        ) {
+            if(fields.getGuidId().equalsIgnoreCase(strFieldId)&&isFieldIdCheckBox(pojo,strFieldId)){
+                if(fields.getResponses()!=null){
+                    if(fields.getResponses().getMinimum()!=0){
+                        CheckboxObject.mandatory = fields.getMandatory();
+                        CheckboxObject.minimum = fields.getResponses().getMinimum();
+                        CheckboxObject.checkboxName = fields.getName();
+                    }
+
+                    if(fields.getResponses().getMaximum()!=0){
+                        CheckboxObject.mandatory = fields.getMandatory();
+                        CheckboxObject.maximum = fields.getResponses().getMaximum();
+                        CheckboxObject.checkboxName = fields.getName();
+                    }
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static int clickWithinMinimumMaximumInput(com.Formic.OF2.utils.Pojo.FormContentPojo pojo, int minInput, int maxInput, String strObjectElementId, int elementCountInACheckbox){
+        String[] gen = minMaximumGeneratedInputs(pojo,minInput,maxInput,elementCountInACheckbox);
+        gen = adjustInputIfAlreadySelected(pojo,gen);
+        recordInputsFromCheckbox(strObjectElementId,gen);
+        System.out.println(CheckboxObject.checkboxInputs);
+        clickElementHasValue(gen,strObjectElementId);
+        return gen.length;
+    }
+
+    public static void recordInputsFromCheckbox(String strElementId, String[] strHasValue){
+        CheckboxObject.checkboxInputs.add(strElementId);
+        CheckboxObject.checkboxInputs.addAll(Arrays.asList(strHasValue));
+    }
+
+    public static void clickElementHasValue(String[] gen, String strObjectElementId){
+        String elem;
+        WebElement element;
+        for (String s : gen) {
+            elem = stringReplaceTwoValues(checkboxElementToBeClickedLocator, strObjectElementId, s);
+            scrollElementIntoView(driver, stringToWebElement(stringReplace(checkboxLocator, strObjectElementId)));
+            element = stringToWebElement(elem);
+            scrollElementIntoView(driver, element);
+            Reporter.log("Click checkbox number: " + s);
+            if (!element.isSelected()) {
+                click(element);
+            }
+        }
+    }
+
+    public static String [] minMaximumGeneratedInputs(com.Formic.OF2.utils.Pojo.FormContentPojo pojo, int min, int max, int elementCount){
+        Set<String> generated = new LinkedHashSet<String>();
+        Random rng = new Random();
+        if(max==1&& isCheckboxThatHasRoutingRules(pojo,CheckboxObject.strFieldId)){
+            generated.add(getHasValueCheckboxThatHasRoutingRulesIfMax1(pojo,CheckboxObject.strFieldId,max));
+        }else{
+            if(min != 0){
+                while (generated.size() < min)
+                {
+                    String next = Integer.toString(rng.nextInt(elementCount) + 1);
+                    generated.add(next);
+                }
+            }else{
+                while (generated.size() < max)
+                {
+                    String next = Integer.toString(rng.nextInt(elementCount) + 1);
+                    generated.add(next);
+                }
+            }
+        }
+        return generated.toArray(new String[generated.size()]);
+    }
+
+    public static String getHasValueCheckboxThatHasRoutingRulesIfMax1(com.Formic.OF2.utils.Pojo.FormContentPojo pojo, String fieldId, int max){
+        String hasValue="";
+        if(max == 1){
+            for (com.Formic.OF2.utils.Pojo.Routing routing : pojo.data.project.getRouting()
+            ) {
+                if(routing.getConditions()!=null){
+                    for (com.Formic.OF2.utils.Pojo.Condition condition : routing.getConditions()
+                    ) {
+                        if(condition.getWhenField().equalsIgnoreCase(fieldId)){
+                            if(condition.getAction().equalsIgnoreCase("ENABLE")){
+                                hasValue = condition.getHasValue();
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return hasValue;
+    }
+
+    public static boolean isCheckboxThatHasRoutingRules(com.Formic.OF2.utils.Pojo.FormContentPojo pojo, String fieldId){
+        boolean hasValue=false;
+        for (com.Formic.OF2.utils.Pojo.Routing routing : pojo.data.project.getRouting()
+        ) {
+            if(routing.getConditions()!=null){
+                for (com.Formic.OF2.utils.Pojo.Condition condition : routing.getConditions()
+                ) {
+                    if(condition.getWhenField().equalsIgnoreCase(fieldId)){
+                        if(condition.getAction().equalsIgnoreCase("ENABLE")){
+                            hasValue = true;
+                        }
+                    }
+                }
+            }
+        }
+        return hasValue;
+    }
+
+    /***
+     * This method is created to adjust the set of inputs for a checkbox.
+     * The reason is if the Checkbox has a routing rule, this will affect the inputs.
+     * We need to include the item on the checkbox that is already selected.
+     * For example, generated input for hasValue is 1 and 2, the maximum input for the checkbox is only 2.
+     * Then we have 3 is already selected (Selected to enable some checkbox in routing rule). The selected outcome will be 1 and 3, we cant click number 2 because of the rule maximum inputs 2.
+     * This will affect the assertion if we validate the inputs for the said checkbox if 1 and 2 isn't selected.
+     * @param pojo is the FormContent
+     * @param gen is the set of inputs that will be applied to the checkbox.
+     * @return gen will be the updated inputs that will include the checkbox that is already selected from the beginning.
+     */
+    public static String [] adjustInputIfAlreadySelected(com.Formic.OF2.utils.Pojo.FormContentPojo pojo, String[] gen){
+        ArrayList<String> hasValueEnable = new ArrayList<>();
+        int ctr = 0;
+        hasValueEnable = getHasValueToEnableFields(pojo,CheckboxObject.strFieldId);
+        if(!CheckboxObject.hasValueList.isEmpty()){
+            if(!isHasValueEqualToGen(gen)){
+                for (String g: hasValueEnable
+                ) {
+                    if(!g.equalsIgnoreCase(gen[ctr])){
+                        gen[ctr] = CheckboxObject.hasValueList.get(0);
+                    }
+                    ctr++;
+                }
+            }
+        }
+        return gen;
+    }
+
+    public static ArrayList<String> getHasValueToEnableFields(com.Formic.OF2.utils.Pojo.FormContentPojo pojo, String strFieldId){
+        ArrayList<String> result = new ArrayList<>();
+        for (com.Formic.OF2.utils.Pojo.Routing routing: pojo.data.project.getRouting()
+        ) {
+            for (com.Formic.OF2.utils.Pojo.Condition conditions: routing.getConditions()
+            ) {
+                if(conditions.getWhenField().equalsIgnoreCase(strFieldId)&&conditions.getAction().equalsIgnoreCase("enable")){
+                    result.add(conditions.getHasValue());
+                }
+            }
+        }
+        return result;
+    }
+
+    public static boolean isHasValueEqualToGen(String[] gen){
+        boolean result = false;
+        for (String g: gen
+        ) {
+            for (String value: CheckboxObject.hasValueList
+            ) {
+                if (value.equalsIgnoreCase(g)) {
+                    result = true;
+                    break;
+                }
+            }
+        }
+        return result;
+    }
+
+    public void validateInputsAreCorrect(com.Formic.OF2.utils.Pojo.FormContentPojo pojo) throws InterruptedException {
+        String strElementId;
+        boolean isCheckboxMatrix = false;
+        String strCheckBoxId = null;
+        String strHroId = null;
+        String strMiaId = null;
+        String strPickListId = null;
+        Thread.sleep(500);
+        for (String value: CheckboxObject.checkboxInputs
+        ) {
+            strElementId = getObjectIdFromFieldId(pojo,value)==null? value : getObjectIdFromFieldId(pojo,value);
+            if(isElementId(pojo,strElementId)){
+                if(isElementIdCheckbox(pojo,strElementId)){
+                    CheckboxObject.isCheckbox = true;
+                    CheckboxObject.isMia = false;
+                    CheckboxObject.isHro = false;
+                    String fieldId = getFieldIdByObjectId(pojo,strElementId);
+                    lookForTheField(pojo,fieldId);
+                    if(CheckboxMatrix.isFieldIdCheckBoxMatrix(pojo,fieldId)){
+                        isCheckboxMatrix = true;
+                        strCheckBoxId = fieldId;
+                    }else{
+                        isCheckboxMatrix = false;
+                        strCheckBoxId = strElementId;
+                    }
+                } else if (isElementIdHro(pojo,strElementId)) {
+                    CheckboxObject.isHro = true;
+                    CheckboxObject.isCheckbox = false;
+                    CheckboxObject.isMia = false;
+                    CheckboxObject.isPicklist = false;
+                    strHroId = strElementId;
+                    String fieldId = getFieldIdByObjectId(pojo,strHroId);
+                    lookForTheField(pojo,fieldId);
+                } else if (isElementIdMia(pojo,strElementId)) {
+                    CheckboxObject.isMia = true;
+                    CheckboxObject.isCheckbox = false;
+                    CheckboxObject.isHro = false;
+                    CheckboxObject.isPicklist = false;
+                    strMiaId = strElementId;
+                    String fieldId = getFieldIdByObjectId(pojo,strMiaId);
+                    lookForTheField(pojo,fieldId);
+                }else if (isElementIdPicklist(pojo,strElementId)) {
+                    CheckboxObject.isPicklist = true;
+                    CheckboxObject.isMia = false;
+                    CheckboxObject.isCheckbox = false;
+                    CheckboxObject.isHro = false;
+                    strPickListId = strElementId;
+                    String fieldId = getFieldIdByObjectId(pojo,strPickListId);
+                    lookForTheField(pojo,fieldId);
+                    CheckboxObject.picklistOptionsCtr = 1;
+                }
+            }else{
+                String text;
+                if(CheckboxObject.isCheckbox){
+                    String elem = isCheckboxMatrix? stringReplaceTwoValues(checkboxMatrixElementToBeClickedLocator,strCheckBoxId,value) : stringReplaceTwoValues(actionLocator,strCheckBoxId,value);
+                    WebElement element = stringToWebElement(elem);
+                    scrollElementIntoView(driver,element);
+                    Reporter.log("Checkbox "+getFieldNameByElementId(pojo,strCheckBoxId)+" tickbox number: "+ value+" should be selected.");
+                    Reporter.log(elem);
+                    Assert.assertTrue(element.isSelected(),"Checkbox "+getFieldNameByElementId(pojo,strCheckBoxId)+ " failed because tickbox number: "+ value+" is not selected.");
+                } else if (CheckboxObject.isHro) {
+                    text = hro.getHroTextFromElementId(strHroId);
+                    Reporter.log("Field name: "+getFieldNameByElementId(pojo,strHroId)+" Expected text: "+ value+" Actual text: "+text);
+                    Assert.assertTrue(text.equalsIgnoreCase(value),"Expected text: "+ value+" Actual text: "+text);
+                } else if (CheckboxObject.isMia) {
+                    text = mia.getMiaTextFromElementId(strMiaId);
+                    Reporter.log("Field name: "+getFieldNameByElementId(pojo,strMiaId)+" Expected text: "+ value+" Actual text: "+text);
+                    Assert.assertTrue(text.equalsIgnoreCase(value),"Expected text: "+ value+" Actual text: "+text);
+                } else if (CheckboxObject.isPicklist) {
+                    text = mia.getPicklistSelectedOptionsName(strPickListId,CheckboxObject.picklistOptionsCtr);
+                    Reporter.log("Field name: "+getFieldNameByElementId(pojo,strPickListId)+ " Expected text: "+ value+" Actual text: "+text);
+                    Assert.assertTrue(text.equalsIgnoreCase(value),"Expected text: "+ value+" Actual text: "+text);
+                    CheckboxObject.picklistOptionsCtr++;
+                }
+            }
+        }
+    }
+
+    public void validateSavedInputsCheckbox() throws Exception {
+        RulesGraphql rules = new RulesGraphql();
+        FormContentPojo graphResponse =  rules.getRules(projectId);
+        sideMenuNavigation.clickSubmitButton();
+        String strListFieldName;
+        String fieldId;
+        String strTypeName;
+        String strElementId;
+        do{
+                strListFieldName = getListFieldNameByCompletionErrors();
+                strElementId = getElementIdByFieldName(graphResponse,strListFieldName);
+                fieldId = getFieldIdByObjectId(graphResponse,strElementId);
+                strTypeName = getTypeNameByFieldId(graphResponse,fieldId);
+                clickFieldNameInCompletionErrors(strListFieldName);
+
+                if(strTypeName.equalsIgnoreCase("HandwritingRecognitionObject")){
+
+                    FieldMetaData.getHroRules(graphResponse,fieldId);
+                    lookForTheField(graphResponse,fieldId);
+                    hroInputs(graphResponse,fieldId);
+
+                }else if(strTypeName.equalsIgnoreCase("TickboxGroup")){
+                    //Checkbox Matrix
+                    if(CheckboxMatrix.isFieldIdCheckBoxMatrix(graphResponse,fieldId)){
+                        getCheckboxRulesForMinimumAndMaximumInputs(graphResponse,fieldId);
+                        ArrayList<String> numberOfOptions = CheckboxMatrix.checkboxMatrixOptionsCount(graphResponse,fieldId);
+                        int numberOfItems = CheckboxMatrix.countNumberOfResponses(strElementId,numberOfOptions.size());
+                        CheckboxMatrix.clickWithinMinimumMaximumInput(graphResponse,CheckboxObject.minimum,CheckboxObject.maximum,numberOfOptions,numberOfItems);
+
+                    }else{
+                        //Checkbox
+                        getCheckboxRulesForMinimumAndMaximumInputs(graphResponse,fieldId);
+                        int numberOfItems = countCheckboxItems(strElementId);
+                        clickWithinMinimumMaximumInput(graphResponse,CheckboxObject.minimum,CheckboxObject.maximum,strElementId,numberOfItems);
+                    }
+
+                }else if(strTypeName.equalsIgnoreCase("ManualImageAreaText")){
+
+                    FieldMetaData.getMiaRules(graphResponse,fieldId);
+                    lookForTheField(graphResponse,fieldId);
+                    miaInputs(graphResponse,fieldId);
+
+                }else if(strTypeName.equalsIgnoreCase("PickList")){
+
+                    FieldMetaData.getMiaRules(graphResponse,fieldId);
+                    picklistInputs(graphResponse,fieldId);
+
+                }
+                sleep(1000);
+            }while (!getListFieldNameByCompletionErrors().isEmpty());
+        sideMenuNavigation.clickSaveButton();
+        String receipt = getProjectReceiptSave();
+        clickContinueButton();
+        clickSavedFormsButton();
+        Reporter.log("<b>Receipt code:<b/> "+receipt);
+        enterReceiptNumber(receipt);
+        clickGoButton();
+        System.out.println(receipt);
+        validateInputsAreCorrect(graphResponse);
+    }
+
+    public String getProjectReceiptSave(){
+        try{
+            String test = "//h2[contains(text(),'Saved')]/ancestor::main/p[contains(text(),'You can use the following receipt to recall this particular form at a later date.')]";
+            WebElement elem = stringToWebElement(test);
+            String text = elem.getText();
+            String [] strReceipt;
+            strReceipt = text.split(". ");
+            return strReceipt[15];
+        }catch (NoSuchElementException e){
+            Reporter.log("Receipt not visible. "+e);
+            return "";
         }
     }
 

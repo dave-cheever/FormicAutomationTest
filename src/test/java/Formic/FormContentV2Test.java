@@ -4,7 +4,6 @@ import com.Formic.OF2.pages.*;
 import com.Formic.OF2.test.BaseUiTest;
 import com.Formic.OF2.utils.CheckboxObject;
 import com.Formic.OF2.utils.DataDrivenTest;
-import com.Formic.OF2.utils.FieldManager;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.ITestContext;
 import org.testng.annotations.BeforeMethod;
@@ -20,12 +19,7 @@ public class FormContentV2Test extends BaseUiTest {
 //    String projectName = "Enable Disable fields Test"; // 185
 
 
-//    @Test(dataProvider = "testData", dataProviderClass = DataDrivenTest.class)
-//    public void loginTest(String username, String password) {
-//        // Code to open browser, navigate to login page, and perform login
-//        System.out.println("Logging in with username: " + username + ", password: " + password);
-//        // Assertions or further actions
-//    }
+    //CheckBox
 
     @Test(dataProvider = "testData", dataProviderClass = DataDrivenTest.class)
     public void No_Inputs_Mandatory_Minimum_Inputs_Validation_Test(String fieldId) throws Exception{
@@ -76,13 +70,8 @@ public class FormContentV2Test extends BaseUiTest {
         checkBoxPage.validateCheckboxLessThanMinimumInputsUponSubmit(fieldId,min,Boolean.parseBoolean(mandatory),scenarioName);
     }
 
-    @Test(dataProvider = "testDataManualImageArea", dataProviderClass = DataDrivenTest.class)
-    public void miaFormatValidation(String fieldId,String mandatory,String name, String formatMask, String formatRegex, String dataType, String derivation, String validation, String multiResponse, String max, String min) throws Exception{
-        String scenarioName = "miaFormatValidation";
-        homePage.selectProject(projectName,scenarioName);
-        mia.miaFormatValidation(fieldId,mandatory,name,formatMask,formatRegex,dataType,derivation,validation,multiResponse,max,min,scenarioName);
-    }
 
+    //HRO
 
     @Test(dataProvider = "testDataHroNumeric", dataProviderClass = DataDrivenTest.class)
     public void hroNumericInvalidInputsValidation(String fieldId, String mandatory, String name, String max) throws Exception{
@@ -126,19 +115,19 @@ public class FormContentV2Test extends BaseUiTest {
         hro.hroDateTimeValidInputsValidation(fieldId,mandatory,name,formatMask,scenarioName);
     }
 
-    @Test(dataProvider = "testDataHroDataFormattingValid", dataProviderClass = DataDrivenTest.class)
-    public void hroDataFormattingValidInputs(String fieldId, String mandatory, String name,String formatMask) throws Exception{
+    @Test(dataProvider = "testDataHroDataFormatting", dataProviderClass = DataDrivenTest.class)
+    public void hroDataFormattingValidInputs(String fieldId, String mandatory, String name,String formatRegex) throws Exception{
         String scenarioName = "hroDataFormattingValidInputs";
         homePage.selectProject(projectName,scenarioName);
-        hro.hroDataFormatValidInputs(fieldId,mandatory,name,formatMask,scenarioName);
+        hro.hroDataFormatValidInputs(fieldId,mandatory,name,formatRegex,scenarioName);
     }
 
 
     @Test(dataProvider = "testDataHroDataFormatting", dataProviderClass = DataDrivenTest.class)
-    public void hroDataFormattingInputsValidation(String fieldId, String mandatory, String name,String formatRegex) throws Exception{
-        String scenarioName = "hroDataFormattingInputsValidation";
+    public void hroDataFormattingInvalidInputs(String fieldId, String mandatory, String name,String formatRegex,String formatMask) throws Exception{
+        String scenarioName = "hroDataFormattingInvalidInputs";
         homePage.selectProject(projectName,scenarioName);
-        hro.hroDataFormatInputsValidation(fieldId,mandatory,name,formatRegex,scenarioName);
+        hro.hroDataFormatInvalidInputs(fieldId,mandatory,name,formatRegex,formatMask,scenarioName);
     }
 
 
@@ -150,6 +139,115 @@ public class FormContentV2Test extends BaseUiTest {
         hro.hroMandatoryValidation(fieldId,scenarioName);
     }
 
+    //MIA
+
+    @Test(dataProvider = "testDataManualImageAreaEmail", dataProviderClass = DataDrivenTest.class)
+    public void miaFormatValidEmail(String fieldId,String mandatory,String name) throws Exception{
+        String scenarioName = "miaFormatValidEmail";
+        homePage.selectProject(projectName,scenarioName);
+        mia.miaFormatValidEmail(fieldId,mandatory,name,scenarioName);
+    }
+
+    @Test(dataProvider = "testDataManualImageAreaEmail", dataProviderClass = DataDrivenTest.class)
+    public void miaFormatVInvalidEmail(String fieldId,String mandatory,String name) throws Exception{
+        String scenarioName = "miaFormatVInvalidEmail";
+        homePage.selectProject(projectName,scenarioName);
+        mia.miaFormatInvalidEmail(fieldId,mandatory,name,scenarioName);
+    }
+
+    @Test(dataProvider = "testDataManualImageAreaDateTime", dataProviderClass = DataDrivenTest.class)
+    public void miaFormatValidDateTime(String fieldId,String mandatory,String name, String formatMask) throws Exception{
+        String scenarioName = "miaFormatValidDateTime";
+        homePage.selectProject(projectName,scenarioName);
+        mia.miaFormatDateTimeValidInputs(fieldId,mandatory,name,formatMask,scenarioName);
+    }
+
+    @Test(dataProvider = "testDataManualImageAreaDateTime", dataProviderClass = DataDrivenTest.class)
+    public void miaFormatInvalidDateTime(String fieldId,String mandatory,String name, String formatMask) throws Exception{
+        String scenarioName = "miaFormatInvalidDateTime";
+        homePage.selectProject(projectName,scenarioName);
+        mia.miaFormatDateTimeInvalidInputs(fieldId,mandatory,name,formatMask,scenarioName);
+    }
+
+
+    @Test(dataProvider = "testDataManualImageAreaNumeric", dataProviderClass = DataDrivenTest.class)
+    public void miaFormatValidNumeric(String fieldId,String mandatory,String name, String formatMask) throws Exception{
+        String scenarioName = "miaFormatValidNumeric";
+        homePage.selectProject(projectName,scenarioName);
+        mia.miaFormatNumericValidInputs(fieldId,mandatory,name,formatMask,scenarioName);
+    }
+
+    @Test(dataProvider = "testDataManualImageAreaNumeric", dataProviderClass = DataDrivenTest.class)
+    public void miaFormatInvalidNumeric(String fieldId,String mandatory,String name, String formatMask) throws Exception{
+        String scenarioName = "miaFormatInvalidNumeric";
+        homePage.selectProject(projectName,scenarioName);
+        mia.miaFormatNumericInvalidInputs(fieldId,mandatory,name,formatMask,scenarioName);
+    }
+
+    @Test(dataProvider = "testDataManualImageAreaDataFormatting", dataProviderClass = DataDrivenTest.class)
+    public void miaDataFormatValidInputs(String fieldId,String mandatory,String name, String formatMask,String formatRegex) throws Exception{
+        String scenarioName = "miaDataFormatValidInputs";
+        homePage.selectProject(projectName,scenarioName);
+        mia.miaDataFormatValidInputs(fieldId,mandatory,name,formatMask,formatRegex,scenarioName);
+    }
+
+    @Test(dataProvider = "testDataManualImageAreaDataFormatting", dataProviderClass = DataDrivenTest.class)
+    public void miaDataFormatInvalidInputs(String fieldId,String mandatory,String name, String formatMask,String formatRegex) throws Exception{
+        String scenarioName = "miaDataFormatInvalidInputs";
+        homePage.selectProject(projectName,scenarioName);
+        mia.miaDataFormatInvalidInputs(fieldId,mandatory,name,formatMask,formatRegex,scenarioName);
+    }
+
+    @Test(dataProvider = "testDataMiaMandatory", dataProviderClass = DataDrivenTest.class)
+    public void miaMandatoryInputsValidation(String fieldId) throws Exception{
+        //hro validation message
+        String scenarioName = "miaMandatoryInputsValidation";
+        homePage.selectProject(projectName,scenarioName);
+        mia.miaMandatoryValidation(fieldId,scenarioName);
+    }
+
+
+    @Test(dataProvider = "testDataMiaPickList", dataProviderClass = DataDrivenTest.class)
+    public void miaPicklistLessThanMinimumInputs(String fieldId, String mandatory, String name, String min, String max) throws Exception{
+        String scenarioName = "miaPicklistLessThanMinimumInputs";
+        homePage.selectProject(projectName,scenarioName);
+        mia.miaPicklistLessThanMinimumInputs(fieldId,mandatory,name,min,max,scenarioName);
+    }
+
+    @Test(dataProvider = "testDataMiaPickList", dataProviderClass = DataDrivenTest.class)
+    public void miaPicklistMoreThanMaximumInputs(String fieldId, String mandatory, String name, String min, String max) throws Exception{
+        String scenarioName = "miaPicklistMoreThanMaximumInputs";
+        homePage.selectProject(projectName,scenarioName);
+        mia.miaPicklistMoreThanMaximumInputs(fieldId,mandatory,name,min,max,scenarioName);
+    }
+
+    @Test(dataProvider = "testDataMiaPickList", dataProviderClass = DataDrivenTest.class)
+    public void miaPicklistWithinMinimumMaximumInputs(String fieldId, String mandatory, String name, String min, String max) throws Exception{
+        String scenarioName = "miaPicklistWithinMinimumMaximumInputs";
+        homePage.selectProject(projectName,scenarioName);
+        mia.miaPicklistWithinMinimumMaximumInputs(fieldId,mandatory,name,min,max,scenarioName);
+    }
+
+    @Test
+    public void validateSubmittedInputsCheckbox() throws Exception {
+        String scenarioName = "validateSubmittedInputsCheckbox";
+        homePage.selectProject(projectName,scenarioName);
+        checkBoxPage.validateSubmittedInputsCheckbox();
+    }
+
+    @Test
+    public void validateSavedInputsCheckbox() throws Exception {
+        String scenarioName = "validateSavedInputsCheckbox";
+        homePage.selectProject(projectName,scenarioName);
+        checkBoxPage.validateSavedInputsCheckbox();
+    }
+
+
+
+
+
+
+
 
 //    TEST
 
@@ -160,17 +258,12 @@ public class FormContentV2Test extends BaseUiTest {
 //        checkBoxPage.checkboxBeyondMaximumInputs("81736a5e-f905-42ea-b8e1-b52175479620","1",false,scenarioName);
 //    }
 
-    @Test
-    public void hroDataFormattingValidInputsTest() throws Exception{
-        String scenarioName = "hroDataFormattingValidInputs";
-        homePage.selectProject(projectName,scenarioName);
-        hro.hroDataFormatValidInputs("75e08e6e-3fcf-4506-a739-73d3a59dfb17","true","5Q","^[a-zA-Z0-9]{1,5}$",scenarioName);
-    }
-
-
-
-
-
+//    @Test
+//    public void hroDataFormattingValidInputsTest() throws Exception{
+//        String scenarioName = "hroDataFormattingValidInputs";
+//        homePage.selectProject(projectName,scenarioName);
+//        hro.hroDataFormatValidInputs("75e08e6e-3fcf-4506-a739-73d3a59dfb17","true","5Q","^[a-zA-Z0-9]{1,5}$",scenarioName);
+//    }
 
 
     @BeforeMethod

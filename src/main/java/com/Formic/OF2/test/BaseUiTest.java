@@ -17,6 +17,7 @@ import org.testng.Assert;
 import org.testng.ITestResult;
 import org.testng.Reporter;
 import org.testng.annotations.AfterMethod;
+import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 
@@ -68,37 +69,48 @@ public class BaseUiTest {
     public void writeOnWorkBook() throws IOException, InvalidFormatException {
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(137);
+        //CheckBox
         ArrayList<String> fieldId = new ArrayList<>();
         ArrayList<String> fieldIdEnableDisable = new ArrayList<>();
         ArrayList<String> fieldIdMinInputs = new ArrayList<>();
         ArrayList<String> fieldIdMaxInputs = new ArrayList<>();
-        ArrayList<String> fieldIdMia = new ArrayList<>();
+        //HRO
         ArrayList<String> fieldIdHroNumeric = new ArrayList<>();
         ArrayList<String> fieldIdHroDateTime = new ArrayList<>();
         ArrayList<String> fieldIdHroEmail = new ArrayList<>();
-
         ArrayList<String> fieldIdHroDataFormatting = new ArrayList<>();
-
         ArrayList<String> fieldIdHroMandatory = new ArrayList<>();
+        //MIA
+        ArrayList<String> fieldIdMiaEmail = new ArrayList<>();
+        ArrayList<String> fieldIdMiaDateTime = new ArrayList<>();
+        ArrayList<String> fieldIdMiaNumeric = new ArrayList<>();
+        ArrayList<String> fieldIdMiaDataFormatting = new ArrayList<>();
+        ArrayList<String> fieldIdMiaMandatory = new ArrayList<>();
+        ArrayList<String> fieldIdMiaPickList = new ArrayList<>();
 
-        ArrayList<String> fieldIdHroDataFormattingValid = new ArrayList<>();
-
+        //CheckBox
         fieldId = FieldManager.getAllCheckboxFieldIdWithMandatoryRules(graphResponse);
         fieldIdEnableDisable = FieldManager.getRoutingFieldsEnableDisable(graphResponse);
         fieldIdMinInputs = FieldManager.getCheckboxRulesForMinimumInputs(graphResponse);
         fieldIdMaxInputs = FieldManager.getCheckboxRulesForMaximumInputs(graphResponse);
-        fieldIdMia = FieldManager.getCheckboxRulesForManualImageArea(graphResponse);
+        //HRO
         fieldIdHroNumeric = FieldManager.getHandWritingRecognitionObjectRulesNumeric(graphResponse);
         fieldIdHroDateTime = FieldManager.getHandWritingRecognitionObjectRulesDateTime(graphResponse);
         fieldIdHroEmail = FieldManager.getHandWritingRecognitionObjectRulesEmail(graphResponse);
-
         fieldIdHroDataFormatting = FieldManager.getHandWritingRecognitionObjectRulesDataFormatting(graphResponse);
-
         fieldIdHroMandatory = FieldManager.getHandWritingRecognitionObjectRulesMandatory(graphResponse);
+        //MIA
+        fieldIdMiaEmail = FieldManager.getCheckboxRulesForManualImageAreaEmail(graphResponse);
+        fieldIdMiaDateTime = FieldManager.getMiaDateTime(graphResponse);
+        fieldIdMiaNumeric = FieldManager.getMiaRulesNumeric(graphResponse);
+        fieldIdMiaDataFormatting = FieldManager.getMiaFormatting(graphResponse);
+        fieldIdMiaMandatory = FieldManager.getMiaRulesMandatory(graphResponse);
+        fieldIdMiaPickList = FieldManager.getMiaRulesPicklist(graphResponse);
 
-        fieldIdHroDataFormattingValid = FieldManager.getHandWritingRecognitionObjectRulesDataFormattingValid(graphResponse);
+
         System.out.println("##[command] fieldId: "+fieldId.size());
-//        DataDrivenTest.createExcelTestDataFile();
+        DataDrivenTest.createExcelTestDataFile();
+        //Checkbox
         System.out.println("##[command] writing to excel");
         DataDrivenTest.writeToExcel(fieldId);
         System.out.println("##[command] writing to enable disable fields");
@@ -107,21 +119,27 @@ public class BaseUiTest {
         DataDrivenTest.writeToExcelCheckboxMinimumInputs(fieldIdMinInputs,"Sheet3");
         System.out.println("##[command] writing to maximum inputs");
         DataDrivenTest.writeToExcelCheckboxMaximumInputs(fieldIdMaxInputs,"Sheet4");
-        System.out.println("##[command] writing to Mia and Hro");
-        DataDrivenTest.writeToExcelMiaAndHro(fieldIdMia,"Sheet5");
+        //HRO
         System.out.println("##[command] writing to HRO numeric");
-        DataDrivenTest.writeToExcelHroNumeric(fieldIdHroNumeric,"Sheet6");
+        DataDrivenTest.writeToExcelHroNumeric(fieldIdHroNumeric,"Sheet5");
         System.out.println("##[command] writing to HRO Date time");
-        DataDrivenTest.writeToExcelHroDateTime(fieldIdHroDateTime,"Sheet7");
+        DataDrivenTest.writeToExcelHroDateTime(fieldIdHroDateTime,"Sheet6");
         System.out.println("##[command] writing to HRO Email");
-        DataDrivenTest.writeToExcelHroEmail(fieldIdHroEmail,"Sheet8");
+        DataDrivenTest.writeToExcelHroEmail(fieldIdHroEmail,"Sheet7");
         System.out.println("##[command] writing to Data formatting");
-        DataDrivenTest.writeToExcelHroDataFormatting(fieldIdHroDataFormatting,"Sheet9");
+        DataDrivenTest.writeToExcelHroDataFormatting(fieldIdHroDataFormatting,"Sheet8");
         System.out.println("##[command] writing to HRO mandatory");
-        DataDrivenTest.writeToExcelHroMandatory(fieldIdHroMandatory,"Sheet10");
+        DataDrivenTest.writeToExcelHroMandatory(fieldIdHroMandatory,"Sheet9");
         System.out.println("##[command] writing to HRO data formatting valid");
-        DataDrivenTest.writeToExcelHroDataFormattingValid(fieldIdHroDataFormattingValid,"sheet11");
-        System.out.println("##[command] writing to enable disable fields");
+        //MIA
+        System.out.println("##[command] writing to Mia and Hro");
+        DataDrivenTest.writeToExcelMiaEmail(fieldIdMiaEmail,"Sheet10");
+        System.out.println("##[command] writing to Mia Date time");
+        DataDrivenTest.writeToExcelHroDateTime(fieldIdMiaDateTime,"Sheet11");
+        DataDrivenTest.writeToExcelHroNumeric(fieldIdMiaNumeric,"Sheet12");
+        DataDrivenTest.writeToExcelMiaDataFormatting(fieldIdMiaDataFormatting,"Sheet13");
+        DataDrivenTest.writeToExcelHroMandatory(fieldIdMiaMandatory,"Sheet14");
+        DataDrivenTest.writeToExcelMiaPickList(fieldIdMiaPickList,"Sheet15");
     }
 
     public static class ChromeOptionsUtil {
@@ -139,6 +157,11 @@ public class BaseUiTest {
         Process process = Runtime. getRuntime(). exec("taskkill /F /IM chromedriver.exe /T");
         process.destroy();
         getDriver().quit();
+    }
+
+    @AfterSuite
+    public void deleteResources(){
+        DataDrivenTest.deleteWorkbook();
     }
 
 

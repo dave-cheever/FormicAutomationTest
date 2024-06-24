@@ -207,26 +207,17 @@ public class FieldManager extends BasePage {
         return result;
     }
 
-    public static ArrayList<String> getCheckboxRulesForManualImageArea(com.Formic.OF2.utils.Pojo.FormContentPojo pojo){
+    public static ArrayList<String> getCheckboxRulesForManualImageAreaEmail(com.Formic.OF2.utils.Pojo.FormContentPojo pojo){
         ArrayList<String> fieldIds = getFieldIdMia(pojo);
         ArrayList<String> result = new ArrayList<>();
         for(String fieldId: fieldIds){
             for (com.Formic.OF2.utils.Pojo.Field fields: pojo.data.project.getFields()
             ) {
                 if(fields.getGuidId().equalsIgnoreCase(fieldId)&&!DataValidation.isFieldIdPickList(pojo,fieldId)){
-                    result.add(fieldId);
-                    result.add(fields.getMandatory().toString());
-                    result.add(fields.getName());
-                    result.add(fields.getFormatMask());
-                    result.add(fields.getFormatRegex());
-                    result.add(fields.getDataTypeNew());
-                    result.add(fields.getDerivation());
-                    result.add(fields.getValidation());
-                    if(fields.getResponses()!=null){
-                        result.add(fields.getResponses().getIsMultiResponse().toString());
-                        result.add(fields.getResponses().getMaximum().toString());
-                        result.add(fields.getResponses().getMinimum().toString());
-
+                    if(fields.getFormatRegex()!=null&&fields.getFormatRegex().equalsIgnoreCase("^[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.][a-zA-Z0-9]+$")){
+                        result.add(fieldId);
+                        result.add(fields.getMandatory().toString());
+                        result.add(fields.getName());
                     }
                 }
             }
@@ -282,6 +273,27 @@ public class FieldManager extends BasePage {
         return result;
     }
 
+    public static ArrayList<String> getMiaRulesNumeric(com.Formic.OF2.utils.Pojo.FormContentPojo pojo){
+        ArrayList<String> fieldIds = getFieldIdMia(pojo);
+        ArrayList<String> result = new ArrayList<>();
+        for(String fieldId: fieldIds){
+            for (com.Formic.OF2.utils.Pojo.Field fields: pojo.data.project.getFields()
+            ) {
+                if(fields.getGuidId().equalsIgnoreCase(fieldId)) {
+                    if (fields.getDataTypeNew().equalsIgnoreCase("NUMERIC")){
+                        if (isNumericPatternViaFormatRegex(fields.getFormatRegex())) {
+                            result.add(fieldId);
+                            result.add(fields.getMandatory().toString());
+                            result.add(fields.getName());
+                            result.add(Integer.toString(getMaxLengthViaFormatRegex(fields.getFormatRegex())));
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
     public static ArrayList<String> getHandWritingRecognitionObjectRulesDataFormatting(com.Formic.OF2.utils.Pojo.FormContentPojo pojo){
         ArrayList<String> fieldIds = getFieldIdHro(pojo);
         ArrayList<String> result = new ArrayList<>();
@@ -294,7 +306,30 @@ public class FieldManager extends BasePage {
                             result.add(fieldId);
                             result.add(fields.getMandatory().toString());
                             result.add(fields.getName());
+                            result.add(fields.getFormatRegex());
                             result.add(fields.getFormatMask());
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    public static ArrayList<String> getMiaFormatting(com.Formic.OF2.utils.Pojo.FormContentPojo pojo){
+        ArrayList<String> fieldIds = getFieldIdMia(pojo);
+        ArrayList<String> result = new ArrayList<>();
+        for(String fieldId: fieldIds){
+            for (com.Formic.OF2.utils.Pojo.Field fields: pojo.data.project.getFields()
+            ) {
+                if(fields.getGuidId().equalsIgnoreCase(fieldId)) {
+                    if (fields.getDataTypeNew().equalsIgnoreCase("ALPHA_NUMERIC")){
+                        if (fields.getFormatMask()!=null&&!fields.getFormatRegex().equalsIgnoreCase("^[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.][a-zA-Z0-9]+$")) {
+                            result.add(fieldId);
+                            result.add(fields.getMandatory().toString());
+                            result.add(fields.getName());
+                            result.add(fields.getFormatMask());
+                            result.add(fields.getFormatRegex());
                         }
                     }
                 }
@@ -340,8 +375,81 @@ public class FieldManager extends BasePage {
         return result;
     }
 
+    public static ArrayList<String> getMiaRulesMandatory(com.Formic.OF2.utils.Pojo.FormContentPojo pojo){
+        ArrayList<String> fieldIds = getFieldIdMia(pojo);
+        ArrayList<String> result = new ArrayList<>();
+        for(String fieldId: fieldIds){
+            for (com.Formic.OF2.utils.Pojo.Field fields: pojo.data.project.getFields()
+            ) {
+                if(fields.getGuidId().equalsIgnoreCase(fieldId)) {
+                    if (fields.getMandatory().booleanValue()==true){
+                        result.add(fieldId);
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    public static ArrayList<String> getFieldIdPicklist(com.Formic.OF2.utils.Pojo.FormContentPojo pojo){
+        ArrayList<String> result = new ArrayList<>();
+        for (com.Formic.OF2.utils.Pojo.Page pages: pojo.data.project.getPages()
+        ) {
+            for (com.Formic.OF2.utils.Pojo.Object object: pages.getObjects()
+            ) {
+                if(object.getGuidId()!=null){
+                    if(object.getTypename().equalsIgnoreCase("PickList")){
+                        result.add(object.getFieldId());
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    public static ArrayList<String> getMiaRulesPicklist(com.Formic.OF2.utils.Pojo.FormContentPojo pojo){
+        ArrayList<String> fieldIds = getFieldIdPicklist(pojo);
+        ArrayList<String> result = new ArrayList<>();
+        for(String fieldId: fieldIds){
+            for (com.Formic.OF2.utils.Pojo.Field fields: pojo.data.project.getFields()
+            ) {
+                if(fields.getGuidId().equalsIgnoreCase(fieldId)) {
+                    if (fields.getMandatory().booleanValue()==true){
+                        result.add(fieldId);
+                        result.add(fields.getMandatory().toString());
+                        result.add(fields.getName());
+                        if(fields.getResponses()!=null&&fields.getResponses().getIsMultiResponse()==true){
+                            result.add(fields.getResponses().getMinimum().toString());
+                            result.add(fields.getResponses().getMaximum().toString());
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
     public static ArrayList<String> getHandWritingRecognitionObjectRulesDateTime(com.Formic.OF2.utils.Pojo.FormContentPojo pojo){
         ArrayList<String> fieldIds = getFieldIdHro(pojo);
+        ArrayList<String> result = new ArrayList<>();
+        for(String fieldId: fieldIds){
+            for (com.Formic.OF2.utils.Pojo.Field fields: pojo.data.project.getFields()
+            ) {
+                if(fields.getGuidId().equalsIgnoreCase(fieldId)) {
+                    if (fields.getDataTypeNew().equalsIgnoreCase("DATE_TIME")){
+                        result.add(fieldId);
+                        result.add(fields.getMandatory().toString());
+                        result.add(fields.getName());
+                        result.add(fields.getFormatMask());
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    public static ArrayList<String> getMiaDateTime(com.Formic.OF2.utils.Pojo.FormContentPojo pojo){
+        ArrayList<String> fieldIds = getFieldIdMia(pojo);
         ArrayList<String> result = new ArrayList<>();
         for(String fieldId: fieldIds){
             for (com.Formic.OF2.utils.Pojo.Field fields: pojo.data.project.getFields()

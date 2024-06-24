@@ -535,12 +535,12 @@ public class CheckBoxPage extends BasePage {
                         lookForTheField(graphResponse,fieldId);
                         System.out.println(CheckboxObject.checkboxName+ " Is enabled");
                         mia.addLessThanMinimumOptions(graphResponse,CheckboxObject.minimum,fieldId);
-                        mia.validateLessThanTheMinimumRequired(graphResponse,CheckboxObject.minimum,fieldId);
+                        mia.validateLessThanTheMinimumRequired(graphResponse,CheckboxObject.minimum,fieldId,"");
                     }else {
                         lookForTheField(graphResponse,fieldId);
                         System.out.println(CheckboxObject.checkboxName+ " Is enabled");
                         mia.addLessThanMinimumOptions(graphResponse,CheckboxObject.minimum,fieldId);
-                        mia.validateLessThanTheMinimumRequired(graphResponse,CheckboxObject.minimum,fieldId);
+                        mia.validateLessThanTheMinimumRequired(graphResponse,CheckboxObject.minimum,fieldId,"");
                     }
                 }
             }
@@ -569,12 +569,12 @@ public class CheckBoxPage extends BasePage {
                     lookForTheField(graphResponse,fieldId);
                     System.out.println(CheckboxObject.checkboxName+ " Is enabled");
                     mia.addMoreThanMaximumOptions(graphResponse,CheckboxObject.maximum,fieldId);
-                    mia.validateMoreThanTheMaximumRequired(graphResponse,CheckboxObject.maximum,fieldId);
+                    mia.validateMoreThanTheMaximumRequired(graphResponse,CheckboxObject.maximum,fieldId,"");
                 }else {
                     lookForTheField(graphResponse,fieldId);
                     System.out.println(CheckboxObject.checkboxName+ " Is enabled");
                     mia.addMoreThanMaximumOptions(graphResponse,CheckboxObject.maximum,fieldId);
-                    mia.validateMoreThanTheMaximumRequired(graphResponse,CheckboxObject.maximum,fieldId);
+                    mia.validateMoreThanTheMaximumRequired(graphResponse,CheckboxObject.maximum,fieldId,"");
                 }
             }
             CheckboxObject.checkboxObjectDefaultValue();
@@ -601,12 +601,12 @@ public class CheckBoxPage extends BasePage {
                     checkListOfConditions(graphResponse,fieldId);
                     lookForTheField(graphResponse,fieldId);
                     mia.addWithinMinimumMaximumOptions(graphResponse,CheckboxObject.minimum,fieldId);
-                    mia.validateWithinMinimumMaximumRequired(graphResponse,fieldId);
+                    mia.validateWithinMinimumMaximumRequired(graphResponse,fieldId,"");
                 }else {
                     System.out.println(CheckboxObject.checkboxName+ " Is enabled");
                     lookForTheField(graphResponse,fieldId);
                     mia.addWithinMinimumMaximumOptions(graphResponse,CheckboxObject.minimum,fieldId);
-                    mia.validateWithinMinimumMaximumRequired(graphResponse,fieldId);
+                    mia.validateWithinMinimumMaximumRequired(graphResponse,fieldId,"");
                 }
             }
         }
