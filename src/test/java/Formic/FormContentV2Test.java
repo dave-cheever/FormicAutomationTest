@@ -20,124 +20,124 @@ public class FormContentV2Test extends BaseUiTest {
 
 
     //CheckBox
-//
-//    @Test(dataProvider = "testData", dataProviderClass = DataDrivenTest.class)
-//    public void No_Inputs_Mandatory_Minimum_Inputs_Validation_Test(String fieldId) throws Exception{
-//        String scenarioName = "NoInputsMandatoryMinimumInputsValidationTest";
-//        homePage.selectProject(projectName,scenarioName);
-//        checkBoxPage.NoInputsMandatoryMinimumInputsValidationTest(fieldId,scenarioName);
-//    }
-//
-//    @Test(dataProvider = "testDataEnable", dataProviderClass = DataDrivenTest.class)
-//    public void Checkbox_Toggle_Enable_Disable_Fields(String WhenFieldId, String hasValue, String fieldId, String action) throws Exception{
-//        String scenarioName = "CheckboxToggleEnableDisableFields";
-//        homePage.selectProject(projectName,scenarioName);
-//        checkBoxPage.CheckboxToggleEnableDisableFields(WhenFieldId,hasValue,fieldId,action,scenarioName);
-//    }
-//
-//    @Test(dataProvider = "testDataMinInputs", dataProviderClass = DataDrivenTest.class)
-//    public void Checkbox_Minimum_Required_Inputs_Upon_Submit(String fieldId, String min,String mandatory) throws Exception{
-//        String scenarioName = "CheckboxMinimumRequiredInputsUponSubmit";
-//        homePage.selectProject(projectName,scenarioName);
-//        checkBoxPage.checkboxMinimumRequiredInputsUponSubmit(fieldId,min,scenarioName);
-//    }
-//
-//    @Test(dataProvider = "testDataMaxInputs", dataProviderClass = DataDrivenTest.class)
-//    public void Checkbox_Beyond_Maximum_Inputs(String fieldId, String max,String mandatory) throws Exception{
-//        String scenarioName = "CheckboxBeyondMaximumInputs";
-//        homePage.selectProject(projectName,scenarioName);
-//        checkBoxPage.checkboxBeyondMaximumInputs(fieldId,max,Boolean.parseBoolean(mandatory),scenarioName);
-//    }
-//
-//    @Test(dataProvider = "testDataMaxInputs", dataProviderClass = DataDrivenTest.class)
-//    public void Checkbox_Within_Maximum_Inputs(String fieldId, String max,String mandatory) throws Exception{
-//        String scenarioName = "Checkbox_Within_Maximum_Inputs";
-//        homePage.selectProject(projectName,scenarioName);
-//        checkBoxPage.checkboxWithinMaximumInputs(fieldId,max,Boolean.parseBoolean(mandatory),scenarioName);
-//    }
-//
-//    @Test(dataProvider = "testDataMinInputs", dataProviderClass = DataDrivenTest.class)
-//    public void Checkbox_Within_Minimum_Inputs(String fieldId, String min,String mandatory) throws Exception{
-//        String scenarioName = "checkboxWithinMinimumInputs";
-//        homePage.selectProject(projectName,scenarioName);
-//        checkBoxPage.checkboxWithinMinimumInputs(fieldId,min,Boolean.parseBoolean(mandatory),scenarioName);
-//    }
-//
-//    @Test(dataProvider = "testDataMinInputs", dataProviderClass = DataDrivenTest.class)
-//    public void checkboxValidationLessThanMinimumInputs(String fieldId, String min,String mandatory) throws Exception{
-//        String scenarioName = "checkboxValidationLessThanMinimumInputs";
-//        homePage.selectProject(projectName,scenarioName);
-//        checkBoxPage.validateCheckboxLessThanMinimumInputsUponSubmit(fieldId,min,Boolean.parseBoolean(mandatory),scenarioName);
-//    }
+
+    @Test(dataProvider = "testData", dataProviderClass = DataDrivenTest.class)
+    public void No_Inputs_Mandatory_Minimum_Inputs_Validation_Test(String fieldId) throws Exception{
+        String scenarioName = "NoInputsMandatoryMinimumInputsValidationTest";
+        homePage.selectProject(projectName,scenarioName);
+        checkBoxPage.NoInputsMandatoryMinimumInputsValidationTest(fieldId,scenarioName);
+    }
+
+    @Test(dataProvider = "testDataEnable", dataProviderClass = DataDrivenTest.class)
+    public void Checkbox_Toggle_Enable_Disable_Fields(String WhenFieldId, String hasValue, String fieldId, String action) throws Exception{
+        String scenarioName = "CheckboxToggleEnableDisableFields";
+        homePage.selectProject(projectName,scenarioName);
+        checkBoxPage.CheckboxToggleEnableDisableFields(WhenFieldId,hasValue,fieldId,action,scenarioName);
+    }
+
+    @Test(dataProvider = "testDataMinInputs", dataProviderClass = DataDrivenTest.class)
+    public void Checkbox_Minimum_Required_Inputs_Upon_Submit(String fieldId, String min,String mandatory) throws Exception{
+        String scenarioName = "CheckboxMinimumRequiredInputsUponSubmit";
+        homePage.selectProject(projectName,scenarioName);
+        checkBoxPage.checkboxMinimumRequiredInputsUponSubmit(fieldId,min,scenarioName);
+    }
+
+    @Test(dataProvider = "testDataMaxInputs", dataProviderClass = DataDrivenTest.class)
+    public void Checkbox_Beyond_Maximum_Inputs(String fieldId, String max,String mandatory) throws Exception{
+        String scenarioName = "CheckboxBeyondMaximumInputs";
+        homePage.selectProject(projectName,scenarioName);
+        checkBoxPage.checkboxBeyondMaximumInputs(fieldId,max,Boolean.parseBoolean(mandatory),scenarioName);
+    }
+
+    @Test(dataProvider = "testDataMaxInputs", dataProviderClass = DataDrivenTest.class)
+    public void Checkbox_Within_Maximum_Inputs(String fieldId, String max,String mandatory) throws Exception{
+        String scenarioName = "Checkbox_Within_Maximum_Inputs";
+        homePage.selectProject(projectName,scenarioName);
+        checkBoxPage.checkboxWithinMaximumInputs(fieldId,max,Boolean.parseBoolean(mandatory),scenarioName);
+    }
+
+    @Test(dataProvider = "testDataMinInputs", dataProviderClass = DataDrivenTest.class)
+    public void Checkbox_Within_Minimum_Inputs(String fieldId, String min,String mandatory) throws Exception{
+        String scenarioName = "checkboxWithinMinimumInputs";
+        homePage.selectProject(projectName,scenarioName);
+        checkBoxPage.checkboxWithinMinimumInputs(fieldId,min,Boolean.parseBoolean(mandatory),scenarioName);
+    }
+
+    @Test(dataProvider = "testDataMinInputs", dataProviderClass = DataDrivenTest.class)
+    public void checkboxValidationLessThanMinimumInputs(String fieldId, String min,String mandatory) throws Exception{
+        String scenarioName = "checkboxValidationLessThanMinimumInputs";
+        homePage.selectProject(projectName,scenarioName);
+        checkBoxPage.validateCheckboxLessThanMinimumInputsUponSubmit(fieldId,min,Boolean.parseBoolean(mandatory),scenarioName);
+    }
 
 
     //HRO
 
-//    @Test(dataProvider = "testDataHroNumeric", dataProviderClass = DataDrivenTest.class)
-//    public void hroNumericInvalidInputsValidation(String fieldId, String mandatory, String name, String max) throws Exception{
-//        String scenarioName = "hroNumericInvalidInputsValidation";
-//        homePage.selectProject(projectName,scenarioName);
-//        hro.hroNumericInvalidInputsValidation(fieldId,mandatory,name,max,scenarioName);
-//    }
-//
-//    @Test(dataProvider = "testDataHroNumeric", dataProviderClass = DataDrivenTest.class)
-//    public void hroNumericValidInputsValidation(String fieldId, String mandatory, String name, String max) throws Exception{
-//        String scenarioName = "hroNumericInputsValidation";
-//        homePage.selectProject(projectName,scenarioName);
-//        hro.hroNumericInputsValidation(fieldId,mandatory,name,max,scenarioName);
-//    }
-//
-//    @Test(dataProvider = "testDataHroEmail", dataProviderClass = DataDrivenTest.class)
-//    public void hroEmailInvalidInputsValidation(String fieldId, String mandatory, String name) throws Exception{
-//        String scenarioName = "hroEmailInvalidInputsValidation";
-//        homePage.selectProject(projectName,scenarioName);
-//        hro.hroEmailFormatInvalidInputsValidation(fieldId,mandatory,name,scenarioName);
-//    }
-//
-//    @Test(dataProvider = "testDataHroEmail", dataProviderClass = DataDrivenTest.class)
-//    public void hroEmailInputsValidation(String fieldId, String mandatory, String name) throws Exception{
-//        String scenarioName = "hroEmailInputsValidation";
-//        homePage.selectProject(projectName,scenarioName);
-//        hro.hroEmailFormatInputsValidation(fieldId,mandatory,name,scenarioName);
-//    }
-//
-//    @Test(dataProvider = "testDataHroDateTime", dataProviderClass = DataDrivenTest.class)
-//    public void hroDateTimeInvalidInputsValidation(String fieldId, String mandatory, String name,String formatMask) throws Exception{
-//        String scenarioName = "hroDateTimeInvalidInputsValidation";
-//        homePage.selectProject(projectName,scenarioName);
-//        hro.hroDateTimeInvalidInputsValidation(fieldId,mandatory,name,formatMask,scenarioName);
-//    }
-//
-//    @Test(dataProvider = "testDataHroDateTime", dataProviderClass = DataDrivenTest.class)
-//    public void hroDateTimeValidInputsValidation(String fieldId, String mandatory, String name,String formatMask) throws Exception{
-//        String scenarioName = "hroDateTimeValidInputsValidation";
-//        homePage.selectProject(projectName,scenarioName);
-//        hro.hroDateTimeValidInputsValidation(fieldId,mandatory,name,formatMask,scenarioName);
-//    }
-//
-//    @Test(dataProvider = "testDataHroDataFormatting", dataProviderClass = DataDrivenTest.class)
-//    public void hroDataFormattingValidInputs(String fieldId, String mandatory, String name,String formatRegex, String formatMask) throws Exception{
-//        String scenarioName = "hroDataFormattingValidInputs";
-//        homePage.selectProject(projectName,scenarioName);
-//        hro.hroDataFormatValidInputs(fieldId,mandatory,name,formatRegex,formatMask,scenarioName);
-//    }
-//
-//
-//    @Test(dataProvider = "testDataHroDataFormatting", dataProviderClass = DataDrivenTest.class)
-//    public void hroDataFormattingInvalidInputs(String fieldId, String mandatory, String name,String formatRegex,String formatMask) throws Exception{
-//        String scenarioName = "hroDataFormattingInvalidInputs";
-//        homePage.selectProject(projectName,scenarioName);
-//        hro.hroDataFormatInvalidInputs(fieldId,mandatory,name,formatRegex,formatMask,scenarioName);
-//    }
-//
-//
-//    @Test(dataProvider = "testDataHroMandatory", dataProviderClass = DataDrivenTest.class)
-//    public void hroMandatoryInputsValidation(String fieldId) throws Exception{
-//        //hro validation message
-//        String scenarioName = "hroMandatoryInputsValidation";
-//        homePage.selectProject(projectName,scenarioName);
-//        hro.hroMandatoryValidation(fieldId,scenarioName);
-//    }
+    @Test(dataProvider = "testDataHroNumeric", dataProviderClass = DataDrivenTest.class)
+    public void hroNumericInvalidInputsValidation(String fieldId, String mandatory, String name, String max) throws Exception{
+        String scenarioName = "hroNumericInvalidInputsValidation";
+        homePage.selectProject(projectName,scenarioName);
+        hro.hroNumericInvalidInputsValidation(fieldId,mandatory,name,max,scenarioName);
+    }
+
+    @Test(dataProvider = "testDataHroNumeric", dataProviderClass = DataDrivenTest.class)
+    public void hroNumericValidInputsValidation(String fieldId, String mandatory, String name, String max) throws Exception{
+        String scenarioName = "hroNumericInputsValidation";
+        homePage.selectProject(projectName,scenarioName);
+        hro.hroNumericInputsValidation(fieldId,mandatory,name,max,scenarioName);
+    }
+
+    @Test(dataProvider = "testDataHroEmail", dataProviderClass = DataDrivenTest.class)
+    public void hroEmailInvalidInputsValidation(String fieldId, String mandatory, String name) throws Exception{
+        String scenarioName = "hroEmailInvalidInputsValidation";
+        homePage.selectProject(projectName,scenarioName);
+        hro.hroEmailFormatInvalidInputsValidation(fieldId,mandatory,name,scenarioName);
+    }
+
+    @Test(dataProvider = "testDataHroEmail", dataProviderClass = DataDrivenTest.class)
+    public void hroEmailInputsValidation(String fieldId, String mandatory, String name) throws Exception{
+        String scenarioName = "hroEmailInputsValidation";
+        homePage.selectProject(projectName,scenarioName);
+        hro.hroEmailFormatInputsValidation(fieldId,mandatory,name,scenarioName);
+    }
+
+    @Test(dataProvider = "testDataHroDateTime", dataProviderClass = DataDrivenTest.class)
+    public void hroDateTimeInvalidInputsValidation(String fieldId, String mandatory, String name,String formatMask) throws Exception{
+        String scenarioName = "hroDateTimeInvalidInputsValidation";
+        homePage.selectProject(projectName,scenarioName);
+        hro.hroDateTimeInvalidInputsValidation(fieldId,mandatory,name,formatMask,scenarioName);
+    }
+
+    @Test(dataProvider = "testDataHroDateTime", dataProviderClass = DataDrivenTest.class)
+    public void hroDateTimeValidInputsValidation(String fieldId, String mandatory, String name,String formatMask) throws Exception{
+        String scenarioName = "hroDateTimeValidInputsValidation";
+        homePage.selectProject(projectName,scenarioName);
+        hro.hroDateTimeValidInputsValidation(fieldId,mandatory,name,formatMask,scenarioName);
+    }
+
+    @Test(dataProvider = "testDataHroDataFormatting", dataProviderClass = DataDrivenTest.class)
+    public void hroDataFormattingValidInputs(String fieldId, String mandatory, String name,String formatRegex, String formatMask) throws Exception{
+        String scenarioName = "hroDataFormattingValidInputs";
+        homePage.selectProject(projectName,scenarioName);
+        hro.hroDataFormatValidInputs(fieldId,mandatory,name,formatRegex,formatMask,scenarioName);
+    }
+
+
+    @Test(dataProvider = "testDataHroDataFormatting", dataProviderClass = DataDrivenTest.class)
+    public void hroDataFormattingInvalidInputs(String fieldId, String mandatory, String name,String formatRegex,String formatMask) throws Exception{
+        String scenarioName = "hroDataFormattingInvalidInputs";
+        homePage.selectProject(projectName,scenarioName);
+        hro.hroDataFormatInvalidInputs(fieldId,mandatory,name,formatRegex,formatMask,scenarioName);
+    }
+
+
+    @Test(dataProvider = "testDataHroMandatory", dataProviderClass = DataDrivenTest.class)
+    public void hroMandatoryInputsValidation(String fieldId) throws Exception{
+        //hro validation message
+        String scenarioName = "hroMandatoryInputsValidation";
+        homePage.selectProject(projectName,scenarioName);
+        hro.hroMandatoryValidation(fieldId,scenarioName);
+    }
 
     //MIA
 
