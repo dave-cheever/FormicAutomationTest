@@ -159,10 +159,10 @@ public class BaseUiTest {
         getDriver().quit();
     }
 
-    @AfterSuite
-    public void deleteResources(){
-        DataDrivenTest.deleteWorkbook();
-    }
+//    @AfterSuite
+//    public void deleteResources(){
+//        DataDrivenTest.deleteWorkbook();
+//    }
 
 
     public WebDriver getDriver() {
