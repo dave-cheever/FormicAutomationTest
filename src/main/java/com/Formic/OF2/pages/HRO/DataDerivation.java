@@ -1,13 +1,12 @@
 package com.Formic.OF2.pages.HRO;
 
-import com.Formic.OF2.pages.CheckBoxPage;
+import com.Formic.OF2.pages.CheckBoxPageV2;
 import com.Formic.OF2.pages.HandwritingRecognitionObject;
 import com.Formic.OF2.test.BasePage;
 import com.Formic.OF2.utils.CheckboxObject;
 import com.Formic.OF2.utils.Pojo.FormContentPojo;
 import com.Formic.OF2.utils.Pojo.RulesGraphql;
 import com.Formic.OF2.utils.ScreenshotHelper;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -35,7 +34,7 @@ public class DataDerivation extends BasePage {
         for (String fieldId: CheckboxObject.fieldId
         ) {
             if(com.Formic.OF2.utils.FieldMetaData.getHroRules(graphResponse, fieldId)&&
-                    !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
+                    !CheckBoxPageV2.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
                 enterNumberForDerivationFields(graphResponse,fieldId,firstValue,secondValue);
             }
@@ -54,7 +53,7 @@ public class DataDerivation extends BasePage {
         for (String fieldId: CheckboxObject.fieldId
         ) {
             if(com.Formic.OF2.utils.FieldMetaData.getHroRules(graphResponse, fieldId)&&
-                    !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
+                    !CheckBoxPageV2.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
                 enterNumberForDerivationFields(graphResponse,fieldId,firstValue,secondValue);
             }
@@ -73,7 +72,7 @@ public class DataDerivation extends BasePage {
         for (String fieldId: CheckboxObject.fieldId
         ) {
             if(com.Formic.OF2.utils.FieldMetaData.getHroRules(graphResponse, fieldId)&&
-                    !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
+                    !CheckBoxPageV2.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
                 enterNumberForDerivationFields(graphResponse,fieldId,firstValue,secondValue);
             }
@@ -92,7 +91,7 @@ public class DataDerivation extends BasePage {
         for (String fieldId: CheckboxObject.fieldId
         ) {
             if(com.Formic.OF2.utils.FieldMetaData.getHroRules(graphResponse, fieldId)&&
-                    !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
+                    !CheckBoxPageV2.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
                 enterNumberForDerivationFields(graphResponse,fieldId,firstValue,secondValue);
             }
@@ -108,7 +107,7 @@ public class DataDerivation extends BasePage {
         for (String fieldId: CheckboxObject.fieldId
         ) {
             if(com.Formic.OF2.utils.FieldMetaData.getHroRules(graphResponse, fieldId)&&
-                    !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
+                    !CheckBoxPageV2.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
                 enterNumberForDerivationFieldNoArithmetic(graphResponse,fieldId,5);
             }

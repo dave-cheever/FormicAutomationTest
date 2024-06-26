@@ -1,6 +1,6 @@
 package com.Formic.OF2.pages.MIA;
 
-import com.Formic.OF2.pages.CheckBoxPage;
+import com.Formic.OF2.pages.CheckBoxPageV2;
 import com.Formic.OF2.pages.ManualImageArea;
 import com.Formic.OF2.test.BasePage;
 import com.Formic.OF2.utils.CheckboxObject;
@@ -31,7 +31,7 @@ public class DataValidation extends BasePage {
         for (String fieldId: CheckboxObject.fieldId
         ) {
             if(com.Formic.OF2.utils.FieldMetaData.getMiaRules(graphResponse, fieldId)&&
-                    !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
+                    !CheckBoxPageV2.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
                 int validationNumber = com.Formic.OF2.utils.DataValidation.getValidationNumber(graphResponse,fieldId);
                 ManualImageArea.setTextToMia(graphResponse,fieldId,Integer.toString(validationNumber));
@@ -60,7 +60,7 @@ public class DataValidation extends BasePage {
         for (String fieldId: CheckboxObject.fieldId
         ) {
             if(com.Formic.OF2.utils.FieldMetaData.getMiaRules(graphResponse, fieldId)&&
-                    !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
+                    !CheckBoxPageV2.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
                 int validationNumber = com.Formic.OF2.utils.DataValidation.getValidationNumber(graphResponse,fieldId);
                 ManualImageArea.setTextToMia(graphResponse,fieldId,Integer.toString(validationNumber+1));
@@ -89,7 +89,7 @@ public class DataValidation extends BasePage {
         for (String fieldId: CheckboxObject.fieldId
         ) {
             if(com.Formic.OF2.utils.FieldMetaData.getMiaRules(graphResponse, fieldId)&&
-                    !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
+                    !CheckBoxPageV2.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
                 int validationNumber = com.Formic.OF2.utils.DataValidation.getValidationNumber(graphResponse,fieldId);
                 ManualImageArea.setTextToMia(graphResponse,fieldId,Integer.toString(validationNumber+1));
@@ -118,7 +118,7 @@ public class DataValidation extends BasePage {
         for (String fieldId: CheckboxObject.fieldId
         ) {
             if(com.Formic.OF2.utils.FieldMetaData.getMiaRules(graphResponse, fieldId)&&
-                    !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
+                    !CheckBoxPageV2.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
                 int validationNumber = com.Formic.OF2.utils.DataValidation.getValidationNumber(graphResponse,fieldId);
                 ManualImageArea.setTextToMia(graphResponse,fieldId,Integer.toString(validationNumber));
@@ -147,7 +147,7 @@ public class DataValidation extends BasePage {
         for (String fieldId: CheckboxObject.fieldId
         ) {
             if(com.Formic.OF2.utils.FieldMetaData.getMiaRules(graphResponse, fieldId)&&
-                    !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
+                    !CheckBoxPageV2.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
                 int validationNumber = com.Formic.OF2.utils.DataValidation.getValidationNumber(graphResponse,fieldId);
                 ManualImageArea.setTextToMia(graphResponse,fieldId,Integer.toString(validationNumber-1));
@@ -176,7 +176,7 @@ public class DataValidation extends BasePage {
         for (String fieldId: CheckboxObject.fieldId
         ) {
             if(com.Formic.OF2.utils.FieldMetaData.getMiaRules(graphResponse, fieldId)&&
-                    !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
+                    !CheckBoxPageV2.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
                 int validationNumber = com.Formic.OF2.utils.DataValidation.getValidationNumber(graphResponse,fieldId);
                 ManualImageArea.setTextToMia(graphResponse,fieldId,Integer.toString(validationNumber));
@@ -205,7 +205,7 @@ public class DataValidation extends BasePage {
         for (String fieldId: CheckboxObject.fieldId
         ) {
             if(com.Formic.OF2.utils.FieldMetaData.getMiaRules(graphResponse, fieldId)&&
-                    !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
+                    !CheckBoxPageV2.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
                 int validationNumber = com.Formic.OF2.utils.DataValidation.getValidationNumber(graphResponse,fieldId);
                 ManualImageArea.setTextToMia(graphResponse,fieldId,Integer.toString(validationNumber+1));
@@ -236,7 +236,7 @@ public class DataValidation extends BasePage {
         for (String fieldId: CheckboxObject.fieldId
         ) {
             if(com.Formic.OF2.utils.FieldMetaData.getMiaRules(graphResponse, fieldId)&&
-                    !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
+                    !CheckBoxPageV2.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
                 int validationNumber = com.Formic.OF2.utils.DataValidation.getValidationNumber(graphResponse,fieldId);
                 ManualImageArea.setTextToMia(graphResponse,fieldId,Integer.toString(validationNumber));
@@ -267,7 +267,7 @@ public class DataValidation extends BasePage {
         for (String fieldId: CheckboxObject.fieldId
         ) {
             if(com.Formic.OF2.utils.FieldMetaData.getMiaRules(graphResponse, fieldId)&&
-                    !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
+                    !CheckBoxPageV2.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
                 int validationNumber = com.Formic.OF2.utils.DataValidation.getValidationNumber(graphResponse,fieldId);
                 ManualImageArea.setTextToMia(graphResponse,fieldId,Integer.toString(validationNumber));
@@ -298,7 +298,7 @@ public class DataValidation extends BasePage {
         for (String fieldId: CheckboxObject.fieldId
         ) {
             if(com.Formic.OF2.utils.FieldMetaData.getMiaRules(graphResponse, fieldId)&&
-                    !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
+                    !CheckBoxPageV2.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
                 int validationNumber = com.Formic.OF2.utils.DataValidation.getValidationNumber(graphResponse,fieldId);
                 ManualImageArea.setTextToMia(graphResponse,fieldId,Integer.toString(validationNumber-1));
@@ -329,7 +329,7 @@ public class DataValidation extends BasePage {
         for (String fieldId: CheckboxObject.fieldId
         ) {
             if(com.Formic.OF2.utils.FieldMetaData.getMiaRules(graphResponse, fieldId)&&
-                    !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
+                    !CheckBoxPageV2.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
                 int validationNumber = com.Formic.OF2.utils.DataValidation.getValidationNumber(graphResponse,fieldId);
                 ManualImageArea.setTextToMia(graphResponse,fieldId,Integer.toString(validationNumber+1));
@@ -360,7 +360,7 @@ public class DataValidation extends BasePage {
         for (String fieldId: CheckboxObject.fieldId
         ) {
             if(com.Formic.OF2.utils.FieldMetaData.getMiaRules(graphResponse, fieldId)&&
-                    !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
+                    !CheckBoxPageV2.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
                 int validationNumber = com.Formic.OF2.utils.DataValidation.getValidationNumber(graphResponse,fieldId);
                 ManualImageArea.setTextToMia(graphResponse,fieldId,Integer.toString(validationNumber+1));

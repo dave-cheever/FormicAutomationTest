@@ -71,13 +71,14 @@ public class ManualImageArea extends BasePage {
     }
 
     public static void setTextToMia(com.Formic.OF2.utils.Pojo.FormContentPojo pojo, String strFieldId, String strText){
-        String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
+        String elementId = CheckBoxPageV2.getObjectIdFromFieldId(pojo,strFieldId);
         WebElement element = null;
         String elem;
         elem = stringReplace(miaInputLocator,elementId);
         if (driver.findElements(By.xpath(elem)).size() == 0) {
             elem = stringReplace(miaTextAreaLocator, elementId);
         }
+        scrollElementIntoView(driver,By.xpath(elem));
         element = driver.findElement(By.xpath(elem));
 
 //        try {
@@ -101,7 +102,7 @@ public class ManualImageArea extends BasePage {
     }
 
     public static void setTextToMiaDateTime(com.Formic.OF2.utils.Pojo.FormContentPojo pojo, String strFieldId, String strText){
-        String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
+        String elementId = CheckBoxPageV2.getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(miaTextAreaLocator,elementId);
         WebElement element = stringToWebElement(elem);
         scrollElementIntoView(driver,element);
@@ -330,7 +331,7 @@ public class ManualImageArea extends BasePage {
 
 
     public void assertMiaValidationMessageAlphaNumeric(com.Formic.OF2.utils.Pojo.FormContentPojo pojo, String strFieldId,String scenarioName){
-        String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
+        String elementId = CheckBoxPageV2.getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(miaValidationMessageLocator,elementId);
         Reporter.log("<b>Confirm correct validation message should be:</b> This field must match the following format: (?"+getNumberOfUnderscore()+").");
         WebElement element;
@@ -351,7 +352,7 @@ public class ManualImageArea extends BasePage {
     }
 
     public void assertMiaValidationMessageAlphabet(com.Formic.OF2.utils.Pojo.FormContentPojo pojo, String strFieldId){
-        String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
+        String elementId = CheckBoxPageV2.getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(miaValidationMessageLocator,elementId);
         WebElement element = stringToWebElement(elem);
         Reporter.log("<b>Confirm correct validation message should be:</b> This field must match the following format: ("+getNumberOfUnderscore()+").");
@@ -520,7 +521,7 @@ public class ManualImageArea extends BasePage {
     }
 
     public void assertMiaValidationMessageNumeric(com.Formic.OF2.utils.Pojo.FormContentPojo pojo, String strFieldId,String scenarioName){
-        String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
+        String elementId = CheckBoxPageV2.getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(miaValidationMessageLocator,elementId);
         WebElement element = stringToWebElement(elem);
         scrollElementIntoView(driver,element);
@@ -884,7 +885,7 @@ public class ManualImageArea extends BasePage {
     }
 
     public void assertMiaValidationMessageNumericValid(FormContentPojo pojo, String strFieldId, String scenarioName){
-        String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
+        String elementId = CheckBoxPageV2.getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(miaValidationMessageLocator,elementId);
         scrollElementIntoView(driver,By.xpath(elem));
         Reporter.log("<b>Confirm correct validation message should be:</b> This field must be a number.");
@@ -906,7 +907,7 @@ public class ManualImageArea extends BasePage {
     }
 
     public void assertMiaValidationMessageNumericInvalid(FormContentPojo pojo, String strFieldId, String scenarioName){
-        String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
+        String elementId = CheckBoxPageV2.getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(miaValidationMessageLocator,elementId);
         WebElement element = stringToWebElement(elem);
         scrollElementIntoView(driver,element);
@@ -962,7 +963,7 @@ public class ManualImageArea extends BasePage {
     }
 
     public void assertMiaValidationMessageDataFormatValid(FormContentPojo pojo, String strFieldId, String scenarioName){
-        String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
+        String elementId = CheckBoxPageV2.getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(miaValidationMessageLocator,elementId);
         Reporter.log("<b>Confirm correct validation message should be:</b> This field must match the following format: ("+strFormatMask+").");
         try{
@@ -983,7 +984,7 @@ public class ManualImageArea extends BasePage {
     }
 
     public void assertMiaValidationMessageDataFormat(FormContentPojo pojo, String strFieldId, String scenarioName){
-        String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
+        String elementId = CheckBoxPageV2.getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(miaValidationMessageLocator,elementId);
         Reporter.log("<b>Confirm correct validation message should be:</b> This field must match the following format: ("+strFormatMask+").");
         WebElement element;

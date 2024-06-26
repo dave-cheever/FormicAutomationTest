@@ -1,6 +1,5 @@
 package Formic;
 
-import com.Formic.OF2.pages.CheckBoxPage;
 import com.Formic.OF2.pages.HRO.DataValidation;
 import com.Formic.OF2.pages.HomePage;
 import com.Formic.OF2.pages.MIA.DataDerivation;
@@ -14,11 +13,8 @@ import org.testng.annotations.Test;
 public class DataDerivationTest extends BaseUiTest {
 
     HomePage homePage;
-    CheckBoxPage checkBoxPage;
     DataValidation dataValidationHro;
-
     DataDerivation dataDerivationMia;
-
     com.Formic.OF2.pages.HRO.DataDerivation dataDerivationHro;
 
     String projectName = "TEST Data Validation";
@@ -99,7 +95,6 @@ public class DataDerivationTest extends BaseUiTest {
     @BeforeMethod
     public void initialisePageElements(ITestContext iTestContext) {
         homePage = PageFactory.initElements(getDriver(), HomePage.class);
-        checkBoxPage = PageFactory.initElements(getDriver(), CheckBoxPage.class);
         dataValidationHro = PageFactory.initElements(getDriver(), DataValidation.class);
         dataDerivationHro = PageFactory.initElements(getDriver(), com.Formic.OF2.pages.HRO.DataDerivation.class);
         dataDerivationMia = PageFactory.initElements(getDriver(), com.Formic.OF2.pages.MIA.DataDerivation.class);

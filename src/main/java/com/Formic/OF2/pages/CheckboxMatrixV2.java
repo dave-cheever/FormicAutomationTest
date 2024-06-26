@@ -15,9 +15,7 @@ import java.util.LinkedHashSet;
 import java.util.Random;
 import java.util.Set;
 
-
-import static com.Formic.OF2.pages.CheckBoxPage.*;
-import static com.Formic.OF2.pages.CheckboxMatrix.clickCloseButton;
+import static com.Formic.OF2.pages.CheckBoxPageV2.comp;
 
 public class CheckboxMatrixV2 extends BasePage {
 
@@ -90,7 +88,7 @@ public class CheckboxMatrixV2 extends BasePage {
         if(mandatory){
             AssertMandatoryFields(pojo,strFieldId,min,scenarioName);
         }else{
-            assertWithinAcceptedInputs(checkboxName,elementId);
+            CheckBoxPageV2.assertWithinAcceptedInputs(checkboxName,elementId);
         }
     }
 
@@ -355,6 +353,33 @@ public class CheckboxMatrixV2 extends BasePage {
             String pathName = screenshotHelper.getScreenshotPath(scenarioName);
             Reporter.log("<br><b>Failed test screenshot:</b> <a href='" + pathName + "'>Screenshot</a><br>");
             throw assertionError;
+        }
+    }
+
+    public static int clickWithinMinimumMaximumInput(FormContentPojo pojo,int minInput,int maxInput,ArrayList<String> strObjectFieldId,int elementCountInACheckbox){
+        String[] gen = CheckBoxPageV2.minMaximumGeneratedInputs(pojo,minInput,maxInput,elementCountInACheckbox);
+        gen = CheckBoxPageV2.adjustInputIfAlreadySelected(pojo,gen);
+        for (String fieldId: strObjectFieldId
+        ) {
+            CheckBoxPageV2.recordInputsFromCheckbox(getObjectIdFromFieldId(pojo,fieldId),gen);
+            System.out.println(CheckboxObject.checkboxInputs);
+            clickElementHasValue(gen,fieldId);
+        }
+        return gen.length;
+    }
+
+    public static void clickElementHasValue(String[] gen, String strObjectElementId){
+        String elem;
+        WebElement element;
+        for(int x = 0; x<gen.length;x++){
+            elem = stringReplaceTwoValues(checkboxMatrixElementToBeClickedLocator,strObjectElementId,gen[x]);
+            scrollElementIntoView(driver,stringToWebElement(elem));
+            element = stringToWebElement(elem);
+            scrollElementIntoView(driver,element);
+            Reporter.log("Click checkbox number: "+gen[x]);
+            if(!element.isSelected()) {
+                click(element);
+            }
         }
     }
 

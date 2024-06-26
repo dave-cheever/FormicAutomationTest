@@ -35,7 +35,7 @@ public class HandwritingRecognitionObject extends BasePage {
     static CompletionErrors comp = new CompletionErrors(driver);
 
     public static void setTextToHro(FormContentPojo pojo, String strFieldId, String strText){
-        String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
+        String elementId = CheckBoxPageV2.getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(hroInputLocator,elementId);
         WebElement element = stringToWebElement(elem);
         scrollElementIntoView(driver,element);
@@ -257,7 +257,7 @@ public class HandwritingRecognitionObject extends BasePage {
     }
 
     public void assertHroValidationMessageNumericInvalid(FormContentPojo pojo, String strFieldId,String name, String scenarioName){
-        String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
+        String elementId = CheckBoxPageV2.getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(hroValidationMessageLocator,elementId);
         WebElement element = stringToWebElement(elem);
         scrollElementIntoView(driver,element);
@@ -276,7 +276,7 @@ public class HandwritingRecognitionObject extends BasePage {
     }
 
     public void assertHroValidationMessageNumericValid(FormContentPojo pojo, String strFieldId,String name, String scenarioName){
-        String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
+        String elementId = CheckBoxPageV2.getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(hroValidationMessageLocator,elementId);
         scrollElementIntoView(driver,By.xpath(elem));
         Reporter.log("<b>Confirm correct validation message should be:</b> This field must be a number.");
@@ -300,7 +300,7 @@ public class HandwritingRecognitionObject extends BasePage {
 
 
     public void assertHro(FormContentPojo pojo, String strFieldId){
-        String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
+        String elementId = CheckBoxPageV2.getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(hroValidationMessageLocator,elementId);
         String elemMandatory = stringReplace(hroValidationMessageMandatoryLocator,elementId);
         String fieldName = getFieldName(pojo,strFieldId);
@@ -384,7 +384,7 @@ public class HandwritingRecognitionObject extends BasePage {
     }
 
     public void assertHroValidationMessageAlphaNumeric(FormContentPojo pojo, String strFieldId,String name, String scenarioName){
-        String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
+        String elementId = CheckBoxPageV2.getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(hroValidationMessageLocator,elementId);
         Reporter.log("<b>Confirm correct validation message should be:</b> This field must match the following format: ("+strFormatMask+").");
         WebElement element;
@@ -409,7 +409,7 @@ public class HandwritingRecognitionObject extends BasePage {
     }
 
     public void assertHroValidationMessageDataFormat(FormContentPojo pojo, String strFieldId,String name, String scenarioName){
-        String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
+        String elementId = CheckBoxPageV2.getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(hroValidationMessageLocator,elementId);
         Reporter.log("<b>Confirm correct validation message should be:</b> This field must match the following format: ("+strFormatMask+").");
         WebElement element;
@@ -434,7 +434,7 @@ public class HandwritingRecognitionObject extends BasePage {
     }
 
     public void assertHroValidationMessageDataFormatValid(FormContentPojo pojo, String strFieldId,String name, String scenarioName){
-        String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
+        String elementId = CheckBoxPageV2.getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(hroValidationMessageLocator,elementId);
         Reporter.log("<b>Confirm correct validation message should be:</b> This field must match the following format: ("+strFormatMask+").");
         try{
@@ -457,7 +457,7 @@ public class HandwritingRecognitionObject extends BasePage {
 
 
     public void assertHroValidationMessageAlphabet(FormContentPojo pojo, String strFieldId){
-        String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
+        String elementId = CheckBoxPageV2.getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(hroValidationMessageLocator,elementId);
         WebElement element = stringToWebElement(elem);
         Reporter.log("<b>Confirm correct validation message should be:</b> This field must match the following format: ("+getNumberOfUnderscore()+").");

@@ -1,9 +1,9 @@
 package com.Formic.OF2.pages.HRO;
 
+import com.Formic.OF2.pages.CheckBoxPageV2;
 import com.Formic.OF2.pages.HandwritingRecognitionObject;
 import com.Formic.OF2.test.BasePage;
 import com.Formic.OF2.utils.CheckboxObject;
-import com.Formic.OF2.pages.CheckBoxPage;
 import com.Formic.OF2.utils.Pojo.FormContentPojo;
 import com.Formic.OF2.utils.Pojo.RulesGraphql;
 import com.Formic.OF2.utils.ScreenshotHelper;
@@ -13,8 +13,6 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.testng.Assert;
 import org.testng.Reporter;
-
-import java.io.File;
 
 
 public class DataValidation extends BasePage {
@@ -34,7 +32,7 @@ public class DataValidation extends BasePage {
         for (String fieldId: CheckboxObject.fieldId
         ) {
             if(com.Formic.OF2.utils.FieldMetaData.getHroRules(graphResponse, fieldId)&&
-                    !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
+                    !CheckBoxPageV2.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
                 int validationNumber = com.Formic.OF2.utils.DataValidation.getValidationNumber(graphResponse,fieldId);
                 HandwritingRecognitionObject.setTextToHro(graphResponse,fieldId,Integer.toString(validationNumber));
@@ -62,7 +60,7 @@ public class DataValidation extends BasePage {
         for (String fieldId: CheckboxObject.fieldId
         ) {
             if(com.Formic.OF2.utils.FieldMetaData.getHroRules(graphResponse, fieldId)&&
-                    !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
+                    !CheckBoxPageV2.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
                 int validationNumber = com.Formic.OF2.utils.DataValidation.getValidationNumber(graphResponse,fieldId);
                 HandwritingRecognitionObject.setTextToHro(graphResponse,fieldId,Integer.toString(validationNumber+1));
@@ -90,7 +88,7 @@ public class DataValidation extends BasePage {
         for (String fieldId: CheckboxObject.fieldId
         ) {
             if(com.Formic.OF2.utils.FieldMetaData.getHroRules(graphResponse, fieldId)&&
-                    !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
+                    !CheckBoxPageV2.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
                 int validationNumber = com.Formic.OF2.utils.DataValidation.getValidationNumber(graphResponse,fieldId);
                 HandwritingRecognitionObject.setTextToHro(graphResponse,fieldId,Integer.toString(validationNumber+1));
@@ -119,7 +117,7 @@ public class DataValidation extends BasePage {
         for (String fieldId: CheckboxObject.fieldId
         ) {
             if(com.Formic.OF2.utils.FieldMetaData.getHroRules(graphResponse, fieldId)&&
-                    !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
+                    !CheckBoxPageV2.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
                 int validationNumber = com.Formic.OF2.utils.DataValidation.getValidationNumber(graphResponse,fieldId);
                 HandwritingRecognitionObject.setTextToHro(graphResponse,fieldId,Integer.toString(validationNumber));
@@ -148,7 +146,7 @@ public class DataValidation extends BasePage {
         for (String fieldId: CheckboxObject.fieldId
         ) {
             if(com.Formic.OF2.utils.FieldMetaData.getHroRules(graphResponse, fieldId)&&
-                    !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
+                    !CheckBoxPageV2.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
                 int validationNumber = com.Formic.OF2.utils.DataValidation.getValidationNumber(graphResponse,fieldId);
                 HandwritingRecognitionObject.setTextToHro(graphResponse,fieldId,Integer.toString(validationNumber-1));
@@ -177,7 +175,7 @@ public class DataValidation extends BasePage {
         for (String fieldId: CheckboxObject.fieldId
         ) {
             if(com.Formic.OF2.utils.FieldMetaData.getHroRules(graphResponse, fieldId)&&
-                    !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
+                    !CheckBoxPageV2.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
                 int validationNumber = com.Formic.OF2.utils.DataValidation.getValidationNumber(graphResponse,fieldId);
                 HandwritingRecognitionObject.setTextToHro(graphResponse,fieldId,Integer.toString(validationNumber));
@@ -206,7 +204,7 @@ public class DataValidation extends BasePage {
         for (String fieldId: CheckboxObject.fieldId
         ) {
             if(com.Formic.OF2.utils.FieldMetaData.getHroRules(graphResponse, fieldId)&&
-                    !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
+                    !CheckBoxPageV2.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
                 int validationNumber = com.Formic.OF2.utils.DataValidation.getValidationNumber(graphResponse,fieldId);
                 HandwritingRecognitionObject.setTextToHro(graphResponse,fieldId,Integer.toString(validationNumber+1));
@@ -237,7 +235,7 @@ public class DataValidation extends BasePage {
         for (String fieldId: CheckboxObject.fieldId
         ) {
             if(com.Formic.OF2.utils.FieldMetaData.getHroRules(graphResponse, fieldId)&&
-                    !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
+                    !CheckBoxPageV2.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
                 int validationNumber = com.Formic.OF2.utils.DataValidation.getValidationNumber(graphResponse,fieldId);
                 HandwritingRecognitionObject.setTextToHro(graphResponse,fieldId,Integer.toString(validationNumber));
@@ -268,7 +266,7 @@ public class DataValidation extends BasePage {
         for (String fieldId: CheckboxObject.fieldId
         ) {
             if(com.Formic.OF2.utils.FieldMetaData.getHroRules(graphResponse, fieldId)&&
-                    !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
+                    !CheckBoxPageV2.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
                 int validationNumber = com.Formic.OF2.utils.DataValidation.getValidationNumber(graphResponse,fieldId);
                 HandwritingRecognitionObject.setTextToHro(graphResponse,fieldId,Integer.toString(validationNumber));
@@ -299,7 +297,7 @@ public class DataValidation extends BasePage {
         for (String fieldId: CheckboxObject.fieldId
         ) {
             if(com.Formic.OF2.utils.FieldMetaData.getHroRules(graphResponse, fieldId)&&
-                    !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
+                    !CheckBoxPageV2.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
                 int validationNumber = com.Formic.OF2.utils.DataValidation.getValidationNumber(graphResponse,fieldId);
                 HandwritingRecognitionObject.setTextToHro(graphResponse,fieldId,Integer.toString(validationNumber-1));
@@ -330,7 +328,7 @@ public class DataValidation extends BasePage {
         for (String fieldId: CheckboxObject.fieldId
         ) {
             if(com.Formic.OF2.utils.FieldMetaData.getHroRules(graphResponse, fieldId)&&
-                    !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
+                    !CheckBoxPageV2.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
                 int validationNumber = com.Formic.OF2.utils.DataValidation.getValidationNumber(graphResponse,fieldId);
                 HandwritingRecognitionObject.setTextToHro(graphResponse,fieldId,Integer.toString(validationNumber+1));
@@ -361,7 +359,7 @@ public class DataValidation extends BasePage {
         for (String fieldId: CheckboxObject.fieldId
         ) {
             if(com.Formic.OF2.utils.FieldMetaData.getHroRules(graphResponse, fieldId)&&
-                    !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
+                    !CheckBoxPageV2.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
             {
                 int validationNumber = com.Formic.OF2.utils.DataValidation.getValidationNumber(graphResponse,fieldId);
                 HandwritingRecognitionObject.setTextToHro(graphResponse,fieldId,Integer.toString(validationNumber+1));

@@ -53,6 +53,26 @@ public class CheckBoxPageV2 extends BasePage {
     public static CompletionErrors comp = new CompletionErrors(driver);
     static JavascriptExecutor js = (JavascriptExecutor) driver;
 
+    public static boolean isFieldIdInRoutingRulesWhenFieldDisable(com.Formic.OF2.utils.Pojo.FormContentPojo pojo, String strFieldId){
+        boolean result = false;
+        loopBreak:
+        for (com.Formic.OF2.utils.Pojo.Routing routing: pojo.data.project.getRouting()
+        ) {
+            if(routing.getConditions()!=null){
+                for (com.Formic.OF2.utils.Pojo.Condition conditions: routing.getConditions()
+                ) {
+                    if(conditions.getWhenField().equalsIgnoreCase(strFieldId)){
+                        if(conditions.getAction().equalsIgnoreCase("disable")){
+                            result = true;
+                            break loopBreak;
+                        }
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
     public void NoInputsMandatoryMinimumInputsValidationTest(String fieldId,String scenarioName) throws Exception {
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
@@ -586,7 +606,7 @@ public class CheckBoxPageV2 extends BasePage {
                     getCheckboxRulesForMinimumAndMaximumInputs(graphResponse,fieldId);
                     ArrayList<String> numberOfOptions = CheckboxMatrix.checkboxMatrixOptionsCount(graphResponse,fieldId);
                     int numberOfItems = CheckboxMatrix.countNumberOfResponses(strElementId,numberOfOptions.size());
-                    CheckboxMatrix.clickWithinMinimumMaximumInput(graphResponse,CheckboxObject.minimum,CheckboxObject.maximum,numberOfOptions,numberOfItems);
+                    CheckboxMatrixV2.clickWithinMinimumMaximumInput(graphResponse,CheckboxObject.minimum,CheckboxObject.maximum,numberOfOptions,numberOfItems);
 
                 }else{
                  //Checkbox
@@ -1066,7 +1086,7 @@ public class CheckBoxPageV2 extends BasePage {
                         getCheckboxRulesForMinimumAndMaximumInputs(graphResponse,fieldId);
                         ArrayList<String> numberOfOptions = CheckboxMatrix.checkboxMatrixOptionsCount(graphResponse,fieldId);
                         int numberOfItems = CheckboxMatrix.countNumberOfResponses(strElementId,numberOfOptions.size());
-                        CheckboxMatrix.clickWithinMinimumMaximumInput(graphResponse,CheckboxObject.minimum,CheckboxObject.maximum,numberOfOptions,numberOfItems);
+                        CheckboxMatrixV2.clickWithinMinimumMaximumInput(graphResponse,CheckboxObject.minimum,CheckboxObject.maximum,numberOfOptions,numberOfItems);
 
                     }else{
                         //Checkbox
@@ -1112,6 +1132,15 @@ public class CheckBoxPageV2 extends BasePage {
             Reporter.log("Receipt not visible. "+e);
             return "";
         }
+    }
+
+    public static void assertWithinAcceptedInputs(String strName, String strObjectElementId){
+        String elemValidationMessage = stringReplace(newValidationMessageUponSubmit,strObjectElementId);
+        String elemCompilationErrors = stringReplace(validationMessageUponSubmitSideBar,strObjectElementId);
+        Assert.assertFalse(isElementVisible(driver,elemValidationMessage),"The expected for : "+strName + " There shouldn't be any validation message displayed below the object.");
+        Assert.assertFalse(isElementVisible(driver,elemCompilationErrors),"The expected for: "+strName + "Completion Errors isn't displayed. The actual is Completion errors is displayed.");
+        Reporter.log("There shouldn't be any validation message displayed below the field: "+ strName);
+        CheckboxObject.checkboxObjectDefaultValue();
     }
 
 }

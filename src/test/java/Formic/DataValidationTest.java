@@ -19,7 +19,6 @@ import static org.testng.Assert.assertEquals;
 public class DataValidationTest extends BaseUiTest {
 
     HomePage homePage;
-    CheckBoxPage checkBoxPage;
     DataValidation dataValidationHro;
 
     com.Formic.OF2.pages.MIA.DataValidation dataValidationMia;
@@ -197,7 +196,6 @@ public class DataValidationTest extends BaseUiTest {
     @BeforeMethod
     public void initialisePageElements(ITestContext iTestContext) {
         homePage = PageFactory.initElements(getDriver(), HomePage.class);
-        checkBoxPage = PageFactory.initElements(getDriver(), CheckBoxPage.class);
         dataValidationHro = PageFactory.initElements(getDriver(), DataValidation.class);
         dataValidationMia = PageFactory.initElements(getDriver(), com.Formic.OF2.pages.MIA.DataValidation.class);
         CheckboxObject.fieldId.clear();
