@@ -34,12 +34,13 @@ public class HomePage extends BasePage {
         Reporter.log("<b>Navigating to test website.</b>");
         visit("https://formic-onlineforms-test.azurewebsites.net/");
         driverWait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//div[contains(text(),\"My Projects\")]")));
-        driver.navigate().refresh();
+//        driver.navigate().refresh();
         WebElement projectElement = stringReplaceAndConvertToWebElement(projectNameLocator,project);
         Reporter.log("Scroll through the project list to find the project: "+project);
         scrollElementIntoView(driver,projectElement);
         try{
-            clickWithTries(projectElement,5);
+            click(projectElement);
+//            clickWithTries(projectElement,5);
             Reporter.log("Click project name: "+project,true);
         }catch (AssertionError assertionError){
             ScreenshotHelper screenshotHelper = new ScreenshotHelper(driver);

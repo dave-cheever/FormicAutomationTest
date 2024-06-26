@@ -63,7 +63,7 @@ public class SideMenuNavigation extends BasePage {
 
     public boolean clickSubmitButton() throws Exception {
         try{
-            sleep(1000);
+            sleep(2000);
             submitButtonVisible();
             click(submitButtonLocator);
             return true;
