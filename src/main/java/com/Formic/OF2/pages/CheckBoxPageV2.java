@@ -24,7 +24,9 @@ public class CheckBoxPageV2 extends BasePage {
         super(driver);
     }
 
-    int projectId = 137;
+    int projectId = Integer.parseInt(ConfigLoader.getProperty("test.CheckboxProjectId"));
+    int projectIdNavigation = Integer.parseInt(ConfigLoader.getProperty("test.NavigationProjectId"));
+
     String emailRegEx = "^[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.][a-zA-Z0-9]+$";
     static String validationMessageUponSubmitSideBar = "//h1[contains(text(),'Completion Errors')]//following-sibling::ul/li/button/div/div[contains(text(),'$TEXT')]//following::div[1]";
     static String mandatoryFieldMessageLocator = "//div[@data-object-id='$TEXT']/div/div";
@@ -92,7 +94,6 @@ public class CheckBoxPageV2 extends BasePage {
             lookForTheField(graphResponse,fieldId);
             clickSpecificRadioButtonAlreadyClicked(graphResponse,FieldManager.findDisablingFieldIds(graphResponse,fieldId));
             assertRequiredField(objectId,minValue,scenarioName);
-
     }
 
     public void CheckboxToggleEnableDisableFields(String whenFieldId, String hasValue, String fieldId, String action,String scenarioName) throws Exception {
@@ -102,6 +103,8 @@ public class CheckBoxPageV2 extends BasePage {
         String strElementWhenField = stringReplaceTwoValues(actionLocator,whenFieldObjectId,hasValue);
         By byXPath = By.xpath(strElementWhenField);
         waitForPageToLoad();
+        RoutingRules.enableDisabledFieldByFieldId(graphResponse,fieldId);
+        RoutingRules.enableDisabledFieldByFieldId(graphResponse,whenFieldId);
         lookForTheField(graphResponse,whenFieldId);
         scrollElementIntoView(driver,byXPath);
         WebElement elementWhenField = stringToWebElement(strElementWhenField);
@@ -298,11 +301,7 @@ public class CheckBoxPageV2 extends BasePage {
         checkboxName = getFieldName(graphResponse,fieldId);
         sideMenuNavigation.clickSubmitButton();
         RoutingRules.enableDisabledFieldByFieldId(graphResponse,fieldId);
-        if(CheckboxMatrixV2.isFieldIdCheckBoxMatrix(graphResponse,fieldId)){
-            CheckboxMatrixV2.assertMinimumConfig(graphResponse,fieldId,min,checkboxName,scenarioName);
-        }else {
-            assertMinimumConfig(graphResponse,fieldId,min,checkboxName,scenarioName);
-        }
+        assertMinimumConfig(graphResponse,fieldId,min,checkboxName,scenarioName);
     }
 
     public void checkboxBeyondMaximumInputs(String fieldId,String max,boolean mandatory, String scenarioName) throws Exception {
@@ -311,11 +310,8 @@ public class CheckBoxPageV2 extends BasePage {
         checkboxName = getFieldName(graphResponse,fieldId);
         checkboxMandatory = mandatory;
         RoutingRules.enableDisabledFieldByFieldId(graphResponse,fieldId);
-        if(CheckboxMatrixV2.isFieldIdCheckBoxMatrix(graphResponse,fieldId)){
-            CheckboxMatrixV2.assertWithinMaximumInput(graphResponse, fieldId,max,checkboxName,checkboxMandatory,scenarioName);
-        }else {
-            assertWithinMaximumInput(graphResponse,fieldId,max,scenarioName);
-        }
+        assertWithinMaximumInput(graphResponse,fieldId,max,scenarioName);
+
     }
 
     public void checkboxWithinMaximumInputs(String fieldId,String max,boolean mandatory, String scenarioName) throws Exception {
@@ -324,11 +320,8 @@ public class CheckBoxPageV2 extends BasePage {
         checkboxName = getFieldName(graphResponse,fieldId);
         checkboxMandatory = mandatory;
         RoutingRules.enableDisabledFieldByFieldId(graphResponse,fieldId);
-        if(CheckboxMatrixV2.isFieldIdCheckBoxMatrix(graphResponse,fieldId)){
-            CheckboxMatrixV2.assertWithinMaximumInput(graphResponse, fieldId,max,checkboxName,checkboxMandatory,scenarioName);
-        }else {
-            assertWithinMaximumInput(graphResponse,fieldId,max,scenarioName);
-        }
+        assertWithinMaximumInput(graphResponse,fieldId,max,scenarioName);
+
     }
 
     public void checkboxWithinMinimumInputs(String fieldId,String min,boolean mandatory, String scenarioName) throws Exception {
@@ -338,12 +331,9 @@ public class CheckBoxPageV2 extends BasePage {
         checkboxName = getFieldName(graphResponse,fieldId);
         checkboxMandatory = mandatory;
         RoutingRules.enableDisabledFieldByFieldId(graphResponse,fieldId);
-        if(CheckboxMatrixV2.isFieldIdCheckBoxMatrix(graphResponse,fieldId)){
-            CheckboxMatrixV2.assertWithinMinimumInput(graphResponse, fieldId,Integer.parseInt(min),checkboxName,mandatory,scenarioName);
-        }else {
-            System.out.println(CheckboxObject.checkboxName+ " Is enabled");
-            assertWithinMinimumInput(graphResponse,fieldId,min,scenarioName);
-        }
+        System.out.println(CheckboxObject.checkboxName+ " Is enabled");
+        assertWithinMinimumInput(graphResponse,fieldId,min,scenarioName);
+
     }
 
     public void validateCheckboxLessThanMinimumInputsUponSubmit(String fieldId,String min,boolean mandatory, String scenarioName) throws Exception {
@@ -353,11 +343,8 @@ public class CheckBoxPageV2 extends BasePage {
         checkboxName = getFieldName(graphResponse,fieldId);
         checkboxMandatory = mandatory;
         RoutingRules.enableDisabledFieldByFieldId(graphResponse,fieldId);
-        if(CheckboxMatrixV2.isFieldIdCheckBoxMatrix(graphResponse,fieldId)){
-            CheckboxMatrixV2.assertLessThanMinimumInput(graphResponse, fieldId,Integer.parseInt(min),checkboxName,scenarioName);
-        }else {
-            assertLessThanMinimumInput(graphResponse,fieldId,Integer.parseInt(min),scenarioName);
-        }
+        assertLessThanMinimumInput(graphResponse,fieldId,Integer.parseInt(min),scenarioName);
+
     }
 
     public void assertLessThanMinimumInput(com.Formic.OF2.utils.Pojo.FormContentPojo pojo, String strFieldId,Integer min, String scenarioName) {
@@ -581,7 +568,7 @@ public class CheckBoxPageV2 extends BasePage {
 
     public void validateSubmittedInputsCheckbox() throws Exception {
         RulesGraphql rules = new RulesGraphql();
-        FormContentPojo graphResponse =  rules.getRules(projectId);
+        FormContentPojo graphResponse =  rules.getRules(projectIdNavigation);
         sideMenuNavigation.clickSubmitButton();
         String strListFieldName;
         String fieldId;
@@ -1061,7 +1048,7 @@ public class CheckBoxPageV2 extends BasePage {
 
     public void validateSavedInputsCheckbox() throws Exception {
         RulesGraphql rules = new RulesGraphql();
-        FormContentPojo graphResponse =  rules.getRules(projectId);
+        FormContentPojo graphResponse =  rules.getRules(projectIdNavigation);
         sideMenuNavigation.clickSubmitButton();
         String strListFieldName;
         String fieldId;

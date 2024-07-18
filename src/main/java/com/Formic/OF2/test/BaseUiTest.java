@@ -1,5 +1,6 @@
 package com.Formic.OF2.test;
 
+import com.Formic.OF2.utils.ConfigLoader;
 import com.Formic.OF2.utils.DataDrivenTest;
 import com.Formic.OF2.utils.FieldManager;
 import com.Formic.OF2.utils.Pojo.FormContentPojo;
@@ -28,6 +29,9 @@ import java.sql.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
+import static com.Formic.OF2.utils.FieldManager.getFieldIdHro;
+import static com.Formic.OF2.utils.FieldManager.getFieldIdMia;
 
 public class BaseUiTest {
 
@@ -61,85 +65,170 @@ public class BaseUiTest {
         driver.set(new ChromeDriver(ChromeOptionsUtil.getHeadlessChromeOptions()));
 //        driver.set(new ChromeDriver(options));
 //        setDriver(new ChromeDriver(options));
-//        getDriver().manage().window().maximize();
+        getDriver().manage().window().maximize();
         screenshotHelper = PageFactory.initElements(getDriver(),ScreenshotHelper.class);
     }
 
     @BeforeSuite
     public void writeOnWorkBook() throws IOException, InvalidFormatException {
         RulesGraphql rules = new RulesGraphql();
-        FormContentPojo graphResponse =  rules.getRules(137);
+        FormContentPojo graphResponseCheckBox =  rules.getRules(Integer.parseInt(ConfigLoader.getProperty("test.CheckboxProjectId")));
+        FormContentPojo graphResponseHro =  rules.getRules(Integer.parseInt(ConfigLoader.getProperty("test.HroProjectId")));
+        FormContentPojo graphResponseMia =  rules.getRules(Integer.parseInt(ConfigLoader.getProperty("test.MiaProjectId")));
+        FormContentPojo graphResponseDerivation =  rules.getRules(Integer.parseInt(ConfigLoader.getProperty("test.DerivationProjectId")));
+//        FormContentPojo graphResponse2 =  rules2.getRules(247);
         //CheckBox
-        ArrayList<String> fieldId = new ArrayList<>();
-        ArrayList<String> fieldIdEnableDisable = new ArrayList<>();
-        ArrayList<String> fieldIdMinInputs = new ArrayList<>();
-        ArrayList<String> fieldIdMaxInputs = new ArrayList<>();
-        //HRO
-        ArrayList<String> fieldIdHroNumeric = new ArrayList<>();
-        ArrayList<String> fieldIdHroDateTime = new ArrayList<>();
-        ArrayList<String> fieldIdHroEmail = new ArrayList<>();
-        ArrayList<String> fieldIdHroDataFormatting = new ArrayList<>();
-        ArrayList<String> fieldIdHroMandatory = new ArrayList<>();
-        //MIA
-        ArrayList<String> fieldIdMiaEmail = new ArrayList<>();
-        ArrayList<String> fieldIdMiaDateTime = new ArrayList<>();
-        ArrayList<String> fieldIdMiaNumeric = new ArrayList<>();
-        ArrayList<String> fieldIdMiaDataFormatting = new ArrayList<>();
-        ArrayList<String> fieldIdMiaMandatory = new ArrayList<>();
-        ArrayList<String> fieldIdMiaPickList = new ArrayList<>();
+        ArrayList<String> configurationList = new ArrayList<>();
+
+//        System.out.println("##[command] fieldId: "+configurationList.size());
+//        DataDrivenTest.createExcelTestDataFile();
 
         //CheckBox
-//        fieldId = FieldManager.getAllCheckboxFieldIdWithMandatoryRules(graphResponse);
-//        fieldIdEnableDisable = FieldManager.getRoutingFieldsEnableDisable(graphResponse);
-//        fieldIdMinInputs = FieldManager.getCheckboxRulesForMinimumInputs(graphResponse);
-//        fieldIdMaxInputs = FieldManager.getCheckboxRulesForMaximumInputs(graphResponse);
-//        //HRO
-//        fieldIdHroNumeric = FieldManager.getHandWritingRecognitionObjectRulesNumeric(graphResponse);
-//        fieldIdHroDateTime = FieldManager.getHandWritingRecognitionObjectRulesDateTime(graphResponse);
-//        fieldIdHroEmail = FieldManager.getHandWritingRecognitionObjectRulesEmail(graphResponse);
-//        fieldIdHroDataFormatting = FieldManager.getHandWritingRecognitionObjectRulesDataFormatting(graphResponse);
-//        fieldIdHroMandatory = FieldManager.getHandWritingRecognitionObjectRulesMandatory(graphResponse);
-//        //MIA
-//        fieldIdMiaEmail = FieldManager.getCheckboxRulesForManualImageAreaEmail(graphResponse);
-//        fieldIdMiaDateTime = FieldManager.getMiaDateTime(graphResponse);
-//        fieldIdMiaNumeric = FieldManager.getMiaRulesNumeric(graphResponse);
-//        fieldIdMiaDataFormatting = FieldManager.getMiaFormatting(graphResponse);
-//        fieldIdMiaMandatory = FieldManager.getMiaRulesMandatory(graphResponse);
-//        fieldIdMiaPickList = FieldManager.getMiaRulesPicklist(graphResponse);
-//
-//
-//        System.out.println("##[command] fieldId: "+fieldId.size());
-//        DataDrivenTest.createExcelTestDataFile();
-//        //Checkbox
-//        System.out.println("##[command] writing to excel");
-//        DataDrivenTest.writeToExcel(fieldId);
-//        System.out.println("##[command] writing to enable disable fields");
-//        DataDrivenTest.writeToExcelEnableDisable(fieldIdEnableDisable,"Sheet2");
-//        System.out.println("##[command] writing to minimum inputs");
-//        DataDrivenTest.writeToExcelCheckboxMinimumInputs(fieldIdMinInputs,"Sheet3");
-//        System.out.println("##[command] writing to maximum inputs");
-//        DataDrivenTest.writeToExcelCheckboxMaximumInputs(fieldIdMaxInputs,"Sheet4");
-//        //HRO
-//        System.out.println("##[command] writing to HRO numeric");
-//        DataDrivenTest.writeToExcelHroNumeric(fieldIdHroNumeric,"Sheet5");
-//        System.out.println("##[command] writing to HRO Date time");
-//        DataDrivenTest.writeToExcelHroDateTime(fieldIdHroDateTime,"Sheet6");
-//        System.out.println("##[command] writing to HRO Email");
-//        DataDrivenTest.writeToExcelHroEmail(fieldIdHroEmail,"Sheet7");
-//        System.out.println("##[command] writing to Data formatting");
-//        DataDrivenTest.writeToExcelHroDataFormatting(fieldIdHroDataFormatting,"Sheet8");
-//        System.out.println("##[command] writing to HRO mandatory");
-//        DataDrivenTest.writeToExcelHroMandatory(fieldIdHroMandatory,"Sheet9");
-//        System.out.println("##[command] writing to HRO data formatting valid");
-//        //MIA
-//        System.out.println("##[command] writing to Mia and Hro");
-//        DataDrivenTest.writeToExcelMiaEmail(fieldIdMiaEmail,"Sheet10");
-//        System.out.println("##[command] writing to Mia Date time");
-//        DataDrivenTest.writeToExcelHroDateTime(fieldIdMiaDateTime,"Sheet11");
-//        DataDrivenTest.writeToExcelHroNumeric(fieldIdMiaNumeric,"Sheet12");
-//        DataDrivenTest.writeToExcelMiaDataFormatting(fieldIdMiaDataFormatting,"Sheet13");
-//        DataDrivenTest.writeToExcelHroMandatory(fieldIdMiaMandatory,"Sheet14");
-//        DataDrivenTest.writeToExcelMiaPickList(fieldIdMiaPickList,"Sheet15");
+        configurationList = FieldManager.getAllCheckboxFieldIdWithMandatoryRules(graphResponseCheckBox,FieldManager.getAllCheckboxFieldId(graphResponseCheckBox));
+        System.out.println("##[command] writing to excel");
+        DataDrivenTest.writeToExcel(configurationList,"Sheet1");
+
+        configurationList = FieldManager.getRoutingFieldsEnableDisable(graphResponseCheckBox);
+        System.out.println("##[command] writing to enable disable fields");
+        DataDrivenTest.writeToExcelEnableDisable(configurationList,"Sheet2");
+
+        configurationList = FieldManager.getCheckboxRulesForMinimumInputs(graphResponseCheckBox,FieldManager.getAllCheckboxFieldIds(graphResponseCheckBox));
+        System.out.println("##[command] writing to minimum inputs");
+        DataDrivenTest.writeToExcelCheckboxMinimumInputs(configurationList,"Sheet3");
+
+        configurationList = FieldManager.getCheckboxRulesForMaximumInputs(graphResponseCheckBox,FieldManager.getAllCheckboxFieldIds(graphResponseCheckBox));
+        System.out.println("##[command] writing to maximum inputs");
+        DataDrivenTest.writeToExcelCheckboxMaximumInputs(configurationList,"Sheet4");
+
+        //HRO
+        configurationList = FieldManager.getHandWritingRecognitionObjectRulesNumeric(graphResponseHro);
+        System.out.println("##[command] writing to HRO numeric");
+        DataDrivenTest.writeToExcelHroNumeric(configurationList,"Sheet5");
+
+        configurationList = FieldManager.getHandWritingRecognitionObjectRulesDateTime(graphResponseHro);
+        System.out.println("##[command] writing to HRO Date time");
+        DataDrivenTest.writeToExcelHroDateTime(configurationList,"Sheet6");
+
+        configurationList = FieldManager.getHandWritingRecognitionObjectRulesEmail(graphResponseHro);
+        System.out.println("##[command] writing to HRO Email");
+        DataDrivenTest.writeToExcelHroEmail(configurationList,"Sheet7");
+
+        configurationList = FieldManager.getHandWritingRecognitionObjectRulesDataFormatting(graphResponseHro);
+        System.out.println("##[command] writing to Data formatting");
+        DataDrivenTest.writeToExcelHroDataFormatting(configurationList,"Sheet8");
+
+        configurationList = FieldManager.getHandWritingRecognitionObjectRulesMandatory(graphResponseHro);
+        System.out.println("##[command] writing to HRO mandatory");
+        DataDrivenTest.writeToExcelHroMandatory(configurationList,"Sheet9");
+
+        //MIA
+        configurationList = FieldManager.getCheckboxRulesForManualImageAreaEmail(graphResponseMia);
+        System.out.println("##[command] writing to Mia and Hro");
+        DataDrivenTest.writeToExcelMiaEmail(configurationList,"Sheet10");
+
+        configurationList = FieldManager.getMiaDateTime(graphResponseMia);
+        System.out.println("##[command] writing to Mia Date time");
+        DataDrivenTest.writeToExcelHroDateTime(configurationList,"Sheet11");
+
+        configurationList = FieldManager.getMiaRulesNumeric(graphResponseMia);
+        DataDrivenTest.writeToExcelHroNumeric(configurationList,"Sheet12");
+
+        configurationList = FieldManager.getMiaFormatting(graphResponseMia);
+        DataDrivenTest.writeToExcelMiaDataFormatting(configurationList,"Sheet13");
+
+        configurationList = FieldManager.getMiaRulesMandatory(graphResponseMia);
+        DataDrivenTest.writeToExcelHroMandatory(configurationList,"Sheet14");
+
+        configurationList = FieldManager.getMiaRulesPicklist(graphResponseMia);
+        DataDrivenTest.writeToExcelMiaPickList(configurationList,"Sheet15");
+
+        //Matrix
+        configurationList = FieldManager.getAllCheckboxFieldIdWithMandatoryRules(graphResponseCheckBox,FieldManager.getAllCheckboxMatrixFieldId(graphResponseCheckBox));
+        DataDrivenTest.writeToExcelMatrixMandatory(configurationList,"Sheet16");
+
+        configurationList = FieldManager.getCheckboxRulesForMinimumInputs(graphResponseCheckBox,FieldManager.getAllCheckboxMatrixFieldId(graphResponseCheckBox));
+        DataDrivenTest.writeToExcelCheckboxMinimumInputs(configurationList,"Sheet17");
+
+        configurationList = FieldManager.getCheckboxRulesForMaximumInputs(graphResponseCheckBox,FieldManager.getAllCheckboxMatrixFieldId(graphResponseCheckBox));
+        DataDrivenTest.writeToExcelCheckboxMaximumInputs(configurationList,"Sheet18");
+
+        //Data Validation HRO
+
+        configurationList = FieldManager.getHroMiaRulesDataValidationEqualTo(graphResponseDerivation,getFieldIdHro(graphResponseDerivation));
+        DataDrivenTest.writeToExcelHroDataValidation(configurationList,"Sheet19");
+
+        configurationList = FieldManager.getHroMiaRulesDataValidationNotEqualTo(graphResponseDerivation,getFieldIdHro(graphResponseDerivation));
+        DataDrivenTest.writeToExcelHroDataValidation(configurationList,"Sheet20");
+
+        configurationList = FieldManager.getHroMiaRulesDataValidationGreaterThan(graphResponseDerivation,getFieldIdHro(graphResponseDerivation));
+        DataDrivenTest.writeToExcelHroDataValidation(configurationList,"Sheet21");
+
+        configurationList = FieldManager.getHroMiaRulesDataValidationGreaterThanEqualTo(graphResponseDerivation,getFieldIdHro(graphResponseDerivation));
+        DataDrivenTest.writeToExcelHroDataValidation(configurationList,"Sheet22");
+
+        configurationList = FieldManager.getHroMiaRulesDataValidationLessThan(graphResponseDerivation,getFieldIdHro(graphResponseDerivation));
+        DataDrivenTest.writeToExcelHroDataValidation(configurationList,"Sheet23");
+
+        configurationList = FieldManager.getHroMiaRulesDataValidationLessThanEqualTo(graphResponseDerivation,getFieldIdHro(graphResponseDerivation));
+        DataDrivenTest.writeToExcelHroDataValidation(configurationList,"Sheet24");
+
+        //Data Validation MIA
+
+        configurationList = FieldManager.getHroMiaRulesDataValidationEqualTo(graphResponseDerivation,getFieldIdMia(graphResponseDerivation));
+        DataDrivenTest.writeToExcelHroDataValidation(configurationList,"Sheet25");
+
+        configurationList = FieldManager.getHroMiaRulesDataValidationNotEqualTo(graphResponseDerivation,getFieldIdMia(graphResponseDerivation));
+        DataDrivenTest.writeToExcelHroDataValidation(configurationList,"Sheet26");
+
+        configurationList = FieldManager.getHroMiaRulesDataValidationGreaterThan(graphResponseDerivation,getFieldIdMia(graphResponseDerivation));
+        DataDrivenTest.writeToExcelHroDataValidation(configurationList,"Sheet27");
+
+        configurationList = FieldManager.getHroMiaRulesDataValidationGreaterThanEqualTo(graphResponseDerivation,getFieldIdMia(graphResponseDerivation));
+        DataDrivenTest.writeToExcelHroDataValidation(configurationList,"Sheet28");
+
+        configurationList = FieldManager.getHroMiaRulesDataValidationLessThan(graphResponseDerivation,getFieldIdMia(graphResponseDerivation));
+        DataDrivenTest.writeToExcelHroDataValidation(configurationList,"Sheet29");
+
+        configurationList = FieldManager.getHroMiaRulesDataValidationLessThanEqualTo(graphResponseDerivation,getFieldIdMia(graphResponseDerivation));
+        DataDrivenTest.writeToExcelHroDataValidation(configurationList,"Sheet30");
+
+
+        //Derivation HRO
+
+        configurationList = FieldManager.getFieldIdDerivationByOperator(graphResponseDerivation,getFieldIdHro(graphResponseDerivation),"+");
+        DataDrivenTest.writeToExcelHroDataDerivation(configurationList,"Sheet31");
+
+        configurationList = FieldManager.getFieldIdDerivationByOperator(graphResponseDerivation,getFieldIdHro(graphResponseDerivation),"-");
+        DataDrivenTest.writeToExcelHroDataDerivation(configurationList,"Sheet32");
+
+        configurationList = FieldManager.getFieldIdDerivationByOperator(graphResponseDerivation,getFieldIdHro(graphResponseDerivation),"/");
+        DataDrivenTest.writeToExcelHroDataDerivation(configurationList,"Sheet33");
+
+        configurationList = FieldManager.getFieldIdDerivationByOperator(graphResponseDerivation,getFieldIdHro(graphResponseDerivation),"*");
+        DataDrivenTest.writeToExcelHroDataDerivation(configurationList,"Sheet34");
+
+        //MIA
+
+        configurationList = FieldManager.getFieldIdDerivationByOperator(graphResponseDerivation,getFieldIdMia(graphResponseDerivation),"+");
+        DataDrivenTest.writeToExcelHroDataDerivation(configurationList,"Sheet35");
+
+        configurationList = FieldManager.getFieldIdDerivationByOperator(graphResponseDerivation,getFieldIdMia(graphResponseDerivation),"-");
+        DataDrivenTest.writeToExcelHroDataDerivation(configurationList,"Sheet36");
+
+        configurationList = FieldManager.getFieldIdDerivationByOperator(graphResponseDerivation,getFieldIdMia(graphResponseDerivation),"/");
+        DataDrivenTest.writeToExcelHroDataDerivation(configurationList,"Sheet37");
+
+        configurationList = FieldManager.getFieldIdDerivationByOperator(graphResponseDerivation,getFieldIdMia(graphResponseDerivation),"*");
+        DataDrivenTest.writeToExcelHroDataDerivation(configurationList,"Sheet38");
+
+        //Propagation
+
+        configurationList = FieldManager.getHroMiaRulesDataDerivationPropagation(graphResponseDerivation,getFieldIdHro(graphResponseDerivation));
+        DataDrivenTest.writeToExcelHroDataDerivationPropagation(configurationList,"Sheet39");
+
+        configurationList = FieldManager.getHroMiaRulesDataDerivationPropagation(graphResponseDerivation,getFieldIdMia(graphResponseDerivation));
+        DataDrivenTest.writeToExcelHroDataDerivationPropagation(configurationList,"Sheet40");
+
     }
 
     public static class ChromeOptionsUtil {

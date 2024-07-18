@@ -13,6 +13,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.Formic.OF2.utils.DataDerivation.isFieldDerivationHasArithmeticOperator;
+
 public class FieldManager extends BasePage {
     public FieldManager(WebDriver driver) {
         super(driver);
@@ -80,6 +82,33 @@ public class FieldManager extends BasePage {
         return fieldIds;
     }
 
+    public static ArrayList<String> getAllCheckboxMatrixFieldId(com.Formic.OF2.utils.Pojo.FormContentPojo pojo){
+        ArrayList<String> fieldIds = new ArrayList<>();
+        for (var pages : pojo.data.project.getPages()
+        ) {
+            for (var object : pages.getObjects()
+            ) {
+                if(object.getTypename()!=null){
+                    if (object.getTypename().equalsIgnoreCase("TickboxGroup")){
+                        for (var sub : object.getSubQuestionFields()) {
+                            String guidId = sub.getGuidId();
+
+                                if (!skipSingleHiddenCheckbox(pojo, guidId)) {
+                                    if (isFieldIdCheckBoxMatrix(pojo, guidId)) {
+                                        fieldIds.add(guidId);
+                                    }
+                                }
+                        }
+                    }
+                }
+            }
+        }
+        return fieldIds;
+    }
+
+
+
+
     /**
      * Checks whether the specified field ID corresponds to a single hidden checkbox within the given form content.
      *
@@ -120,8 +149,7 @@ public class FieldManager extends BasePage {
      *
      * @param pojo The FormContentPojo object representing the form content to be analyzed.
      */
-    public static ArrayList<String> getAllCheckboxFieldIdWithMandatoryRules(com.Formic.OF2.utils.Pojo.FormContentPojo pojo){
-        ArrayList<String> fieldIds = getAllCheckboxFieldId(pojo);
+    public static ArrayList<String> getAllCheckboxFieldIdWithMandatoryRules(com.Formic.OF2.utils.Pojo.FormContentPojo pojo,ArrayList<String> fieldIds){
         ArrayList<String> mandatoryCheckBoxFieldIds = new ArrayList<>();
         for (String fields: fieldIds) {
             for(com.Formic.OF2.utils.Pojo.Field field: pojo.data.project.getFields()){
@@ -135,8 +163,7 @@ public class FieldManager extends BasePage {
         return mandatoryCheckBoxFieldIds;
     }
 
-    public static ArrayList<String> getCheckboxRulesForMinimumInputs(com.Formic.OF2.utils.Pojo.FormContentPojo pojo){
-        ArrayList<String> fieldIds = getAllCheckboxFieldIds(pojo);
+    public static ArrayList<String> getCheckboxRulesForMinimumInputs(com.Formic.OF2.utils.Pojo.FormContentPojo pojo,ArrayList<String> fieldIds){
         ArrayList<String> result = new ArrayList<>();
         for(String fieldId: fieldIds){
             for (com.Formic.OF2.utils.Pojo.Field fields: pojo.data.project.getFields()
@@ -155,8 +182,7 @@ public class FieldManager extends BasePage {
         return result;
     }
 
-    public static ArrayList<String> getCheckboxRulesForMaximumInputs(com.Formic.OF2.utils.Pojo.FormContentPojo pojo){
-        ArrayList<String> fieldIds = getAllCheckboxFieldIds(pojo);
+    public static ArrayList<String> getCheckboxRulesForMaximumInputs(com.Formic.OF2.utils.Pojo.FormContentPojo pojo,ArrayList<String> fieldIds){
         ArrayList<String> result = new ArrayList<>();
         for(String fieldId: fieldIds){
             for (com.Formic.OF2.utils.Pojo.Field fields: pojo.data.project.getFields()
@@ -268,6 +294,215 @@ public class FieldManager extends BasePage {
                         }
                     }
                 }
+            }
+        }
+        return result;
+    }
+
+    public static int countPatternInstances(String input) {
+        String pattern = "#\\[.*?\\]#";
+        int count = 0;
+
+        java.util.regex.Pattern regexPattern = java.util.regex.Pattern.compile(pattern);
+        java.util.regex.Matcher matcher = regexPattern.matcher(input);
+
+        while (matcher.find()) {
+            count++;
+        }
+
+        return count;
+    }
+
+    public static String extractText(String input) {
+        // Define the regular expression pattern
+        String pattern = "#\\[(.*?)\\]#";
+        Pattern regexPattern = Pattern.compile(pattern);
+        Matcher matcher = regexPattern.matcher(input);
+
+        // Find and return the text inside #[...]
+        if (matcher.find()) {
+            return matcher.group(1);
+        }
+        return null; // Return null if no match is found
+    }
+
+    public static boolean hasOnlyFormattedString(String input) {
+        // Define the regular expression pattern to match only the formatted string
+        String pattern = "^#\\[.*?\\]#$";
+        Pattern regexPattern = Pattern.compile(pattern);
+        Matcher matcher = regexPattern.matcher(input);
+
+        // Return true if the entire string matches the pattern
+        return matcher.matches();
+    }
+
+    public static ArrayList<String> getHroMiaRulesDataDerivationPropagation(FormContentPojo pojo,ArrayList<String> fieldIds){
+        ArrayList<String> result = new ArrayList<>();
+        for(String fieldId: fieldIds) {
+            for (com.Formic.OF2.utils.Pojo.Field fields : pojo.data.project.getFields()) {
+                if (fields.getGuidId().equalsIgnoreCase(fieldId)) {
+                    if(fields.getDerivation()!=null){
+                        String derivation = fields.getDerivation();
+                        if(countPatternInstances(derivation)==1){
+                            if(hasOnlyFormattedString(derivation)){
+                                String text = extractText(derivation);
+                                String objectId = getElementIdByFieldName(pojo,text);
+                                result.add(fieldId);
+                                result.add(objectId);
+                            }
+                        }
+                    }else{
+                        break;
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    public static ArrayList<String> getHroMiaRulesDataValidationEqualTo(FormContentPojo pojo,ArrayList<String> fieldIds){
+        ArrayList<String> result = new ArrayList<>();
+        for(String fieldId: fieldIds) {
+            for (com.Formic.OF2.utils.Pojo.Field fields : pojo.data.project.getFields()) {
+                if (fields.getGuidId().equalsIgnoreCase(fieldId)) {
+                    if(fields.getValidation()!=null){
+                        String validation = fields.getValidation();
+                        if(countPatternInstances(validation)!=2){
+                            String[] EqualsTo = validation.split(" ");
+                            if (EqualsTo[1].equalsIgnoreCase("=")) {
+                                result.add(fieldId);
+                                result.add(EqualsTo[2]);
+                            }
+                        }
+                    }else{
+                        break;
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    public static ArrayList<String> getHroMiaRulesDataValidationNotEqualTo(FormContentPojo pojo,ArrayList<String> fieldIds){
+        ArrayList<String> result = new ArrayList<>();
+        for(String fieldId: fieldIds) {
+            for (com.Formic.OF2.utils.Pojo.Field fields : pojo.data.project.getFields()) {
+                if (fields.getGuidId().equalsIgnoreCase(fieldId)) {
+                    if(fields.getValidation()!=null){
+                        String validation = fields.getValidation();
+                        if(countPatternInstances(validation)!=2){
+                            String[] EqualsTo = validation.split(" ");
+                            if (EqualsTo[1].equalsIgnoreCase("<>")) {
+                                result.add(fieldId);
+                                result.add(EqualsTo[2]);
+                            }
+                        }
+                    }else{
+                        break;
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    public static ArrayList<String> getHroMiaRulesDataValidationGreaterThan(FormContentPojo pojo,ArrayList<String> fieldIds){
+        ArrayList<String> result = new ArrayList<>();
+        for(String fieldId: fieldIds) {
+            for (com.Formic.OF2.utils.Pojo.Field fields : pojo.data.project.getFields()) {
+                if (fields.getGuidId().equalsIgnoreCase(fieldId)) {
+                    if(fields.getValidation()!=null){
+                        String validation = fields.getValidation();
+                        if(countPatternInstances(validation)!=2){
+                            String[] EqualsTo = validation.split(" ");
+                            if (EqualsTo[1].equalsIgnoreCase(">")) {
+                                result.add(fieldId);
+                                result.add(EqualsTo[2]);
+                            }
+                        }
+                    }else{
+                        break;
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    public static ArrayList<String> getHroMiaRulesDataValidationGreaterThanEqualTo(FormContentPojo pojo,ArrayList<String> fieldIds){
+        ArrayList<String> result = new ArrayList<>();
+        for(String fieldId: fieldIds) {
+            for (com.Formic.OF2.utils.Pojo.Field fields : pojo.data.project.getFields()) {
+                if (fields.getGuidId().equalsIgnoreCase(fieldId)) {
+                    if(fields.getValidation()!=null){
+                        String validation = fields.getValidation();
+                        if(countPatternInstances(validation)!=2){
+                            String[] EqualsTo = validation.split(" ");
+                            if (EqualsTo[1].equalsIgnoreCase(">=")) {
+                                result.add(fieldId);
+                                result.add(EqualsTo[2]);
+                            }
+                        }
+                    }else{
+                        break;
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    public static ArrayList<String> getHroMiaRulesDataValidationLessThan(FormContentPojo pojo,ArrayList<String> fieldIds){
+        ArrayList<String> result = new ArrayList<>();
+        for(String fieldId: fieldIds) {
+            for (com.Formic.OF2.utils.Pojo.Field fields : pojo.data.project.getFields()) {
+                if (fields.getGuidId().equalsIgnoreCase(fieldId)) {
+                    if(fields.getValidation()!=null){
+                        String validation = fields.getValidation();
+                        if(countPatternInstances(validation)!=2){
+                            String[] EqualsTo = validation.split(" ");
+                            if (EqualsTo[1].equalsIgnoreCase("<")) {
+                                result.add(fieldId);
+                                result.add(EqualsTo[2]);
+                            }
+                        }
+                    }else{
+                        break;
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    public static ArrayList<String> getHroMiaRulesDataValidationLessThanEqualTo(FormContentPojo pojo,ArrayList<String> fieldIds){
+        ArrayList<String> result = new ArrayList<>();
+        for(String fieldId: fieldIds) {
+            for (com.Formic.OF2.utils.Pojo.Field fields : pojo.data.project.getFields()) {
+                if (fields.getGuidId().equalsIgnoreCase(fieldId)) {
+                    if(fields.getValidation()!=null){
+                        String validation = fields.getValidation();
+                        if(countPatternInstances(validation)!=2){
+                            String[] EqualsTo = validation.split(" ");
+                            if (EqualsTo[1].equalsIgnoreCase("<=")) {
+                                result.add(fieldId);
+                                result.add(EqualsTo[2]);
+                            }
+                        }
+                    }else{
+                        break;
+                    }
+                }
+            }
+        }
+        return result;
+    }
+
+    public static ArrayList<String> getFieldIdDerivationByOperator(com.Formic.OF2.utils.Pojo.FormContentPojo pojo,ArrayList<String> fieldIds, String operator){
+        ArrayList<String> result = new ArrayList<>();
+        for(String fieldId: fieldIds) {
+            if(isFieldDerivationHasArithmeticOperator(pojo,fieldId,operator)){
+                result.add(fieldId);
             }
         }
         return result;
@@ -475,10 +710,12 @@ public class FieldManager extends BasePage {
             ) {
                 if(fields.getGuidId().equalsIgnoreCase(fieldId)) {
                     if (fields.getDataTypeNew().equalsIgnoreCase("ALPHA_NUMERIC")){
-                        if (fields.getFormatMask().equalsIgnoreCase("?*[@]?*[.]?*")) {
-                            result.add(fieldId);
-                            result.add(fields.getMandatory().toString());
-                            result.add(fields.getName());
+                        if(fields.getFormatMask()!=null){
+                            if (fields.getFormatMask().equalsIgnoreCase("?*[@]?*[.]?*")) {
+                                result.add(fieldId);
+                                result.add(fields.getMandatory().toString());
+                                result.add(fields.getName());
+                            }
                         }
                     }
                 }
@@ -486,11 +723,6 @@ public class FieldManager extends BasePage {
         }
         return result;
     }
-
-
-
-
-
 
     public static ArrayList<String> getRoutingFieldsEnableDisable(com.Formic.OF2.utils.Pojo.FormContentPojo pojo){
         ArrayList<String> result = new ArrayList<>();
@@ -720,7 +952,7 @@ public class FieldManager extends BasePage {
                     if (object.getTypename().equalsIgnoreCase("TickboxGroup")){
                         for (var sub : object.getSubQuestionFields()
                         ) {
-                            if(!skipSingleHiddenCheckbox(pojo,sub.getGuidId())){
+                            if(!skipSingleHiddenCheckbox(pojo,sub.getGuidId())&&!isFieldIdCheckBoxMatrix(pojo,sub.getGuidId())){
                                 result.add(sub.getGuidId());
                             }
                         }

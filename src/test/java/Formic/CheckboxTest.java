@@ -6,6 +6,7 @@ import com.Formic.OF2.pages.HomePage;
 import com.Formic.OF2.pages.ManualImageArea;
 import com.Formic.OF2.test.BaseUiTest;
 import com.Formic.OF2.utils.CheckboxObject;
+import com.Formic.OF2.utils.ConfigLoader;
 import com.Formic.OF2.utils.DataDrivenTest;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.ITestContext;
@@ -16,9 +17,7 @@ public class CheckboxTest extends BaseUiTest {
 
     HomePage homePage;
     CheckBoxPageV2 checkBoxPage;
-    HandwritingRecognitionObject hro;
-    String projectName = "DMC Test Checkbox"; // 137
-//    String projectName = "Enable Disable fields Test"; // 185
+    String projectName = ConfigLoader.getProperty("test.CheckboxProjectName");
 
     @Test(dataProvider = "testData", dataProviderClass = DataDrivenTest.class)
     public void No_Inputs_Mandatory_Minimum_Inputs_Validation_Test(String fieldId) throws Exception{

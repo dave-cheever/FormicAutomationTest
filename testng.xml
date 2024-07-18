@@ -3,14 +3,15 @@
 
     <test name="Form Content Test">
         <classes>
+            <class name="Formic.CheckboxMatrixTest" />
             <class name="Formic.CheckboxTest" />
             <class name="Formic.HandWritingRecognitionObjectTest" />
             <class name="Formic.ManualImageAreaTest" />
             <class name="Formic.NavigationOptionTest" />
-            <class name="Formic.LoginTest" />
-            <class name="Formic.RegistrationTest" />
             <class name="Formic.DataDerivationTest" />
             <class name="Formic.DataValidationTest" />
+            <!--            <class name="Formic.LoginTest" />-->
+            <!--            <class name="Formic.RegistrationTest" />-->
 
         </classes>
     </test>

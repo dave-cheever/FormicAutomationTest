@@ -6,6 +6,7 @@ import com.Formic.OF2.pages.HomePage;
 import com.Formic.OF2.pages.ManualImageArea;
 import com.Formic.OF2.test.BaseUiTest;
 import com.Formic.OF2.utils.CheckboxObject;
+import com.Formic.OF2.utils.ConfigLoader;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.ITestContext;
 import org.testng.annotations.BeforeMethod;
@@ -15,8 +16,7 @@ public class NavigationOptionTest extends BaseUiTest {
 
     HomePage homePage;
     CheckBoxPageV2 checkBoxPage;
-    String projectName = "DMC Test Checkbox"; // 137
-//    String projectName = "Enable Disable fields Test"; // 185
+    String projectName = ConfigLoader.getProperty("test.NavigationOption");
 
     @Test
     public void validateSubmittedInputsCheckbox() throws Exception {

@@ -21,7 +21,7 @@ import java.util.NoSuchElementException;
 import java.util.Random;
 
 public class ManualImageArea extends BasePage {
-    int projectId = 137;
+    int projectId = Integer.parseInt(ConfigLoader.getProperty("test.MiaProjectId"));
     String emailRegEx = "^[a-zA-Z0-9]+[@][a-zA-Z0-9]+[.][a-zA-Z0-9]+$";
     String miaSinglePickListInputLocator = "//div[@data-object-id='$TEXT']/div/div/input";
     String miaMultiPickListInputLocator = "//div[@data-object-id='$TEXT']/div/div/div";
@@ -71,10 +71,12 @@ public class ManualImageArea extends BasePage {
     }
 
     public static void setTextToMia(com.Formic.OF2.utils.Pojo.FormContentPojo pojo, String strFieldId, String strText){
-        String elementId = CheckBoxPageV2.getObjectIdFromFieldId(pojo,strFieldId);
+        String elementId = FieldManager.getObjectIdFromFieldId(pojo,strFieldId);
         WebElement element = null;
         String elem;
         elem = stringReplace(miaInputLocator,elementId);
+        By locator = By.xpath(elem);
+        scrollElementIntoView(driver,locator);
         if (driver.findElements(By.xpath(elem)).size() == 0) {
             elem = stringReplace(miaTextAreaLocator, elementId);
         }
@@ -384,6 +386,8 @@ public class ManualImageArea extends BasePage {
     public void addLessThanMinimumOptions(com.Formic.OF2.utils.Pojo.FormContentPojo pojo,int minimum, String strFieldId){
         String elementId = getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(miaPicklistDropdownInput,elementId);
+        By locator = By.xpath(elem);
+        scrollElementIntoView(driver,locator);
         WebElement element = stringToWebElement(elem);
         for(int x = 0; x < minimum-1;x++){
             clickPicklistDropdownButton(pojo,strFieldId);
@@ -395,6 +399,8 @@ public class ManualImageArea extends BasePage {
     public void addMoreThanMaximumOptions(com.Formic.OF2.utils.Pojo.FormContentPojo pojo,int maximum, String strFieldId){
         String elementId = getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(miaPicklistDropdownInput,elementId);
+        By locator = By.xpath(elem);
+        scrollElementIntoView(driver,locator);
         WebElement element = stringToWebElement(elem);
         for(int x = 1; x <= maximum+1;x++){
             clickPicklistDropdownButton(pojo,strFieldId);
@@ -1022,6 +1028,9 @@ public class ManualImageArea extends BasePage {
         String elementId = getObjectIdFromFieldId(pojo,strFieldId);
         lookForTheField(pojo,strFieldId);
         //Field validation
+        String elem = stringReplace(miaValidationMessageLocator,elementId);
+        By locator = By.xpath(elem);
+        scrollElementIntoView(driver,locator);
         WebElement validationMessageUnderCheckbox = stringReplaceAndConvertToWebElement(miaValidationMessageLocator,elementId);
         scrollElementIntoView(driver,validationMessageUnderCheckbox);
         js.executeScript("window.scrollBy(0,350)", "");

@@ -1,8 +1,8 @@
 package com.Formic.OF2.pages;
-import com.Formic.OF2.utils.CheckboxObject;
+import com.Formic.OF2.utils.*;
 import com.Formic.OF2.utils.Pojo.FormContentPojo;
 import com.Formic.OF2.test.BasePage;
-import com.Formic.OF2.utils.ScreenshotHelper;
+import com.Formic.OF2.utils.Pojo.RulesGraphql;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -16,27 +16,92 @@ import java.util.Random;
 import java.util.Set;
 
 import static com.Formic.OF2.pages.CheckBoxPageV2.comp;
+import static com.Formic.OF2.utils.FieldManager.getCheckBoxResponseMinValue;
+import static com.Formic.OF2.utils.FieldManager.isMandatory;
 
 public class CheckboxMatrixV2 extends BasePage {
 
     public CheckboxMatrixV2(WebDriver driver) {
         super(driver);
     }
+    int projectId = Integer.parseInt(ConfigLoader.getProperty("test.CheckboxProjectId"));
+
+    public SideMenuNavigation sideMenuNavigation = new SideMenuNavigation(driver);
 
     static String checkboxMatrixLocator = "//div[@data-object-id=\"$TEXT\"]/fieldset/label";
     static String checkboxMatrixElementToBeClickedLocator = "//input[@data-field-id=\"$TEXT\"][$NUM]";
     static String checkboxMatrixValidationMessage = "//h1[@id=\"dialog-title-13\"]/ancestor::div/following-sibling::div/div/div/div[2]";
     static String validationMessageUponSubmitSideBar = "//h1[contains(text(),'Completion Errors')]//following-sibling::ul/li/button/div/div[contains(text(),'$TEXT')]//following::div[1]";
     static String mandatoryFieldMessageLocator = "//div[@data-object-id='$TEXT']/div/div";
-    static String fieldErrorsPopUpValidationMessage = "//h1[text()=\"Field Errors\"]/ancestor::div/following-sibling::div/div/div/div[text()=\"$TEXT\"]/following::div";
+    static String fieldErrorsPopUpValidationMessage = "//h1[text()=\"Field Errors\"]/ancestor::div/following-sibling::div/div/div/div[text()=\"$TEXT\"]/following::div[1]";
     static String checkBoxMatrixSeeFieldErrorsButton = "//div[@data-object-id=\"$TEXT\"]/div/div";
     static String closeButton = "//h1[text()='Field Errors']/following::button";
     static String fieldSetLocator = "//input[@data-field-id=\"$TEXT\"][1]";
     static String checkboxMatrixCheckboxLocator = "//input[@data-field-id=\"$TEXT\"]";
     static String fieldErrorsElementCount = "//h1[text()=\"Field Errors\"]/ancestor::div/following-sibling::div/div/div/div[1]";
+    static String newValidationMessageUponSubmit = "//div[@data-object-id='$TEXT']/div/div[1]";
 
     CheckBoxPageV2 checkBoxPage;
     static CheckboxObject checkboxObject;
+    private static String checkboxName;
+    private static boolean checkboxMandatory;
+
+    public void NoInputsMandatoryMinimumInputsValidationTest(String fieldId,String scenarioName) throws Exception {
+        RulesGraphql rules = new RulesGraphql();
+        FormContentPojo graphResponse =  rules.getRules(projectId);
+        String objectId = getObjectIdFromFieldId(graphResponse,fieldId);
+        String fieldName = getFieldName(graphResponse,fieldId);
+        boolean mandatory = isMandatory(graphResponse,fieldId);
+        int minValue = getCheckBoxResponseMinValue(graphResponse,fieldId);
+        Reporter.log("Object Id: "+objectId);
+        Reporter.log("Field Id: "+fieldId);
+        Reporter.log("Field Name: "+fieldName);
+        Reporter.log("Mandatory: "+mandatory);
+        Reporter.log("Submit button clicked");
+        sideMenuNavigation.clickSubmitButton();
+        Reporter.log("Navigate to the location of the element");
+        lookForTheField(graphResponse,fieldId);
+        Reporter.log("Validate checkbox error message");
+        lookForTheField(graphResponse,fieldId);
+        assertRequiredField(graphResponse,objectId,fieldName,scenarioName);
+    }
+
+    public void checkboxMinimumRequiredInputsUponSubmit(String fieldId,String min, String scenarioName) throws Exception {
+        RulesGraphql rules = new RulesGraphql();
+        FormContentPojo graphResponse =  rules.getRules(projectId);
+        checkboxName = getFieldName(graphResponse,fieldId);
+        sideMenuNavigation.clickSubmitButton();
+        RoutingRules.enableDisabledFieldByFieldId(graphResponse,fieldId);
+        assertMinimumConfig(graphResponse,fieldId,min,checkboxName,scenarioName);
+    }
+
+    public void checkboxBeyondMaximumInputs(String fieldId,String max,boolean mandatory, String scenarioName) throws Exception {
+        RulesGraphql rules = new RulesGraphql();
+        FormContentPojo graphResponse =  rules.getRules(projectId);
+        checkboxName = getFieldName(graphResponse,fieldId);
+        checkboxMandatory = mandatory;
+        RoutingRules.enableDisabledFieldByFieldId(graphResponse,fieldId);
+        assertWithinMaximumInput(graphResponse,fieldId,max,checkboxName,checkboxMandatory,scenarioName);
+    }
+
+    public void checkboxWithinMaximumInputs(String fieldId,String max,boolean mandatory, String scenarioName) throws Exception {
+        RulesGraphql rules = new RulesGraphql();
+        FormContentPojo graphResponse =  rules.getRules(projectId);
+        checkboxName = getFieldName(graphResponse,fieldId);
+        checkboxMandatory = mandatory;
+        RoutingRules.enableDisabledFieldByFieldId(graphResponse,fieldId);
+        assertWithinMaximumInput(graphResponse,fieldId,max,checkboxName,checkboxMandatory,scenarioName);
+    }
+
+    public void checkboxWithinMinimumInputs(String fieldId,String min,boolean mandatory, String scenarioName) throws Exception {
+        RulesGraphql rules = new RulesGraphql();
+        FormContentPojo graphResponse =  rules.getRules(projectId);
+        sideMenuNavigation.clickSubmitButton();
+        checkboxName = getFieldName(graphResponse,fieldId);
+        checkboxMandatory = mandatory;
+        RoutingRules.enableDisabledFieldByFieldId(graphResponse,fieldId);
+        assertWithinMinimumInput(graphResponse, fieldId,Integer.parseInt(min),checkboxName,checkboxMandatory,scenarioName);
+    }
 
     public static void checkboxEnabledDisabledValidation(String objectId, String action, FormContentPojo pojo,String scenarioName) {
         String elem = stringReplace(fieldSetLocator,objectId);
@@ -85,18 +150,44 @@ public class CheckboxMatrixV2 extends BasePage {
         ArrayList<String> numberOfOptions = checkboxMatrixOptionsCount(pojo,strFieldId);
         int numberOfItems = countNumberOfResponses(strElementId,numberOfOptions.size());
         clickWithinMinimumInput(min,strFieldId,numberOfItems);
+        clickSeeFieldErrorsByObjectId(elementId);
         if(mandatory){
             AssertMandatoryFields(pojo,strFieldId,min,scenarioName);
         }else{
-            CheckBoxPageV2.assertWithinAcceptedInputs(checkboxName,elementId);
+            assertWithinAcceptedInputs(checkboxName,elementId,scenarioName);
+        }
+    }
+    public static void assertWithinAcceptedInputs(String strName, String strObjectElementId,String scenarioName){
+        String elemValidationMessage = stringReplace(fieldErrorsPopUpValidationMessage,strObjectElementId);
+        String elemCompilationErrors = stringReplace(validationMessageUponSubmitSideBar,strObjectElementId);
+        try{
+            Assert.assertFalse(isElementVisible(driver,elemValidationMessage),"The expected for : "+strName + " There shouldn't be any validation message displayed below the object.");
+            Assert.assertFalse(isElementVisible(driver,elemCompilationErrors),"The expected for: "+strName + "Completion Errors isn't displayed. The actual is Completion errors is displayed.");
+            Reporter.log("There shouldn't be any validation message displayed below the field: "+ strName);
+        }catch (AssertionError assertionError){
+            ScreenshotHelper screenshotHelper = new ScreenshotHelper(driver);
+            screenshotHelper.takeScreenshot(scenarioName);
+            // Rethrow the exception to mark the test as failed
+            String pathName = screenshotHelper.getScreenshotPath(scenarioName);
+            Reporter.log("<br><b>Failed test screenshot:</b> <a href='" + pathName + "'>Screenshot</a><br>");
+            throw assertionError;
         }
     }
 
     public static void AssertMandatoryFields(FormContentPojo pojo, String strFieldId,Integer min, String scenarioName) throws Exception {
         lookForTheField(pojo,strFieldId);
         String fieldName = getFieldName(pojo,strFieldId);
-        if(min==1||CheckboxObject.minimum==0){
-            assertLessThanMinimumInput(pojo,strFieldId,min,fieldName,scenarioName);
+        try{
+            if(min==1||CheckboxObject.minimum==0){
+                assertLessThanMinimumInput(pojo,strFieldId,min,fieldName,scenarioName);
+            }
+        }catch (AssertionError assertionError){
+            ScreenshotHelper screenshotHelper = new ScreenshotHelper(driver);
+            screenshotHelper.takeScreenshot(scenarioName);
+            // Rethrow the exception to mark the test as failed
+            String pathName = screenshotHelper.getScreenshotPath(scenarioName);
+            Reporter.log("<br><b>Failed test screenshot:</b> <a href='" + pathName + "'>Screenshot</a><br>");
+            throw assertionError;
         }
     }
 
@@ -143,10 +234,9 @@ public class CheckboxMatrixV2 extends BasePage {
         clickSeeFieldErrorsByObjectId(strObjectElementId);
         String optionName = getFieldName(pojo,getFieldIdByObjectId(pojo,strObjectElementId));
         String validationMessage = getValidationMessageByOptionName(optionName);
+        clickSeeFieldErrorsByObjectId(strObjectElementId);
         try{
             Assert.assertEquals(validationMessage,"Required field.","The expected value is : Required field. "+validationMessage);
-            clickCloseButton();
-            CheckboxObject.checkboxObjectDefaultValue();
         }catch (AssertionError assertionError){
             ScreenshotHelper screenshotHelper = new ScreenshotHelper(driver);
             screenshotHelper.takeScreenshot(scenarioName);
@@ -178,6 +268,9 @@ public class CheckboxMatrixV2 extends BasePage {
     }
 
     public static void assertMinimumConfigNoInputs(String strObjectElementId, String name, Integer minimumInput,String scenarioName){
+        String elem = stringReplace(validationMessageUponSubmitSideBar,name);
+        By locator = By.xpath(elem);
+        scrollElementIntoView(driver,locator);
         WebElement ValidationMessageSideMenu = stringReplaceAndConvertToWebElement(validationMessageUponSubmitSideBar, name);
         scrollElementIntoView(driver,ValidationMessageSideMenu);
         Assert.assertEquals(ValidationMessageSideMenu.getText(),"This field requires a minimum of "+minimumInput+" responses.","The expected value is : This field requires a minimum of "+minimumInput+" responses.");
@@ -185,8 +278,6 @@ public class CheckboxMatrixV2 extends BasePage {
         String validationMessage = getValidationMessageByOptionName(name);
         try{
             Assert.assertEquals(validationMessage,"This field requires a minimum of "+minimumInput+" responses.","The expected value is : This field requires a minimum of "+minimumInput+" responses. but the actual message is "+validationMessage);
-            clickCloseButton();
-            CheckboxObject.checkboxObjectDefaultValue();
         }catch (AssertionError assertionError){
             ScreenshotHelper screenshotHelper = new ScreenshotHelper(driver);
             screenshotHelper.takeScreenshot(scenarioName);
@@ -196,7 +287,6 @@ public class CheckboxMatrixV2 extends BasePage {
             throw assertionError;
         }
     }
-
 
     public static void assertWithinMaximumInput(FormContentPojo pojo, String strFieldId, String max,String checkboxName,boolean checkboxMandatory, String scenarioName) throws Exception {
         String elementId = getObjectIdFromFieldId(pojo,strFieldId);
@@ -211,7 +301,7 @@ public class CheckboxMatrixV2 extends BasePage {
         if(checkboxMandatory){
             assertThisFieldIsMandatory(pojo,strFieldId,scenarioName);
         }else {
-            CheckBoxPageV2.assertWithinAcceptedInputs(checkboxName,elementId,scenarioName);
+            assertWithinAcceptedInputs(checkboxName,elementId,scenarioName);
         }
     }
 
@@ -343,6 +433,7 @@ public class CheckboxMatrixV2 extends BasePage {
         String elementId = getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(mandatoryFieldMessageLocator,elementId);
         WebElement element = stringToWebElement(elem);
+        clickSeeFieldErrorsByObjectId(elementId);
         try{
             Assert.assertEquals(element.getText(),"This field is mandatory.","The expected value is : This field is mandatory. "+element.getText());
             CheckboxObject.checkboxObjectDefaultValue();

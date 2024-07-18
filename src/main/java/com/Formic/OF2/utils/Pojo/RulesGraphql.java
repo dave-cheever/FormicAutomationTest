@@ -3,6 +3,7 @@ package com.Formic.OF2.utils.Pojo;
 import com.Formic.OF2.pages.GraphQLQuery;
 import com.Formic.OF2.pages.ProjectIdentifierInput;
 import com.Formic.OF2.pages.QueryVariables;
+import com.Formic.OF2.utils.ConfigLoader;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
@@ -212,7 +213,7 @@ public class RulesGraphql {
         query.setQuery(graphQLQuery);
         query.setVariables(variable);
 
-        RestAssured.baseURI = "https://formic-api-test.azurewebsites.net";
+        RestAssured.baseURI = ConfigLoader.getProperty("test.urlApi");
         RestAssured.basePath = "/graphql";
         RequestSpecBuilder reqSpecBuilder = new RequestSpecBuilder();
         reqSpecBuilder.setContentType("application/json; charset=UTF-8");

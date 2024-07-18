@@ -6,6 +6,8 @@ import com.Formic.OF2.test.BasePage;
 import com.Formic.OF2.test.BaseUiTest;
 import com.Formic.OF2.utils.CheckboxObject;
 
+import com.Formic.OF2.utils.ConfigLoader;
+import com.Formic.OF2.utils.DataDrivenTest;
 import com.Formic.OF2.utils.UpdateTestCaseStatus;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.PageFactory;
@@ -23,174 +25,176 @@ public class DataValidationTest extends BaseUiTest {
 
     com.Formic.OF2.pages.MIA.DataValidation dataValidationMia;
 
-    String projectName = "TEST Data Validation";
+    String projectName = ConfigLoader.getProperty("test.Derivation");
 
-    @Test
-    public void Positive_HRO_Equal_To_Test() throws Exception{
+    @Test(dataProvider = "testHroDataValidationPositiveEqualTo", dataProviderClass = DataDrivenTest.class)
+    public void Positive_HRO_Equal_To_Test(String fieldId, String NumberToValidate) throws Exception{
         String scenarioName = "Positive_HRO_Equal_To_Test";
         homePage.selectProject(projectName,scenarioName);
-        dataValidationHro.Positive_HRO_Equal_To_Test();
+        dataValidationHro.Positive_HRO_Equal_To_Test(fieldId,NumberToValidate,scenarioName);
     }
 
-    @Test
-    public void Positive_HRO_Not_Equal_To_Test() throws Exception{
+    @Test(dataProvider = "testHroDataValidationPositiveNotEqualTo", dataProviderClass = DataDrivenTest.class)
+    public void Positive_HRO_Not_Equal_To_Test(String fieldId, String NumberToValidate) throws Exception{
         String scenarioName = "Positive_HRO_Not_Equal_To_Test";
         homePage.selectProject(projectName,scenarioName);
-        dataValidationHro.Positive_HRO_Not_Equal_To_Test();
+        dataValidationHro.Positive_HRO_Not_Equal_To_Test(fieldId, NumberToValidate,scenarioName);
     }
 
-    @Test
-    public void Positive_HRO_Greater_Than_Test() throws Exception{
+    @Test(dataProvider = "testHroDataValidationPositiveGreaterThan", dataProviderClass = DataDrivenTest.class)
+    public void Positive_HRO_Greater_Than_Test(String fieldId, String NumberToValidate) throws Exception{
         String scenarioName = "Positive_HRO_Greater_Than_Test";
         homePage.selectProject(projectName,scenarioName);
-        dataValidationHro.Positive_HRO_Greater_Than_Test();
+        dataValidationHro.Positive_HRO_Greater_Than_Test(fieldId,NumberToValidate,scenarioName);
     }
 
-    @Test
-    public void Positive_HRO_Greater_Than_Equal_To_Test() throws Exception{
+    @Test(dataProvider = "testHroDataValidationPositiveGreaterThanEqualTo", dataProviderClass = DataDrivenTest.class)
+    public void Positive_HRO_Greater_Than_Equal_To_Test(String fieldId, String NumberToValidate) throws Exception{
         String scenarioName = "Positive_HRO_Greater_Than_Equal_To_Test";
         homePage.selectProject(projectName,scenarioName);
-        dataValidationHro.Positive_HRO_Greater_Than_Equal_To_Test();
+        dataValidationHro.Positive_HRO_Greater_Than_Equal_To_Test(fieldId,NumberToValidate,scenarioName);
     }
 
-    @Test
-    public void Positive_HRO_Less_Than_Test() throws Exception{
+    @Test(dataProvider = "testHroDataValidationPositiveLessThan", dataProviderClass = DataDrivenTest.class)
+    public void Positive_HRO_Less_Than_Test(String fieldId, String NumberToValidate) throws Exception{
         String scenarioName = "Positive_HRO_Less_Than_Test";
         homePage.selectProject(projectName,scenarioName);
-        dataValidationHro.Positive_HRO_Less_Than_Test();
+        dataValidationHro.Positive_HRO_Less_Than_Test(fieldId, NumberToValidate, scenarioName);
     }
 
-    @Test
-    public void Positive_HRO_Less_Than_Or_Equal_To_Test() throws Exception{
+    @Test(dataProvider = "testHroDataValidationPositiveLessThanEqualTo", dataProviderClass = DataDrivenTest.class)
+    public void Positive_HRO_Less_Than_Or_Equal_To_Test(String fieldId, String NumberToValidate) throws Exception{
         String scenarioName = "Positive_HRO_Less_Than_Or_Equal_To_Test";
         homePage.selectProject(projectName,scenarioName);
-        dataValidationHro.Positive_HRO_Less_Than_Or_Equal_To_Test();
+        dataValidationHro.Positive_HRO_Less_Than_Or_Equal_To_Test(fieldId, NumberToValidate, scenarioName);
     }
 
-    @Test
-    public void Negative_HRO_Equal_To_Test() throws Exception{
+    @Test(dataProvider = "testHroDataValidationPositiveEqualTo", dataProviderClass = DataDrivenTest.class)
+    public void Negative_HRO_Equal_To_Test(String fieldId, String NumberToValidate) throws Exception{
         String scenarioName = "Negative_HRO_Equal_To_Test";
         homePage.selectProject(projectName,scenarioName);
-        dataValidationHro.Negative_HRO_Equal_To_Test();
+        dataValidationHro.Negative_HRO_Equal_To_Test(fieldId, NumberToValidate, scenarioName);
     }
 
-    @Test
-    public void Negative_HRO_Not_Equal_To_Test() throws Exception{
+    @Test(dataProvider = "testHroDataValidationPositiveNotEqualTo", dataProviderClass = DataDrivenTest.class)
+    public void Negative_HRO_Not_Equal_To_Test(String fieldId, String NumberToValidate) throws Exception{
         String scenarioName = "Negative_HRO_Not_Equal_To_Test";
         homePage.selectProject(projectName,scenarioName);
-        dataValidationHro.Negative_HRO_Not_Equal_To_Test();
+        dataValidationHro.Negative_HRO_Not_Equal_To_Test(fieldId, NumberToValidate, scenarioName);
     }
 
-    @Test
-    public void Negative_HRO_Greater_Than_Test() throws Exception{
+    @Test(dataProvider = "testHroDataValidationPositiveGreaterThan", dataProviderClass = DataDrivenTest.class)
+    public void Negative_HRO_Greater_Than_Test(String fieldId, String NumberToValidate) throws Exception{
         String scenarioName = "Negative_HRO_Greater_Than_Test";
         homePage.selectProject(projectName,scenarioName);
-        dataValidationHro.Negative_HRO_Greater_Than_Test();
+        dataValidationHro.Negative_HRO_Greater_Than_Test(fieldId, NumberToValidate, scenarioName);
     }
 
-    @Test
-    public void Negative_HRO_Greater_Than_Equal_To_Test() throws Exception{
+    @Test(dataProvider = "testHroDataValidationPositiveGreaterThanEqualTo", dataProviderClass = DataDrivenTest.class)
+    public void Negative_HRO_Greater_Than_Equal_To_Test(String fieldId, String NumberToValidate) throws Exception{
         String scenarioName = "Negative_HRO_Greater_Than_Equal_To_Test";
         homePage.selectProject(projectName,scenarioName);
-        dataValidationHro.Negative_HRO_Greater_Than_Equal_To_Test();
+        dataValidationHro.Negative_HRO_Greater_Than_Equal_To_Test(fieldId, NumberToValidate, scenarioName);
     }
 
-    @Test
-    public void Negative_HRO_Less_Than_Test() throws Exception{
+    @Test(dataProvider = "testHroDataValidationPositiveLessThan", dataProviderClass = DataDrivenTest.class)
+    public void Negative_HRO_Less_Than_Test(String fieldId, String NumberToValidate) throws Exception{
         String scenarioName = "Negative_HRO_Less_Than_Test";
         homePage.selectProject(projectName,scenarioName);
-        dataValidationHro.Negative_HRO_Less_Than_Test();
+        dataValidationHro.Negative_HRO_Less_Than_Test(fieldId, NumberToValidate, scenarioName);
     }
 
-    @Test
-    public void Negative_HRO_Less_Than_Or_Equal_To_Test() throws Exception{
+    @Test(dataProvider = "testHroDataValidationPositiveLessThanEqualTo", dataProviderClass = DataDrivenTest.class)
+    public void Negative_HRO_Less_Than_Or_Equal_To_Test(String fieldId, String NumberToValidate) throws Exception{
         String scenarioName = "Negative_HRO_Less_Than_Or_Equal_To_Test";
         homePage.selectProject(projectName,scenarioName);
-        dataValidationHro.Negative_HRO_Less_Than_Or_Equal_To_Test();
+        dataValidationHro.Negative_HRO_Less_Than_Or_Equal_To_Test(fieldId, NumberToValidate, scenarioName);
     }
 
-    @Test
-    public void Positive_MIA_Equal_To_Test() throws Exception{
+
+
+    @Test(dataProvider = "testMiaDataValidationPositiveEqualTo", dataProviderClass = DataDrivenTest.class)
+    public void Positive_MIA_Equal_To_Test(String fieldId, String NumberToValidate) throws Exception{
         String scenarioName = "Positive_MIA_Equal_To_Test";
         homePage.selectProject(projectName,scenarioName);
-        dataValidationMia.Positive_MIA_Equal_To_Test();
+        dataValidationMia.Positive_MIA_Equal_To_Test(fieldId, NumberToValidate, scenarioName);
     }
 
-    @Test
-    public void Positive_MIA_Not_Equal_To_Test() throws Exception{
+    @Test(dataProvider = "testMiaDataValidationPositiveNotEqualTo", dataProviderClass = DataDrivenTest.class)
+    public void Positive_MIA_Not_Equal_To_Test(String fieldId, String NumberToValidate) throws Exception{
         String scenarioName = "Positive_MIA_Not_Equal_To_Test";
         homePage.selectProject(projectName,scenarioName);
-        dataValidationMia.Positive_MIA_Not_Equal_To_Test();
+        dataValidationMia.Positive_MIA_Not_Equal_To_Test(fieldId, NumberToValidate, scenarioName);
     }
 
-    @Test
-    public void Positive_MIA_Greater_Than_Test() throws Exception{
+    @Test(dataProvider = "testMiaDataValidationPositiveGreaterThan", dataProviderClass = DataDrivenTest.class)
+    public void Positive_MIA_Greater_Than_Test(String fieldId, String NumberToValidate) throws Exception{
         String scenarioName = "Positive_MIA_Greater_Than_Test";
         homePage.selectProject(projectName,scenarioName);
-        dataValidationMia.Positive_MIA_Greater_Than_Test();
+        dataValidationMia.Positive_MIA_Greater_Than_Test(fieldId, NumberToValidate, scenarioName);
     }
 
-    @Test
-    public void Positive_MIA_Greater_Than_Equal_To_Test() throws Exception{
+    @Test(dataProvider = "testMiaDataValidationPositiveGreaterThanEqualTo", dataProviderClass = DataDrivenTest.class)
+    public void Positive_MIA_Greater_Than_Equal_To_Test(String fieldId, String NumberToValidate) throws Exception{
         String scenarioName = "Positive_MIA_Greater_Than_Equal_To_Test";
         homePage.selectProject(projectName,scenarioName);
-        dataValidationMia.Positive_MIA_Greater_Than_Equal_To_Test();
+        dataValidationMia.Positive_MIA_Greater_Than_Equal_To_Test(fieldId, NumberToValidate, scenarioName);
     }
 
-    @Test
-    public void Positive_MIA_Less_Than_Test() throws Exception{
+    @Test(dataProvider = "testMiaDataValidationPositiveLessThan", dataProviderClass = DataDrivenTest.class)
+    public void Positive_MIA_Less_Than_Test(String fieldId, String NumberToValidate) throws Exception{
         String scenarioName = "Positive_MIA_Less_Than_Test";
         homePage.selectProject(projectName,scenarioName);
-        dataValidationMia.Positive_MIA_Less_Than_Test();
+        dataValidationMia.Positive_MIA_Less_Than_Test(fieldId, NumberToValidate, scenarioName);
     }
 
-    @Test
-    public void Positive_MIA_Less_Than_Or_Equal_To_Test() throws Exception{
+    @Test(dataProvider = "testMiaDataValidationPositiveLessThanEqualTo", dataProviderClass = DataDrivenTest.class)
+    public void Positive_MIA_Less_Than_Or_Equal_To_Test(String fieldId, String NumberToValidate) throws Exception{
         String scenarioName = "Positive_MIA_Less_Than_Or_Equal_To_Test";
         homePage.selectProject(projectName,scenarioName);
-        dataValidationMia.Positive_MIA_Less_Than_Or_Equal_To_Test();
+        dataValidationMia.Positive_MIA_Less_Than_Or_Equal_To_Test(fieldId, NumberToValidate, scenarioName);
     }
 
-    @Test
-    public void Negative_MIA_Equal_To_Test() throws Exception{
+    @Test(dataProvider = "testMiaDataValidationPositiveEqualTo", dataProviderClass = DataDrivenTest.class)
+    public void Negative_MIA_Equal_To_Test(String fieldId, String NumberToValidate) throws Exception{
         String scenarioName = "Negative_MIA_Equal_To_Test";
         homePage.selectProject(projectName,scenarioName);
-        dataValidationMia.Negative_MIA_Equal_To_Test();
+        dataValidationMia.Negative_MIA_Equal_To_Test(fieldId, NumberToValidate, scenarioName);
     }
 
-    @Test
-    public void Negative_MIA_Not_Equal_To_Test() throws Exception{
+    @Test(dataProvider = "testMiaDataValidationPositiveNotEqualTo", dataProviderClass = DataDrivenTest.class)
+    public void Negative_MIA_Not_Equal_To_Test(String fieldId, String NumberToValidate) throws Exception{
         String scenarioName = "Negative_MIA_Not_Equal_To_Test";
         homePage.selectProject(projectName,scenarioName);
-        dataValidationMia.Negative_MIA_Not_Equal_To_Test();
+        dataValidationMia.Negative_MIA_Not_Equal_To_Test(fieldId, NumberToValidate, scenarioName);
     }
 
-    @Test
-    public void Negative_MIA_Greater_Than_Test() throws Exception{
+    @Test(dataProvider = "testMiaDataValidationPositiveGreaterThan", dataProviderClass = DataDrivenTest.class)
+    public void Negative_MIA_Greater_Than_Test(String fieldId, String NumberToValidate) throws Exception{
         String scenarioName = "Negative_MIA_Greater_Than_Test";
         homePage.selectProject(projectName,scenarioName);
-        dataValidationMia.Negative_MIA_Greater_Than_Test();
+        dataValidationMia.Negative_MIA_Greater_Than_Test(fieldId, NumberToValidate, scenarioName);
     }
 
-    @Test
-    public void Negative_MIA_Greater_Than_Equal_To_Test() throws Exception{
+    @Test(dataProvider = "testMiaDataValidationPositiveGreaterThanEqualTo", dataProviderClass = DataDrivenTest.class)
+    public void Negative_MIA_Greater_Than_Equal_To_Test(String fieldId, String NumberToValidate) throws Exception{
         String scenarioName = "Negative_MIA_Greater_Than_Equal_To_Test";
         homePage.selectProject(projectName,scenarioName);
-        dataValidationMia.Negative_MIA_Greater_Than_Equal_To_Test();
+        dataValidationMia.Negative_MIA_Greater_Than_Equal_To_Test(fieldId, NumberToValidate, scenarioName);
     }
 
-    @Test
-    public void Negative_MIA_Less_Than_Test() throws Exception{
+    @Test(dataProvider = "testMiaDataValidationPositiveLessThan", dataProviderClass = DataDrivenTest.class)
+    public void Negative_MIA_Less_Than_Test(String fieldId, String NumberToValidate) throws Exception{
         String scenarioName = "Negative_MIA_Less_Than_Test";
         homePage.selectProject(projectName,scenarioName);
-        dataValidationMia.Negative_MIA_Less_Than_Test();
+        dataValidationMia.Negative_MIA_Less_Than_Test(fieldId, NumberToValidate, scenarioName);
     }
 
-    @Test
-    public void Negative_MIA_Less_Than_Or_Equal_To_Test() throws Exception{
+    @Test(dataProvider = "testMiaDataValidationPositiveLessThanEqualTo", dataProviderClass = DataDrivenTest.class)
+    public void Negative_MIA_Less_Than_Or_Equal_To_Test(String fieldId, String NumberToValidate) throws Exception{
         String scenarioName = "Negative_MIA_Less_Than_Or_Equal_To_Test";
         homePage.selectProject(projectName,scenarioName);
-        dataValidationMia.Negative_MIA_Less_Than_Or_Equal_To_Test();
+        dataValidationMia.Negative_MIA_Less_Than_Or_Equal_To_Test(fieldId, NumberToValidate, scenarioName);
     }
 
     @BeforeMethod

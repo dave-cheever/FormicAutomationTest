@@ -6,6 +6,7 @@ import com.Formic.OF2.pages.HomePage;
 import com.Formic.OF2.pages.ManualImageArea;
 import com.Formic.OF2.test.BaseUiTest;
 import com.Formic.OF2.utils.CheckboxObject;
+import com.Formic.OF2.utils.ConfigLoader;
 import com.Formic.OF2.utils.DataDrivenTest;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.ITestContext;
@@ -16,8 +17,7 @@ public class HandWritingRecognitionObjectTest extends BaseUiTest {
 
     HomePage homePage;
     HandwritingRecognitionObject hro;
-    String projectName = "DMC Test Checkbox"; // 137
-//    String projectName = "Enable Disable fields Test"; // 185
+    String projectName = ConfigLoader.getProperty("test.HroProjectName");
 
     @Test(dataProvider = "testDataHroNumeric", dataProviderClass = DataDrivenTest.class)
     public void hroNumericInvalidInputsValidation(String fieldId, String mandatory, String name, String max) throws Exception{
