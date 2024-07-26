@@ -10,7 +10,8 @@ import java.util.Map;
 @JsonPropertyOrder({
         "project"
 })
-@Generated("jsonschema2pojo")
+//@Generated("jsonschema2pojo")
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Data {
 
     @JsonProperty("project")

@@ -6,6 +6,7 @@ import com.Formic.OF2.pages.CheckBoxPageV2;
 import com.Formic.OF2.pages.ManualImageArea;
 import com.Formic.OF2.test.BasePage;
 import com.Formic.OF2.utils.CheckboxObject;
+import com.Formic.OF2.utils.ConfigLoader;
 import com.Formic.OF2.utils.Pojo.FormContentPojo;
 import com.Formic.OF2.utils.Pojo.RulesGraphql;
 import com.Formic.OF2.utils.RoutingRules;
@@ -25,7 +26,7 @@ public class DataDerivation extends BasePage {
 
     static String miaElementLocator = "//div[@data-object-id='$TEXT']/textarea";
 
-    int projectId = 247;
+    int projectId = Integer.parseInt(ConfigLoader.getProperty("test.DerivationProjectId"));
 
     public void Calculate_Sum_of_Two_Fields_and_Display_Result_MIA(String fieldId,String scenarioName) throws Exception {
         int firstValue = 5;
@@ -160,21 +161,13 @@ public class DataDerivation extends BasePage {
         String firstFieldName = com.Formic.OF2.utils.DataDerivation.getDerivationFieldNameByNumber(pojo,fieldId,0);
         String elementId1 = getElementIdByFieldName(pojo,firstFieldName);
         String fieldId1 = getFieldIdByObjectId(pojo,elementId1);
-        Reporter.log("Looking for the first field to enter field value: "+ field1Value);
         lookForTheField(pojo,fieldId1);
-        Reporter.log("Field: "+ firstFieldName + " found!");
-        Reporter.log("Entering text: "+field1Value+" to Field: "+firstFieldName);
         ManualImageArea.setTextToMia(pojo,fieldId1,Integer.toString(field1Value));
-        Reporter.log("Successfully entered the text: "+ field1Value+" to the Field: "+firstFieldName);
         String SecondFieldName = com.Formic.OF2.utils.DataDerivation.getDerivationFieldNameByNumber(pojo,fieldId,2);
         String elementId2 = getElementIdByFieldName(pojo,SecondFieldName);
         String fieldId2 = getFieldIdByObjectId(pojo,elementId2);
-        Reporter.log("Looking for the second field to enter field value: "+ field2Value);
         lookForTheField(pojo,fieldId2);
-        Reporter.log("Field: "+ SecondFieldName + " found!");
-        Reporter.log("Entering text: "+field2Value+" to Field: "+SecondFieldName);
         ManualImageArea.setTextToMia(pojo,fieldId2,Integer.toString(field2Value));
-        Reporter.log("Successfully entered the text: "+ field2Value+" to the Field: "+SecondFieldName);
     }
 
     public void enterNumberForDerivationFieldNoArithmetic(FormContentPojo pojo,String objectId,int field1Value){

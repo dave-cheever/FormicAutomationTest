@@ -614,7 +614,7 @@ public class CheckBoxPageV2 extends BasePage {
                 picklistInputs(graphResponse,fieldId);
 
             }
-            sleep(1000);
+            sleep(2000);
         }while (!getListFieldNameByCompletionErrors().isEmpty());
         sideMenuNavigation.clickSubmitButton();
         String receipt = getProjectReceipt();

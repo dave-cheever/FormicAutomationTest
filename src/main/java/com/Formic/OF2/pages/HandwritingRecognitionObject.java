@@ -35,16 +35,25 @@ public class HandwritingRecognitionObject extends BasePage {
     static CompletionErrors comp = new CompletionErrors(driver);
 
     public static void setTextToHro(FormContentPojo pojo, String strFieldId, String strText){
-        lookForTheField(pojo,strFieldId);
-        String elementId = CheckBoxPageV2.getObjectIdFromFieldId(pojo,strFieldId);
-        String elem = stringReplace(hroInputLocator,elementId);
-        By locator = By.xpath(elem);
-        scrollElementIntoView(driver,locator);
-        WebElement element = stringToWebElement(elem);
-        scrollElementIntoView(driver,element);
-        Reporter.log("<b>Enter text for HRO: <b/>"+getFieldName(pojo,strFieldId)+"<b> Input: <b/>"+ strText);
-        enterText(element,strText);
-        recordInputsFromHro(elementId,strText);
+        try{
+            lookForTheField(pojo,strFieldId);
+            String elementId = CheckBoxPageV2.getObjectIdFromFieldId(pojo,strFieldId);
+            String elem = stringReplace(hroInputLocator,elementId);
+            By locator = By.xpath(elem);
+            scrollElementIntoView(driver,locator);
+            WebElement element = stringToWebElement(elem);
+            scrollElementIntoView(driver,element);
+            Reporter.log("<b>Enter text for HRO: <b/>"+getFieldName(pojo,strFieldId)+"<b> Input: <b/>"+ strText);
+            enterText(element,strText);
+            recordInputsFromHro(elementId,strText);
+        }catch (AssertionError assertionError){
+            ScreenshotHelper screenshotHelper = new ScreenshotHelper(driver);
+            screenshotHelper.takeScreenshot("Set text to HRO");
+            // Rethrow the exception to mark the test as failed
+            String pathName = screenshotHelper.getScreenshotPath("Set text to HRO");
+            Reporter.log("<br><b>Failed test screenshot:</b> <a href='" + pathName + "'>Screenshot</a><br>");
+            throw assertionError;
+        }
     }
 
     public void assertInvalidDateTimeFormat(FormContentPojo pojo, String strFieldId,String scenarioName){

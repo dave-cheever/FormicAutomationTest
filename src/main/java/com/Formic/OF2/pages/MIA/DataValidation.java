@@ -5,6 +5,7 @@ import com.Formic.OF2.pages.HandwritingRecognitionObject;
 import com.Formic.OF2.pages.ManualImageArea;
 import com.Formic.OF2.test.BasePage;
 import com.Formic.OF2.utils.CheckboxObject;
+import com.Formic.OF2.utils.ConfigLoader;
 import com.Formic.OF2.utils.Pojo.FormContentPojo;
 import com.Formic.OF2.utils.Pojo.RulesGraphql;
 import com.Formic.OF2.utils.RoutingRules;
@@ -25,7 +26,7 @@ public class DataValidation extends BasePage {
 
     static String miaValidationMessageLocator = "//div[@data-object-id='$TEXT']/div/div/div";
 
-    int projectId = 247;
+    int projectId = Integer.parseInt(ConfigLoader.getProperty("test.DerivationProjectId"));
 
     public void Positive_MIA_Equal_To_Test(String fieldId, String NumberToValidate, String scenarioName) throws Exception {
         RulesGraphql rules = new RulesGraphql();

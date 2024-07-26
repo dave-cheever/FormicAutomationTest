@@ -1,11 +1,8 @@
 package com.Formic.OF2.test;
 
-import com.Formic.OF2.utils.ConfigLoader;
-import com.Formic.OF2.utils.DataDrivenTest;
-import com.Formic.OF2.utils.FieldManager;
+import com.Formic.OF2.utils.*;
 import com.Formic.OF2.utils.Pojo.FormContentPojo;
 import com.Formic.OF2.utils.Pojo.RulesGraphql;
-import com.Formic.OF2.utils.ScreenshotHelper;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.PageLoadStrategy;
@@ -45,13 +42,13 @@ public class BaseUiTest {
         String defaultDriverPath;
         defaultDriverPath = String.join(File.separator, "drivers", "chromedriver.exe");
         System.setProperty("webdriver.chrome.driver", defaultDriverPath);
-
     }
 
     @BeforeMethod
     public void setDriver() throws MalformedURLException {
         // Start driver
         ChromeOptions options = new ChromeOptions();
+//        options.setAcceptInsecureCerts(true);
         options.setPageLoadStrategy(PageLoadStrategy.NORMAL);
 //        options.addArguments("--lang=en-GB");
         // Setting new download directory path
@@ -62,8 +59,9 @@ public class BaseUiTest {
 //        options.setExperimentalOption("prefs", prefs);
         // Test is running on docker, use the remote web driver
 
-        driver.set(new ChromeDriver(ChromeOptionsUtil.getHeadlessChromeOptions()));
-//        driver.set(new ChromeDriver(options));
+
+//        driver.set(new ChromeDriver(ChromeOptionsUtil.getHeadlessChromeOptions()));
+        driver.set(new ChromeDriver(options));
 //        setDriver(new ChromeDriver(options));
         getDriver().manage().window().maximize();
         screenshotHelper = PageFactory.initElements(getDriver(),ScreenshotHelper.class);
@@ -81,7 +79,7 @@ public class BaseUiTest {
         ArrayList<String> configurationList = new ArrayList<>();
 
 //        System.out.println("##[command] fieldId: "+configurationList.size());
-//        DataDrivenTest.createExcelTestDataFile();
+        DataDrivenTest.createExcelTestDataFile();
 
         //CheckBox
         configurationList = FieldManager.getAllCheckboxFieldIdWithMandatoryRules(graphResponseCheckBox,FieldManager.getAllCheckboxFieldId(graphResponseCheckBox));

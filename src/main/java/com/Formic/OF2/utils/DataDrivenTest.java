@@ -18,7 +18,7 @@ import org.testng.annotations.Test;
 public class DataDrivenTest {
 //    private static String testDataFilePath = "$(Build.SourcesDirectory)/src/main/resources/Test_Data.xlsx";
     private static String testDataFilePath = "src/main/resources/Test_Data.xlsx";
-    private static boolean isEnabled = false;
+    private static boolean isEnabled = Boolean.parseBoolean(ConfigLoader.getProperty("test.iEnabled"));
 
     @DataProvider(name = "testData")
     public Object[][] testData() throws IOException, InvalidFormatException {
