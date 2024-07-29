@@ -79,7 +79,7 @@ public class BaseUiTest {
         ArrayList<String> configurationList = new ArrayList<>();
 
 //        System.out.println("##[command] fieldId: "+configurationList.size());
-        DataDrivenTest.createExcelTestDataFile();
+//        DataDrivenTest.createExcelTestDataFile();
 
         //CheckBox
         configurationList = FieldManager.getAllCheckboxFieldIdWithMandatoryRules(graphResponseCheckBox,FieldManager.getAllCheckboxFieldId(graphResponseCheckBox));
