@@ -60,8 +60,8 @@ public class BaseUiTest {
         // Test is running on docker, use the remote web driver
 
 
-//        driver.set(new ChromeDriver(ChromeOptionsUtil.getHeadlessChromeOptions()));
-        driver.set(new ChromeDriver(options));
+        driver.set(new ChromeDriver(ChromeOptionsUtil.getHeadlessChromeOptions()));
+//        driver.set(new ChromeDriver(options));
 //        setDriver(new ChromeDriver(options));
         getDriver().manage().window().maximize();
         screenshotHelper = PageFactory.initElements(getDriver(),ScreenshotHelper.class);
