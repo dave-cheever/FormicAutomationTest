@@ -91,6 +91,13 @@ public class DataDerivationTest extends BaseUiTest {
         dataDerivationMia.Value_Propagation_Between_Fields_MIA(fieldId,objectId,scenarioName);
     }
 
+    @Test(dataProvider = "testMiaDataDerivationCurrentDateTime", dataProviderClass = DataDrivenTest.class)
+    public void Current_DateTime_MIA(String fieldId, String dateTimeFormatMask) throws Exception{
+        String scenarioName = "Current_DateTime_MIA";
+        homePage.selectProject(projectName,scenarioName);
+        dataDerivationMia.Current_DateTime_MIA(fieldId,dateTimeFormatMask,scenarioName);
+    }
+
 
 
 

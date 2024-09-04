@@ -627,7 +627,7 @@ public class CheckBoxPageV2 extends BasePage {
         validateInputsAreCorrect(graphResponse);
     }
 
-    public void clickContinueButton(){
+    public static void clickContinueButton(){
         try{
             String continueBtn = "//button[text()='Continue']";
             WebElement element = stringToWebElement(continueBtn);
@@ -637,7 +637,7 @@ public class CheckBoxPageV2 extends BasePage {
         }
     }
 
-    public void clickSavedFormsButton(){
+    public static void clickSavedFormsButton(){
         try{
             String continueBtn = "//span[text()='Saved Forms']";
             WebElement element = stringToWebElement(continueBtn);
@@ -648,13 +648,13 @@ public class CheckBoxPageV2 extends BasePage {
 
     }
 
-    public void enterReceiptNumber(String strReceipt){
+    public static void enterReceiptNumber(String strReceipt){
         String strReceiptNumber = "//input[@id='receipt-entry-input']";
         WebElement element = stringToWebElement(strReceiptNumber);
         enterText(element,strReceipt);
     }
 
-    public void clickGoButton(){
+    public static void clickGoButton(){
         String strGoButton = "//button[text()='Go']";
         try{
             WebElement element = stringToWebElement(strGoButton);
@@ -1107,7 +1107,7 @@ public class CheckBoxPageV2 extends BasePage {
         validateInputsAreCorrect(graphResponse);
     }
 
-    public String getProjectReceiptSave(){
+    public static String getProjectReceiptSave(){
         try{
             String test = "//h2[contains(text(),'Saved')]/ancestor::main/p[contains(text(),'You can use the following receipt to recall this particular form at a later date.')]";
             WebElement elem = stringToWebElement(test);

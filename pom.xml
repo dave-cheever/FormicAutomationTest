@@ -17,7 +17,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
-    <java.version>17</java.version>
+    <java.version>22</java.version>
   </properties>
 
   <dependencies>
@@ -35,29 +35,38 @@
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
       <artifactId>selenium-support</artifactId>
-      <version>4.11.0</version>
+      <version>4.23.1</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-chrome-driver -->
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
       <artifactId>selenium-chrome-driver</artifactId>
-      <version>4.11.0</version>
+      <version>4.23.1</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-api -->
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
       <artifactId>selenium-api</artifactId>
-      <version>4.11.0</version>
+      <version>4.23.1</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-remote-driver -->
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
       <artifactId>selenium-remote-driver</artifactId>
-      <version>4.11.0</version>
+      <version>4.23.1</version>
     </dependency>
+
+    <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.16.1</version>
+    </dependency>
+
+
 
     <!--    used-->
     <dependency>
@@ -93,7 +102,7 @@
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
-      <version>7.7.0</version>
+      <version>7.9.0</version>
       <scope>compile</scope>
     </dependency>
 

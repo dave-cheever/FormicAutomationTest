@@ -21,10 +21,12 @@ import java.util.List;
         "fieldFormat",
         "validation",
         "derivation",
+        "fieldProcesses",
         "userValidationErrorMessage",
         "formatRegex",
         "formatMask",
         "fieldType"
+
 })
 @Generated("jsonschema2pojo")
 public class Field {
@@ -61,6 +63,9 @@ public class Field {
     private String fieldType;
     @JsonProperty("derivation")
     private String derivation;
+    @JsonProperty("fieldProcesses")
+    private String fieldProcesses;
+
 
     @JsonProperty("guidId")
     public String getGuidId() {
@@ -216,8 +221,16 @@ public class Field {
     }
 
     @JsonProperty("derivation")
-    public String setDerivation() {
-        return derivation;
+    public void setDerivation(String derivation) { this.derivation = derivation;}
+
+    @JsonProperty("fieldProcesses")
+    public String getFieldProcesses() {
+        return fieldProcesses;
+    }
+
+    @JsonProperty("fieldProcesses")
+    public void setFieldProcesses(String fieldProcesses) {
+        this.fieldProcesses = fieldProcesses;
     }
 
 }

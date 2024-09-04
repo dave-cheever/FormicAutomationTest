@@ -123,6 +123,7 @@ public class BasePage {
         Integer currentPage = getCurrentPage();
         int pageCounter = 0;
         //loop through the pages
+        waitForPageToLoad();
         if(currentPage!=null){
             outerLoop:
             for (com.Formic.OF2.utils.Pojo.Page page: contentPojo.data.project.getPages()

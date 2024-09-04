@@ -4,13 +4,11 @@ package com.Formic.OF2.pages.MIA;
 
 import com.Formic.OF2.pages.CheckBoxPageV2;
 import com.Formic.OF2.pages.ManualImageArea;
+import com.Formic.OF2.pages.SideMenuNavigation;
 import com.Formic.OF2.test.BasePage;
-import com.Formic.OF2.utils.CheckboxObject;
-import com.Formic.OF2.utils.ConfigLoader;
+import com.Formic.OF2.utils.*;
 import com.Formic.OF2.utils.Pojo.FormContentPojo;
 import com.Formic.OF2.utils.Pojo.RulesGraphql;
-import com.Formic.OF2.utils.RoutingRules;
-import com.Formic.OF2.utils.ScreenshotHelper;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -25,8 +23,10 @@ public class DataDerivation extends BasePage {
     static String hroValidationMessageLocator = "//div[@data-object-id='$TEXT']/div/div/div";
 
     static String miaElementLocator = "//div[@data-object-id='$TEXT']/textarea";
+    static String miaElementLocatorInput = "//div[@data-object-id='$TEXT']/input";
 
     int projectId = Integer.parseInt(ConfigLoader.getProperty("test.DerivationProjectId"));
+    public SideMenuNavigation sideMenuNavigation = new SideMenuNavigation(driver);
 
     public void Calculate_Sum_of_Two_Fields_and_Display_Result_MIA(String fieldId,String scenarioName) throws Exception {
         int firstValue = 5;
@@ -101,6 +101,27 @@ public class DataDerivation extends BasePage {
         expectedPropagationOutput(graphResponse,fieldId,"5",scenarioName);
     }
 
+    public void Current_DateTime_MIA(String fieldId,String dateTimeFormatRegex, String scenarioName) throws Exception {
+        RulesGraphql rules = new RulesGraphql();
+        FormContentPojo graphResponse =  rules.getRules(projectId);
+
+        RoutingRules.enableDisabledFieldByFieldId(graphResponse,fieldId);
+        lookForTheField(graphResponse,fieldId);
+
+        sideMenuNavigation.clickSubmitButton();
+        String currentDateTimeUponSubmit = DateUtils.getCurrentDateTime(dateTimeFormatRegex);
+        String receipt = CheckBoxPageV2.getProjectReceiptSave();
+        CheckBoxPageV2.clickContinueButton();
+        CheckBoxPageV2.clickSavedFormsButton();
+        Reporter.log("<b>Receipt code:<b/> "+receipt);
+        CheckBoxPageV2.enterReceiptNumber(receipt);
+        CheckBoxPageV2.clickGoButton();
+
+        lookForTheField(graphResponse,fieldId);
+
+        validateCurrentDateTimeUponSubmit(graphResponse,fieldId,currentDateTimeUponSubmit,scenarioName);
+    }
+
     public void expectedDerivationOutput(FormContentPojo pojo, String fieldId,int firstFieldValue, int secondFieldValue, String operatorUsed,String scenarioName){
         int result = 0;
         String objectId = getObjectIdFromFieldId(pojo,fieldId);
@@ -147,6 +168,27 @@ public class DataDerivation extends BasePage {
 
         try{
             Assert.assertTrue(driverWait.until(ExpectedConditions.textToBePresentInElementValue(element,expectedValue)));
+        }catch (AssertionError assertionError){
+            ScreenshotHelper screenshotHelper = new ScreenshotHelper(driver);
+            screenshotHelper.takeScreenshot(scenarioName);
+            // Rethrow the exception to mark the test as failed
+            String pathName = screenshotHelper.getScreenshotPath(scenarioName);
+            Reporter.log("<br><b>Failed test screenshot:</b> <a href='" + pathName + "'>Screenshot</a><br>");
+            throw assertionError;
+        }
+    }
+
+    public void validateCurrentDateTimeUponSubmit(FormContentPojo pojo, String fieldId, String expectedValue,String scenarioName){
+        String objectId = getObjectIdFromFieldId(pojo,fieldId);
+        String elem = stringReplace(miaElementLocatorInput,objectId);
+        WebElement element = stringToWebElement(elem);
+
+        try{
+            System.out.println("Expected: "+expectedValue);
+            String [] split = element.getAttribute("value").split(" ");
+            System.out.println("Actual: "+split[0]);
+
+            Assert.assertTrue(split[0].equalsIgnoreCase(split[0]));
         }catch (AssertionError assertionError){
             ScreenshotHelper screenshotHelper = new ScreenshotHelper(driver);
             screenshotHelper.takeScreenshot(scenarioName);

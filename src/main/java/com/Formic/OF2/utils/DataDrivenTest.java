@@ -1017,6 +1017,31 @@ public class DataDrivenTest {
         return data;
     }
 
+    @DataProvider(name = "testMiaDataDerivationCurrentDateTime")
+    public Object[][] testMiaDataDerivationCurrentDateTime() throws IOException, InvalidFormatException {
+        // Path to your Excel file
+        String excelFilePath = testDataFilePath;
+        Workbook workbook = WorkbookFactory.create(new File(excelFilePath));
+        Sheet sheet = workbook.getSheet("sheet41");
+        int rowCount = sheet.getLastRowNum();
+        int columnCount = sheet.getRow(0).getLastCellNum();
+        Object[][] data = new Object[rowCount][columnCount];
+        // Loop through rows and columns to read data
+        for (int i = 0; i < rowCount; i++) {
+            Row row = sheet.getRow(i + 1); // Start from 1 to skip header row
+            for (int j = 0; j < columnCount; j++) {
+                if (row.getCell(j) != null) {
+                    data[i][j] = row.getCell(j).getStringCellValue();
+                } else {
+                    data[i][j] = ""; // Handle null cells
+                }
+            }
+        }
+        workbook.close();
+        System.out.println("Your excel file has been generated!");
+        return data;
+    }
+
 
     public static void writeToExcel(ArrayList<String> fieldIds,String sheetNumber) throws IOException, InvalidFormatException {
         // Create a new workbook
@@ -1049,7 +1074,7 @@ public class DataDrivenTest {
 //            fileInputStream = new FileInputStream(new File(excelFilePath));
 //            workbook = new HSSFWorkbook(new POIFSFileSystem(fileInputStream));
             workbook = new HSSFWorkbook();
-            for (int i = 1; i <= 40; i++) {
+            for (int i = 1; i <= 50; i++) {
                 HSSFSheet sheet = workbook.createSheet("sheet" + i);
                 System.out.println("##[command] Sheet" + i + " created");
             }
@@ -1219,6 +1244,26 @@ public class DataDrivenTest {
         for (int i = 1;fieldIds.size()!=0; i++) {
             rowHead = sheet.createRow(i);
             rowHead.createCell(0).setCellValue(fieldIds.get(0));
+            fieldIds.remove(0);
+        }
+        // Write workbook to a file
+        outputStreamEnabler(workbook,excelFilePath,isEnabled);
+    }
+
+    public static void writeToExcelHroMiaDataDerivationCurrentDateTime(ArrayList<String> fieldIds,String sheetNumber) throws IOException, InvalidFormatException {
+        // Create a new workbook
+        String excelFilePath = testDataFilePath;
+        FileInputStream inputStream = new FileInputStream(excelFilePath);
+        HSSFWorkbook workbook = new HSSFWorkbook(inputStream);
+        HSSFSheet sheet = workbook.getSheet(sheetNumber);
+        HSSFRow rowHead = sheet.createRow((short)0);
+        rowHead.createCell(0).setCellValue("FieldId");
+        rowHead.createCell(1).setCellValue("DateTimeFormatRegex");
+        for (int i = 1;fieldIds.size()!=0; i++) {
+            rowHead = sheet.createRow(i);
+            rowHead.createCell(0).setCellValue(fieldIds.get(0));
+            fieldIds.remove(0);
+            rowHead.createCell(1).setCellValue(fieldIds.get(0));
             fieldIds.remove(0);
         }
         // Write workbook to a file

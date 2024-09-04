@@ -60,8 +60,8 @@ public class BaseUiTest {
         // Test is running on docker, use the remote web driver
 
 
-        driver.set(new ChromeDriver(ChromeOptionsUtil.getHeadlessChromeOptions()));
-//        driver.set(new ChromeDriver(options));
+//        driver.set(new ChromeDriver(ChromeOptionsUtil.getHeadlessChromeOptions()));
+        driver.set(new ChromeDriver(options));
 //        setDriver(new ChromeDriver(options));
         getDriver().manage().window().maximize();
         screenshotHelper = PageFactory.initElements(getDriver(),ScreenshotHelper.class);
@@ -79,7 +79,7 @@ public class BaseUiTest {
         ArrayList<String> configurationList = new ArrayList<>();
 
 //        System.out.println("##[command] fieldId: "+configurationList.size());
-//        DataDrivenTest.createExcelTestDataFile();
+        DataDrivenTest.createExcelTestDataFile();
 
         //CheckBox
         configurationList = FieldManager.getAllCheckboxFieldIdWithMandatoryRules(graphResponseCheckBox,FieldManager.getAllCheckboxFieldId(graphResponseCheckBox));
@@ -226,6 +226,11 @@ public class BaseUiTest {
 
         configurationList = FieldManager.getHroMiaRulesDataDerivationPropagation(graphResponseDerivation,getFieldIdMia(graphResponseDerivation));
         DataDrivenTest.writeToExcelHroDataDerivationPropagation(configurationList,"Sheet40");
+
+        //Derivation CurrentDateTime MIA
+
+        configurationList = FieldManager.getFieldIdDerivationCurrentDateTime(graphResponseDerivation,getFieldIdMia(graphResponseDerivation));
+        DataDrivenTest.writeToExcelHroMiaDataDerivationCurrentDateTime(configurationList,"Sheet41");
 
     }
 

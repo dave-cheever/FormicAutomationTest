@@ -96,6 +96,7 @@ public class RulesGraphql {
         queryBuilder.append("                    mandatory");
         queryBuilder.append("                    validation");
         queryBuilder.append("                    derivation");
+        queryBuilder.append("                    fieldProcesses");
         queryBuilder.append("                    dataTypeNew");
         queryBuilder.append("                    formatRegex");
         queryBuilder.append("                    formatMask");

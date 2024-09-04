@@ -4,7 +4,7 @@ pool:
   demands: maven
 
 steps:
-  - task: Maven@3
+  - task: Maven@4
     displayName: 'Maven pom.xml'
     inputs:
       mavenPomFile: 'pom.xml'

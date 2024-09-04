@@ -508,6 +508,26 @@ public class FieldManager extends BasePage {
         return result;
     }
 
+    public static ArrayList<String> getFieldIdDerivationCurrentDateTime(com.Formic.OF2.utils.Pojo.FormContentPojo pojo,ArrayList<String> fieldIds){
+        ArrayList<String> result = new ArrayList<>();
+            for(String fieldId: fieldIds){
+                for (com.Formic.OF2.utils.Pojo.Field fields: pojo.data.project.getFields()
+                ) {
+                    if(fieldId.equalsIgnoreCase(fields.getGuidId())){
+                        if(isDerivationCurrentDateTime(fields.getFieldProcesses())&&fields.getDerivation()==null){
+                            result.add(fieldId);
+                            result.add(fields.getFormatMask());
+                        }
+                    }
+                }
+            }
+        return result;
+    }
+
+    public void getFieldProcessesByFieldId(com.Formic.OF2.utils.Pojo.FormContentPojo pojo, String fieldId){
+
+    }
+
     public static ArrayList<String> getMiaRulesNumeric(com.Formic.OF2.utils.Pojo.FormContentPojo pojo){
         ArrayList<String> fieldIds = getFieldIdMia(pojo);
         ArrayList<String> result = new ArrayList<>();
@@ -1021,4 +1041,15 @@ public class FieldManager extends BasePage {
         // Return if the input string matches the format regex
         return matcher.matches();
     }
+
+    public static boolean isDerivationCurrentDateTime(String fieldProcesses){
+        if (fieldProcesses == null) {
+            return false; // Handle null input
+        }
+        return fieldProcesses.contains("4");
+    }
+
+
+
+
 }
