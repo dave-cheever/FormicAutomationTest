@@ -22,7 +22,8 @@ public class HandwritingRecognitionObject extends BasePage {
     }
 
 //    CheckBoxPage chk = new CheckBoxPage(1);
-    int projectId = 137;
+    int projectId = Integer.parseInt(ConfigLoader.getProperty("test.HroProjectId"));
+    private String strFormatRegex;
     private String strFormatMask;
     private static boolean isMandatory = false;
     private static String strFieldName;
@@ -34,13 +35,25 @@ public class HandwritingRecognitionObject extends BasePage {
     static CompletionErrors comp = new CompletionErrors(driver);
 
     public static void setTextToHro(FormContentPojo pojo, String strFieldId, String strText){
-        String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
-        String elem = stringReplace(hroInputLocator,elementId);
-        WebElement element = stringToWebElement(elem);
-        scrollElementIntoView(driver,element);
-        Reporter.log("<b>Enter text for HRO: <b/>"+getFieldName(pojo,strFieldId)+"<b> Input: <b/>"+ strText);
-        enterText(element,strText);
-        recordInputsFromHro(elementId,strText);
+        try{
+            lookForTheField(pojo,strFieldId);
+            String elementId = CheckBoxPageV2.getObjectIdFromFieldId(pojo,strFieldId);
+            String elem = stringReplace(hroInputLocator,elementId);
+            By locator = By.xpath(elem);
+            scrollElementIntoView(driver,locator);
+            WebElement element = stringToWebElement(elem);
+            scrollElementIntoView(driver,element);
+            Reporter.log("<b>Enter text for HRO: <b/>"+getFieldName(pojo,strFieldId)+"<b> Input: <b/>"+ strText);
+            enterText(element,strText);
+            recordInputsFromHro(elementId,strText);
+        }catch (AssertionError assertionError){
+            ScreenshotHelper screenshotHelper = new ScreenshotHelper(driver);
+            screenshotHelper.takeScreenshot("Set text to HRO");
+            // Rethrow the exception to mark the test as failed
+            String pathName = screenshotHelper.getScreenshotPath("Set text to HRO");
+            Reporter.log("<br><b>Failed test screenshot:</b> <a href='" + pathName + "'>Screenshot</a><br>");
+            throw assertionError;
+        }
     }
 
     public void assertInvalidDateTimeFormat(FormContentPojo pojo, String strFieldId,String scenarioName){
@@ -229,6 +242,11 @@ public class HandwritingRecognitionObject extends BasePage {
         setTextToHro(graphResponse, strFieldId, "!@#");
     }
 
+    public void validDataFormatInputs(FormContentPojo graphResponse,String strFieldId) {
+        String inputs =  FormatRegex.generateFormattedString(strFormatRegex);
+        setTextToHro(graphResponse, strFieldId, inputs);
+    }
+
     public void invalidEmailInputs(FormContentPojo graphResponse,String strFieldId){
         setTextToHro(graphResponse, strFieldId, "email");
     }
@@ -251,7 +269,7 @@ public class HandwritingRecognitionObject extends BasePage {
     }
 
     public void assertHroValidationMessageNumericInvalid(FormContentPojo pojo, String strFieldId,String name, String scenarioName){
-        String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
+        String elementId = CheckBoxPageV2.getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(hroValidationMessageLocator,elementId);
         WebElement element = stringToWebElement(elem);
         scrollElementIntoView(driver,element);
@@ -270,7 +288,7 @@ public class HandwritingRecognitionObject extends BasePage {
     }
 
     public void assertHroValidationMessageNumericValid(FormContentPojo pojo, String strFieldId,String name, String scenarioName){
-        String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
+        String elementId = CheckBoxPageV2.getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(hroValidationMessageLocator,elementId);
         scrollElementIntoView(driver,By.xpath(elem));
         Reporter.log("<b>Confirm correct validation message should be:</b> This field must be a number.");
@@ -294,7 +312,7 @@ public class HandwritingRecognitionObject extends BasePage {
 
 
     public void assertHro(FormContentPojo pojo, String strFieldId){
-        String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
+        String elementId = CheckBoxPageV2.getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(hroValidationMessageLocator,elementId);
         String elemMandatory = stringReplace(hroValidationMessageMandatoryLocator,elementId);
         String fieldName = getFieldName(pojo,strFieldId);
@@ -378,7 +396,7 @@ public class HandwritingRecognitionObject extends BasePage {
     }
 
     public void assertHroValidationMessageAlphaNumeric(FormContentPojo pojo, String strFieldId,String name, String scenarioName){
-        String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
+        String elementId = CheckBoxPageV2.getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(hroValidationMessageLocator,elementId);
         Reporter.log("<b>Confirm correct validation message should be:</b> This field must match the following format: ("+strFormatMask+").");
         WebElement element;
@@ -403,7 +421,7 @@ public class HandwritingRecognitionObject extends BasePage {
     }
 
     public void assertHroValidationMessageDataFormat(FormContentPojo pojo, String strFieldId,String name, String scenarioName){
-        String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
+        String elementId = CheckBoxPageV2.getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(hroValidationMessageLocator,elementId);
         Reporter.log("<b>Confirm correct validation message should be:</b> This field must match the following format: ("+strFormatMask+").");
         WebElement element;
@@ -427,8 +445,31 @@ public class HandwritingRecognitionObject extends BasePage {
         }
     }
 
+    public void assertHroValidationMessageDataFormatValid(FormContentPojo pojo, String strFieldId,String name, String scenarioName){
+        String elementId = CheckBoxPageV2.getObjectIdFromFieldId(pojo,strFieldId);
+        String elem = stringReplace(hroValidationMessageLocator,elementId);
+        Reporter.log("<b>Confirm correct validation message should be:</b> This field must match the following format: ("+strFormatMask+").");
+        try{
+            if(isMandatory){
+                WebElement element = stringToWebElement(elem);
+                Assert.assertEquals(element.getText(),"This field is mandatory.","The HRO "+ name+" has a validation message of "+element.getText()+" instead of - This field is mandatory.");
+            }else{
+                Assert.assertTrue(driver.findElements(By.xpath(elem)).size()==0,"No validation message should be displayed for "+ name +".");
+            }
+        }catch (AssertionError assertionError){
+            ScreenshotHelper screenshotHelper = new ScreenshotHelper(driver);
+            screenshotHelper.takeScreenshot(scenarioName);
+            // Rethrow the exception to mark the test as failed
+            String pathName = screenshotHelper.getScreenshotPath(scenarioName);
+            Reporter.log("<br><b>Failed test screenshot:</b> <a href='" + pathName + "'>Screenshot</a><br>");
+            throw assertionError;
+        }
+    }
+
+
+
     public void assertHroValidationMessageAlphabet(FormContentPojo pojo, String strFieldId){
-        String elementId = CheckBoxPage.getObjectIdFromFieldId(pojo,strFieldId);
+        String elementId = CheckBoxPageV2.getObjectIdFromFieldId(pojo,strFieldId);
         String elem = stringReplace(hroValidationMessageLocator,elementId);
         WebElement element = stringToWebElement(elem);
         Reporter.log("<b>Confirm correct validation message should be:</b> This field must match the following format: ("+getNumberOfUnderscore()+").");
@@ -528,7 +569,6 @@ public class HandwritingRecognitionObject extends BasePage {
     public void hroNumericInvalidInputsValidation(String fieldId, String mandatory, String name, String max, String scenarioName) throws Exception {
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse = rules.getRules(projectId);
-        sideMenuNavigation.clickSubmitButton();
         RoutingRules.enableDisabledFieldByFieldId(graphResponse,fieldId);
         lookForTheField(graphResponse,fieldId);
         invalidNumericInput(graphResponse,fieldId, Integer.parseInt(max));
@@ -536,10 +576,9 @@ public class HandwritingRecognitionObject extends BasePage {
     }
 
     public void hroNumericInputsValidation(String fieldId, String mandatory, String name, String max, String scenarioName) throws Exception {
-        isMandatory = Boolean.parseBoolean(mandatory);
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse = rules.getRules(projectId);
-        sideMenuNavigation.clickSubmitButton();
+        isMandatory = Boolean.parseBoolean(mandatory);
         RoutingRules.enableDisabledFieldByFieldId(graphResponse,fieldId);
         lookForTheField(graphResponse,fieldId);
         validNumericInput(graphResponse,fieldId, Integer.parseInt(max));
@@ -549,9 +588,8 @@ public class HandwritingRecognitionObject extends BasePage {
 
     public void hroDateTimeInvalidInputsValidation(String fieldId, String mandatory, String name,String formatMask, String scenarioName) throws Exception {
         RulesGraphql rules = new RulesGraphql();
-        strFormatMask = formatMask;
         FormContentPojo graphResponse = rules.getRules(projectId);
-        sideMenuNavigation.clickSubmitButton();
+        strFormatMask = formatMask;
         RoutingRules.enableDisabledFieldByFieldId(graphResponse,fieldId);
         lookForTheField(graphResponse,fieldId);
         InvalidDateTimeInputs(graphResponse,fieldId);
@@ -559,32 +597,44 @@ public class HandwritingRecognitionObject extends BasePage {
     }
 
     public void hroDateTimeValidInputsValidation(String fieldId, String mandatory, String name,String formatMask, String scenarioName) throws Exception {
-        isMandatory = Boolean.parseBoolean(mandatory);
         RulesGraphql rules = new RulesGraphql();
-        strFormatMask = formatMask;
         FormContentPojo graphResponse = rules.getRules(projectId);
-        sideMenuNavigation.clickSubmitButton();
+        isMandatory = Boolean.parseBoolean(mandatory);
+        strFormatMask = formatMask;
         RoutingRules.enableDisabledFieldByFieldId(graphResponse,fieldId);
         lookForTheField(graphResponse,fieldId);
         validDateTimeInputs(graphResponse,fieldId);
         assertValidDateTimeFormat(graphResponse,fieldId,name,scenarioName);
     }
 
-    public void hroDataFormatInputsValidation(String fieldId, String mandatory, String name, String formatMask, String scenarioName) throws Exception {
+    public void hroDataFormatInvalidInputs(String fieldId, String mandatory, String name, String formatRegex, String formatMask, String scenarioName) throws Exception {
         RulesGraphql rules = new RulesGraphql();
-        strFormatMask = formatMask;
         FormContentPojo graphResponse = rules.getRules(projectId);
-        sideMenuNavigation.clickSubmitButton();
+        isMandatory = Boolean.parseBoolean(mandatory);
+        strFormatMask = formatMask;
+        strFormatRegex = formatRegex;
         RoutingRules.enableDisabledFieldByFieldId(graphResponse,fieldId);
         lookForTheField(graphResponse,fieldId);
         InvalidDataFormatInputs(graphResponse,fieldId);
         assertHroValidationMessageDataFormat(graphResponse,fieldId,name,scenarioName);
     }
 
+    public void hroDataFormatValidInputs(String fieldId, String mandatory, String name, String formatRegex,String formatMask, String scenarioName) throws Exception {
+        RulesGraphql rules = new RulesGraphql();
+        FormContentPojo graphResponse = rules.getRules(projectId);
+        isMandatory = Boolean.parseBoolean(mandatory);
+        strFormatRegex = formatRegex;
+        strFormatMask = formatMask;
+        RoutingRules.enableDisabledFieldByFieldId(graphResponse,fieldId);
+        lookForTheField(graphResponse,fieldId);
+        validDataFormatInputs(graphResponse,fieldId);
+        assertHroValidationMessageDataFormatValid(graphResponse,fieldId,name,scenarioName);
+    }
+
     public void hroEmailFormatInvalidInputsValidation(String fieldId, String mandatory, String name, String scenarioName) throws Exception {
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse = rules.getRules(projectId);
-        sideMenuNavigation.clickSubmitButton();
+        isMandatory = Boolean.parseBoolean(mandatory);
         RoutingRules.enableDisabledFieldByFieldId(graphResponse,fieldId);
         lookForTheField(graphResponse, fieldId);
         invalidEmailInputs(graphResponse,fieldId);
@@ -592,10 +642,9 @@ public class HandwritingRecognitionObject extends BasePage {
     }
 
     public void hroEmailFormatInputsValidation(String fieldId, String mandatory, String name, String scenarioName) throws Exception {
-        isMandatory = Boolean.parseBoolean(mandatory);
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse = rules.getRules(projectId);
-        sideMenuNavigation.clickSubmitButton();
+        isMandatory = Boolean.parseBoolean(mandatory);
         RoutingRules.enableDisabledFieldByFieldId(graphResponse,fieldId);
         lookForTheField(graphResponse, fieldId);
         validEmailInputs(graphResponse,fieldId);
@@ -605,9 +654,9 @@ public class HandwritingRecognitionObject extends BasePage {
     public void hroMandatoryValidation(String fieldId, String scenarioNam) throws Exception {
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse = rules.getRules(projectId);
-        sideMenuNavigation.clickSubmitButton();
         RoutingRules.enableDisabledFieldByFieldId(graphResponse,fieldId);
         lookForTheField(graphResponse, fieldId);
+        sideMenuNavigation.clickSubmitButton();
         assertHroMandatoryFieldOnly(graphResponse, fieldId,scenarioNam);
     }
 

@@ -1,13 +1,14 @@
 package com.Formic.OF2.pages.HRO;
 
-import com.Formic.OF2.pages.CheckBoxPage;
+import com.Formic.OF2.pages.CheckBoxPageV2;
 import com.Formic.OF2.pages.HandwritingRecognitionObject;
 import com.Formic.OF2.test.BasePage;
 import com.Formic.OF2.utils.CheckboxObject;
+import com.Formic.OF2.utils.ConfigLoader;
 import com.Formic.OF2.utils.Pojo.FormContentPojo;
 import com.Formic.OF2.utils.Pojo.RulesGraphql;
+import com.Formic.OF2.utils.RoutingRules;
 import com.Formic.OF2.utils.ScreenshotHelper;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -23,97 +24,82 @@ public class DataDerivation extends BasePage {
 
     static String hroElementLocator = "//div[@data-object-id='$TEXT']/input";
 
-    int projectId = 233;
+    int projectId = Integer.parseInt(ConfigLoader.getProperty("test.DerivationProjectId"));
 
-    public void Calculate_Sum_of_Two_Fields_and_Display_Result_HRO(String scenarioName) throws Exception {
+    public void Calculate_Sum_of_Two_Fields_and_Display_Result_HRO(String fieldId,String scenarioName) throws Exception {
         int firstValue = 5;
         int secondValue = 5;
         String operation = "+";
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
-        com.Formic.OF2.utils.DataDerivation.getFieldIdDerivationByTypeNameAndOperator(graphResponse,"HandwritingRecognitionObject",operation);
-        for (String fieldId: CheckboxObject.fieldId
-        ) {
-            if(com.Formic.OF2.utils.FieldMetaData.getHroRules(graphResponse, fieldId)&&
-                    !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
-            {
-                enterNumberForDerivationFields(graphResponse,fieldId,firstValue,secondValue);
-            }
-            expectedDerivationOutput(graphResponse,fieldId,firstValue,secondValue,operation,scenarioName);
-        }
+
+        RoutingRules.enableDisabledFieldByFieldId(graphResponse,fieldId);
+        lookForTheField(graphResponse,fieldId);
+
+        enterNumberForDerivationFields(graphResponse,fieldId,firstValue,secondValue);
+        expectedDerivationOutput(graphResponse,fieldId,firstValue,secondValue,operation,scenarioName);
+
     }
 
-    public void Multiply_Two_Fields_and_Display_Result_HRO() throws Exception {
-        String scenarioName = "Multiply_Two_Fields_and_Display_Result_HRO";
+    public void Multiply_Two_Fields_and_Display_Result_HRO(String fieldId,String scenarioName) throws Exception {
         int firstValue = 5;
         int secondValue = 5;
         String operation = "*";
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
-        com.Formic.OF2.utils.DataDerivation.getFieldIdDerivationByTypeNameAndOperator(graphResponse,"HandwritingRecognitionObject",operation);
-        for (String fieldId: CheckboxObject.fieldId
-        ) {
-            if(com.Formic.OF2.utils.FieldMetaData.getHroRules(graphResponse, fieldId)&&
-                    !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
-            {
-                enterNumberForDerivationFields(graphResponse,fieldId,firstValue,secondValue);
-            }
-            expectedDerivationOutput(graphResponse,fieldId,firstValue,secondValue,operation,scenarioName);
-        }
+
+        RoutingRules.enableDisabledFieldByFieldId(graphResponse,fieldId);
+        lookForTheField(graphResponse,fieldId);
+
+        enterNumberForDerivationFields(graphResponse,fieldId,firstValue,secondValue);
+        expectedDerivationOutput(graphResponse,fieldId,firstValue,secondValue,operation,scenarioName);
+
     }
 
-    public void Divide_Two_Fields_and_Display_Result_HRO() throws Exception {
-        String scenarioName = "Divide_Two_Fields_and_Display_Result_HRO";
+    public void Divide_Two_Fields_and_Display_Result_HRO(String fieldId,String scenarioName) throws Exception {
         int firstValue = 5;
         int secondValue = 5;
         String operation = "/";
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
-        com.Formic.OF2.utils.DataDerivation.getFieldIdDerivationByTypeNameAndOperator(graphResponse,"HandwritingRecognitionObject",operation);
-        for (String fieldId: CheckboxObject.fieldId
-        ) {
-            if(com.Formic.OF2.utils.FieldMetaData.getHroRules(graphResponse, fieldId)&&
-                    !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
-            {
-                enterNumberForDerivationFields(graphResponse,fieldId,firstValue,secondValue);
-            }
-            expectedDerivationOutput(graphResponse,fieldId,firstValue,secondValue,operation,scenarioName);
-        }
+
+        RoutingRules.enableDisabledFieldByFieldId(graphResponse,fieldId);
+        lookForTheField(graphResponse,fieldId);
+
+        enterNumberForDerivationFields(graphResponse,fieldId,firstValue,secondValue);
+        expectedDerivationOutput(graphResponse,fieldId,firstValue,secondValue,operation,scenarioName);
+
     }
 
-    public void Subtract_Two_Fields_and_Display_Result_HRO() throws Exception {
-        String scenarioName = "Subtract_Two_Fields_and_Display_Result_HRO";
+    public void Subtract_Two_Fields_and_Display_Result_HRO(String fieldId,String scenarioName) throws Exception {
         int firstValue = 5;
         int secondValue = 5;
         String operation = "-";
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
-        com.Formic.OF2.utils.DataDerivation.getFieldIdDerivationByTypeNameAndOperator(graphResponse,"HandwritingRecognitionObject",operation);
-        for (String fieldId: CheckboxObject.fieldId
-        ) {
-            if(com.Formic.OF2.utils.FieldMetaData.getHroRules(graphResponse, fieldId)&&
-                    !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
-            {
-                enterNumberForDerivationFields(graphResponse,fieldId,firstValue,secondValue);
-            }
-            expectedDerivationOutput(graphResponse,fieldId,firstValue,secondValue,operation,scenarioName);
-        }
+
+        RoutingRules.enableDisabledFieldByFieldId(graphResponse,fieldId);
+        lookForTheField(graphResponse,fieldId);
+
+        enterNumberForDerivationFields(graphResponse,fieldId,firstValue,secondValue);
+        expectedDerivationOutput(graphResponse,fieldId,firstValue,secondValue,operation,scenarioName);
     }
 
-    public void Value_Propagation_Between_Fields_HRO() throws Exception {
-        String scenarioName = "Value_Propagation_Between_Fields_HRO";
+    public void Value_Propagation_Between_Fields_HRO(String fieldId,String objectId,String scenarioName) throws Exception {
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
-        com.Formic.OF2.utils.DataDerivation.getFieldIdDerivationByTypeNameAndNoOperator(graphResponse,"HandwritingRecognitionObject");
-        for (String fieldId: CheckboxObject.fieldId
-        ) {
-            if(com.Formic.OF2.utils.FieldMetaData.getHroRules(graphResponse, fieldId)&&
-                    !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
-            {
-                enterNumberForDerivationFieldNoArithmetic(graphResponse,fieldId,5);
-            }
-            expectedPropagationOutput(graphResponse,fieldId,"5",scenarioName);
-        }
+
+        String fieldId1 = getFieldIdByObjectId(graphResponse,objectId);
+
+        RoutingRules.enableDisabledFieldByFieldId(graphResponse,fieldId1);
+        lookForTheField(graphResponse,fieldId1);
+
+        enterNumberForDerivationFieldNoArithmetic(graphResponse,objectId,5);
+
+        RoutingRules.enableDisabledFieldByFieldId(graphResponse,fieldId);
+        lookForTheField(graphResponse,fieldId);
+
+        expectedPropagationOutput(graphResponse,fieldId,"5",scenarioName);
     }
 
 
@@ -193,13 +179,10 @@ public class DataDerivation extends BasePage {
         Reporter.log("<b>Successfully entered the text: <b/>"+ field2Value+"<b> to the Field: <b/>"+SecondFieldName);
     }
 
-    public void enterNumberForDerivationFieldNoArithmetic(FormContentPojo pojo,String mainFieldId,int field1Value){
-        String fieldName = CheckboxObject.fieldName;
-        String elementId = getElementIdByFieldName(pojo,fieldName);
-        String fieldId = getFieldIdByObjectId(pojo,elementId);
+    public void enterNumberForDerivationFieldNoArithmetic(FormContentPojo pojo,String objectId,int field1Value){
+        String fieldId = getFieldIdByObjectId(pojo,objectId);
         lookForTheField(pojo,fieldId);
         HandwritingRecognitionObject.setTextToHro(pojo,fieldId,Integer.toString(field1Value));
-        lookForTheField(pojo,mainFieldId);
     }
 
 }

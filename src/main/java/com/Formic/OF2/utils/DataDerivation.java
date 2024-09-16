@@ -74,14 +74,22 @@ public class DataDerivation extends BasePage {
         return matcher.matches();
     }
 
+    public static boolean containsSpace(String input) {
+        // Check if the input string contains a space character
+        return input.contains(" ");
+    }
+
+
     public static boolean isFieldDerivationHasArithmeticOperator(FormContentPojo pojo, String strFieldId,String operation){
         for (com.Formic.OF2.utils.Pojo.Field fields: pojo.data.project.getFields()) {
             if(fields.getGuidId().equalsIgnoreCase(strFieldId)){
                 String derivation = fields.getDerivation();
                 if(derivation!=null){
-                    String[] EqualsTo = derivation.split(" ");
-                    if(EqualsTo[1].equalsIgnoreCase(operation)){
-                        return true;
+                    if(containsSpace(derivation)){
+                        String[] EqualsTo = derivation.split(" ");
+                        if(EqualsTo[1].equalsIgnoreCase(operation)){
+                            return true;
+                        }
                     }
                 }
             }

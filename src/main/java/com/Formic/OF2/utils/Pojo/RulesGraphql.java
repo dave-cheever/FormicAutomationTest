@@ -3,13 +3,19 @@ package com.Formic.OF2.utils.Pojo;
 import com.Formic.OF2.pages.GraphQLQuery;
 import com.Formic.OF2.pages.ProjectIdentifierInput;
 import com.Formic.OF2.pages.QueryVariables;
+import com.Formic.OF2.utils.ConfigLoader;
+import com.Formic.OF2.utils.SSLUtilities;
 import io.restassured.RestAssured;
 import io.restassured.builder.RequestSpecBuilder;
 import io.restassured.specification.RequestSpecification;
 
+import javax.net.ssl.*;
+import java.security.cert.X509Certificate;
+
 public class RulesGraphql {
 
     public FormContentPojo getRules(int projectId){
+        disableSSLVerification();
         ProjectIdentifierInput input = new ProjectIdentifierInput();
         input.setId(projectId);
 
@@ -90,6 +96,7 @@ public class RulesGraphql {
         queryBuilder.append("                    mandatory");
         queryBuilder.append("                    validation");
         queryBuilder.append("                    derivation");
+        queryBuilder.append("                    fieldProcesses");
         queryBuilder.append("                    dataTypeNew");
         queryBuilder.append("                    formatRegex");
         queryBuilder.append("                    formatMask");
@@ -117,108 +124,40 @@ public class RulesGraphql {
         String graphQLQuery = queryBuilder.toString();
 
 
-//        String graphQLQuery = """
-//                query ProjectFields ($projectIdentifierInput: ProjectIdentifierInput!){\s
-//                  project (projectIdentifier: $projectIdentifierInput){
-//                  id
-//                  name
-//                  pages{
-//                  		guidId
-//                  		objects{\s
-//                  			...on CaptureObjectBase {\s
-//                  				        guidId
-//                  				        __typename
-//                  				}
-//                  				...on TickboxGroup{
-//                  				        subQuestionFields{
-//                  					                        guidId
-//                  				                            __typename
-//                  				        }
-//                  				        tickboxResponses{
-//                      				                        ordinal
-//                      				                        __typename
-//                      				                        box{
-//                      				                            hidden,
-//                      				                            subQuestionIndex
-//                      				                        }
-//                      				                        label{
-//                      				                            text,
-//                      				                            __typename
-//                      				                        }
-//                      			        }
-//                  			    }
-//                  			...on ManualImageAreaText{
-//                  			            guidId
-//                                        fieldId
-//                                        name
-//                                        __typename
-//                            }
-//                  			...on HandwritingRecognitionObject{
-//                     					guidId
-//                     					fieldId
-//                     					name
-//                     					boxes{
-//                     					        dimensions{
-//                     					                height,
-//                     					                width,
-//                     					                __typename
-//                     					        }
-//                     					        ,guidId,
-//                          						location{
-//                          						        layer,
-//                          						        left,
-//                          						        top,
-//                          						        __typename
-//                          						}
-//                          						,ordinal
-//                          						,__typename
-//                          				}
-//                     					__typename
-//                     		}
-//                  		}
-//
-//                  }
-//                  fields {
-//                    guidId
-//                    id
-//                    name
-//                    mandatory
-//                    dataTypeNew
-//                    formatRegex
-//                    formatMask
-//                    responses {
-//                      isMultiResponse
-//                      maximum
-//                      minimum
-//                      __typename
-//                    }
-//                    __typename
-//                  }
-//                  routing {
-//                    fieldId
-//                    conditions {
-//                      action
-//                      hasValue
-//                      whenField
-//                      __typename
-//                    }
-//                    __typename
-//                  }
-//                  __typename
-//                  }
-//                } """;
-
         GraphQLQuery query = new GraphQLQuery();
         query.setQuery(graphQLQuery);
         query.setVariables(variable);
 
-        RestAssured.baseURI = "https://formic-api-test.azurewebsites.net";
+        RestAssured.baseURI = ConfigLoader.getProperty("test.urlApi");
         RestAssured.basePath = "/graphql";
         RequestSpecBuilder reqSpecBuilder = new RequestSpecBuilder();
         reqSpecBuilder.setContentType("application/json; charset=UTF-8");
         reqSpecBuilder.setBody(query);
         RequestSpecification requestSpecification = RestAssured.given(reqSpecBuilder.build());
         return requestSpecification.expect().when().post().as(FormContentPojo.class);
+    }
+
+    private void disableSSLVerification() {
+        try {
+            TrustManager[] trustAllCerts = new TrustManager[]{
+                    new X509TrustManager() {
+                        public X509Certificate[] getAcceptedIssuers() {
+                            return null;
+                        }
+                        public void checkClientTrusted(X509Certificate[] certs, String authType) { }
+                        public void checkServerTrusted(X509Certificate[] certs, String authType) { }
+                    }
+            };
+
+            SSLContext sc = SSLContext.getInstance("TLS");
+            sc.init(null, trustAllCerts, new java.security.SecureRandom());
+            HttpsURLConnection.setDefaultSSLSocketFactory(sc.getSocketFactory());
+            HttpsURLConnection.setDefaultHostnameVerifier((hostname, session) -> true);
+
+            RestAssured.useRelaxedHTTPSValidation();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
 }

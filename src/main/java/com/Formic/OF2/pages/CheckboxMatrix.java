@@ -15,8 +15,8 @@ import java.util.LinkedHashSet;
 import java.util.Random;
 import java.util.Set;
 
+import static com.Formic.OF2.pages.CheckBoxPageV2.comp;
 
-import static com.Formic.OF2.pages.CheckBoxPage.*;
 
 public class CheckboxMatrix extends BasePage {
 
@@ -37,7 +37,6 @@ public class CheckboxMatrix extends BasePage {
     static String fieldErrorsElementCount = "//h1[text()=\"Field Errors\"]/ancestor::div/following-sibling::div/div/div/div[1]";
 
 
-    CheckBoxPage checkBoxPage;
     static CheckboxObject checkboxObject;
 
     public static void clickCloseButton(){
@@ -116,23 +115,6 @@ public class CheckboxMatrix extends BasePage {
         return result;
     }
 
-    public static void assertCheckboxMinMaxMandatory(FormContentPojo pojo, String strFieldId) throws Exception {
-        if(CheckboxObject.isMandatoryFieldTest){
-            AssertMandatoryFields(pojo,strFieldId);
-        } else if(CheckboxObject.lessThanMinimumInputs){
-            assertLessThanMinimumInput(pojo,strFieldId);
-        }else if(CheckboxObject.withinMinimumInputs){
-            assertWithinMinimumInput(pojo,strFieldId);
-        }else if (CheckboxObject.withinMaximumInputs){
-            assertWithinMaximumInput(pojo,strFieldId);
-        }else if (CheckboxObject.beyondMaximumInputs){
-            assertBeyondMaximumInput(pojo,strFieldId);
-        }else if(CheckboxObject.minimumConfig){
-            assertMinimumConfig(pojo,strFieldId);
-        }else if(CheckboxObject.withinMinimumMaximumInputs){
-            CheckBoxPage.assertWithinMinimumMaximumInput(pojo,strFieldId);
-        }
-    }
 
     public static void assertMinimumConfig(FormContentPojo pojo, String strFieldId) {
         String elementId = getObjectIdFromFieldId(pojo,strFieldId);
@@ -549,18 +531,6 @@ public class CheckboxMatrix extends BasePage {
             }
         }
         return generated.size();
-    }
-
-    public static int clickWithinMinimumMaximumInput(FormContentPojo pojo,int minInput,int maxInput,ArrayList<String> strObjectFieldId,int elementCountInACheckbox){
-        String[] gen = minMaximumGeneratedInputs(pojo,minInput,maxInput,elementCountInACheckbox);
-        gen = adjustInputIfAlreadySelected(pojo,gen);
-        for (String fieldId: strObjectFieldId
-        ) {
-            recordInputsFromCheckbox(getObjectIdFromFieldId(pojo,fieldId),gen);
-            System.out.println(CheckboxObject.checkboxInputs);
-            clickElementHasValue(gen,fieldId);
-        }
-        return gen.length;
     }
 
 }

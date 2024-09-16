@@ -4,13 +4,13 @@ pool:
   demands: maven
 
 steps:
-  - task: Maven@3
+  - task: Maven@4
     displayName: 'Maven pom.xml'
     inputs:
       mavenPomFile: 'pom.xml'
       goals: 'test compile'
       testResultsFiles: '**/target/surefire-reports/junitreports/*.xml'
-      testRunTitle: 'Test Run sample'
+      testRunTitle: 'Regression Test'
       allowBrokenSymlinks: false
       jdkVersionOption: 1.17
 
@@ -29,14 +29,14 @@ steps:
       pathToPublish: 'target'
     condition: succeededOrFailed()
 
-  - task: PublishTestResults@2
-    displayName: 'Publish Test Results'
-    inputs:
-      testResultsFiles: '**/TEST-*.xml'
-      failTaskOnFailedTests: true
-      mergeTestResults: false
-      testRunTitle: 'Regression Test'
-    condition: succeededOrFailed()
+#  - task: PublishTestResults@2
+#    displayName: 'Publish Test Results'
+#    inputs:
+#      testResultsFiles: '**/TEST-*.xml'
+#      failTaskOnFailedTests: true
+#      mergeTestResults: false
+#      testRunTitle: 'Regression Test Publish'
+#    condition: succeededOrFailed()
 
   - task: CopyFiles@2
     displayName: 'Copy Screenshots to: $(Build.ArtifactStagingDirectory)/screenShots'

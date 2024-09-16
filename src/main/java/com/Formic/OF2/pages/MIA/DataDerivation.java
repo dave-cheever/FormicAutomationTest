@@ -2,15 +2,13 @@ package com.Formic.OF2.pages.MIA;
 
 
 
-import com.Formic.OF2.pages.CheckBoxPage;
-import com.Formic.OF2.pages.HandwritingRecognitionObject;
+import com.Formic.OF2.pages.CheckBoxPageV2;
 import com.Formic.OF2.pages.ManualImageArea;
+import com.Formic.OF2.pages.SideMenuNavigation;
 import com.Formic.OF2.test.BasePage;
-import com.Formic.OF2.utils.CheckboxObject;
+import com.Formic.OF2.utils.*;
 import com.Formic.OF2.utils.Pojo.FormContentPojo;
 import com.Formic.OF2.utils.Pojo.RulesGraphql;
-import com.Formic.OF2.utils.ScreenshotHelper;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -25,99 +23,103 @@ public class DataDerivation extends BasePage {
     static String hroValidationMessageLocator = "//div[@data-object-id='$TEXT']/div/div/div";
 
     static String miaElementLocator = "//div[@data-object-id='$TEXT']/textarea";
+    static String miaElementLocatorInput = "//div[@data-object-id='$TEXT']/input";
 
-    int projectId = 233;
+    int projectId = Integer.parseInt(ConfigLoader.getProperty("test.DerivationProjectId"));
+    public SideMenuNavigation sideMenuNavigation = new SideMenuNavigation(driver);
 
-    public void Calculate_Sum_of_Two_Fields_and_Display_Result_MIA() throws Exception {
-        String scenarioName = "Calculate_Sum_of_Two_Fields_and_Display_Result_MIA";
+    public void Calculate_Sum_of_Two_Fields_and_Display_Result_MIA(String fieldId,String scenarioName) throws Exception {
         int firstValue = 5;
         int secondValue = 5;
         String operation = "+";
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
-        com.Formic.OF2.utils.DataDerivation.getFieldIdDerivationByTypeNameAndOperator(graphResponse,"ManualImageAreaText",operation);
-        for (String fieldId: CheckboxObject.fieldId
-        ) {
-            if(com.Formic.OF2.utils.FieldMetaData.getMiaRules(graphResponse, fieldId)&&
-                    !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
-            {
-                enterNumberForDerivationFields(graphResponse,fieldId,firstValue,secondValue);
-            }
-            expectedDerivationOutput(graphResponse,fieldId,firstValue,secondValue,operation,scenarioName);
-        }
+
+        RoutingRules.enableDisabledFieldByFieldId(graphResponse,fieldId);
+        lookForTheField(graphResponse,fieldId);
+
+        enterNumberForDerivationFields(graphResponse,fieldId,firstValue,secondValue);
+        expectedDerivationOutput(graphResponse,fieldId,firstValue,secondValue,operation,scenarioName);
     }
 
-    public void Multiply_Two_Fields_and_Display_Result_MIA() throws Exception {
-        String scenarioName = "Multiply_Two_Fields_and_Display_Result_MIA";
+    public void Multiply_Two_Fields_and_Display_Result_MIA(String fieldId,String scenarioName) throws Exception {
         int firstValue = 5;
         int secondValue = 5;
         String operation = "*";
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
-        com.Formic.OF2.utils.DataDerivation.getFieldIdDerivationByTypeNameAndOperator(graphResponse,"ManualImageAreaText",operation);
-        for (String fieldId: CheckboxObject.fieldId
-        ) {
-            if(com.Formic.OF2.utils.FieldMetaData.getMiaRules(graphResponse, fieldId)&&
-                    !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
-            {
-                enterNumberForDerivationFields(graphResponse,fieldId,firstValue,secondValue);
-            }
-            expectedDerivationOutput(graphResponse,fieldId,firstValue,secondValue,operation,scenarioName);
-        }
+
+        RoutingRules.enableDisabledFieldByFieldId(graphResponse,fieldId);
+        lookForTheField(graphResponse,fieldId);
+
+        enterNumberForDerivationFields(graphResponse,fieldId,firstValue,secondValue);
+        expectedDerivationOutput(graphResponse,fieldId,firstValue,secondValue,operation,scenarioName);
     }
 
-    public void Divide_Two_Fields_and_Display_Result_MIA() throws Exception {
-        String scenarioName = "Divide_Two_Fields_and_Display_Result_MIA";
+    public void Divide_Two_Fields_and_Display_Result_MIA(String fieldId,String scenarioName) throws Exception {
         int firstValue = 5;
         int secondValue = 5;
         String operation = "/";
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
-        com.Formic.OF2.utils.DataDerivation.getFieldIdDerivationByTypeNameAndOperator(graphResponse,"ManualImageAreaText",operation);
-        for (String fieldId: CheckboxObject.fieldId
-        ) {
-            if(com.Formic.OF2.utils.FieldMetaData.getMiaRules(graphResponse, fieldId)&&
-                    !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
-            {
-                enterNumberForDerivationFields(graphResponse,fieldId,firstValue,secondValue);
-            }
-            expectedDerivationOutput(graphResponse,fieldId,firstValue,secondValue,operation,scenarioName);
-        }
+
+        RoutingRules.enableDisabledFieldByFieldId(graphResponse,fieldId);
+        lookForTheField(graphResponse,fieldId);
+
+        enterNumberForDerivationFields(graphResponse,fieldId,firstValue,secondValue);
+        expectedDerivationOutput(graphResponse,fieldId,firstValue,secondValue,operation,scenarioName);
     }
 
-    public void Subtract_Two_Fields_and_Display_Result_MIA() throws Exception {
-        String scenarioName = "Subtract_Two_Fields_and_Display_Result_MIA";
+    public void Subtract_Two_Fields_and_Display_Result_MIA(String fieldId,String scenarioName) throws Exception {
         int firstValue = 5;
         int secondValue = 5;
         String operation = "-";
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
-        com.Formic.OF2.utils.DataDerivation.getFieldIdDerivationByTypeNameAndOperator(graphResponse,"ManualImageAreaText",operation);
-        for (String fieldId: CheckboxObject.fieldId
-        ) {
-            if(com.Formic.OF2.utils.FieldMetaData.getMiaRules(graphResponse, fieldId)&&
-                    !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
-            {
-                enterNumberForDerivationFields(graphResponse,fieldId,firstValue,secondValue);
-            }
-            expectedDerivationOutput(graphResponse,fieldId,firstValue,secondValue,operation,scenarioName);
-        }
+
+        RoutingRules.enableDisabledFieldByFieldId(graphResponse,fieldId);
+        lookForTheField(graphResponse,fieldId);
+
+        enterNumberForDerivationFields(graphResponse,fieldId,firstValue,secondValue);
+        expectedDerivationOutput(graphResponse,fieldId,firstValue,secondValue,operation,scenarioName);
     }
 
-    public void Value_Propagation_Between_Fields_MIA() throws Exception {
-        String scenarioName = "Value_Propagation_Between_Fields_MIA";
+    public void Value_Propagation_Between_Fields_MIA(String fieldId,String objectId,String scenarioName) throws Exception {
         RulesGraphql rules = new RulesGraphql();
         FormContentPojo graphResponse =  rules.getRules(projectId);
-        com.Formic.OF2.utils.DataDerivation.getFieldIdDerivationByTypeNameAndNoOperator(graphResponse,"ManualImageAreaText");
-        for (String fieldId: CheckboxObject.fieldId
-        ) {
-            if(com.Formic.OF2.utils.FieldMetaData.getMiaRules(graphResponse, fieldId)&&
-                    !CheckBoxPage.isFieldIdInRoutingRulesWhenFieldDisable(graphResponse,fieldId))
-            {
-                enterNumberForDerivationFieldNoArithmetic(graphResponse,fieldId,5);
-            }
-            expectedPropagationOutput(graphResponse,fieldId,"5",scenarioName);
-        }
+
+        String fieldId1 = getFieldIdByObjectId(graphResponse,objectId);
+
+        RoutingRules.enableDisabledFieldByFieldId(graphResponse,fieldId1);
+        lookForTheField(graphResponse,fieldId1);
+
+        enterNumberForDerivationFieldNoArithmetic(graphResponse,objectId,5);
+
+        RoutingRules.enableDisabledFieldByFieldId(graphResponse,fieldId);
+        lookForTheField(graphResponse,fieldId);
+
+        expectedPropagationOutput(graphResponse,fieldId,"5",scenarioName);
+    }
+
+    public void Current_DateTime_MIA(String fieldId,String dateTimeFormatRegex, String scenarioName) throws Exception {
+        RulesGraphql rules = new RulesGraphql();
+        FormContentPojo graphResponse =  rules.getRules(projectId);
+
+        RoutingRules.enableDisabledFieldByFieldId(graphResponse,fieldId);
+        lookForTheField(graphResponse,fieldId);
+
+        sideMenuNavigation.clickSubmitButton();
+        String currentDateTimeUponSubmit = DateUtils.getCurrentDateTime(dateTimeFormatRegex);
+        String receipt = CheckBoxPageV2.getProjectReceiptSave();
+        CheckBoxPageV2.clickContinueButton();
+        CheckBoxPageV2.clickSavedFormsButton();
+        Reporter.log("<b>Receipt code:<b/> "+receipt);
+        CheckBoxPageV2.enterReceiptNumber(receipt);
+        CheckBoxPageV2.clickGoButton();
+
+        lookForTheField(graphResponse,fieldId);
+
+        validateCurrentDateTimeUponSubmit(graphResponse,fieldId,currentDateTimeUponSubmit,scenarioName);
     }
 
     public void expectedDerivationOutput(FormContentPojo pojo, String fieldId,int firstFieldValue, int secondFieldValue, String operatorUsed,String scenarioName){
@@ -176,34 +178,44 @@ public class DataDerivation extends BasePage {
         }
     }
 
+    public void validateCurrentDateTimeUponSubmit(FormContentPojo pojo, String fieldId, String expectedValue,String scenarioName){
+        String objectId = getObjectIdFromFieldId(pojo,fieldId);
+        String elem = stringReplace(miaElementLocatorInput,objectId);
+        WebElement element = stringToWebElement(elem);
+
+        try{
+            System.out.println("Expected: "+expectedValue);
+            String [] split = element.getAttribute("value").split(" ");
+            System.out.println("Actual: "+split[0]);
+
+            Assert.assertTrue(split[0].equalsIgnoreCase(split[0]));
+        }catch (AssertionError assertionError){
+            ScreenshotHelper screenshotHelper = new ScreenshotHelper(driver);
+            screenshotHelper.takeScreenshot(scenarioName);
+            // Rethrow the exception to mark the test as failed
+            String pathName = screenshotHelper.getScreenshotPath(scenarioName);
+            Reporter.log("<br><b>Failed test screenshot:</b> <a href='" + pathName + "'>Screenshot</a><br>");
+            throw assertionError;
+        }
+    }
+
     public void enterNumberForDerivationFields(FormContentPojo pojo,String fieldId,int field1Value,int field2Value){
         String firstFieldName = com.Formic.OF2.utils.DataDerivation.getDerivationFieldNameByNumber(pojo,fieldId,0);
         String elementId1 = getElementIdByFieldName(pojo,firstFieldName);
         String fieldId1 = getFieldIdByObjectId(pojo,elementId1);
-        Reporter.log("Looking for the first field to enter field value: "+ field1Value);
         lookForTheField(pojo,fieldId1);
-        Reporter.log("Field: "+ firstFieldName + " found!");
-        Reporter.log("Entering text: "+field1Value+" to Field: "+firstFieldName);
         ManualImageArea.setTextToMia(pojo,fieldId1,Integer.toString(field1Value));
-        Reporter.log("Successfully entered the text: "+ field1Value+" to the Field: "+firstFieldName);
         String SecondFieldName = com.Formic.OF2.utils.DataDerivation.getDerivationFieldNameByNumber(pojo,fieldId,2);
         String elementId2 = getElementIdByFieldName(pojo,SecondFieldName);
         String fieldId2 = getFieldIdByObjectId(pojo,elementId2);
-        Reporter.log("Looking for the second field to enter field value: "+ field2Value);
         lookForTheField(pojo,fieldId2);
-        Reporter.log("Field: "+ SecondFieldName + " found!");
-        Reporter.log("Entering text: "+field2Value+" to Field: "+SecondFieldName);
         ManualImageArea.setTextToMia(pojo,fieldId2,Integer.toString(field2Value));
-        Reporter.log("Successfully entered the text: "+ field2Value+" to the Field: "+SecondFieldName);
     }
 
-    public void enterNumberForDerivationFieldNoArithmetic(FormContentPojo pojo,String mainFieldId,int field1Value){
-        String fieldName = CheckboxObject.fieldName;
-        String elementId = getElementIdByFieldName(pojo,fieldName);
-        String fieldId = getFieldIdByObjectId(pojo,elementId);
+    public void enterNumberForDerivationFieldNoArithmetic(FormContentPojo pojo,String objectId,int field1Value){
+        String fieldId = getFieldIdByObjectId(pojo,objectId);
         lookForTheField(pojo,fieldId);
         ManualImageArea.setTextToMia(pojo,fieldId,Integer.toString(field1Value));
-        lookForTheField(pojo,mainFieldId);
     }
 
 }

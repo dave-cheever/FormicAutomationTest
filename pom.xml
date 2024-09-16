@@ -17,7 +17,7 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
-    <java.version>17</java.version>
+    <java.version>22</java.version>
   </properties>
 
   <dependencies>
@@ -35,29 +35,38 @@
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
       <artifactId>selenium-support</artifactId>
-      <version>4.11.0</version>
+      <version>4.23.1</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-chrome-driver -->
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
       <artifactId>selenium-chrome-driver</artifactId>
-      <version>4.11.0</version>
+      <version>4.23.1</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-api -->
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
       <artifactId>selenium-api</artifactId>
-      <version>4.11.0</version>
+      <version>4.23.1</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/org.seleniumhq.selenium/selenium-remote-driver -->
     <dependency>
       <groupId>org.seleniumhq.selenium</groupId>
       <artifactId>selenium-remote-driver</artifactId>
-      <version>4.11.0</version>
+      <version>4.23.1</version>
     </dependency>
+
+    <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>2.16.1</version>
+    </dependency>
+
+
 
     <!--    used-->
     <dependency>
@@ -93,7 +102,7 @@
     <dependency>
       <groupId>org.testng</groupId>
       <artifactId>testng</artifactId>
-      <version>7.7.0</version>
+      <version>7.9.0</version>
       <scope>compile</scope>
     </dependency>
 
@@ -102,6 +111,13 @@
       <groupId>org.apache.poi</groupId>
       <artifactId>poi-excelant</artifactId>
       <version>5.2.5</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/org.codeartisans/java-toolbox -->
+    <dependency>
+      <groupId>org.codeartisans</groupId>
+      <artifactId>java-toolbox</artifactId>
+      <version>1.5</version>
     </dependency>
 
 
@@ -147,6 +163,7 @@
 
   </build>
   <!-- profiles -->
+
   <profiles>
     <!-- browsers -->
     <profile>
@@ -158,6 +175,7 @@
         <activeByDefault>false</activeByDefault>
       </activation>
     </profile>
+
     <profile>
       <id>chrome</id>
       <properties>
@@ -167,68 +185,56 @@
         <activeByDefault>true</activeByDefault>
       </activation>
     </profile>
+
     <profile>
       <id>ie</id>
       <properties>
         <capabilities>/ie.capabilities</capabilities>
       </properties>
     </profile>
+
     <profile>
       <id>safari</id>
       <properties>
         <capabilities>/safari.capabilities</capabilities>
       </properties>
     </profile>
+
     <profile>
       <id>opera</id>
       <properties>
         <capabilities>/opera.capabilities</capabilities>
       </properties>
     </profile>
+
     <!-- environments -->
-    <profile>
-      <id>localhost</id>
-      <properties>
-        <site.url>http://localhost/</site.url>
-      </properties>
-      <activation>
-        <activeByDefault>false</activeByDefault>
-      </activation>
-    </profile>
+<!--    <profile>-->
+<!--      <id>localhost</id>-->
+<!--      <properties>-->
+<!--        <site.url>http://localhost/</site.url>-->
+<!--      </properties>-->
+<!--      <activation>-->
+<!--        <activeByDefault>false</activeByDefault>-->
+<!--      </activation>-->
+<!--    </profile>-->
 
     <profile>
-      <id>devhost</id>
+      <id>dev</id>
       <properties>
-        <site.url>http://devhost/</site.url>
+        <test.url>https://formic-onlineforms-dev.azurewebsites.net/</test.url>
+        <test.urlApi>https://formic-api-dev.azurewebsites.net</test.urlApi>
+        <test.projectNameCheckbox>Automation Test Checkbox</test.projectNameCheckbox>
+        <test.projectIdCheckbox>246</test.projectIdCheckbox>
       </properties>
     </profile>
 
-    <profile>
-      <id>testhost</id>
-      <properties>
-        <site.url>http://testhost/</site.url>
-      </properties>
-    </profile>
-    <profile>
-      <id>prodhost</id>
-      <properties>
-        <site.url>http://prodhost.com/</site.url>
-      </properties>
-    </profile>
-    <!-- grid -->
-    <profile>
-      <id>nogrid</id>
-      <activation>
-        <activeByDefault>false</activeByDefault>
-      </activation>
-    </profile>
-
-    <profile>
-      <id>grid</id>
-      <properties>
-        <grid.url>http://localhost:4444/wd/hub/</grid.url>
-      </properties>
-    </profile>
+<!--    <profile>-->
+<!--      <id>test</id>-->
+<!--      <properties>-->
+<!--        <site.url>https://formic-onlineforms-test.azurewebsites.net/</site.url>-->
+<!--        <site.urlApi>https://formic-api-test.azurewebsites.net</site.urlApi>-->
+<!--      </properties>-->
+<!--    </profile>-->
 
   </profiles>
 </project>

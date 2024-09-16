@@ -29,7 +29,7 @@ public class BasePage {
 
     public BasePage(WebDriver driver){
         this.driver = driver;
-        driverWait = new WebDriverWait(driver,Duration.ofSeconds(15));
+        driverWait = new WebDriverWait(driver,Duration.ofSeconds(5));
         PageFactory.initElements(driver, this);
     }
 
@@ -123,6 +123,7 @@ public class BasePage {
         Integer currentPage = getCurrentPage();
         int pageCounter = 0;
         //loop through the pages
+        waitForPageToLoad();
         if(currentPage!=null){
             outerLoop:
             for (com.Formic.OF2.utils.Pojo.Page page: contentPojo.data.project.getPages()
@@ -147,18 +148,21 @@ public class BasePage {
                     }
                 }
             }
-            CheckBoxPageV2.waitForPageToLoad();
-            if(currentPage < pageCounter){
-                int nextPageCounter = pageCounter - currentPage;
-                for(int x = 1; x<=nextPageCounter; ++x){
-                    clickNextPage();
+
+            do{
+                CheckBoxPageV2.waitForPageToLoad();
+                if(currentPage < pageCounter){
+                    int nextPageCounter = pageCounter - currentPage;
+                    for(int x = 1; x<=nextPageCounter; ++x){
+                        clickNextPage();
+                    }
+                }else if(currentPage > pageCounter){
+                    int previousPageCounter = currentPage - pageCounter;
+                    for(int x = 1; x<=previousPageCounter; ++x){
+                        clickPreviousPage();
+                    }
                 }
-            }else if(currentPage > pageCounter){
-                int previousPageCounter = currentPage - pageCounter;
-                for(int x = 1; x<=previousPageCounter; ++x){
-                    clickPreviousPage();
-                }
-            }
+            }while(getCurrentPage()!=pageCounter);
         }
     }
 
@@ -632,7 +636,7 @@ public class BasePage {
         return output;
     }
 
-    public String getElementIdByFieldName(FormContentPojo pojo, String strFieldName){
+    public static String getElementIdByFieldName(FormContentPojo pojo, String strFieldName){
         String result = "";
         outerLoop:
         for (com.Formic.OF2.utils.Pojo.Field field : pojo.data.project.getFields()

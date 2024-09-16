@@ -1,11 +1,12 @@
 package Formic;
 
-import com.Formic.OF2.pages.CheckBoxPage;
 import com.Formic.OF2.pages.HRO.DataValidation;
 import com.Formic.OF2.pages.HomePage;
 import com.Formic.OF2.pages.MIA.DataDerivation;
 import com.Formic.OF2.test.BaseUiTest;
 import com.Formic.OF2.utils.CheckboxObject;
+import com.Formic.OF2.utils.ConfigLoader;
+import com.Formic.OF2.utils.DataDrivenTest;
 import org.openqa.selenium.support.PageFactory;
 import org.testng.ITestContext;
 import org.testng.annotations.BeforeMethod;
@@ -14,83 +15,87 @@ import org.testng.annotations.Test;
 public class DataDerivationTest extends BaseUiTest {
 
     HomePage homePage;
-    CheckBoxPage checkBoxPage;
     DataValidation dataValidationHro;
-
     DataDerivation dataDerivationMia;
-
     com.Formic.OF2.pages.HRO.DataDerivation dataDerivationHro;
 
-    String projectName = "TEST Data Validation";
+    String projectName = ConfigLoader.getProperty("test.Derivation");
 
-    @Test
-    public void Calculate_Sum_of_Two_Fields_and_Display_Result_HRO() throws Exception{
+    @Test(dataProvider = "testHroDataDerivationAdd", dataProviderClass = DataDrivenTest.class)
+    public void Calculate_Sum_of_Two_Fields_and_Display_Result_HRO(String fieldId) throws Exception{
         String scenarioName = "Calculate_Sum_of_Two_Fields_and_Display_Result_HRO";
         homePage.selectProject(projectName,scenarioName);
-        dataDerivationHro.Calculate_Sum_of_Two_Fields_and_Display_Result_HRO(scenarioName);
+        dataDerivationHro.Calculate_Sum_of_Two_Fields_and_Display_Result_HRO(fieldId,scenarioName);
     }
 
-    @Test
-    public void Divide_Two_Fields_and_Display_Result_HRO() throws Exception{
+    @Test(dataProvider = "testHroDataDerivationDivide", dataProviderClass = DataDrivenTest.class)
+    public void Divide_Two_Fields_and_Display_Result_HRO(String fieldId) throws Exception{
         String scenarioName = "Divide_Two_Fields_and_Display_Result_HRO";
         homePage.selectProject(projectName,scenarioName);
-        dataDerivationHro.Divide_Two_Fields_and_Display_Result_HRO();
+        dataDerivationHro.Divide_Two_Fields_and_Display_Result_HRO(fieldId,scenarioName);
     }
 
-    @Test
-    public void Multiply_Two_Fields_and_Display_Result_HRO() throws Exception{
+    @Test(dataProvider = "testHroDataDerivationMultiply", dataProviderClass = DataDrivenTest.class)
+    public void Multiply_Two_Fields_and_Display_Result_HRO(String fieldId) throws Exception{
         String scenarioName = "Multiply_Two_Fields_and_Display_Result_HRO";
         homePage.selectProject(projectName,scenarioName);
-        dataDerivationHro.Multiply_Two_Fields_and_Display_Result_HRO();
+        dataDerivationHro.Multiply_Two_Fields_and_Display_Result_HRO(fieldId,scenarioName);
     }
 
-    @Test
-    public void Subtract_Two_Fields_and_Display_Result_HRO() throws Exception{
+    @Test(dataProvider = "testHroDataDerivationSubtract", dataProviderClass = DataDrivenTest.class)
+    public void Subtract_Two_Fields_and_Display_Result_HRO(String fieldId) throws Exception{
         String scenarioName = "Subtract_Two_Fields_and_Display_Result_HRO";
         homePage.selectProject(projectName,scenarioName);
-        dataDerivationHro.Subtract_Two_Fields_and_Display_Result_HRO();
+        dataDerivationHro.Subtract_Two_Fields_and_Display_Result_HRO(fieldId,scenarioName);
     }
 
-    @Test
-    public void Value_Propagation_Between_Fields_HRO() throws Exception{
+    @Test(dataProvider = "testHroDataDerivationPropagation", dataProviderClass = DataDrivenTest.class)
+    public void Value_Propagation_Between_Fields_HRO(String fieldId, String objectId) throws Exception{
         String scenarioName = "Value_Propagation_Between_Fields_HRO";
         homePage.selectProject(projectName,scenarioName);
-        dataDerivationHro.Value_Propagation_Between_Fields_HRO();
+        dataDerivationHro.Value_Propagation_Between_Fields_HRO(fieldId,objectId,scenarioName);
     }
 
-    @Test
-    public void Calculate_Sum_of_Two_Fields_and_Display_Result_MIA() throws Exception{
+    @Test(dataProvider = "testMiaDataDerivationAdd", dataProviderClass = DataDrivenTest.class)
+    public void Calculate_Sum_of_Two_Fields_and_Display_Result_MIA(String fieldId) throws Exception{
         String scenarioName = "Calculate_Sum_of_Two_Fields_and_Display_Result_MIA";
         homePage.selectProject(projectName,scenarioName);
-        dataDerivationMia.Calculate_Sum_of_Two_Fields_and_Display_Result_MIA();
+        dataDerivationMia.Calculate_Sum_of_Two_Fields_and_Display_Result_MIA(fieldId,scenarioName);
     }
 
-    @Test
-    public void Divide_Two_Fields_and_Display_Result_MIA() throws Exception{
+    @Test(dataProvider = "testMiaDataDerivationDivide", dataProviderClass = DataDrivenTest.class)
+    public void Divide_Two_Fields_and_Display_Result_MIA(String fieldId) throws Exception{
         String scenarioName = "Divide_Two_Fields_and_Display_Result_MIA";
         homePage.selectProject(projectName,scenarioName);
-        dataDerivationMia.Divide_Two_Fields_and_Display_Result_MIA();
+        dataDerivationMia.Divide_Two_Fields_and_Display_Result_MIA(fieldId,scenarioName);
     }
 
-    @Test
-    public void Multiply_Two_Fields_and_Display_Result_MIA() throws Exception{
+    @Test(dataProvider = "testMiaDataDerivationMultiply", dataProviderClass = DataDrivenTest.class)
+    public void Multiply_Two_Fields_and_Display_Result_MIA(String fieldId) throws Exception{
         String scenarioName = "Multiply_Two_Fields_and_Display_Result_MIA";
         homePage.selectProject(projectName,scenarioName);
-        dataDerivationMia.Multiply_Two_Fields_and_Display_Result_MIA();
+        dataDerivationMia.Multiply_Two_Fields_and_Display_Result_MIA(fieldId,scenarioName);
     }
 
-    @Test
-    public void Subtract_Two_Fields_and_Display_Result_MIA() throws Exception{
+    @Test(dataProvider = "testMiaDataDerivationSubtract", dataProviderClass = DataDrivenTest.class)
+    public void Subtract_Two_Fields_and_Display_Result_MIA(String fieldId) throws Exception{
         String scenarioName = "Subtract_Two_Fields_and_Display_Result_MIA";
         homePage.selectProject(projectName,scenarioName);
-        dataDerivationMia.Subtract_Two_Fields_and_Display_Result_MIA();
+        dataDerivationMia.Subtract_Two_Fields_and_Display_Result_MIA(fieldId,scenarioName);
     }
 
-    @Test
-    public void Value_Propagation_Between_Fields_MIA() throws Exception{
+    @Test(dataProvider = "testMiaDataDerivationPropagation", dataProviderClass = DataDrivenTest.class)
+    public void Value_Propagation_Between_Fields_MIA(String fieldId, String objectId) throws Exception{
         String scenarioName = "Value_Propagation_Between_Fields_MIA";
         homePage.selectProject(projectName,scenarioName);
-        dataDerivationMia.Value_Propagation_Between_Fields_MIA();
+        dataDerivationMia.Value_Propagation_Between_Fields_MIA(fieldId,objectId,scenarioName);
+    }
+
+    @Test(dataProvider = "testMiaDataDerivationCurrentDateTime", dataProviderClass = DataDrivenTest.class)
+    public void Current_DateTime_MIA(String fieldId, String dateTimeFormatMask) throws Exception{
+        String scenarioName = "Current_DateTime_MIA";
+        homePage.selectProject(projectName,scenarioName);
+        dataDerivationMia.Current_DateTime_MIA(fieldId,dateTimeFormatMask,scenarioName);
     }
 
 
@@ -99,7 +104,6 @@ public class DataDerivationTest extends BaseUiTest {
     @BeforeMethod
     public void initialisePageElements(ITestContext iTestContext) {
         homePage = PageFactory.initElements(getDriver(), HomePage.class);
-        checkBoxPage = PageFactory.initElements(getDriver(), CheckBoxPage.class);
         dataValidationHro = PageFactory.initElements(getDriver(), DataValidation.class);
         dataDerivationHro = PageFactory.initElements(getDriver(), com.Formic.OF2.pages.HRO.DataDerivation.class);
         dataDerivationMia = PageFactory.initElements(getDriver(), com.Formic.OF2.pages.MIA.DataDerivation.class);
